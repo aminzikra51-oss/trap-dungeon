@@ -1,0 +1,182 @@
+[
+ {
+  "n": 1,
+  "key": "card_spike_2",
+  "desc": "The explorer sits calmly on a bed of metal floor spikes, spikes poking up through his tunic so he looks like a hedgehog, one eyebrow raised, tiny stars circling his helmet."
+ },
+ {
+  "n": 2,
+  "key": "card_pit_1",
+  "desc": "The explorer falls into a dark round pit, arms and legs spread wide, mouth open in a huge scream, one boot flying off, his helmet lamp lighting the pit walls."
+ },
+ {
+  "n": 3,
+  "key": "card_pit_2",
+  "desc": "Only the explorer's hand holding a tiny white flag and the top of his helmet peek out of the edge of a hole in the ground."
+ },
+ {
+  "n": 4,
+  "key": "card_arrow_1",
+  "desc": "The explorer stands frozen like a pincushion with many cartoon arrows stuck in his helmet and tunic, arrows have colorful feathers, he looks very surprised (no blood)."
+ },
+ {
+  "n": 5,
+  "key": "card_arrow_2",
+  "desc": "A stone wall turret with a smug smirking face shoots a tiny arrow that bonks the explorer's helmet so it spins on his head, stars around."
+ },
+ {
+  "n": 6,
+  "key": "card_crush_2",
+  "desc": "A huge stone block with a smug face lies on the ground, only the explorer's two boots and two hands stick out from underneath, a puff of dust around it."
+ },
+ {
+  "n": 7,
+  "key": "card_boulder_2",
+  "desc": "The explorer runs in panic, sweating, with his glasses crooked, while a huge round boulder with a smirking face rolls right behind him almost touching."
+ },
+ {
+  "n": 8,
+  "key": "card_saw_1",
+  "desc": "A big spinning circular saw blade with a cheeky grin has cut the explorer's helmet cleanly into two halves; the explorer stands frozen in shock, unhurt, sparks flying."
+ },
+ {
+  "n": 9,
+  "key": "card_saw_2",
+  "desc": "The explorer's tunic has been cut into ridiculous tiny shorts by a saw; he blushes with embarrassment and covers himself with his arms while the saw blade smugly smiles."
+ },
+ {
+  "n": 10,
+  "key": "card_fakedoor_2",
+  "desc": "A flimsy painted cardboard door has collapsed flat, the explorer sits dazed in a cloud of dust behind it in front of a plain brick wall, spirals in his glasses."
+ },
+ {
+  "n": 11,
+  "key": "card_crumble_1",
+  "desc": "The floor tiles crumble beneath the explorer; he hangs in mid-air for a moment like a cartoon character who has not realised yet, legs pedalling, one tiny sweat drop."
+ },
+ {
+  "n": 12,
+  "key": "card_crumble_2",
+  "desc": "The explorer sits dazed in a pile of broken stone tiles with one tile balanced on his head like a hat, dizzy spiral eyes, dust cloud."
+ },
+ {
+  "n": 13,
+  "key": "card_bait_1",
+  "desc": "A huge shiny gold coin hangs on a thin string with a tiny fishing hook; the explorer's eyes have turned into sparkling gold coins and he is drooling, reaching for it."
+ },
+ {
+  "n": 14,
+  "key": "card_bait_2",
+  "desc": "The explorer's hand is stuck in a big clamp trap that was holding a gold coin; two comic fountains of tears shoot out of his eyes, glasses fogged."
+ },
+ {
+  "n": 15,
+  "key": "card_any_2",
+  "desc": "The explorer's transparent soul floats up out of his body making a peace sign, wearing a tiny halo, while his body lies flat on the ground with X-shaped eyes."
+ },
+ {
+  "n": 16,
+  "key": "card_any_3",
+  "desc": "The explorer is flattened like a cartoon pancake on the floor, arms and legs spread out, spiral eyes, stars circling above."
+ },
+ {
+  "n": 17,
+  "key": "card_any_4",
+  "desc": "The explorer's helmet alone sits on the ground with a small flower growing out of it, a tiny cute tombstone with a sad cartoon face beside it (no text on it)."
+ },
+ {
+  "n": 18,
+  "key": "card_any_5",
+  "desc": "The explorer with a huge bandage around his head, one arm in a sling and crutches, looking totally bored, glasses cracked."
+ },
+ {
+  "n": 19,
+  "key": "card_any_6",
+  "desc": "The explorer lies relaxed in a small open wooden coffin wearing sunglasses and drinking juice through a straw, giving a thumbs up."
+ },
+ {
+  "n": 20,
+  "key": "card_any_7",
+  "desc": "The explorer is completely burnt black with only his white eyes and glasses visible, smoke rising from the helmet, his hair standing up straight."
+ },
+ {
+  "n": 21,
+  "key": "card_any_8",
+  "desc": "A big cartoon vulture carries the explorer away by his collar; he dangles in the air looking annoyed with arms crossed."
+ },
+ {
+  "n": 22,
+  "key": "card_any_9",
+  "desc": "The explorer sits on the ground crying a huge river of tears from both eyes, forming a puddle around him, glasses completely fogged."
+ },
+ {
+  "n": 23,
+  "key": "card_any_10",
+  "desc": "The explorer is stuck upside-down in the ground, only his legs and boots sticking out and wiggling, a little flower growing between them."
+ },
+ {
+  "n": 24,
+  "key": "card_streak_1",
+  "desc": "The explorer sits tired in front of a stone wall covered with a huge number of scratched tally lines, holding a tiny pencil-like stone, hopeless face."
+ },
+ {
+  "n": 25,
+  "key": "card_streak_2",
+  "desc": "The explorer has set up a tiny bed with a pillow, blanket and nightcap in the middle of the trap room and is sleeping on it, a spike stands next to him like a bedside lamp."
+ },
+ {
+  "n": 26,
+  "key": "card_streak_3",
+  "desc": "A tall wobbling tower made of many identical explorer helmets stacked up; the explorer holds the newest helmet in his hand, exhausted, with dark circles under his eyes."
+ },
+ {
+  "n": 27,
+  "key": "card_streak_4",
+  "desc": "The explorer slumps with a small personal rain cloud right above his head only, raining on him, gloomy face."
+ },
+ {
+  "n": 28,
+  "key": "card_near_1",
+  "desc": "The explorer lies face-down on the floor, one hand stretched toward a glowing exit door that is just a few centimetres away, light shining through the open door."
+ },
+ {
+  "n": 29,
+  "key": "card_near_2",
+  "desc": "The exit door has a mocking face and sticks its tongue out at the explorer, whose fingertips are inches from the door frame; he is stretching with all his strength."
+ },
+ {
+  "n": 30,
+  "key": "card_quick_1",
+  "desc": "A big puff of smoke shaped like the explorer remains on the ground with only his boots left standing, a speed line burst, a tiny stopwatch floating above."
+ },
+ {
+  "n": 31,
+  "key": "card_quick_2",
+  "desc": "A smug trap leans on its elbow and checks an imaginary wristwatch looking bored, while the explorer already lies flat as a pancake on the floor."
+ },
+ {
+  "n": 32,
+  "key": "card_win_1",
+  "desc": "The explorer celebrates on top of a green exit door with both arms in the air, sweating and happy, colorful confetti everywhere."
+ },
+ {
+  "n": 33,
+  "key": "card_win_2",
+  "desc": "The explorer proudly holds a dented golden trophy over his head, while in the background spikes and a saw blade look jealous and angry with tiny eyebrows."
+ },
+ {
+  "n": 34,
+  "key": "card_win_3",
+  "desc": "A row of cute traps (spike, saw, arrow turret, boulder) clap with tiny hands sarcastically while the explorer takes a deep bow."
+ },
+ {
+  "n": 35,
+  "key": "card_win_4",
+  "desc": "The explorer sits on a golden throne wearing his helmet as a crown, holding a gold coin like a scepter, defeated sad spikes lying at his feet."
+ },
+ {
+  "n": 36,
+  "key": "title_1",
+  "desc": "A dungeon entrance made of big stone blocks shaped like a wide grinning mouth, tiny traps peeking out of the dark inside, the small explorer standing at the entrance looking nervous, composition centered so it can be cropped to a wide picture."
+ }
+]

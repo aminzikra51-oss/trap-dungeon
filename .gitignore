@@ -1,0 +1,14 @@
+# heavy / local-only working folders
+raw/
+incoming/
+shots/
+concepts/
+src/old/
+__pycache__/
+*.pyc
+*.bak*
+# build outputs that are not the site (the site is docs/)
+trap-dungeon.html
+trap-dungeon.artifact.html
+pwa/icon-source.png
+trap-dungeon-site.zip

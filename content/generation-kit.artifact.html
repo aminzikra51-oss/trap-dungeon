@@ -1,0 +1,316 @@
+<title>عدّة التوليد</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap">
+<style>
+/* layout: one narrow column of batch cards, the two most-used buttons on the left edge of each card */
+:root{--bg:#eef1ee;--fg:#18211d;--card:#ffffff;--line:#d3dad4;--accent:#0c7a69;--accent-fg:#ffffff;--mut:#58665f;--ok:#2a7d3f;--first:#c2410c;
+ --ui:'Cairo','Segoe UI',Tahoma,system-ui,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121816;--fg:#e8eeea;--card:#1b2420;--line:#33423b;--accent:#4fd1b5;--accent-fg:#06211b;--mut:#9db0a6;--ok:#6fd48a;--first:#fb923c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121816;--fg:#e8eeea;--card:#1b2420;--line:#33423b;--accent:#4fd1b5;--accent-fg:#06211b;--mut:#9db0a6;--ok:#6fd48a;--first:#fb923c;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.7 var(--ui);margin:0}
+#wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
+h1{font-size:1.6rem;margin:0 0 6px;font-weight:900;text-wrap:balance}
+.note{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--mut);margin-block:10px}
+.tabs{display:flex;gap:8px;margin-block:14px 6px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding-block:8px;z-index:2}
+.tabs button{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);font:inherit;font-weight:700;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-block:10px}
+.card.p1{border-inline-start:4px solid var(--first)}
+h3{margin:0 0 2px;font-size:1.02rem;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline}
+h3 small{color:var(--mut);font-weight:400;font-size:.85rem}
+.n{font-family:var(--mono);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:0 7px;font-size:.85rem}
+.meta{color:var(--mut);font-size:.9rem;margin-bottom:8px}
+code{font-family:var(--mono);background:var(--bg);padding:1px 6px;border-radius:6px;font-size:.88em}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row button{padding:9px 14px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;cursor:pointer}
+.row button.pri{background:var(--accent);color:var(--accent-fg);border-color:var(--accent);font-weight:700}
+.row button.done{background:var(--ok);border-color:var(--ok);color:#fff}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+details{margin-top:8px;min-width:0}summary{cursor:pointer;color:var(--mut)}
+pre{white-space:pre-wrap;word-break:break-word;background:var(--bg);border-radius:8px;padding:10px;font:inherit;font-size:.92rem;margin:8px 0 0}
+pre[dir="ltr"]{font-family:var(--mono);font-size:.82rem;text-align:left}
+</style>
+<div id="wrap" dir="rtl" lang="ar">
+<h1>أصوات زنزانة الفخاخ</h1>
+<div class="note">انسخ، الصق في Google AI Studio، نزّل الملف باسم الدفعة، وارفع كل الملفات للمحادثة. البطاقات ذات الشريط البرتقالي (أول 13 دفعة) هي الأهم، ابدأ فيها. الصوت المكتوب فوق كل دفعة مقترح، غيّره لو ما عجبك.</div>
+<section id="v">
+<div class="note"><b>AI Studio ← Generate Media ← Speech generation:</b> اختر Single-speaker، الصق Style في Style instructions، اختر الـ Voice، الصق Text، اضغط Run، ونزّل الملف باسم الدفعة (<code>B01_lb.wav</code> مثلاً — الاسم يبدأ برقم الدفعة).</div>
+<div class="card p1">
+<h3><span class="n">B03</span> فلسطيني: شماتة <small>1 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Algieba</b> · احفظ باسم <code>B03_ps.wav</code></div>
+<div class="row"><button data-c="s-B03_ps">انسخ Style</button><button data-c="t-B03_ps" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-B03_ps" dir="ltr">You are a voice actor for a funny cartoon video game. Accent: Palestinian Levantine Arabic. Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هاهاها / ههههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-B03_ps">ههههه! ابتسم يا حبيبي، الكاميرا عليك وإنت ميت!</pre></details></div>
+<div class="card p1">
+<h3><span class="n">H01</span> بطل: فلافل المسكين (فلسطيني) <small>15 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Puck</b> · احفظ باسم <code>H01_falafel.wav</code></div>
+<div class="row"><button data-c="s-H01_falafel">انسخ Style</button><button data-c="t-H01_falafel" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-H01_falafel" dir="ltr">You are the voice of a tiny sad falafel ball wearing a miner&#x27;s helmet, whiny, pitiful, always about to cry but funny, a character in a funny cartoon video game. Accent: Palestinian Levantine Arabic. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-H01_falafel">أهلا يا فلافل... يا مسكين!
+
+أنا فلافل! ما بدي أموت!
+
+يلا يا فلافل، عالمصيبة!
+
+متّ يا عمي! متّ!
+
+آخ يا ظهري، يا فلافل!
+
+ليش أنا؟ ليش دايماً أنا؟
+
+قلتلكم الأرض مش آمنة!
+
+هربان يا فلافل! هربان!
+
+الحقوني! بدي أهرب!
+
+ما بدي أنقلي! لأ لأ لأ!
+
+عدّيتها يا عمي! إيه والله!
+
+نجوت! أنا فلافل الخارق!
+
+يا ساتر! عدّيت!
+
+إيش هالضحكة؟!
+
+يا ويلي شو هاد؟</pre></details></div>
+<div class="card p1">
+<h3><span class="n">H02</span> بطل: العم بالبيجاما (لبناني) <small>15 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Algenib</b> · احفظ باسم <code>H02_uncle.wav</code></div>
+<div class="row"><button data-c="s-H02_uncle">انسخ Style</button><button data-c="t-H02_uncle" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-H02_uncle" dir="ltr">You are the voice of a grumpy sleepy middle-aged uncle in pyjamas, gravelly voice, always complaining, secretly lovable, a character in a funny cartoon video game. Accent: Lebanese Arabic (Beirut). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-H02_uncle">أهلين يا عمّو، نعسان أنا!
+
+جيت بالبيجاما، شو بدك؟
+
+يلا يا عمو، بدي نام بعدين!
+
+متّ يا عمي! حرام عليكم!
+
+آخ ضهري! ضهري يا ولاد!
+
+مين حطّ هالفخ يا ناس؟
+
+ولا مرة بنام بسلام!
+
+هربان يا عمو! هربان!
+
+يلا يا بيجاما، اركض!
+
+ركبي يا ركبي، لا تخونّي!
+
+عدّيت، وبدي نام هلأ!
+
+خلص؟ تصبحوا على خير!
+
+بيجاماتي نجت! الحمد لله!
+
+هاي شو؟ مين هونيك؟
+
+لا لا لا لا لا!</pre></details></div>
+<div class="card p1">
+<h3><span class="n">H03</span> بطل: الفرخة بالنظارة (مصري) <small>15 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Leda</b> · احفظ باسم <code>H03_chicken.wav</code></div>
+<div class="row"><button data-c="s-H03_chicken">انسخ Style</button><button data-c="t-H03_chicken" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-H03_chicken" dir="ltr">You are the voice of a fussy bookish hen with big glasses, dramatic diva, clucks when excited, a character in a funny cartoon video game. Accent: Egyptian Arabic (Cairo). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-H03_chicken">أهلاً يا فرخة! قوقوقو!
+
+فرخة مثقفة بنضّارة!
+
+يلا يا فرخة، على الفخاخ!
+
+قوقو! مت يا ناس!
+
+ياااه! نضّارتي!
+
+أنا فرخة محترمة يا عالم!
+
+كان لازم أفضل في القن!
+
+اجري يا فرخة، اجري!
+
+قوق قوق قوق! الحقوني!
+
+هربانة يا ناس، هربانة!
+
+عدّيت يا ولاد! قوقوقو!
+
+الفرخة نجحت! اتفرجوا!
+
+طلعت أشطر من الديك!
+
+إيه ده؟ ده فخ ولا إيه؟
+
+يا لهوي! بصّوا!</pre></details></div>
+<div class="card p1">
+<h3><span class="n">H04</span> بطل: الجدّة الغاضبة (فلسطيني) <small>15 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Gacrux</b> · احفظ باسم <code>H04_grandma.wav</code></div>
+<div class="row"><button data-c="s-H04_grandma">انسخ Style</button><button data-c="t-H04_grandma" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-H04_grandma" dir="ltr">You are the voice of an angry old grandmother, scolding, dramatic, shouting at the traps like they are naughty grandchildren, a character in a funny cartoon video game. Accent: Palestinian Levantine Arabic. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-H04_grandma">أهلين! أنا تيتا، وغاضبة!
+
+ولا كلمة! تيتا هون!
+
+يلا يا تيتا، فشّي خلقك!
+
+الله يسامحكم يا ولاد!
+
+آخ يا ركبتي! يا ركبتي!
+
+بأيامنا ما كان في فخاخ!
+
+متّ يا ستّي! متّ!
+
+اركضي يا تيتا! لا تقفي!
+
+تفو عالفخاخ! ركض ركض!
+
+ما بلحقوني! أنا أسرع منهم!
+
+عدّيت يا ولاد! شفتوا؟
+
+هيك الستّات بتنجح!
+
+حطّولي عالغدا!
+
+ولاا! شو هاد؟
+
+بس! لا تعمل هيك!</pre></details></div>
+<div class="card p1">
+<h3><span class="n">H05</span> بطل: القط الكسلان (لبناني) <small>15 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Umbriel</b> · احفظ باسم <code>H05_cat.wav</code></div>
+<div class="row"><button data-c="s-H05_cat">انسخ Style</button><button data-c="t-H05_cat" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-H05_cat" dir="ltr">You are the voice of a very lazy cat, slow sleepy drawn-out voice, yawns, meows now and then, easy-going, a character in a funny cartoon video game. Accent: Lebanese Arabic (Beirut). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-H05_cat">مياو... أهلا يا قطة
+
+ما بدي أتحرك... بس طيب
+
+يلا يا قطة، بعد خمس دقايق
+
+مياااو! متّ... أوف
+
+فدّا لمشوار! بدي نام
+
+باقي لي ثمان أرواح، عادي
+
+أوف... مين نيّم الأرض؟
+
+هربان يا قطة! هربان!
+
+ما بحب الركض... بس ركض!
+
+مياو مياو! بسرعة!
+
+خلصت؟ خلص... بدي نام
+
+عدّيت... هلأ قيلولة
+
+مياو! عبرت وما تعبت
+
+هاي شو؟ مياو؟
+
+ما شفت شي... أنا نايم</pre></details></div>
+<div class="card p1">
+<h3><span class="n">H06</span> بطل: الحمار الكوول (مصري) <small>15 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Iapetus</b> · احفظ باسم <code>H06_donkey.wav</code></div>
+<div class="row"><button data-c="s-H06_donkey">انسخ Style</button><button data-c="t-H06_donkey" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-H06_donkey" dir="ltr">You are the voice of a super cool donkey wearing sunglasses, laid-back, chill, says hee-haw when excited, a character in a funny cartoon video game. Accent: Egyptian Arabic (Cairo). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-H06_donkey">أهلاً يا حمار... كوول!
+
+هي هاو! أنا الحمار الكوول!
+
+يلا يا عم، رايق أنا
+
+هي هااو! متّ يا ريس!
+
+ده مش كوول خالص!
+
+نضّارتي! حد شاف نضّارتي؟
+
+فخ؟ على الحمار الكوول؟!
+
+اجري يا حمار! مش وقت فرجة!
+
+يا ابني بسرعة! هيهو هيهو!
+
+كوول بس هربان!
+
+قلتلكم كوول! هيهو!
+
+عدّيتها ببرود يا عم!
+
+الحمار عدّاها! هي هاو!
+
+إيه ده يا ابني؟
+
+أنا مش خايف... شوية</pre></details></div>
+<div class="card p1">
+<h3><span class="n">K01</span> الزعيم: الملك فخ (لبناني، صوت عميق) <small>23 سطر · أولوية 1</small></h3>
+<div class="meta">Voice: <b>Orus</b> · احفظ باسم <code>K01_boss.wav</code></div>
+<div class="row"><button data-c="s-K01_boss">انسخ Style</button><button data-c="t-K01_boss" class="pri">انسخ Text</button></div>
+<details><summary>معاينة النص</summary>
+<pre id="s-K01_boss" dir="ltr">You are the voice of the Trap King, the big arrogant boss of a funny cartoon dungeon game: a deep booming theatrical villain voice, Lebanese Arabic accent (Beirut), pompous and gloating, never truly scary: the mockery is cartoonish. When the king is hurt or defeated, perform comic pain and outrage. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.</pre>
+<pre id="t-K01_boss">أهلاً بالضحية الجديدة!
+
+أنا الملك فخ! اركع!
+
+غرفتي، قوانيني، موتك!
+
+آخ! مين علّمك تدعس؟!
+
+زر؟! مين حطّ هالزر؟!
+
+ما هيك الاتفاق يا ولد!
+
+ظهري! دبّرت له ظهري!
+
+حسابك معي بعدين!
+
+هههه! بطلنا طار!
+
+قلتلك أنا الملك!
+
+ارجع جرّب، بضحك أكتر
+
+الفخ الملكي ما بيغلط
+
+سجّلت نقطة، وإنت صفر
+
+هلّق بلّش الجد!
+
+كنت عم أمزح معك!
+
+مستحيل! أنا الملك!
+
+كيف؟! بزر؟! بزر!!
+
+بتندم... بعد تسع مراحل
+
+روح، بس إخواتي أصعب!
+
+المرحلة الجاية بتبكّيك!
+
+لا تتأخر... مو حلو
+
+عم أنتظر... هههه
+
+يلا ازعل شوي</pre></details></div>
+</section>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+function selectText(el){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+document.querySelectorAll('[data-c]').forEach(b=>b.onclick=async()=>{
+ const el=document.getElementById(b.dataset.c),old=b.textContent;let ok=false;
+ try{await navigator.clipboard.writeText(el.textContent);ok=true}catch(e){}
+ if(!ok){const d=el.closest('details');if(d)d.open=true;selectText(el);try{ok=document.execCommand('copy')}catch(e){}}
+ b.textContent=ok?'تم النسخ':'حدّد النص وانسخه يدوياً';b.classList.add('done');setTimeout(()=>{b.textContent=old;b.classList.remove('done')},1600)});
+</script>
