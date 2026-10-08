@@ -486,6 +486,7 @@ seq += [('any', 'tlaugh', t, {}) for t in TLAUGHS]
 seq += [('any', 'laugh', t, {}) for t in LAUGHS]
 seq += [('any', 'scream', t, {}) for t in SCREAMS]
 ACC = {'lb': 'Lebanese Arabic (Beirut)', 'eg': 'Egyptian Arabic (Cairo)', 'ps': 'Palestinian Levantine Arabic'}
+ACC_JO = 'Jordanian Arabic (urban Amman), natural Levantine pronunciation'
 def STYLE_T(d):
     return ("You are a voice actor for a funny cartoon video game. Accent: " + ACC[d] + ". "
      "Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. "
@@ -547,39 +548,39 @@ HEROES_V = {
  'falafel': dict(name='فلافل المسكين', d='ps', voice='Puck', who="a tiny sad falafel ball wearing a miner's helmet, whiny, pitiful, always about to cry but funny",
    L={'pick': ['أهلا يا فلافل... يا مسكين!', 'أنا فلافل! ما بدي أموت!', 'يلا يا فلافل، عالمصيبة!'],
       'die':  ['متّ يا عمي! متّ!', 'آخ يا ظهري، يا فلافل!', 'ليش أنا؟ ليش دايماً أنا؟', 'قلتلكم الأرض مش آمنة!'],
-      'run':  ['هربان يا فلافل! هربان!', 'الحقوني! بدي أهرب!', 'ما بدي أنقلي! لأ لأ لأ!'],
-      'win':  ['عدّيتها يا عمي! إيه والله!', 'نجوت! أنا فلافل الخارق!', 'يا ساتر! عدّيت!'],
+      'run':  ['هربان يا فلافل! هربان!', 'الحقوني! بدي أهرب!', 'ما بدي أنقتل! لأ لأ لأ!'],
+      'win':  ['عدّيتها يا زلمة! إي والله!', 'نجوت! أنا فلافل الخارق!', 'يا ساتر! عدّيت!'],
       'warn': ['إيش هالضحكة؟!', 'يا ويلي شو هاد؟']}),
  'uncle': dict(name='العم بالبيجاما', d='lb', voice='Algenib', who="a grumpy sleepy middle-aged uncle in pyjamas, gravelly voice, always complaining, secretly lovable",
-   L={'pick': ['أهلين يا عمّو، نعسان أنا!', 'جيت بالبيجاما، شو بدك؟', 'يلا يا عمو، بدي نام بعدين!'],
-      'die':  ['متّ يا عمي! حرام عليكم!', 'آخ ضهري! ضهري يا ولاد!', 'مين حطّ هالفخ يا ناس؟', 'ولا مرة بنام بسلام!'],
+   L={'pick': ['أهلين يا عمّو، أنا نعسان!', 'جيت بالبيجاما، شو بدك؟', 'يلا يا عمو، بدي أنام بعدين!'],
+      'die':  ['متّ يا عمي! حرام عليكم!', 'آخ ظهري! ظهري يا ولاد!', 'مين حطّ هالفخ يا ناس؟', 'ولا مرة بنام بسلام!'],
       'run':  ['هربان يا عمو! هربان!', 'يلا يا بيجاما، اركض!', 'ركبي يا ركبي، لا تخونّي!'],
-      'win':  ['عدّيت، وبدي نام هلأ!', 'خلص؟ تصبحوا على خير!', 'بيجاماتي نجت! الحمد لله!'],
-      'warn': ['هاي شو؟ مين هونيك؟', 'لا لا لا لا لا!']}),
+      'win':  ['عدّيت، وبدي أنام هسا!', 'خلص؟ تصبحوا على خير!', 'بيجاماتي نجت! الحمد لله!'],
+      'warn': ['شو هاد؟ مين هناك؟', 'لا لا لا لا لا!']}),
  'chicken': dict(name='الفرخة بالنظارة', d='eg', voice='Leda', who="a fussy bookish hen with big glasses, dramatic diva, clucks when excited",
-   L={'pick': ['أهلاً يا فرخة! قوقوقو!', 'فرخة مثقفة بنضّارة!', 'يلا يا فرخة، على الفخاخ!'],
-      'die':  ['قوقو! مت يا ناس!', 'ياااه! نضّارتي!', 'أنا فرخة محترمة يا عالم!', 'كان لازم أفضل في القن!'],
-      'run':  ['اجري يا فرخة، اجري!', 'قوق قوق قوق! الحقوني!', 'هربانة يا ناس، هربانة!'],
-      'win':  ['عدّيت يا ولاد! قوقوقو!', 'الفرخة نجحت! اتفرجوا!', 'طلعت أشطر من الديك!'],
-      'warn': ['إيه ده؟ ده فخ ولا إيه؟', 'يا لهوي! بصّوا!']}),
+   L={'pick': ['أهلاً يا فرخة! قوقوقو!', 'فرخة مثقفة وبنظّارة!', 'يلا يا فرخة، على الفخاخ!'],
+      'die':  ['قوقو! متّ يا ناس!', 'ياااه! نظّارتي!', 'أنا فرخة محترمة يا عالم!', 'كان لازم أضل بالقن!'],
+      'run':  ['اركضي يا فرخة، اركضي!', 'قوق قوق قوق! الحقوني!', 'هربانة يا ناس، هربانة!'],
+      'win':  ['عدّيت يا ولاد! قوقوقو!', 'الفرخة نجحت! شوفوا!', 'طلعت أشطر من الديك!'],
+      'warn': ['شو هاد؟ هاد فخ ولا شو؟', 'يا ويلي! شوفوا!']}),
  'grandma': dict(name='الجدّة الغاضبة', d='ps', voice='Gacrux', who="an angry old grandmother, scolding, dramatic, shouting at the traps like they are naughty grandchildren",
    L={'pick': ['أهلين! أنا تيتا، وغاضبة!', 'ولا كلمة! تيتا هون!', 'يلا يا تيتا، فشّي خلقك!'],
       'die':  ['الله يسامحكم يا ولاد!', 'آخ يا ركبتي! يا ركبتي!', 'بأيامنا ما كان في فخاخ!', 'متّ يا ستّي! متّ!'],
       'run':  ['اركضي يا تيتا! لا تقفي!', 'تفو عالفخاخ! ركض ركض!', 'ما بلحقوني! أنا أسرع منهم!'],
       'win':  ['عدّيت يا ولاد! شفتوا؟', 'هيك الستّات بتنجح!', 'حطّولي عالغدا!'],
-      'warn': ['ولاا! شو هاد؟', 'بس! لا تعمل هيك!']}),
+      'warn': ['ولك! شو هاد؟', 'بس! لا تعمل هيك!']}),
  'cat': dict(name='القط الكسلان', d='lb', voice='Umbriel', who="a very lazy cat, slow sleepy drawn-out voice, yawns, meows now and then, easy-going",
    L={'pick': ['مياو... أهلا يا قطة', 'ما بدي أتحرك... بس طيب', 'يلا يا قطة، بعد خمس دقايق'],
-      'die':  ['مياااو! متّ... أوف', 'فدّا لمشوار! بدي نام', 'باقي لي ثمان أرواح، عادي', 'أوف... مين نيّم الأرض؟'],
-      'run':  ['هربان يا قطة! هربان!', 'ما بحب الركض... بس ركض!', 'مياو مياو! بسرعة!'],
-      'win':  ['خلصت؟ خلص... بدي نام', 'عدّيت... هلأ قيلولة', 'مياو! عبرت وما تعبت'],
-      'warn': ['هاي شو؟ مياو؟', 'ما شفت شي... أنا نايم']}),
+      'die':  ['مياااو! متّ... أوف', 'مشوار تعبان! بدي أنام', 'باقي لي ثمان أرواح، عادي', 'أوف... مين نيّم الأرض؟'],
+      'run':  ['هربان يا قطة! هربان!', 'ما بحب الركض... بس اركض!', 'مياو مياو! بسرعة!'],
+      'win':  ['خلصت؟ خلص... بدي أنام', 'عدّيت... هسا قيلولة', 'مياو! عبرت وما تعبت'],
+      'warn': ['شو هاد؟ مياو؟', 'ما شفت شي... أنا نايم']}),
  'donkey': dict(name='الحمار الكوول', d='eg', voice='Iapetus', who="a super cool donkey wearing sunglasses, laid-back, chill, says hee-haw when excited",
-   L={'pick': ['أهلاً يا حمار... كوول!', 'هي هاو! أنا الحمار الكوول!', 'يلا يا عم، رايق أنا'],
-      'die':  ['هي هااو! متّ يا ريس!', 'ده مش كوول خالص!', 'نضّارتي! حد شاف نضّارتي؟', 'فخ؟ على الحمار الكوول؟!'],
-      'run':  ['اجري يا حمار! مش وقت فرجة!', 'يا ابني بسرعة! هيهو هيهو!', 'كوول بس هربان!'],
-      'win':  ['قلتلكم كوول! هيهو!', 'عدّيتها ببرود يا عم!', 'الحمار عدّاها! هي هاو!'],
-      'warn': ['إيه ده يا ابني؟', 'أنا مش خايف... شوية']}),
+   L={'pick': ['أهلاً يا حمار... كوول!', 'هي هاو! أنا الحمار الكوول!', 'يلا يا زلمة، رايق أنا'],
+      'die':  ['هي هااو! متّ يا زلمة!', 'هاد مش كوول أبداً!', 'نظّارتي! حدا شاف نظّارتي؟', 'فخ؟ على الحمار الكوول؟!'],
+      'run':  ['اركض يا حمار! مش وقت فرجة!', 'يا زلمة بسرعة! هيهو هيهو!', 'كوول بس هربان!'],
+      'win':  ['قلتلكم كوول! هيهو!', 'عدّيتها ببرود يا زلمة!', 'الحمار عدّاها! هي هاو!'],
+      'warn': ['شو هاد يا زلمة؟', 'أنا مش خايف... شوي']}),
 }
 STYLE_H = ("You are the voice of {who}, a character in a funny cartoon video game. Accent: {acc}. "
  "Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, "
@@ -587,8 +588,8 @@ STYLE_H = ("You are the voice of {who}, a character in a funny cartoon video gam
  "Leave a clear silence of about 3 seconds after each line before starting the next one.")
 for _i, (_h, _v) in enumerate(HEROES_V.items(), 1):
     _bid = f'H{_i:02d}_{_h}'
-    batches[_bid] = dict(id=_bid, label=f"بطل: {_v['name']} ({DIA[_v['d']]['ar']})", voice=_v['voice'], prio=1,
-                         style=STYLE_H.format(who=_v['who'], acc=ACC[_v['d']]), items=[])
+    batches[_bid] = dict(id=_bid, label=f"بطل: {_v['name']} (أردني)", voice=_v['voice'], prio=1,
+                         style=STYLE_H.format(who=_v['who'], acc=ACC_JO), items=[])
     for _ev in HERO_EV:
         for _t in _v['L'][_ev]:
             assert len(_t) <= 28, (_h, _ev, _t, len(_t))
@@ -598,18 +599,18 @@ for _i, (_h, _v) in enumerate(HEROES_V.items(), 1):
 BOSS_EV = ['intro', 'hit', 'die', 'rage', 'defeat', 'win', 'idle']
 BOSS_L = {
  'intro':  ['أهلاً بالضحية الجديدة!', 'أنا الملك فخ! اركع!', 'غرفتي، قوانيني، موتك!'],
- 'hit':    ['آخ! مين علّمك تدعس؟!', 'زر؟! مين حطّ هالزر؟!', 'ما هيك الاتفاق يا ولد!', 'ظهري! دبّرت له ظهري!', 'حسابك معي بعدين!'],
+ 'hit':    ['آخ! مين علّمك تدعس؟!', 'زر؟! مين حطّ هالزر؟!', 'ما هيك الاتفاق يا ولد!', 'ظهري! كسّرت لي ظهري!', 'حسابك معي بعدين!'],
  'die':    ['هههه! بطلنا طار!', 'قلتلك أنا الملك!', 'ارجع جرّب، بضحك أكتر', 'الفخ الملكي ما بيغلط', 'سجّلت نقطة، وإنت صفر'],
- 'rage':   ['هلّق بلّش الجد!', 'كنت عم أمزح معك!'],
+ 'rage':   ['هسا بلّش الجد!', 'كنت بمزح معك!'],
  'defeat': ['مستحيل! أنا الملك!', 'كيف؟! بزر؟! بزر!!', 'بتندم... بعد تسع مراحل'],
- 'win':    ['روح، بس إخواتي أصعب!', 'المرحلة الجاية بتبكّيك!'],
- 'idle':   ['لا تتأخر... مو حلو', 'عم أنتظر... هههه', 'يلا ازعل شوي'],
+ 'win':    ['روح، بس إخوتي أصعب!', 'المرحلة الجاية بتبكّيك!'],
+ 'idle':   ['لا تتأخر... مش حلو', 'أنا بستنى... هههه', 'يلا ازعل شوي'],
 }
 STYLE_B = ("You are the voice of the Trap King, the big arrogant boss of a funny cartoon dungeon game: a deep booming theatrical villain voice, "
- "Lebanese Arabic accent (Beirut), pompous and gloating, never truly scary: the mockery is cartoonish. When the king is hurt or defeated, "
+ "Jordanian Arabic accent (urban Amman), pompous and gloating, never truly scary: the mockery is cartoonish. When the king is hurt or defeated, "
  "perform comic pain and outrage. Read ONLY the text lines, in order, without any numbering or labels. "
  "Leave a clear silence of about 3 seconds after each line before starting the next one.")
-batches['K01_boss'] = dict(id='K01_boss', label='الزعيم: الملك فخ (لبناني، صوت عميق)', voice='Orus', prio=1, style=STYLE_B, items=[])
+batches['K01_boss'] = dict(id='K01_boss', label='الزعيم: الملك فخ (أردني، صوت عميق)', voice='Orus', prio=1, style=STYLE_B, items=[])
 for _ev in BOSS_EV:
     for _t in BOSS_L[_ev]:
         assert len(_t) <= 28, (_ev, _t, len(_t))
@@ -619,6 +620,9 @@ for _ev in BOSS_EV:
 for _b in list(batches):
     batches[_b]['items'] = [i for i in batches[_b]['items'] if not os.path.exists(f"{ROOT}/assets/audio/{i['key']}.mp3")]
     if not batches[_b]['items']: del batches[_b]
+# السطر الفلسطيني الوحيد الباقي ينسجل بالأردني مثل باقي الناقص
+if 'B03_ps' in batches:
+    batches['B03_ps']['style'] = batches['B03_ps']['style'].replace(ACC['ps'], ACC_JO); batches['B03_ps']['label'] = 'أردني: شماتة (سطر واحد)'
 
 # ------------------------------------------------------------------ الأصوات الموجودة أصلاً (10 مقاطع مولّدة) - تبقى بمفاتيحها القديمة
 OLD = {

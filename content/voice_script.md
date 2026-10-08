@@ -17,14 +17,14 @@
 
 
 ---
-## B03 — فلسطيني: شماتة   (أولوية 1، 1 سطر)
+## B03 — أردني: شماتة (سطر واحد)   (أولوية 1، 1 سطر)
 
 - **Voice:** `Algieba`
 - **ملف الحفظ:** `B03_ps.wav`
 
 **Style instructions:**
 ```
-You are a voice actor for a funny cartoon video game. Accent: Palestinian Levantine Arabic. Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هاهاها / ههههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are a voice actor for a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هاهاها / ههههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
@@ -34,14 +34,14 @@ You are a voice actor for a funny cartoon video game. Accent: Palestinian Levant
 
 
 ---
-## H01 — بطل: فلافل المسكين (فلسطيني)   (أولوية 1، 15 سطر)
+## H01 — بطل: فلافل المسكين (أردني)   (أولوية 1، 15 سطر)
 
 - **Voice:** `Puck`
 - **ملف الحفظ:** `H01_falafel.wav`
 
 **Style instructions:**
 ```
-You are the voice of a tiny sad falafel ball wearing a miner's helmet, whiny, pitiful, always about to cry but funny, a character in a funny cartoon video game. Accent: Palestinian Levantine Arabic. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are the voice of a tiny sad falafel ball wearing a miner's helmet, whiny, pitiful, always about to cry but funny, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
@@ -64,9 +64,9 @@ You are the voice of a tiny sad falafel ball wearing a miner's helmet, whiny, pi
 
 الحقوني! بدي أهرب!
 
-ما بدي أنقلي! لأ لأ لأ!
+ما بدي أنقتل! لأ لأ لأ!
 
-عدّيتها يا عمي! إيه والله!
+عدّيتها يا زلمة! إي والله!
 
 نجوت! أنا فلافل الخارق!
 
@@ -79,27 +79,27 @@ You are the voice of a tiny sad falafel ball wearing a miner's helmet, whiny, pi
 
 
 ---
-## H02 — بطل: العم بالبيجاما (لبناني)   (أولوية 1، 15 سطر)
+## H02 — بطل: العم بالبيجاما (أردني)   (أولوية 1، 15 سطر)
 
 - **Voice:** `Algenib`
 - **ملف الحفظ:** `H02_uncle.wav`
 
 **Style instructions:**
 ```
-You are the voice of a grumpy sleepy middle-aged uncle in pyjamas, gravelly voice, always complaining, secretly lovable, a character in a funny cartoon video game. Accent: Lebanese Arabic (Beirut). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are the voice of a grumpy sleepy middle-aged uncle in pyjamas, gravelly voice, always complaining, secretly lovable, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
 ```
-أهلين يا عمّو، نعسان أنا!
+أهلين يا عمّو، أنا نعسان!
 
 جيت بالبيجاما، شو بدك؟
 
-يلا يا عمو، بدي نام بعدين!
+يلا يا عمو، بدي أنام بعدين!
 
 متّ يا عمي! حرام عليكم!
 
-آخ ضهري! ضهري يا ولاد!
+آخ ظهري! ظهري يا ولاد!
 
 مين حطّ هالفخ يا ناس؟
 
@@ -111,46 +111,46 @@ You are the voice of a grumpy sleepy middle-aged uncle in pyjamas, gravelly voic
 
 ركبي يا ركبي، لا تخونّي!
 
-عدّيت، وبدي نام هلأ!
+عدّيت، وبدي أنام هسا!
 
 خلص؟ تصبحوا على خير!
 
 بيجاماتي نجت! الحمد لله!
 
-هاي شو؟ مين هونيك؟
+شو هاد؟ مين هناك؟
 
 لا لا لا لا لا!
 ```
 
 
 ---
-## H03 — بطل: الفرخة بالنظارة (مصري)   (أولوية 1، 15 سطر)
+## H03 — بطل: الفرخة بالنظارة (أردني)   (أولوية 1، 15 سطر)
 
 - **Voice:** `Leda`
 - **ملف الحفظ:** `H03_chicken.wav`
 
 **Style instructions:**
 ```
-You are the voice of a fussy bookish hen with big glasses, dramatic diva, clucks when excited, a character in a funny cartoon video game. Accent: Egyptian Arabic (Cairo). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are the voice of a fussy bookish hen with big glasses, dramatic diva, clucks when excited, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
 ```
 أهلاً يا فرخة! قوقوقو!
 
-فرخة مثقفة بنضّارة!
+فرخة مثقفة وبنظّارة!
 
 يلا يا فرخة، على الفخاخ!
 
-قوقو! مت يا ناس!
+قوقو! متّ يا ناس!
 
-ياااه! نضّارتي!
+ياااه! نظّارتي!
 
 أنا فرخة محترمة يا عالم!
 
-كان لازم أفضل في القن!
+كان لازم أضل بالقن!
 
-اجري يا فرخة، اجري!
+اركضي يا فرخة، اركضي!
 
 قوق قوق قوق! الحقوني!
 
@@ -158,25 +158,25 @@ You are the voice of a fussy bookish hen with big glasses, dramatic diva, clucks
 
 عدّيت يا ولاد! قوقوقو!
 
-الفرخة نجحت! اتفرجوا!
+الفرخة نجحت! شوفوا!
 
 طلعت أشطر من الديك!
 
-إيه ده؟ ده فخ ولا إيه؟
+شو هاد؟ هاد فخ ولا شو؟
 
-يا لهوي! بصّوا!
+يا ويلي! شوفوا!
 ```
 
 
 ---
-## H04 — بطل: الجدّة الغاضبة (فلسطيني)   (أولوية 1، 15 سطر)
+## H04 — بطل: الجدّة الغاضبة (أردني)   (أولوية 1، 15 سطر)
 
 - **Voice:** `Gacrux`
 - **ملف الحفظ:** `H04_grandma.wav`
 
 **Style instructions:**
 ```
-You are the voice of an angry old grandmother, scolding, dramatic, shouting at the traps like they are naughty grandchildren, a character in a funny cartoon video game. Accent: Palestinian Levantine Arabic. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are the voice of an angry old grandmother, scolding, dramatic, shouting at the traps like they are naughty grandchildren, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
@@ -207,21 +207,21 @@ You are the voice of an angry old grandmother, scolding, dramatic, shouting at t
 
 حطّولي عالغدا!
 
-ولاا! شو هاد؟
+ولك! شو هاد؟
 
 بس! لا تعمل هيك!
 ```
 
 
 ---
-## H05 — بطل: القط الكسلان (لبناني)   (أولوية 1، 15 سطر)
+## H05 — بطل: القط الكسلان (أردني)   (أولوية 1، 15 سطر)
 
 - **Voice:** `Umbriel`
 - **ملف الحفظ:** `H05_cat.wav`
 
 **Style instructions:**
 ```
-You are the voice of a very lazy cat, slow sleepy drawn-out voice, yawns, meows now and then, easy-going, a character in a funny cartoon video game. Accent: Lebanese Arabic (Beirut). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are the voice of a very lazy cat, slow sleepy drawn-out voice, yawns, meows now and then, easy-going, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
@@ -234,7 +234,7 @@ You are the voice of a very lazy cat, slow sleepy drawn-out voice, yawns, meows 
 
 مياااو! متّ... أوف
 
-فدّا لمشوار! بدي نام
+مشوار تعبان! بدي أنام
 
 باقي لي ثمان أرواح، عادي
 
@@ -242,31 +242,31 @@ You are the voice of a very lazy cat, slow sleepy drawn-out voice, yawns, meows 
 
 هربان يا قطة! هربان!
 
-ما بحب الركض... بس ركض!
+ما بحب الركض... بس اركض!
 
 مياو مياو! بسرعة!
 
-خلصت؟ خلص... بدي نام
+خلصت؟ خلص... بدي أنام
 
-عدّيت... هلأ قيلولة
+عدّيت... هسا قيلولة
 
 مياو! عبرت وما تعبت
 
-هاي شو؟ مياو؟
+شو هاد؟ مياو؟
 
 ما شفت شي... أنا نايم
 ```
 
 
 ---
-## H06 — بطل: الحمار الكوول (مصري)   (أولوية 1، 15 سطر)
+## H06 — بطل: الحمار الكوول (أردني)   (أولوية 1، 15 سطر)
 
 - **Voice:** `Iapetus`
 - **ملف الحفظ:** `H06_donkey.wav`
 
 **Style instructions:**
 ```
-You are the voice of a super cool donkey wearing sunglasses, laid-back, chill, says hee-haw when excited, a character in a funny cartoon video game. Accent: Egyptian Arabic (Cairo). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are the voice of a super cool donkey wearing sunglasses, laid-back, chill, says hee-haw when excited, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
@@ -275,43 +275,43 @@ You are the voice of a super cool donkey wearing sunglasses, laid-back, chill, s
 
 هي هاو! أنا الحمار الكوول!
 
-يلا يا عم، رايق أنا
+يلا يا زلمة، رايق أنا
 
-هي هااو! متّ يا ريس!
+هي هااو! متّ يا زلمة!
 
-ده مش كوول خالص!
+هاد مش كوول أبداً!
 
-نضّارتي! حد شاف نضّارتي؟
+نظّارتي! حدا شاف نظّارتي؟
 
 فخ؟ على الحمار الكوول؟!
 
-اجري يا حمار! مش وقت فرجة!
+اركض يا حمار! مش وقت فرجة!
 
-يا ابني بسرعة! هيهو هيهو!
+يا زلمة بسرعة! هيهو هيهو!
 
 كوول بس هربان!
 
 قلتلكم كوول! هيهو!
 
-عدّيتها ببرود يا عم!
+عدّيتها ببرود يا زلمة!
 
 الحمار عدّاها! هي هاو!
 
-إيه ده يا ابني؟
+شو هاد يا زلمة؟
 
-أنا مش خايف... شوية
+أنا مش خايف... شوي
 ```
 
 
 ---
-## K01 — الزعيم: الملك فخ (لبناني، صوت عميق)   (أولوية 1، 23 سطر)
+## K01 — الزعيم: الملك فخ (أردني، صوت عميق)   (أولوية 1، 23 سطر)
 
 - **Voice:** `Orus`
 - **ملف الحفظ:** `K01_boss.wav`
 
 **Style instructions:**
 ```
-You are the voice of the Trap King, the big arrogant boss of a funny cartoon dungeon game: a deep booming theatrical villain voice, Lebanese Arabic accent (Beirut), pompous and gloating, never truly scary: the mockery is cartoonish. When the king is hurt or defeated, perform comic pain and outrage. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are the voice of the Trap King, the big arrogant boss of a funny cartoon dungeon game: a deep booming theatrical villain voice, Jordanian Arabic accent (urban Amman), pompous and gloating, never truly scary: the mockery is cartoonish. When the king is hurt or defeated, perform comic pain and outrage. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
@@ -328,7 +328,7 @@ You are the voice of the Trap King, the big arrogant boss of a funny cartoon dun
 
 ما هيك الاتفاق يا ولد!
 
-ظهري! دبّرت له ظهري!
+ظهري! كسّرت لي ظهري!
 
 حسابك معي بعدين!
 
@@ -342,9 +342,9 @@ You are the voice of the Trap King, the big arrogant boss of a funny cartoon dun
 
 سجّلت نقطة، وإنت صفر
 
-هلّق بلّش الجد!
+هسا بلّش الجد!
 
-كنت عم أمزح معك!
+كنت بمزح معك!
 
 مستحيل! أنا الملك!
 
@@ -352,13 +352,13 @@ You are the voice of the Trap King, the big arrogant boss of a funny cartoon dun
 
 بتندم... بعد تسع مراحل
 
-روح، بس إخواتي أصعب!
+روح، بس إخوتي أصعب!
 
 المرحلة الجاية بتبكّيك!
 
-لا تتأخر... مو حلو
+لا تتأخر... مش حلو
 
-عم أنتظر... هههه
+أنا بستنى... هههه
 
 يلا ازعل شوي
 ```

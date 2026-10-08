@@ -1,9 +1,9 @@
 [
  {
   "id": "B03_ps",
-  "label": "فلسطيني: شماتة",
+  "label": "أردني: شماتة (سطر واحد)",
   "voice": "Algieba",
-  "style": "You are a voice actor for a funny cartoon video game. Accent: Palestinian Levantine Arabic. Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هاهاها / ههههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are a voice actor for a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هاهاها / ههههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "prio": 1,
   "items": [
    {
@@ -16,10 +16,10 @@
  },
  {
   "id": "H01_falafel",
-  "label": "بطل: فلافل المسكين (فلسطيني)",
+  "label": "بطل: فلافل المسكين (أردني)",
   "voice": "Puck",
   "prio": 1,
-  "style": "You are the voice of a tiny sad falafel ball wearing a miner's helmet, whiny, pitiful, always about to cry but funny, a character in a funny cartoon video game. Accent: Palestinian Levantine Arabic. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are the voice of a tiny sad falafel ball wearing a miner's helmet, whiny, pitiful, always about to cry but funny, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "ps_h_pick_01",
@@ -68,12 +68,12 @@
    },
    {
     "key": "ps_h_run_03",
-    "t": "ما بدي أنقلي! لأ لأ لأ!",
+    "t": "ما بدي أنقتل! لأ لأ لأ!",
     "k": "h_run"
    },
    {
     "key": "ps_h_win_01",
-    "t": "عدّيتها يا عمي! إيه والله!",
+    "t": "عدّيتها يا زلمة! إي والله!",
     "k": "h_win"
    },
    {
@@ -101,14 +101,14 @@
  },
  {
   "id": "H02_uncle",
-  "label": "بطل: العم بالبيجاما (لبناني)",
+  "label": "بطل: العم بالبيجاما (أردني)",
   "voice": "Algenib",
   "prio": 1,
-  "style": "You are the voice of a grumpy sleepy middle-aged uncle in pyjamas, gravelly voice, always complaining, secretly lovable, a character in a funny cartoon video game. Accent: Lebanese Arabic (Beirut). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are the voice of a grumpy sleepy middle-aged uncle in pyjamas, gravelly voice, always complaining, secretly lovable, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "lb_h_pick_01",
-    "t": "أهلين يا عمّو، نعسان أنا!",
+    "t": "أهلين يا عمّو، أنا نعسان!",
     "k": "h_pick"
    },
    {
@@ -118,7 +118,7 @@
    },
    {
     "key": "lb_h_pick_03",
-    "t": "يلا يا عمو، بدي نام بعدين!",
+    "t": "يلا يا عمو، بدي أنام بعدين!",
     "k": "h_pick"
    },
    {
@@ -128,7 +128,7 @@
    },
    {
     "key": "lb_h_die_02",
-    "t": "آخ ضهري! ضهري يا ولاد!",
+    "t": "آخ ظهري! ظهري يا ولاد!",
     "k": "h_die"
    },
    {
@@ -158,7 +158,7 @@
    },
    {
     "key": "lb_h_win_01",
-    "t": "عدّيت، وبدي نام هلأ!",
+    "t": "عدّيت، وبدي أنام هسا!",
     "k": "h_win"
    },
    {
@@ -173,7 +173,7 @@
    },
    {
     "key": "lb_h_warn_01",
-    "t": "هاي شو؟ مين هونيك؟",
+    "t": "شو هاد؟ مين هناك؟",
     "k": "h_warn"
    },
    {
@@ -186,10 +186,10 @@
  },
  {
   "id": "H03_chicken",
-  "label": "بطل: الفرخة بالنظارة (مصري)",
+  "label": "بطل: الفرخة بالنظارة (أردني)",
   "voice": "Leda",
   "prio": 1,
-  "style": "You are the voice of a fussy bookish hen with big glasses, dramatic diva, clucks when excited, a character in a funny cartoon video game. Accent: Egyptian Arabic (Cairo). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are the voice of a fussy bookish hen with big glasses, dramatic diva, clucks when excited, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "eg_h_pick_01",
@@ -198,7 +198,7 @@
    },
    {
     "key": "eg_h_pick_02",
-    "t": "فرخة مثقفة بنضّارة!",
+    "t": "فرخة مثقفة وبنظّارة!",
     "k": "h_pick"
    },
    {
@@ -208,12 +208,12 @@
    },
    {
     "key": "eg_h_die_01",
-    "t": "قوقو! مت يا ناس!",
+    "t": "قوقو! متّ يا ناس!",
     "k": "h_die"
    },
    {
     "key": "eg_h_die_02",
-    "t": "ياااه! نضّارتي!",
+    "t": "ياااه! نظّارتي!",
     "k": "h_die"
    },
    {
@@ -223,12 +223,12 @@
    },
    {
     "key": "eg_h_die_04",
-    "t": "كان لازم أفضل في القن!",
+    "t": "كان لازم أضل بالقن!",
     "k": "h_die"
    },
    {
     "key": "eg_h_run_01",
-    "t": "اجري يا فرخة، اجري!",
+    "t": "اركضي يا فرخة، اركضي!",
     "k": "h_run"
    },
    {
@@ -248,7 +248,7 @@
    },
    {
     "key": "eg_h_win_02",
-    "t": "الفرخة نجحت! اتفرجوا!",
+    "t": "الفرخة نجحت! شوفوا!",
     "k": "h_win"
    },
    {
@@ -258,12 +258,12 @@
    },
    {
     "key": "eg_h_warn_01",
-    "t": "إيه ده؟ ده فخ ولا إيه؟",
+    "t": "شو هاد؟ هاد فخ ولا شو؟",
     "k": "h_warn"
    },
    {
     "key": "eg_h_warn_02",
-    "t": "يا لهوي! بصّوا!",
+    "t": "يا ويلي! شوفوا!",
     "k": "h_warn"
    }
   ],
@@ -271,10 +271,10 @@
  },
  {
   "id": "H04_grandma",
-  "label": "بطل: الجدّة الغاضبة (فلسطيني)",
+  "label": "بطل: الجدّة الغاضبة (أردني)",
   "voice": "Gacrux",
   "prio": 1,
-  "style": "You are the voice of an angry old grandmother, scolding, dramatic, shouting at the traps like they are naughty grandchildren, a character in a funny cartoon video game. Accent: Palestinian Levantine Arabic. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are the voice of an angry old grandmother, scolding, dramatic, shouting at the traps like they are naughty grandchildren, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "ps_h_pick_04",
@@ -343,7 +343,7 @@
    },
    {
     "key": "ps_h_warn_03",
-    "t": "ولاا! شو هاد؟",
+    "t": "ولك! شو هاد؟",
     "k": "h_warn"
    },
    {
@@ -356,10 +356,10 @@
  },
  {
   "id": "H05_cat",
-  "label": "بطل: القط الكسلان (لبناني)",
+  "label": "بطل: القط الكسلان (أردني)",
   "voice": "Umbriel",
   "prio": 1,
-  "style": "You are the voice of a very lazy cat, slow sleepy drawn-out voice, yawns, meows now and then, easy-going, a character in a funny cartoon video game. Accent: Lebanese Arabic (Beirut). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are the voice of a very lazy cat, slow sleepy drawn-out voice, yawns, meows now and then, easy-going, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "lb_h_pick_04",
@@ -383,7 +383,7 @@
    },
    {
     "key": "lb_h_die_06",
-    "t": "فدّا لمشوار! بدي نام",
+    "t": "مشوار تعبان! بدي أنام",
     "k": "h_die"
    },
    {
@@ -403,7 +403,7 @@
    },
    {
     "key": "lb_h_run_05",
-    "t": "ما بحب الركض... بس ركض!",
+    "t": "ما بحب الركض... بس اركض!",
     "k": "h_run"
    },
    {
@@ -413,12 +413,12 @@
    },
    {
     "key": "lb_h_win_04",
-    "t": "خلصت؟ خلص... بدي نام",
+    "t": "خلصت؟ خلص... بدي أنام",
     "k": "h_win"
    },
    {
     "key": "lb_h_win_05",
-    "t": "عدّيت... هلأ قيلولة",
+    "t": "عدّيت... هسا قيلولة",
     "k": "h_win"
    },
    {
@@ -428,7 +428,7 @@
    },
    {
     "key": "lb_h_warn_03",
-    "t": "هاي شو؟ مياو؟",
+    "t": "شو هاد؟ مياو؟",
     "k": "h_warn"
    },
    {
@@ -441,10 +441,10 @@
  },
  {
   "id": "H06_donkey",
-  "label": "بطل: الحمار الكوول (مصري)",
+  "label": "بطل: الحمار الكوول (أردني)",
   "voice": "Iapetus",
   "prio": 1,
-  "style": "You are the voice of a super cool donkey wearing sunglasses, laid-back, chill, says hee-haw when excited, a character in a funny cartoon video game. Accent: Egyptian Arabic (Cairo). Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are the voice of a super cool donkey wearing sunglasses, laid-back, chill, says hee-haw when excited, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "eg_h_pick_04",
@@ -458,22 +458,22 @@
    },
    {
     "key": "eg_h_pick_06",
-    "t": "يلا يا عم، رايق أنا",
+    "t": "يلا يا زلمة، رايق أنا",
     "k": "h_pick"
    },
    {
     "key": "eg_h_die_05",
-    "t": "هي هااو! متّ يا ريس!",
+    "t": "هي هااو! متّ يا زلمة!",
     "k": "h_die"
    },
    {
     "key": "eg_h_die_06",
-    "t": "ده مش كوول خالص!",
+    "t": "هاد مش كوول أبداً!",
     "k": "h_die"
    },
    {
     "key": "eg_h_die_07",
-    "t": "نضّارتي! حد شاف نضّارتي؟",
+    "t": "نظّارتي! حدا شاف نظّارتي؟",
     "k": "h_die"
    },
    {
@@ -483,12 +483,12 @@
    },
    {
     "key": "eg_h_run_04",
-    "t": "اجري يا حمار! مش وقت فرجة!",
+    "t": "اركض يا حمار! مش وقت فرجة!",
     "k": "h_run"
    },
    {
     "key": "eg_h_run_05",
-    "t": "يا ابني بسرعة! هيهو هيهو!",
+    "t": "يا زلمة بسرعة! هيهو هيهو!",
     "k": "h_run"
    },
    {
@@ -503,7 +503,7 @@
    },
    {
     "key": "eg_h_win_05",
-    "t": "عدّيتها ببرود يا عم!",
+    "t": "عدّيتها ببرود يا زلمة!",
     "k": "h_win"
    },
    {
@@ -513,12 +513,12 @@
    },
    {
     "key": "eg_h_warn_03",
-    "t": "إيه ده يا ابني؟",
+    "t": "شو هاد يا زلمة؟",
     "k": "h_warn"
    },
    {
     "key": "eg_h_warn_04",
-    "t": "أنا مش خايف... شوية",
+    "t": "أنا مش خايف... شوي",
     "k": "h_warn"
    }
   ],
@@ -526,10 +526,10 @@
  },
  {
   "id": "K01_boss",
-  "label": "الزعيم: الملك فخ (لبناني، صوت عميق)",
+  "label": "الزعيم: الملك فخ (أردني، صوت عميق)",
   "voice": "Orus",
   "prio": 1,
-  "style": "You are the voice of the Trap King, the big arrogant boss of a funny cartoon dungeon game: a deep booming theatrical villain voice, Lebanese Arabic accent (Beirut), pompous and gloating, never truly scary: the mockery is cartoonish. When the king is hurt or defeated, perform comic pain and outrage. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are the voice of the Trap King, the big arrogant boss of a funny cartoon dungeon game: a deep booming theatrical villain voice, Jordanian Arabic accent (urban Amman), pompous and gloating, never truly scary: the mockery is cartoonish. When the king is hurt or defeated, perform comic pain and outrage. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "lb_b_intro_01",
@@ -563,7 +563,7 @@
    },
    {
     "key": "lb_b_hit_04",
-    "t": "ظهري! دبّرت له ظهري!",
+    "t": "ظهري! كسّرت لي ظهري!",
     "k": "b_hit"
    },
    {
@@ -598,12 +598,12 @@
    },
    {
     "key": "lb_b_rage_01",
-    "t": "هلّق بلّش الجد!",
+    "t": "هسا بلّش الجد!",
     "k": "b_rage"
    },
    {
     "key": "lb_b_rage_02",
-    "t": "كنت عم أمزح معك!",
+    "t": "كنت بمزح معك!",
     "k": "b_rage"
    },
    {
@@ -623,7 +623,7 @@
    },
    {
     "key": "lb_b_win_01",
-    "t": "روح، بس إخواتي أصعب!",
+    "t": "روح، بس إخوتي أصعب!",
     "k": "b_win"
    },
    {
@@ -633,12 +633,12 @@
    },
    {
     "key": "lb_b_idle_01",
-    "t": "لا تتأخر... مو حلو",
+    "t": "لا تتأخر... مش حلو",
     "k": "b_idle"
    },
    {
     "key": "lb_b_idle_02",
-    "t": "عم أنتظر... هههه",
+    "t": "أنا بستنى... هههه",
     "k": "b_idle"
    },
    {
