@@ -11,7 +11,7 @@
 - PWA: `docs/` (manifest + service worker + أيقونات) يشتغل بدون إنترنت ويتثبّت على الموبايل.
 
 ## ناقص (يحتاج المستخدم)
-1. إنشاء مستودع GitHub عام (`trap-dungeon`) وتفعيل Pages (الفرع main، المجلد `/docs`) — أو رفع محتوى `trap-dungeon-site.zip` للجذر وتفعيل Pages من الجذر.
+1. (تم) المستودع https://github.com/aminzikra51-oss/trap-dungeon والموقع https://aminzikra51-oss.github.io/trap-dungeon/ (Pages من main، المجلد `/docs`). للتحديث: `python3 build.py` ثم `git push` (النسخة المنشورة فرع `main` بسجل مختصر؛ السجل الكامل القديم بفرع محلي `main-old`/`history-full`).
 2. توليد أصوات الأبطال: الدفعات `H01..H06` في `content/voice_script.md` (أو صفحة عدّة التوليد).
 3. سطر فلسطيني واحد ناقص: `ps_taunt_06` (الدفعة `B03_ps`). + أصوات الزعيم: الدفعة `K01_boss` (23 سطر، صوت عميق).
 4. اختياري: تسجيلات لهجات سورية/خليجية/عراقية/مغربية (حالياً تستعير تسجيلات من اللبناني/المصري/الفلسطيني).
