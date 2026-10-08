@@ -823,6 +823,7 @@ for bid, b in batches.items():
 <details><summary>معاينة النص</summary>
 <pre id="s-{bid}" dir="ltr">{esc(b['style'])}</pre>
 <pre id="t-{bid}">{esc(text)}</pre></details></section>''')
+if not cards: cards.append('<section class="card"><h3>✅ كل الأصوات مسجّلة</h3><div class="meta">ما في أسطر ناقصة. لو حذفت مقطعاً من assets/audio أو أضفنا أسطراً جديدة بترجع تظهر هون دفعاتها.</div></section>')
 icards = []
 icards.append(f'''<section class="card p1"><h3><span class="n">كلها</span> 36 صورة بدفعة وحدة (6×6) <small>تحتاج نموذج بدقة عالية</small></h3>
 <div class="row"><button data-c="i-all" class="pri">انسخ البرومبت</button></div><details><summary>معاينة</summary><pre id="i-all" dir="ltr">{esc(P_ALL)}</pre></details></section>''')
