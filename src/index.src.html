@@ -132,7 +132,7 @@ const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const $=id=>document.getElementById(id);
 
 /* =============== SETTINGS / STORAGE =============== */
-const S={sfx:true,music:true,voice:true,dialect:'mix',best:1,deaths:0,hero:'falafel',look3d:true,diff:'crazy',qm:'auto',q:null};
+const S={sfx:true,music:true,voice:true,dialect:'mix',best:1,deaths:0,fin:0,hero:'falafel',look3d:true,diff:'crazy',qm:'auto',q:null};
 try{Object.assign(S,JSON.parse(localStorage.getItem('td_s')||'{}'))}catch(e){}
 const save=()=>{try{localStorage.setItem('td_s',JSON.stringify(S))}catch(e){}};
 

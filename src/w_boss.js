@@ -178,10 +178,16 @@ const END_TXT=[
  ['💀 الحارس الثالث ركع','إنت مو طبيعي'],
  ['🔥 الحارس الرابع راح','الفخاخ بدها تحكي معك'],
  ['⚡ الحارس الخامس انتهى','اللعبة بتحترمك... شوي']];
+/* the real ending: the first time the 5th guardian falls (level 50) */
+const FIN_RANKS=[[40,'أسطورة الزنزانة (أو غشّاش 🤨)'],[150,'ملك الصبر والدعسات'],[400,'ضحية محترفة'],[1e9,'ضيف دائم عند الفخاخ']];
 function bossEnd(){
-  const tier=bossTier(L.n), td=END_TXT[Math.min(tier,END_TXT.length)-1], d=G.lvDeaths;
+  const tier=bossTier(L.n), td=END_TXT[Math.min(tier,END_TXT.length)-1], d=G.lvDeaths, fin=tier===5&&!S.fin;
   G.endCard={tier,t1:td[0],t2:td[1],l1:d===0?'من دون ولا موتة؟! أكيد غشّيت 🤨':'هزمت '+L.name.replace('👑 ','')+' بعد '+d+' موتة',l2:'مجموع موتاتك: '+G.deaths+' 💀',l3:'المرحلة '+(L.n+1)+' جاهزة... وأصعب 😈'};
-  G.winLen=tier===1?9:7.5; G.winCard=null;
+  if(fin){ const rk=FIN_RANKS.find(r=>G.deaths<=r[0]);
+    G.endCard.fin=1; G.endCard.t1='🏁 النهاية الحقيقية!'; G.endCard.t2='ختمت زنزانة الفخاخ... بجد هالمرة';
+    G.endCard.l1='لقبك: '+rk[1]; G.endCard.l3='بس الفخاخ ما بتخلص... المرحلة '+(L.n+1)+' بتستناك 😈';
+    S.fin=1; confetti(VW*.5,GY-160); confetti(VW*.15,GY-100); confetti(VW*.85,GY-100) }
+  G.winLen=fin?12:tier===1?9:7.5; G.winCard=null;
   confetti(VW*.3,GY-120); confetti(VW*.7,GY-140); stars(P.x+PW/2,P.y);
   bossSay('win',{force:1,pri:4,delay:.4,max:2.6,dur:3.2});
   if(Math.random()<.6)heroSay('win',{force:1,pri:3,delay:2.2,max:1.6,dur:2.2});
@@ -192,7 +198,7 @@ function drawEndCard(c){
   c.save(); c.globalAlpha=a*.86; c.fillStyle='#07040d'; c.fillRect(0,0,VW,VH); c.globalAlpha=a;
   c.textAlign='center'; c.direction='rtl'; c.lineJoin='round';
   const row=(txt,y,sz,fill,lw)=>{ c.font='900 '+sz+'px Tahoma,Arial'; c.lineWidth=lw||7; c.strokeStyle='#000'; c.fillStyle=fill; c.strokeText(txt,VW/2,y); c.fillText(txt,VW/2,y) };
-  const pop=1+Math.max(0,.5-t)*0.6; c.save(); c.translate(VW/2,128); c.scale(pop,pop); c.translate(-VW/2,-128); row(k.t1,128,60,'#ffd23f',10); c.restore();
+  const pop=1+Math.max(0,.5-t)*0.6; c.save(); c.translate(VW/2,128); c.scale(pop,pop); c.translate(-VW/2,-128); row(k.t1,128,k.fin?54:60,k.fin?'#7dffb2':'#ffd23f',10); c.restore();
   row(k.t2,176,26,'#fff'); row(k.l1,240,23,'#8fe0ff',6); row(k.l2,278,23,'#ff9bb0',6); row(k.l3,322,25,'#b8ff9b',6);
   if(t>2.4&&Math.floor(G.t*2.2)%2){ row('اضغط أي شي للمتابعة',392,18,'#fff',5) }
   c.restore();
