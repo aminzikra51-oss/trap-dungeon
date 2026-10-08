@@ -1,5 +1,585 @@
 [
  {
+  "id": "J01_all",
+  "label": "دفعة وحدة: كل الناقص بصوت واحد (أردني)",
+  "voice": "Puck",
+  "prio": 0,
+  "style": "You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 1 line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed; then the next 15 lines of a tiny sad falafel ball wearing a miner's helmet, whiny, pitiful, always about to cry but funny; then the next 15 lines of a grumpy sleepy middle-aged uncle in pyjamas, gravelly voice, always complaining, secretly lovable; then the next 15 lines of a fussy bookish hen with big glasses, dramatic diva, clucks when excited; then the next 15 lines of an angry old grandmother, scolding, dramatic, shouting at the traps like they are naughty grandchildren; then the next 15 lines of a very lazy cat, slow sleepy drawn-out voice, yawns, meows now and then, easy-going; then the next 15 lines of a super cool donkey wearing sunglasses, laid-back, chill, says hee-haw when excited; then the next 23 lines of the Trap King, a deep booming theatrical pompous villain who gloats, with comic pain and outrage when he is hurt or defeated. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "items": [
+   {
+    "key": "ps_taunt_06",
+    "t": "ههههه! ابتسم يا حبيبي، الكاميرا عليك وإنت ميت!",
+    "k": "taunt"
+   },
+   {
+    "key": "ps_h_pick_01",
+    "t": "أهلا يا فلافل... يا مسكين!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_02",
+    "t": "أنا فلافل! ما بدي أموت!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_03",
+    "t": "يلا يا فلافل، عالمصيبة!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_die_01",
+    "t": "متّ يا عمي! متّ!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_02",
+    "t": "آخ يا ظهري، يا فلافل!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_03",
+    "t": "ليش أنا؟ ليش دايماً أنا؟",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_04",
+    "t": "قلتلكم الأرض مش آمنة!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_run_01",
+    "t": "هربان يا فلافل! هربان!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_02",
+    "t": "الحقوني! بدي أهرب!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_03",
+    "t": "ما بدي أنقتل! لأ لأ لأ!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_win_01",
+    "t": "عدّيتها يا زلمة! إي والله!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_02",
+    "t": "نجوت! أنا فلافل الخارق!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_03",
+    "t": "يا ساتر! عدّيت!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_warn_01",
+    "t": "إيش هالضحكة؟!",
+    "k": "h_warn"
+   },
+   {
+    "key": "ps_h_warn_02",
+    "t": "يا ويلي شو هاد؟",
+    "k": "h_warn"
+   },
+   {
+    "key": "lb_h_pick_01",
+    "t": "أهلين يا عمّو، أنا نعسان!",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_02",
+    "t": "جيت بالبيجاما، شو بدك؟",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_03",
+    "t": "يلا يا عمو، بدي أنام بعدين!",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_die_01",
+    "t": "متّ يا عمي! حرام عليكم!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_02",
+    "t": "آخ ظهري! ظهري يا ولاد!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_03",
+    "t": "مين حطّ هالفخ يا ناس؟",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_04",
+    "t": "ولا مرة بنام بسلام!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_run_01",
+    "t": "هربان يا عمو! هربان!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_02",
+    "t": "يلا يا بيجاما، اركض!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_03",
+    "t": "ركبي يا ركبي، لا تخونّي!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_win_01",
+    "t": "عدّيت، وبدي أنام هسا!",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_02",
+    "t": "خلص؟ تصبحوا على خير!",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_03",
+    "t": "بيجاماتي نجت! الحمد لله!",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_warn_01",
+    "t": "شو هاد؟ مين هناك؟",
+    "k": "h_warn"
+   },
+   {
+    "key": "lb_h_warn_02",
+    "t": "لا لا لا لا لا!",
+    "k": "h_warn"
+   },
+   {
+    "key": "eg_h_pick_01",
+    "t": "أهلاً يا فرخة! قوقوقو!",
+    "k": "h_pick"
+   },
+   {
+    "key": "eg_h_pick_02",
+    "t": "فرخة مثقفة وبنظّارة!",
+    "k": "h_pick"
+   },
+   {
+    "key": "eg_h_pick_03",
+    "t": "يلا يا فرخة، على الفخاخ!",
+    "k": "h_pick"
+   },
+   {
+    "key": "eg_h_die_01",
+    "t": "قوقو! متّ يا ناس!",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_die_02",
+    "t": "ياااه! نظّارتي!",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_die_03",
+    "t": "أنا فرخة محترمة يا عالم!",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_die_04",
+    "t": "كان لازم أضل بالقن!",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_run_01",
+    "t": "اركضي يا فرخة، اركضي!",
+    "k": "h_run"
+   },
+   {
+    "key": "eg_h_run_02",
+    "t": "قوق قوق قوق! الحقوني!",
+    "k": "h_run"
+   },
+   {
+    "key": "eg_h_run_03",
+    "t": "هربانة يا ناس، هربانة!",
+    "k": "h_run"
+   },
+   {
+    "key": "eg_h_win_01",
+    "t": "عدّيت يا ولاد! قوقوقو!",
+    "k": "h_win"
+   },
+   {
+    "key": "eg_h_win_02",
+    "t": "الفرخة نجحت! شوفوا!",
+    "k": "h_win"
+   },
+   {
+    "key": "eg_h_win_03",
+    "t": "طلعت أشطر من الديك!",
+    "k": "h_win"
+   },
+   {
+    "key": "eg_h_warn_01",
+    "t": "شو هاد؟ هاد فخ ولا شو؟",
+    "k": "h_warn"
+   },
+   {
+    "key": "eg_h_warn_02",
+    "t": "يا ويلي! شوفوا!",
+    "k": "h_warn"
+   },
+   {
+    "key": "ps_h_pick_04",
+    "t": "أهلين! أنا تيتا، وغاضبة!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_05",
+    "t": "ولا كلمة! تيتا هون!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_06",
+    "t": "يلا يا تيتا، فشّي خلقك!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_die_05",
+    "t": "الله يسامحكم يا ولاد!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_06",
+    "t": "آخ يا ركبتي! يا ركبتي!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_07",
+    "t": "بأيامنا ما كان في فخاخ!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_08",
+    "t": "متّ يا ستّي! متّ!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_run_04",
+    "t": "اركضي يا تيتا! لا تقفي!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_05",
+    "t": "تفو عالفخاخ! ركض ركض!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_06",
+    "t": "ما بلحقوني! أنا أسرع منهم!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_win_04",
+    "t": "عدّيت يا ولاد! شفتوا؟",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_05",
+    "t": "هيك الستّات بتنجح!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_06",
+    "t": "حطّولي عالغدا!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_warn_03",
+    "t": "ولك! شو هاد؟",
+    "k": "h_warn"
+   },
+   {
+    "key": "ps_h_warn_04",
+    "t": "بس! لا تعمل هيك!",
+    "k": "h_warn"
+   },
+   {
+    "key": "lb_h_pick_04",
+    "t": "مياو... أهلا يا قطة",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_05",
+    "t": "ما بدي أتحرك... بس طيب",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_06",
+    "t": "يلا يا قطة، بعد خمس دقايق",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_die_05",
+    "t": "مياااو! متّ... أوف",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_06",
+    "t": "مشوار تعبان! بدي أنام",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_07",
+    "t": "باقي لي ثمان أرواح، عادي",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_08",
+    "t": "أوف... مين نيّم الأرض؟",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_run_04",
+    "t": "هربان يا قطة! هربان!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_05",
+    "t": "ما بحب الركض... بس اركض!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_06",
+    "t": "مياو مياو! بسرعة!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_win_04",
+    "t": "خلصت؟ خلص... بدي أنام",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_05",
+    "t": "عدّيت... هسا قيلولة",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_06",
+    "t": "مياو! عبرت وما تعبت",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_warn_03",
+    "t": "شو هاد؟ مياو؟",
+    "k": "h_warn"
+   },
+   {
+    "key": "lb_h_warn_04",
+    "t": "ما شفت شي... أنا نايم",
+    "k": "h_warn"
+   },
+   {
+    "key": "eg_h_pick_04",
+    "t": "أهلاً يا حمار... كوول!",
+    "k": "h_pick"
+   },
+   {
+    "key": "eg_h_pick_05",
+    "t": "هي هاو! أنا الحمار الكوول!",
+    "k": "h_pick"
+   },
+   {
+    "key": "eg_h_pick_06",
+    "t": "يلا يا زلمة، رايق أنا",
+    "k": "h_pick"
+   },
+   {
+    "key": "eg_h_die_05",
+    "t": "هي هااو! متّ يا زلمة!",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_die_06",
+    "t": "هاد مش كوول أبداً!",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_die_07",
+    "t": "نظّارتي! حدا شاف نظّارتي؟",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_die_08",
+    "t": "فخ؟ على الحمار الكوول؟!",
+    "k": "h_die"
+   },
+   {
+    "key": "eg_h_run_04",
+    "t": "اركض يا حمار! مش وقت فرجة!",
+    "k": "h_run"
+   },
+   {
+    "key": "eg_h_run_05",
+    "t": "يا زلمة بسرعة! هيهو هيهو!",
+    "k": "h_run"
+   },
+   {
+    "key": "eg_h_run_06",
+    "t": "كوول بس هربان!",
+    "k": "h_run"
+   },
+   {
+    "key": "eg_h_win_04",
+    "t": "قلتلكم كوول! هيهو!",
+    "k": "h_win"
+   },
+   {
+    "key": "eg_h_win_05",
+    "t": "عدّيتها ببرود يا زلمة!",
+    "k": "h_win"
+   },
+   {
+    "key": "eg_h_win_06",
+    "t": "الحمار عدّاها! هي هاو!",
+    "k": "h_win"
+   },
+   {
+    "key": "eg_h_warn_03",
+    "t": "شو هاد يا زلمة؟",
+    "k": "h_warn"
+   },
+   {
+    "key": "eg_h_warn_04",
+    "t": "أنا مش خايف... شوي",
+    "k": "h_warn"
+   },
+   {
+    "key": "lb_b_intro_01",
+    "t": "أهلاً بالضحية الجديدة!",
+    "k": "b_intro"
+   },
+   {
+    "key": "lb_b_intro_02",
+    "t": "أنا الملك فخ! اركع!",
+    "k": "b_intro"
+   },
+   {
+    "key": "lb_b_intro_03",
+    "t": "غرفتي، قوانيني، موتك!",
+    "k": "b_intro"
+   },
+   {
+    "key": "lb_b_hit_01",
+    "t": "آخ! مين علّمك تدعس؟!",
+    "k": "b_hit"
+   },
+   {
+    "key": "lb_b_hit_02",
+    "t": "زر؟! مين حطّ هالزر؟!",
+    "k": "b_hit"
+   },
+   {
+    "key": "lb_b_hit_03",
+    "t": "ما هيك الاتفاق يا ولد!",
+    "k": "b_hit"
+   },
+   {
+    "key": "lb_b_hit_04",
+    "t": "ظهري! كسّرت لي ظهري!",
+    "k": "b_hit"
+   },
+   {
+    "key": "lb_b_hit_05",
+    "t": "حسابك معي بعدين!",
+    "k": "b_hit"
+   },
+   {
+    "key": "lb_b_die_01",
+    "t": "هههه! بطلنا طار!",
+    "k": "b_die"
+   },
+   {
+    "key": "lb_b_die_02",
+    "t": "قلتلك أنا الملك!",
+    "k": "b_die"
+   },
+   {
+    "key": "lb_b_die_03",
+    "t": "ارجع جرّب، بضحك أكتر",
+    "k": "b_die"
+   },
+   {
+    "key": "lb_b_die_04",
+    "t": "الفخ الملكي ما بيغلط",
+    "k": "b_die"
+   },
+   {
+    "key": "lb_b_die_05",
+    "t": "سجّلت نقطة، وإنت صفر",
+    "k": "b_die"
+   },
+   {
+    "key": "lb_b_rage_01",
+    "t": "هسا بلّش الجد!",
+    "k": "b_rage"
+   },
+   {
+    "key": "lb_b_rage_02",
+    "t": "كنت بمزح معك!",
+    "k": "b_rage"
+   },
+   {
+    "key": "lb_b_defeat_01",
+    "t": "مستحيل! أنا الملك!",
+    "k": "b_defeat"
+   },
+   {
+    "key": "lb_b_defeat_02",
+    "t": "كيف؟! بزر؟! بزر!!",
+    "k": "b_defeat"
+   },
+   {
+    "key": "lb_b_defeat_03",
+    "t": "بتندم... بعد تسع مراحل",
+    "k": "b_defeat"
+   },
+   {
+    "key": "lb_b_win_01",
+    "t": "روح، بس إخوتي أصعب!",
+    "k": "b_win"
+   },
+   {
+    "key": "lb_b_win_02",
+    "t": "المرحلة الجاية بتبكّيك!",
+    "k": "b_win"
+   },
+   {
+    "key": "lb_b_idle_01",
+    "t": "لا تتأخر... مش حلو",
+    "k": "b_idle"
+   },
+   {
+    "key": "lb_b_idle_02",
+    "t": "أنا بستنى... هههه",
+    "k": "b_idle"
+   },
+   {
+    "key": "lb_b_idle_03",
+    "t": "يلا ازعل شوي",
+    "k": "b_idle"
+   }
+  ],
+  "n": 114
+ },
+ {
   "id": "B03_ps",
   "label": "أردني: شماتة (سطر واحد)",
   "voice": "Algieba",

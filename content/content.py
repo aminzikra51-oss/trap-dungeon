@@ -624,6 +624,29 @@ for _b in list(batches):
 if 'B03_ps' in batches:
     batches['B03_ps']['style'] = batches['B03_ps']['style'].replace(ACC['ps'], ACC_JO); batches['B03_ps']['label'] = 'أردني: شماتة (سطر واحد)'
 
+# ------------------------------------------------------------------ J01: كل الناقص بدفعة وحدة وصوت واحد (للي ما بدو 8 دفعات)
+def _grp(bid, n):
+    if bid.startswith('H'):
+        v = HEROES_V[bid.split('_', 1)[1]]
+        return f"{n} lines of {v['who']}"
+    if bid == 'K01_boss':
+        return f"{n} lines of the Trap King, a deep booming theatrical pompous villain who gloats, with comic pain and outrage when he is hurt or defeated"
+    return f"{n} line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed"
+if batches:
+    _order = list(batches)
+    _groups = []
+    for _i, _b in enumerate(_order):
+        _n = len(batches[_b]['items'])
+        _groups.append(('the first ' if _i == 0 else 'then the next ') + _grp(_b, _n))
+    STYLE_J = ("You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, "
+     "all speaking " + ACC_JO + ". The lines come in this exact order: " + "; ".join(_groups) + ". "
+     "Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. "
+     "Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. "
+     "Leave a clear silence of about 3 seconds after each line before starting the next one.")
+    _items = [dict(i) for _b in _order for i in batches[_b]['items']]
+    _j = dict(id='J01_all', label='دفعة وحدة: كل الناقص بصوت واحد (أردني)', voice='Puck', prio=0, style=STYLE_J, items=_items)
+    batches = {'J01_all': _j, **batches}
+
 # ------------------------------------------------------------------ الأصوات الموجودة أصلاً (10 مقاطع مولّدة) - تبقى بمفاتيحها القديمة
 OLD = {
  'taunt_sy1':  ('taunt','sy','هاهاها! مات مرة تانية يا بطل! شو هاد، حتى الفخ استحى منك!'),
@@ -661,12 +684,13 @@ write(f'{ROOT}/content/voice_batches.json',
 from collections import Counter
 cnt = Counter((e['d'], e['k']) for e in entries)
 print('lines:', len(entries), 'batches:', len(batches))
-print('voiced (batch) lines:', sum(len(b['items']) for b in batches.values()))
+print('voiced (batch) lines:', sum(len(b['items']) for k, b in batches.items() if k != 'J01_all'))
 
 # ------------------------------------------------------------------ voice_script.md
 md = []
 md.append('# سكربت الأصوات لـ Google AI Studio\n')
-md.append(f'**{sum(len(b['items']) for b in batches.values())} سطر في {len(batches)} دفعات.**\n')
+_sep = {k: b for k, b in batches.items() if k != 'J01_all'}
+md.append(f'**{sum(len(b["items"]) for b in _sep.values())} سطر: إمّا دفعة وحدة (J01) أو {len(_sep)} دفعات منفصلة بأصوات مختلفة.**\n')
 md.append('''## طريقة العمل (لكل دفعة، دقيقتين)
 1. افتح **aistudio.google.com** ← **Generate Media** ← **Speech generation** (أو "Generate speech").
 2. اختر نموذج **Gemini TTS** (Flash أو Pro)، والوضع **Single-speaker**.
@@ -686,6 +710,26 @@ for bid, b in batches.items():
     md.append("**Style instructions:**\n```\n" + b['style'] + "\n```\n")
     md.append("**Text:**\n```\n" + "\n\n".join(i['t'] for i in b['items']) + "\n```\n")
 write(f'{ROOT}/content/voice_script.md', '\n'.join(md))
+
+if 'J01_all' in batches:
+    _j = batches['J01_all']
+    write(f'{ROOT}/content/voice_one_script.md', f"""# سكربت واحد — دفعة وحدة ({len(_j['items'])} سطر)
+
+1. aistudio.google.com ← **Generate Media** ← **Speech generation** ← نموذج Gemini TTS، وضع **Single-speaker**.
+2. **Voice:** `{_j['voice']}` (جرّب `Orus` إذا بدك الزعيم أعمق).
+3. الصق **Style instructions** أدناه بخانة الستايل، والصق **Text** بخانة النص كما هو.
+4. Run، وسمّ الملف **`J01_all.wav`**، وارفعه بالمحادثة.
+
+لو انقطع الصوت قبل النهاية أو دمج سطرين: ابعتلي الملف زي ما هو، بقصّ اللي طلع منه وبرجّعلك سكربت للباقي بس.
+
+## Style instructions
+```
+{_j['style']}
+```
+
+## Text
+```
+""" + "\n\n".join(i['t'] for i in _j['items']) + "\n```\n")
 
 # ------------------------------------------------------------------ الصور
 STYLE_IMG = ("Funny cartoon illustration in a consistent style: thick black outlines, flat bright saturated colors, "
