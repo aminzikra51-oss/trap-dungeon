@@ -1,6 +1,6 @@
 # سكربت الأصوات لـ Google AI Studio
 
-**30 سطر: إمّا دفعة وحدة (J01) أو 2 دفعات منفصلة بأصوات مختلفة.**
+**63 سطر: إمّا دفعة وحدة (J01) أو 3 دفعات منفصلة بأصوات مختلفة.**
 
 ## طريقة العمل (لكل دفعة، دقيقتين)
 1. افتح **aistudio.google.com** ← **Generate Media** ← **Speech generation** (أو "Generate speech").
@@ -17,42 +17,18 @@
 
 
 ---
-## J01 — دفعة وحدة: كل الناقص بصوت واحد (أردني)   (أولوية 0، 30 سطر)
+## J01 — دفعة وحدة: كل الناقص بصوت واحد (أردني)   (أولوية 0، 63 سطر)
 
 - **Voice:** `Puck`
 - **ملف الحفظ:** `J01_all.wav`
 
 **Style instructions:**
 ```
-You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 15 lines of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages; then the next 15 lines of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 3 lines of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages; then the next 15 lines of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary; then the next 45 line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
 ```
-تشغيل... أهلاً يا بشر!
-
-بوت واحد جاهز للموت
-
-تحميل الشجاعة... فشل
-
-خطأ! خطأ! النظام معطّل!
-
-جاري الموت... اكتمل
-
-ما في نسخة احتياطية! آخ!
-
-ما انبرمجت على الفخاخ!
-
-تحذير! اهرب! اهرب! اهرب!
-
-جاري الهروب بأقصى سرعة
-
-البطارية ثلاثة بالمية! اركض!
-
-اكتملت المهمة! بيب بوب!
-
-نجاح! سأحتفل... بصمت
-
 عدّيت وما احترقت دارتي
 
 تنبيه: ضحكة مريبة!
@@ -88,11 +64,206 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 شو هالصوت؟ مثير للاهتمام!
 
 يا ساتر! شو هاد؟
+
+يا ساتر! ريحة شاورما بالزنزانة!
+
+النار قالتلك: على مهلك يا حبيبي!
+
+صرت فحمة! حدا معه خبز؟
+
+نفّاثة نار؟ كان لازم تلبس مريول مطبخ!
+
+شوّيناك! بالهنا والشفا!
+
+الغيمة قالتلك: ما توقف مكانك!
+
+شعرك وقف! كان لازم تفكّر قبل!
+
+صعقة مجانية! بس ما حدا طلبها!
+
+الغيمة زعلانة منك! كمّل ركض!
+
+برق ورعد وإنت النتيجة!
+
+ديسكو بلا تذكرة! رقصت يا بطل!
+
+كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!
+
+الأرض كلها كهربا يا حبيبي!
+
+البلاطة الصفرا كانت تحذير، مش ديكور!
+
+تحت رجليك كهربا! شو كنت متوقع؟
+
+اتقسمت نصّين! شو عملت يا عيني؟
+
+الليزر ما بيفرّق: نصّك الك ونصّك للأرض!
+
+الشعاع الأحمر كان مكتوب عليه: لا تلمس!
+
+قطعة من هون وقطعة من هناك!
+
+ليزر دوّار وإنت صرت بازل!
+
+القطار زمّر وإنت ما سمعت!
+
+صرت ورقة رفيعة خالص!
+
+تشو تشو! وانتهت الرحلة!
+
+القطار مش واقف على حدا يا حبيبي!
+
+انفرشت على القضبان مثل الصاج!
+
+الخلد قالك: تفضّل عالقمر!
+
+قبّعتك وصلت السما وإنت لسا نازل!
+
+كان تحت رجليك من بدري وما حسّيت!
+
+مطرقة وطيران! عرض مجاني!
+
+الخلد أقوى منك يا بطل!
+
+الصندوق جعان! وإنت الوجبة!
+
+قلتلك الصندوق مش آمن! ما سمعت!
+
+صندوق بأسنان؟ هاد مش كنز، هاد مطعم!
+
+كل الكنوز ببطن الصندوق... وإنت كمان!
+
+الصندوق قال: بالهنا والشفا!
+
+الضفدع حبّك... بس بطريقته!
+
+لسانه أسرع من إنك تقول يا ضفدع!
+
+وجبة سريعة بدون انتظار!
+
+اتبلعت وما رجعت! بالهنا!
+
+كان جعان من الصبح والله!
+
+المصعد قالك: شو بدك ببقيّة الطوابق؟
+
+علّقت بالسقف مثل الثريّا!
+
+اللافتة قالت آمن مية بالمية... كذّابة!
+
+طلّعك المصعد وطلّع روحك معك!
+
+السقف كان واطي... وإنت كنت عالي!
 ```
 
 
 ---
-## H07 — بطل: الروبوت BOT 01 (أردني)   (أولوية 1، 15 سطر)
+## B23 — الفخاخ الجديدة: تعليقات   (أولوية 1، 45 سطر)
+
+- **Voice:** `Puck`
+- **ملف الحفظ:** `B23_ps.wav`
+
+**Style instructions:**
+```
+You are a voice actor for a funny cartoon video game. Accent: Palestinian Levantine Arabic. Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هاهاها / ههههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.
+```
+
+**Text:**
+```
+يا ساتر! ريحة شاورما بالزنزانة!
+
+النار قالتلك: على مهلك يا حبيبي!
+
+صرت فحمة! حدا معه خبز؟
+
+نفّاثة نار؟ كان لازم تلبس مريول مطبخ!
+
+شوّيناك! بالهنا والشفا!
+
+الغيمة قالتلك: ما توقف مكانك!
+
+شعرك وقف! كان لازم تفكّر قبل!
+
+صعقة مجانية! بس ما حدا طلبها!
+
+الغيمة زعلانة منك! كمّل ركض!
+
+برق ورعد وإنت النتيجة!
+
+ديسكو بلا تذكرة! رقصت يا بطل!
+
+كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!
+
+الأرض كلها كهربا يا حبيبي!
+
+البلاطة الصفرا كانت تحذير، مش ديكور!
+
+تحت رجليك كهربا! شو كنت متوقع؟
+
+اتقسمت نصّين! شو عملت يا عيني؟
+
+الليزر ما بيفرّق: نصّك الك ونصّك للأرض!
+
+الشعاع الأحمر كان مكتوب عليه: لا تلمس!
+
+قطعة من هون وقطعة من هناك!
+
+ليزر دوّار وإنت صرت بازل!
+
+القطار زمّر وإنت ما سمعت!
+
+صرت ورقة رفيعة خالص!
+
+تشو تشو! وانتهت الرحلة!
+
+القطار مش واقف على حدا يا حبيبي!
+
+انفرشت على القضبان مثل الصاج!
+
+الخلد قالك: تفضّل عالقمر!
+
+قبّعتك وصلت السما وإنت لسا نازل!
+
+كان تحت رجليك من بدري وما حسّيت!
+
+مطرقة وطيران! عرض مجاني!
+
+الخلد أقوى منك يا بطل!
+
+الصندوق جعان! وإنت الوجبة!
+
+قلتلك الصندوق مش آمن! ما سمعت!
+
+صندوق بأسنان؟ هاد مش كنز، هاد مطعم!
+
+كل الكنوز ببطن الصندوق... وإنت كمان!
+
+الصندوق قال: بالهنا والشفا!
+
+الضفدع حبّك... بس بطريقته!
+
+لسانه أسرع من إنك تقول يا ضفدع!
+
+وجبة سريعة بدون انتظار!
+
+اتبلعت وما رجعت! بالهنا!
+
+كان جعان من الصبح والله!
+
+المصعد قالك: شو بدك ببقيّة الطوابق؟
+
+علّقت بالسقف مثل الثريّا!
+
+اللافتة قالت آمن مية بالمية... كذّابة!
+
+طلّعك المصعد وطلّع روحك معك!
+
+السقف كان واطي... وإنت كنت عالي!
+```
+
+
+---
+## H07 — بطل: الروبوت BOT 01 (أردني)   (أولوية 1، 3 سطر)
 
 - **Voice:** `Charon`
 - **ملف الحفظ:** `H07_robot.wav`
@@ -104,30 +275,6 @@ You are the voice of BOT 01, a small clumsy retro robot with a flat monotone com
 
 **Text:**
 ```
-تشغيل... أهلاً يا بشر!
-
-بوت واحد جاهز للموت
-
-تحميل الشجاعة... فشل
-
-خطأ! خطأ! النظام معطّل!
-
-جاري الموت... اكتمل
-
-ما في نسخة احتياطية! آخ!
-
-ما انبرمجت على الفخاخ!
-
-تحذير! اهرب! اهرب! اهرب!
-
-جاري الهروب بأقصى سرعة
-
-البطارية ثلاثة بالمية! اركض!
-
-اكتملت المهمة! بيب بوب!
-
-نجاح! سأحتفل... بصمت
-
 عدّيت وما احترقت دارتي
 
 تنبيه: ضحكة مريبة!

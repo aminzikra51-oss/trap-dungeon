@@ -479,12 +479,26 @@ for d, kinds in D.items():
     for k in ORDER:
         for t in kinds.get(k, []): add(d, k, t, None)
 
+
+# ------------------------------------------------------------------ تعليقات الفخاخ الجديدة (لهجة شامية عادية، بصوت واحد، بدون وسم لهجة)
+NEWC = {
+ 'fire':      ['يا ساتر! ريحة شاورما بالزنزانة!', 'النار قالتلك: على مهلك يا حبيبي!', 'صرت فحمة! حدا معه خبز؟', 'نفّاثة نار؟ كان لازم تلبس مريول مطبخ!', 'شوّيناك! بالهنا والشفا!'],
+ 'zap':       ['الغيمة قالتلك: ما توقف مكانك!', 'شعرك وقف! كان لازم تفكّر قبل!', 'صعقة مجانية! بس ما حدا طلبها!', 'الغيمة زعلانة منك! كمّل ركض!', 'برق ورعد وإنت النتيجة!'],
+ 'disco':     ['ديسكو بلا تذكرة! رقصت يا بطل!', 'كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!', 'الأرض كلها كهربا يا حبيبي!', 'البلاطة الصفرا كانت تحذير، مش ديكور!', 'تحت رجليك كهربا! شو كنت متوقع؟'],
+ 'laser':     ['اتقسمت نصّين! شو عملت يا عيني؟', 'الليزر ما بيفرّق: نصّك الك ونصّك للأرض!', 'الشعاع الأحمر كان مكتوب عليه: لا تلمس!', 'قطعة من هون وقطعة من هناك!', 'ليزر دوّار وإنت صرت بازل!'],
+ 'train':     ['القطار زمّر وإنت ما سمعت!', 'صرت ورقة رفيعة خالص!', 'تشو تشو! وانتهت الرحلة!', 'القطار مش واقف على حدا يا حبيبي!', 'انفرشت على القضبان مثل الصاج!'],
+ 'mole':      ['الخلد قالك: تفضّل عالقمر!', 'قبّعتك وصلت السما وإنت لسا نازل!', 'كان تحت رجليك من بدري وما حسّيت!', 'مطرقة وطيران! عرض مجاني!', 'الخلد أقوى منك يا بطل!'],
+ 'chest':     ['الصندوق جعان! وإنت الوجبة!', 'قلتلك الصندوق مش آمن! ما سمعت!', 'صندوق بأسنان؟ هاد مش كنز، هاد مطعم!', 'كل الكنوز ببطن الصندوق... وإنت كمان!', 'الصندوق قال: بالهنا والشفا!'],
+ 'frog':      ['الضفدع حبّك... بس بطريقته!', 'لسانه أسرع من إنك تقول يا ضفدع!', 'وجبة سريعة بدون انتظار!', 'اتبلعت وما رجعت! بالهنا!', 'كان جعان من الصبح والله!'],
+ 'ceilspike': ['المصعد قالك: شو بدك ببقيّة الطوابق؟', 'علّقت بالسقف مثل الثريّا!', 'اللافتة قالت آمن مية بالمية... كذّابة!', 'طلّعك المصعد وطلّع روحك معك!', 'السقف كان واطي... وإنت كنت عالي!'],
+}
 # اللبناني + الراوي + ضحكات الفخاخ + الضحك + الصراخ = دفعة وحدة
 seq = [(d_, k, t, {}) for d_ in VOICED for k in ORDER for t in D[d_].get(k, [])]
 seq += [('any', k, t, ({'lv': lv} if lv else {})) for (k, lv, t) in NAR]
 seq += [('any', 'tlaugh', t, {}) for t in TLAUGHS]
 seq += [('any', 'laugh', t, {}) for t in LAUGHS]
 seq += [('any', 'scream', t, {}) for t in SCREAMS]
+seq += [('any', 'c_'+c, t, {}) for c in NEWC for t in NEWC[c]]
 ACC = {'lb': 'Lebanese Arabic (Beirut)', 'eg': 'Egyptian Arabic (Cairo)', 'ps': 'Palestinian Levantine Arabic'}
 ACC_JO = 'Jordanian Arabic (urban Amman), natural Levantine pronunciation'
 def STYLE_T(d):
@@ -524,6 +538,7 @@ GROUPS = [   # (label, voice, style, [(dialect, kind)], max_items, priority)  --
  ('لبناني: قريب/فوز',           'Laomedeia', 'T:lb', _kd('lb','near','win'), 8, 2),
  ('الراوي 1',                 'Charon',    'N',    _kd('any','intro','level','milestone'), 14, 2),
  ('الراوي 2',                 'Charon',    'N',    _kd('any','idle','fake','bait'), 12, 2),
+ ('الفخاخ الجديدة: تعليقات',    'Puck',      'T:ps', _kd('any',*['c_'+c for c in NEWC]), 45, 1),
 ]
 STYLE_SCREAM = ("Each line is a short comedic cartoon scream or panic cry, exaggerated and funny, not scary or disturbing, "
  "like a character falling off a cliff in a silly cartoon. Read ONLY the text lines, in order. Leave a clear silence of about 3 seconds after each line.")
@@ -645,7 +660,7 @@ def _grp(bid, n):
         return f"{n} lines of the Trap King, a deep booming theatrical pompous villain who gloats, with comic pain and outrage when he is hurt or defeated"
     return f"{n} line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed"
 if batches:
-    _order = list(batches)
+    _order = sorted(batches, key=lambda b: (not b.startswith('H'), b))
     _groups = []
     for _i, _b in enumerate(_order):
         _n = len(batches[_b]['items'])

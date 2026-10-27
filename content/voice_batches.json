@@ -4,68 +4,8 @@
   "label": "دفعة وحدة: كل الناقص بصوت واحد (أردني)",
   "voice": "Puck",
   "prio": 0,
-  "style": "You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 15 lines of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages; then the next 15 lines of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 3 lines of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages; then the next 15 lines of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary; then the next 45 line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
-   {
-    "key": "lb_h_pick_07",
-    "t": "تشغيل... أهلاً يا بشر!",
-    "k": "h_pick"
-   },
-   {
-    "key": "lb_h_pick_08",
-    "t": "بوت واحد جاهز للموت",
-    "k": "h_pick"
-   },
-   {
-    "key": "lb_h_pick_09",
-    "t": "تحميل الشجاعة... فشل",
-    "k": "h_pick"
-   },
-   {
-    "key": "lb_h_die_09",
-    "t": "خطأ! خطأ! النظام معطّل!",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_die_10",
-    "t": "جاري الموت... اكتمل",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_die_11",
-    "t": "ما في نسخة احتياطية! آخ!",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_die_12",
-    "t": "ما انبرمجت على الفخاخ!",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_run_07",
-    "t": "تحذير! اهرب! اهرب! اهرب!",
-    "k": "h_run"
-   },
-   {
-    "key": "lb_h_run_08",
-    "t": "جاري الهروب بأقصى سرعة",
-    "k": "h_run"
-   },
-   {
-    "key": "lb_h_run_09",
-    "t": "البطارية ثلاثة بالمية! اركض!",
-    "k": "h_run"
-   },
-   {
-    "key": "lb_h_win_07",
-    "t": "اكتملت المهمة! بيب بوب!",
-    "k": "h_win"
-   },
-   {
-    "key": "lb_h_win_08",
-    "t": "نجاح! سأحتفل... بصمت",
-    "k": "h_win"
-   },
    {
     "key": "lb_h_win_09",
     "t": "عدّيت وما احترقت دارتي",
@@ -155,9 +95,469 @@
     "key": "ps_h_warn_06",
     "t": "يا ساتر! شو هاد؟",
     "k": "h_warn"
+   },
+   {
+    "key": "any_c_fire_01",
+    "t": "يا ساتر! ريحة شاورما بالزنزانة!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_02",
+    "t": "النار قالتلك: على مهلك يا حبيبي!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_03",
+    "t": "صرت فحمة! حدا معه خبز؟",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_04",
+    "t": "نفّاثة نار؟ كان لازم تلبس مريول مطبخ!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_05",
+    "t": "شوّيناك! بالهنا والشفا!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_zap_01",
+    "t": "الغيمة قالتلك: ما توقف مكانك!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_02",
+    "t": "شعرك وقف! كان لازم تفكّر قبل!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_03",
+    "t": "صعقة مجانية! بس ما حدا طلبها!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_04",
+    "t": "الغيمة زعلانة منك! كمّل ركض!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_05",
+    "t": "برق ورعد وإنت النتيجة!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_disco_01",
+    "t": "ديسكو بلا تذكرة! رقصت يا بطل!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_02",
+    "t": "كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_03",
+    "t": "الأرض كلها كهربا يا حبيبي!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_04",
+    "t": "البلاطة الصفرا كانت تحذير، مش ديكور!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_05",
+    "t": "تحت رجليك كهربا! شو كنت متوقع؟",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_laser_01",
+    "t": "اتقسمت نصّين! شو عملت يا عيني؟",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_02",
+    "t": "الليزر ما بيفرّق: نصّك الك ونصّك للأرض!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_03",
+    "t": "الشعاع الأحمر كان مكتوب عليه: لا تلمس!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_04",
+    "t": "قطعة من هون وقطعة من هناك!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_05",
+    "t": "ليزر دوّار وإنت صرت بازل!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_train_01",
+    "t": "القطار زمّر وإنت ما سمعت!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_02",
+    "t": "صرت ورقة رفيعة خالص!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_03",
+    "t": "تشو تشو! وانتهت الرحلة!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_04",
+    "t": "القطار مش واقف على حدا يا حبيبي!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_05",
+    "t": "انفرشت على القضبان مثل الصاج!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_mole_01",
+    "t": "الخلد قالك: تفضّل عالقمر!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_02",
+    "t": "قبّعتك وصلت السما وإنت لسا نازل!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_03",
+    "t": "كان تحت رجليك من بدري وما حسّيت!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_04",
+    "t": "مطرقة وطيران! عرض مجاني!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_05",
+    "t": "الخلد أقوى منك يا بطل!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_chest_01",
+    "t": "الصندوق جعان! وإنت الوجبة!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_02",
+    "t": "قلتلك الصندوق مش آمن! ما سمعت!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_03",
+    "t": "صندوق بأسنان؟ هاد مش كنز، هاد مطعم!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_04",
+    "t": "كل الكنوز ببطن الصندوق... وإنت كمان!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_05",
+    "t": "الصندوق قال: بالهنا والشفا!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_frog_01",
+    "t": "الضفدع حبّك... بس بطريقته!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_02",
+    "t": "لسانه أسرع من إنك تقول يا ضفدع!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_03",
+    "t": "وجبة سريعة بدون انتظار!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_04",
+    "t": "اتبلعت وما رجعت! بالهنا!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_05",
+    "t": "كان جعان من الصبح والله!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_ceilspike_01",
+    "t": "المصعد قالك: شو بدك ببقيّة الطوابق؟",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_02",
+    "t": "علّقت بالسقف مثل الثريّا!",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_03",
+    "t": "اللافتة قالت آمن مية بالمية... كذّابة!",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_04",
+    "t": "طلّعك المصعد وطلّع روحك معك!",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_05",
+    "t": "السقف كان واطي... وإنت كنت عالي!",
+    "k": "c_ceilspike"
    }
   ],
-  "n": 30
+  "n": 63
+ },
+ {
+  "id": "B23_ps",
+  "label": "الفخاخ الجديدة: تعليقات",
+  "voice": "Puck",
+  "style": "You are a voice actor for a funny cartoon video game. Accent: Palestinian Levantine Arabic. Every line below is shown when the player loses, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هاهاها / ههههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "prio": 1,
+  "items": [
+   {
+    "key": "any_c_fire_01",
+    "t": "يا ساتر! ريحة شاورما بالزنزانة!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_02",
+    "t": "النار قالتلك: على مهلك يا حبيبي!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_03",
+    "t": "صرت فحمة! حدا معه خبز؟",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_04",
+    "t": "نفّاثة نار؟ كان لازم تلبس مريول مطبخ!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_fire_05",
+    "t": "شوّيناك! بالهنا والشفا!",
+    "k": "c_fire"
+   },
+   {
+    "key": "any_c_zap_01",
+    "t": "الغيمة قالتلك: ما توقف مكانك!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_02",
+    "t": "شعرك وقف! كان لازم تفكّر قبل!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_03",
+    "t": "صعقة مجانية! بس ما حدا طلبها!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_04",
+    "t": "الغيمة زعلانة منك! كمّل ركض!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_zap_05",
+    "t": "برق ورعد وإنت النتيجة!",
+    "k": "c_zap"
+   },
+   {
+    "key": "any_c_disco_01",
+    "t": "ديسكو بلا تذكرة! رقصت يا بطل!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_02",
+    "t": "كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_03",
+    "t": "الأرض كلها كهربا يا حبيبي!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_04",
+    "t": "البلاطة الصفرا كانت تحذير، مش ديكور!",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_disco_05",
+    "t": "تحت رجليك كهربا! شو كنت متوقع؟",
+    "k": "c_disco"
+   },
+   {
+    "key": "any_c_laser_01",
+    "t": "اتقسمت نصّين! شو عملت يا عيني؟",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_02",
+    "t": "الليزر ما بيفرّق: نصّك الك ونصّك للأرض!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_03",
+    "t": "الشعاع الأحمر كان مكتوب عليه: لا تلمس!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_04",
+    "t": "قطعة من هون وقطعة من هناك!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_laser_05",
+    "t": "ليزر دوّار وإنت صرت بازل!",
+    "k": "c_laser"
+   },
+   {
+    "key": "any_c_train_01",
+    "t": "القطار زمّر وإنت ما سمعت!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_02",
+    "t": "صرت ورقة رفيعة خالص!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_03",
+    "t": "تشو تشو! وانتهت الرحلة!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_04",
+    "t": "القطار مش واقف على حدا يا حبيبي!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_train_05",
+    "t": "انفرشت على القضبان مثل الصاج!",
+    "k": "c_train"
+   },
+   {
+    "key": "any_c_mole_01",
+    "t": "الخلد قالك: تفضّل عالقمر!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_02",
+    "t": "قبّعتك وصلت السما وإنت لسا نازل!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_03",
+    "t": "كان تحت رجليك من بدري وما حسّيت!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_04",
+    "t": "مطرقة وطيران! عرض مجاني!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_mole_05",
+    "t": "الخلد أقوى منك يا بطل!",
+    "k": "c_mole"
+   },
+   {
+    "key": "any_c_chest_01",
+    "t": "الصندوق جعان! وإنت الوجبة!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_02",
+    "t": "قلتلك الصندوق مش آمن! ما سمعت!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_03",
+    "t": "صندوق بأسنان؟ هاد مش كنز، هاد مطعم!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_04",
+    "t": "كل الكنوز ببطن الصندوق... وإنت كمان!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_chest_05",
+    "t": "الصندوق قال: بالهنا والشفا!",
+    "k": "c_chest"
+   },
+   {
+    "key": "any_c_frog_01",
+    "t": "الضفدع حبّك... بس بطريقته!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_02",
+    "t": "لسانه أسرع من إنك تقول يا ضفدع!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_03",
+    "t": "وجبة سريعة بدون انتظار!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_04",
+    "t": "اتبلعت وما رجعت! بالهنا!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_frog_05",
+    "t": "كان جعان من الصبح والله!",
+    "k": "c_frog"
+   },
+   {
+    "key": "any_c_ceilspike_01",
+    "t": "المصعد قالك: شو بدك ببقيّة الطوابق؟",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_02",
+    "t": "علّقت بالسقف مثل الثريّا!",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_03",
+    "t": "اللافتة قالت آمن مية بالمية... كذّابة!",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_04",
+    "t": "طلّعك المصعد وطلّع روحك معك!",
+    "k": "c_ceilspike"
+   },
+   {
+    "key": "any_c_ceilspike_05",
+    "t": "السقف كان واطي... وإنت كنت عالي!",
+    "k": "c_ceilspike"
+   }
+  ],
+  "n": 45
  },
  {
   "id": "H07_robot",
@@ -166,66 +566,6 @@
   "prio": 1,
   "style": "You are the voice of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
-   {
-    "key": "lb_h_pick_07",
-    "t": "تشغيل... أهلاً يا بشر!",
-    "k": "h_pick"
-   },
-   {
-    "key": "lb_h_pick_08",
-    "t": "بوت واحد جاهز للموت",
-    "k": "h_pick"
-   },
-   {
-    "key": "lb_h_pick_09",
-    "t": "تحميل الشجاعة... فشل",
-    "k": "h_pick"
-   },
-   {
-    "key": "lb_h_die_09",
-    "t": "خطأ! خطأ! النظام معطّل!",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_die_10",
-    "t": "جاري الموت... اكتمل",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_die_11",
-    "t": "ما في نسخة احتياطية! آخ!",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_die_12",
-    "t": "ما انبرمجت على الفخاخ!",
-    "k": "h_die"
-   },
-   {
-    "key": "lb_h_run_07",
-    "t": "تحذير! اهرب! اهرب! اهرب!",
-    "k": "h_run"
-   },
-   {
-    "key": "lb_h_run_08",
-    "t": "جاري الهروب بأقصى سرعة",
-    "k": "h_run"
-   },
-   {
-    "key": "lb_h_run_09",
-    "t": "البطارية ثلاثة بالمية! اركض!",
-    "k": "h_run"
-   },
-   {
-    "key": "lb_h_win_07",
-    "t": "اكتملت المهمة! بيب بوب!",
-    "k": "h_win"
-   },
-   {
-    "key": "lb_h_win_08",
-    "t": "نجاح! سأحتفل... بصمت",
-    "k": "h_win"
-   },
    {
     "key": "lb_h_win_09",
     "t": "عدّيت وما احترقت دارتي",
@@ -242,7 +582,7 @@
     "k": "h_warn"
    }
   ],
-  "n": 15
+  "n": 3
  },
  {
   "id": "H08_mushroom",

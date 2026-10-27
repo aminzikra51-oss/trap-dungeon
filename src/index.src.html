@@ -384,7 +384,6 @@ let subT=0;
 function say(text,tag,dur){
   if(SIM)return;
   const el=$('sub'); el.innerHTML=''; const b=document.createElement('div'); b.className='b'; b.textContent=text;
-  if(tag&&tag!=='any'){const ch=document.createElement('span');ch.className='dchip';ch.textContent=DL[tag]||tag;b.appendChild(ch)}
   el.appendChild(b); subT=dur||2.4;
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
@@ -511,7 +510,6 @@ function fillCard(top,im,t,d,hint){
   $('ctop').textContent=top; if(im&&A.img[im])$('cimg').src=A.img[im]; $('cimg').style.display=(im&&A.img[im])?'':'none';
   const cap=$('ccap'); cap.innerHTML=''; cap.appendChild(document.createTextNode(t));
   cap.className='ccap'+(t.length>92?' xl':t.length>58?' l':'');
-  if(d&&d!=='any'){const sp=document.createElement('span');sp.className='dchip';sp.textContent=DL[d]||'';cap.appendChild(sp)}
   $('cstk').textContent=rnd(STICKERS); $('cstk').style.transform='rotate('+(8+Math.random()*16|0)+'deg)';
   $('chint').textContent=hint||'اضغط أي شي لتعيد المحاولة';
   $('card').classList.remove('hide'); $('sub').innerHTML='';

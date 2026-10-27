@@ -40,3 +40,9 @@
 - نص/صوت: `python3 content/content.py` ثم `python3 tools/split_voices.py` ثم `python3 build.py`.
 - دفعة طويلة بصمت قصير بين الأسطر: `python3 tools/align_asr.py --wav ... --batch J01 --model-dir <whisper sherpa-onnx>` (تفريغ + مطابقة؛ يحتاج `pip install sherpa-onnx` ونموذج whisper turbo من GitHub k2-fsa/sherpa-onnx).
 - اختبارات (`test/`): `voice_unit.py`, `voice_flow.py [n] [mash] [hero]` (متغير `DIA=gulf`), `voice_cov.py`, `hero_voice.py`, `trap2_smoke.py` (كل الفخاخ الجديدة موجودة وبلا أخطاء)، `trap2_shots.py [نوع]` (لقطات كل فخ → `shots/t2_*.png`)، `death_shots.py` (لقطات كل أنيميشن موت)، `hero_shots.py`, `render_fuzz.py` (طويل، ~10 د), `solver.py LO HI [seeds] [steps] [diff]` (يتخطّى مراحل الزعيم), `boss_bot.py`, `boss_shot.py`, `finale_check.py`, `qauto.py`, `pwa_check.py`, `perf3.py`.
+
+## تسجيل الأصوات الناقصة (بصوت المالك)
+- الناقص: الروبوت 3 أسطر، فطر المستكشف 15، وتعليقات الفخاخ الجديدة 45 (`NEWC` بـ `content/content.py`، نوع `c_<cause>` ولهجة `any` فبتطلع بكل الإعدادات). السكربت الجاهز للقراءة: `content/record_script.md` (والنسخة التفاعلية artifact).
+- بعد ما يرسل التسجيل: ينحفظ باسم `J01_all.wav` بـ `incoming/audio/` ثم `python3 tools/split_voices.py --batch J01` ثم `python3 build.py`. الترتيب بالتسجيل = روبوت ثم فطر ثم الفخاخ (نفس ترتيب `J01_all` بـ `content/voice_batches.json`). لو بعت 3 ملفات: `H07_robot.wav` و`H08_mushroom.wav` و`B23_ps.wav`.
+- شيلنا وسم اللهجة (فلسطيني/لبناني/...) عن بطاقة الموت وعن فقاعة الراوي.
+- المهمة المجدولة اللي كانت رح تكمّل التسجيل بالـ TTS صارت غير لازمة.
