@@ -6,7 +6,11 @@
    - dark ambient light with a lamp on the hero's hard hat and torch pools (kept bright enough to read traps)
    - blob shadow under the hero */
 const HSPR={}, HMETA=A.heroMeta||{}, SPR_H=46;
-for(const k in (A.hero||{})){ const im=new Image(),o={im,ok:false}; HSPR[k]=o; im.onload=()=>{o.ok=true;try{syncHeroes()}catch(e){}}; im.src=A.hero[k] }
+for(const k in (A.hero||{})){ const im=new Image(),o={im,ok:false}; HSPR[k]=o; im.onload=()=>{o.ok=true;
+  const rc=HMETA[k]&&HMETA[k].rim; if(rc){ try{ const cv=document.createElement('canvas');cv.width=im.width;cv.height=im.height;const x=cv.getContext('2d');x.drawImage(im,0,0);x.globalCompositeOperation='source-in';x.fillStyle=rc;x.fillRect(0,0,cv.width,cv.height);o.rim=cv }catch(e){} }
+  try{syncHeroes()}catch(e){}}; im.src=A.hero[k] }
+const RIM_D=[[-1,0],[1,0],[0,-1],[0,1]];
+function sprRim(c,o,x,y,w,h,px){ if(!o.rim)return; c.save();c.globalAlpha=.85;for(const [dx,dy] of RIM_D)c.drawImage(o.rim,x+dx*px,y+dy*px,w,h);c.restore() }
 const look3=()=>!!S.look3d&&Q.q>0;
 const sprOf=id=>{const o=HSPR[id||S.hero];return o&&o.ok?o:null};
 const hexRGB=h=>{h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]};
@@ -22,6 +26,7 @@ function drawHeroSprite(c,st,id){
     else lean=clamp(-st.ey*.06,-.14,.14)-.04;
   }
   c.save();c.translate(0,bob);c.rotate(lean);c.scale(sx,sy);
+  sprRim(c,o,-w*m.cx,-h,w,h,.8);
   c.drawImage(o.im,-w*m.cx,-h,w,h);
   c.restore();
   if(st.dead){ // dizzy stars
@@ -39,7 +44,7 @@ function heroSlices(c,tt,piece){ // sprite broken in 4 bands (hat / face / belly
 }
 function heroThumb(cx,id){
   const o=sprOf(id); if(!o||!look3())return false; const m=HMETA[id]||{w:o.im.width,h:o.im.height,cx:.5},h=62,w=h*m.w/m.h;
-  cx.drawImage(o.im,-w*m.cx,-h-1,w,h); return true;
+  sprRim(cx,o,-w*m.cx,-h-1,w,h,.9); cx.drawImage(o.im,-w*m.cx,-h-1,w,h); return true;
 }
 
 /* ---------- palette cache ---------- */

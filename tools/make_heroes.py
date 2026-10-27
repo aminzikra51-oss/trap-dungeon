@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cutout import cutout
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 H = 224
+RIM = {'robot': '#8fdcff'}   # dark sprites get a thin light rim in game so they don't vanish into the dungeon
 def deshadow(rgba, from_frac=.70):
     h = rgba.shape[0]; y0 = int(h * from_frac)
     px = rgba[y0:, :, :3].astype(int)
@@ -15,12 +16,16 @@ def deshadow(rgba, from_frac=.70):
     # re-crop to the remaining alpha
     ys, xs = np.where(rgba[..., 3] > 6); return rgba[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
 def main():
-    os.makedirs(f'{ROOT}/assets/hero', exist_ok=True); meta = {}
+    # usage: make_heroes.py [id ...] [--no-deshadow]   (no ids = all; existing meta.json entries are kept)
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]; keep_shadow = '--no-deshadow' in sys.argv; pockets = '--pockets' in sys.argv
+    mp = f'{ROOT}/assets/hero/meta.json'
+    os.makedirs(f'{ROOT}/assets/hero', exist_ok=True); meta = json.load(open(mp)) if os.path.exists(mp) else {}
     for f in sorted(os.listdir(f'{ROOT}/raw/heroes')):
         if not f.endswith('.jpg') or '_' in f: continue
         hid = f[:-4]
-        r = cutout(f'{ROOT}/raw/heroes/{f}')
-        r = deshadow(r)
+        if args and hid not in args: continue
+        r = cutout(f'{ROOT}/raw/heroes/{f}', pockets=pockets)
+        if not keep_shadow: r = deshadow(r)
         s = H / r.shape[0]; r = cv2.resize(r, (max(1, round(r.shape[1] * s)), H), interpolation=cv2.INTER_AREA)
         # horizontal centre of mass of the body in the lower half (so a tail / arm doesn't shift the feet)
         a = r[..., 3].astype(float); ys, xs = np.mgrid[:a.shape[0], :a.shape[1]]
@@ -29,6 +34,7 @@ def main():
         from PIL import Image
         Image.fromarray(cv2.cvtColor(r, cv2.COLOR_BGRA2RGBA)).save(out, 'WEBP', quality=88, method=6)
         meta[hid] = {'w': r.shape[1], 'h': r.shape[0], 'cx': round(cx, 3), 'kb': os.path.getsize(out) // 1024}
+        if hid in RIM: meta[hid]['rim'] = RIM[hid]
         print(hid, meta[hid])
-    json.dump(meta, open(f'{ROOT}/assets/hero/meta.json', 'w'))
+    json.dump(meta, open(mp, 'w'))
 main()

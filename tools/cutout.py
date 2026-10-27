@@ -5,7 +5,7 @@ usage: python3 tools/cutout.py raw/heroes/falafel.jpg out.png [--h 192]"""
 import sys, cv2, numpy as np
 from scipy import ndimage as ndi
 
-def cutout(path, tol=6, h=None, work=640):
+def cutout(path, tol=6, h=None, work=640, pockets=False):
     full = cv2.imread(path); H0, W0 = full.shape[:2]
     k = work / max(H0, W0); small = cv2.resize(full, (round(W0 * k), round(H0 * k)), interpolation=cv2.INTER_AREA)
     H, W = small.shape[:2]
@@ -29,7 +29,18 @@ def cutout(path, tol=6, h=None, work=640):
     lab, n = ndi.label(m)
     if n > 1:
         sizes = ndi.sum(m, lab, range(1, n + 1)); m = (lab == (1 + int(np.argmax(sizes)))).astype(np.uint8)
-    m = ndi.binary_fill_holes(m); m = ndi.binary_opening(m, iterations=1)
+    if pockets:  # enclosed gaps (between legs / arm and torso) the border flood never reached: colour-key them against the backdrop colour
+        bgc = np.median(np.concatenate([small[:8].reshape(-1, 3), small[-8:].reshape(-1, 3), small[:, :8].reshape(-1, 3), small[:, -8:].reshape(-1, 3)]), 0)
+        near = (np.abs(small.astype(int) - bgc).max(-1) <= tol + 4)
+        near = ndi.binary_opening(near, iterations=1)
+        lab2, n2 = ndi.label(near)
+        if n2:
+            sz = ndi.sum(near, lab2, range(1, n2 + 1))
+            for i, a_ in enumerate(sz):
+                if a_ >= 120: m[lab2 == i + 1] = 0
+    else:
+        m = ndi.binary_fill_holes(m)
+    m = ndi.binary_opening(m, iterations=1)
     a = cv2.resize(m.astype(np.float32), (W0, H0), interpolation=cv2.INTER_LINEAR)
     a = (a > .5)
     a = ndi.binary_erosion(a, iterations=2).astype(np.float32)
