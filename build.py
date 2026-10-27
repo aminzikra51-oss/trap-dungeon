@@ -37,9 +37,9 @@ head = ('<link rel="manifest" href="manifest.webmanifest">\n'
         '<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">\n'
         '<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">\n'
         '<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="mobile-web-app-capable" content="yes">\n'
-        '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">\n<meta name="apple-mobile-web-app-title" content="زنزانة الفخاخ">\n'
+        '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">\n<meta name="apple-mobile-web-app-title" content="Don\'t Die">\n'
         '<meta name="description" content="لعبة منصّات عربية ساخرة: فخاخ، شماتة بأصوات لبنانية ومصرية وفلسطينية، ومراحل لا نهائية.">\n'
-        '<meta property="og:title" content="زنزانة الفخاخ"><meta property="og:description" content="كل شي آمن هون... وكله كذب 😇">\n')
+        '<meta property="og:title" content="Don\'t Die, Habibi | لا تموت يا حبيبي"><meta property="og:description" content="كل شي آمن هون... وكله كذب 😇 Totally safe here. (It is not.)">\n')
 reg = """<script>
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){
   const had=!!navigator.serviceWorker.controller;
