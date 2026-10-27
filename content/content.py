@@ -581,6 +581,18 @@ HEROES_V = {
       'run':  ['اركض يا حمار! مش وقت فرجة!', 'يا زلمة بسرعة! هيهو هيهو!', 'كوول بس هربان!'],
       'win':  ['قلتلكم كوول! هيهو!', 'عدّيتها ببرود يا زلمة!', 'الحمار عدّاها! هي هاو!'],
       'warn': ['شو هاد يا زلمة؟', 'أنا مش خايف... شوي']}),
+ 'robot': dict(name='الروبوت BOT 01', d='lb', voice='Charon', who="BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages",
+   L={'pick': ['تشغيل... أهلاً يا بشر!', 'بوت واحد جاهز للموت', 'تحميل الشجاعة... فشل'],
+      'die':  ['خطأ! خطأ! النظام معطّل!', 'جاري الموت... اكتمل', 'ما في نسخة احتياطية! آخ!', 'ما انبرمجت على الفخاخ!'],
+      'run':  ['تحذير! اهرب! اهرب! اهرب!', 'جاري الهروب بأقصى سرعة', 'البطارية ثلاثة بالمية! اركض!'],
+      'win':  ['اكتملت المهمة! بيب بوب!', 'نجاح! سأحتفل... بصمت', 'عدّيت وما احترقت دارتي'],
+      'warn': ['تنبيه: ضحكة مريبة!', 'رصدت فخ... متأخر']}),
+ 'mushroom': dict(name='فطر المستكشف', d='ps', voice='Zephyr', who="a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary",
+   L={'pick': ['يا هلا! مستكشف الفطر هون!', 'مغامرة جديدة! يا حلو!', 'يلا نكتشف الزنزانة!'],
+      'die':  ['آخ! قبّعتي تفطّرت!', 'ما قرأت عن هالفخ بالكتاب!', 'فطر مسكين! وقعت!', 'سجّلوا: الفخ خطير جداً!'],
+      'run':  ['اهرب يا فطر! اهرب!', 'ركض ركض! الشنطة ثقيلة!', 'ما كنت ناوي أجري هيك!'],
+      'win':  ['اكتشاف عظيم! عدّيت!', 'سجّلت الإنجاز بدفتري!', 'الفطر بيعدّي! هيهي!'],
+      'warn': ['شو هالصوت؟ مثير للاهتمام!', 'يا ساتر! شو هاد؟']}),
 }
 STYLE_H = ("You are the voice of {who}, a character in a funny cartoon video game. Accent: {acc}. "
  "Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, "

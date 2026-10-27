@@ -1,1 +1,332 @@
-[]
+[
+ {
+  "id": "J01_all",
+  "label": "دفعة وحدة: كل الناقص بصوت واحد (أردني)",
+  "voice": "Puck",
+  "prio": 0,
+  "style": "You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 15 lines of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages; then the next 15 lines of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "items": [
+   {
+    "key": "lb_h_pick_07",
+    "t": "تشغيل... أهلاً يا بشر!",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_08",
+    "t": "بوت واحد جاهز للموت",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_09",
+    "t": "تحميل الشجاعة... فشل",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_die_09",
+    "t": "خطأ! خطأ! النظام معطّل!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_10",
+    "t": "جاري الموت... اكتمل",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_11",
+    "t": "ما في نسخة احتياطية! آخ!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_12",
+    "t": "ما انبرمجت على الفخاخ!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_run_07",
+    "t": "تحذير! اهرب! اهرب! اهرب!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_08",
+    "t": "جاري الهروب بأقصى سرعة",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_09",
+    "t": "البطارية ثلاثة بالمية! اركض!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_win_07",
+    "t": "اكتملت المهمة! بيب بوب!",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_08",
+    "t": "نجاح! سأحتفل... بصمت",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_09",
+    "t": "عدّيت وما احترقت دارتي",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_warn_05",
+    "t": "تنبيه: ضحكة مريبة!",
+    "k": "h_warn"
+   },
+   {
+    "key": "lb_h_warn_06",
+    "t": "رصدت فخ... متأخر",
+    "k": "h_warn"
+   },
+   {
+    "key": "ps_h_pick_07",
+    "t": "يا هلا! مستكشف الفطر هون!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_08",
+    "t": "مغامرة جديدة! يا حلو!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_09",
+    "t": "يلا نكتشف الزنزانة!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_die_09",
+    "t": "آخ! قبّعتي تفطّرت!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_10",
+    "t": "ما قرأت عن هالفخ بالكتاب!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_11",
+    "t": "فطر مسكين! وقعت!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_12",
+    "t": "سجّلوا: الفخ خطير جداً!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_run_07",
+    "t": "اهرب يا فطر! اهرب!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_08",
+    "t": "ركض ركض! الشنطة ثقيلة!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_09",
+    "t": "ما كنت ناوي أجري هيك!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_win_07",
+    "t": "اكتشاف عظيم! عدّيت!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_08",
+    "t": "سجّلت الإنجاز بدفتري!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_09",
+    "t": "الفطر بيعدّي! هيهي!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_warn_05",
+    "t": "شو هالصوت؟ مثير للاهتمام!",
+    "k": "h_warn"
+   },
+   {
+    "key": "ps_h_warn_06",
+    "t": "يا ساتر! شو هاد؟",
+    "k": "h_warn"
+   }
+  ],
+  "n": 30
+ },
+ {
+  "id": "H07_robot",
+  "label": "بطل: الروبوت BOT 01 (أردني)",
+  "voice": "Charon",
+  "prio": 1,
+  "style": "You are the voice of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "items": [
+   {
+    "key": "lb_h_pick_07",
+    "t": "تشغيل... أهلاً يا بشر!",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_08",
+    "t": "بوت واحد جاهز للموت",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_pick_09",
+    "t": "تحميل الشجاعة... فشل",
+    "k": "h_pick"
+   },
+   {
+    "key": "lb_h_die_09",
+    "t": "خطأ! خطأ! النظام معطّل!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_10",
+    "t": "جاري الموت... اكتمل",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_11",
+    "t": "ما في نسخة احتياطية! آخ!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_die_12",
+    "t": "ما انبرمجت على الفخاخ!",
+    "k": "h_die"
+   },
+   {
+    "key": "lb_h_run_07",
+    "t": "تحذير! اهرب! اهرب! اهرب!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_08",
+    "t": "جاري الهروب بأقصى سرعة",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_run_09",
+    "t": "البطارية ثلاثة بالمية! اركض!",
+    "k": "h_run"
+   },
+   {
+    "key": "lb_h_win_07",
+    "t": "اكتملت المهمة! بيب بوب!",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_08",
+    "t": "نجاح! سأحتفل... بصمت",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_win_09",
+    "t": "عدّيت وما احترقت دارتي",
+    "k": "h_win"
+   },
+   {
+    "key": "lb_h_warn_05",
+    "t": "تنبيه: ضحكة مريبة!",
+    "k": "h_warn"
+   },
+   {
+    "key": "lb_h_warn_06",
+    "t": "رصدت فخ... متأخر",
+    "k": "h_warn"
+   }
+  ],
+  "n": 15
+ },
+ {
+  "id": "H08_mushroom",
+  "label": "بطل: فطر المستكشف (أردني)",
+  "voice": "Zephyr",
+  "prio": 1,
+  "style": "You are the voice of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary, a character in a funny cartoon video game. Accent: Jordanian Arabic (urban Amman), natural Levantine pronunciation. Each line below is a short spoken exclamation by this character: perform it with big comic emotion, fully in character, natural and quick, never reading it flat. Read ONLY the text lines, in order, without any numbering or labels. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "items": [
+   {
+    "key": "ps_h_pick_07",
+    "t": "يا هلا! مستكشف الفطر هون!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_08",
+    "t": "مغامرة جديدة! يا حلو!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_pick_09",
+    "t": "يلا نكتشف الزنزانة!",
+    "k": "h_pick"
+   },
+   {
+    "key": "ps_h_die_09",
+    "t": "آخ! قبّعتي تفطّرت!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_10",
+    "t": "ما قرأت عن هالفخ بالكتاب!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_11",
+    "t": "فطر مسكين! وقعت!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_die_12",
+    "t": "سجّلوا: الفخ خطير جداً!",
+    "k": "h_die"
+   },
+   {
+    "key": "ps_h_run_07",
+    "t": "اهرب يا فطر! اهرب!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_08",
+    "t": "ركض ركض! الشنطة ثقيلة!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_run_09",
+    "t": "ما كنت ناوي أجري هيك!",
+    "k": "h_run"
+   },
+   {
+    "key": "ps_h_win_07",
+    "t": "اكتشاف عظيم! عدّيت!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_08",
+    "t": "سجّلت الإنجاز بدفتري!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_win_09",
+    "t": "الفطر بيعدّي! هيهي!",
+    "k": "h_win"
+   },
+   {
+    "key": "ps_h_warn_05",
+    "t": "شو هالصوت؟ مثير للاهتمام!",
+    "k": "h_warn"
+   },
+   {
+    "key": "ps_h_warn_06",
+    "t": "يا ساتر! شو هاد؟",
+    "k": "h_warn"
+   }
+  ],
+  "n": 15
+ }
+]
