@@ -27,5 +27,11 @@ with sync_playwright() as p:
     pg.evaluate('TD.startGame(3)'); pg.wait_for_timeout(300); pg.evaluate(SETUP); pg.wait_for_timeout(300); pg.screenshot(path=f'{d}/_bg.png'); pg.close()
     open(f'{d}/_cover.html', 'w', encoding='utf-8').write(HTML)
     pg = b.new_page(viewport={'width': 630, 'height': 500}, device_scale_factor=2); pg.goto(f'file://{d}/_cover.html'); pg.wait_for_timeout(600)
-    pg.locator('#c').screenshot(path=f'{d}/cover.png'); b.close()
-print('dist/cover.png', os.path.getsize(f'{d}/cover.png') // 1024, 'KB')
+    pg.locator('#c').screenshot(path=f'{d}/cover.png'); pg.close()
+    # link-preview image (WhatsApp/Telegram/X): 1200x630, the cover pillar-boxed over a blurred copy of the gameplay shot
+    open(f'{d}/_og.html', 'w').write('<!doctype html><meta charset=utf-8><style>html,body{margin:0;background:#000}#o{position:relative;width:1200px;height:630px;overflow:hidden}'
+        '#b{position:absolute;inset:-30px;background:url(_bg.png) center/cover;filter:blur(16px) brightness(.5) saturate(1.2)}'
+        '#c{position:absolute;top:0;left:50%;height:630px;transform:translateX(-50%);box-shadow:0 0 60px #000c}</style><div id=o><div id=b></div><img id=c src=cover.png></div>')
+    pg = b.new_page(viewport={'width': 1200, 'height': 630}); pg.goto(f'file://{d}/_og.html'); pg.wait_for_timeout(500)
+    pg.locator('#o').screenshot(path=f'{root}/pwa/og.jpg', type='jpeg', quality=86); b.close()
+print('dist/cover.png', os.path.getsize(f'{d}/cover.png') // 1024, 'KB; pwa/og.jpg', os.path.getsize(f'{root}/pwa/og.jpg') // 1024, 'KB')

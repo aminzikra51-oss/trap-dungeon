@@ -74,8 +74,11 @@ select.tg{appearance:auto}
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Don't Die">
-<meta name="description" content="لعبة منصّات عربية ساخرة: فخاخ، شماتة بأصوات لبنانية ومصرية وفلسطينية، ومراحل لا نهائية.">
-<meta property="og:title" content="Don't Die, Habibi | لا تموت يا حبيبي"><meta property="og:description" content="كل شي آمن هون... وكله كذب 😇 Totally safe here. (It is not.)">
+<meta name="description" content="لعبة منصّات عربية ساخرة: فخاخ، شماتة بأصوات لبنانية ومصرية وفلسطينية، ومراحل لا نهائية. A trap platformer where the signs lie and the traps laugh at you.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Don't Die, Habibi">
+<meta property="og:title" content="Don't Die, Habibi | لا تموت يا حبيبي"><meta property="og:description" content="كل شي آمن هون... وكله كذب 😇  Totally safe here. (It is not.)">
+<meta property="og:url" content="https://aminzikra51-oss.github.io/trap-dungeon/"><meta property="og:image" content="https://aminzikra51-oss.github.io/trap-dungeon/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Don't Die, Habibi | لا تموت يا حبيبي"><meta name="twitter:description" content="كل شي آمن هون... وكله كذب 😇  Totally safe here. (It is not.)"><meta name="twitter:image" content="https://aminzikra51-oss.github.io/trap-dungeon/og.jpg">
 </head>
 <body>
 <div id="wrap" dir="rtl" lang="ar"><div id="stage">
@@ -99,7 +102,7 @@ select.tg{appearance:auto}
       <p class="tag">كل شي آمن هون... وكله كذب 😇</p>
       <div><button class="btn" id="bPlay">ابدأ اللعب</button></div>
       <div><button class="btn alt hide" id="bCont">كمّل من المرحلة 1</button></div>
-      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select></div>
+      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button></div>
       <div class="how">⬅ ➡ للحركة · ⬆ أو مسافة للقفز (واضغط مرة ثانية بالهوا!) · P إيقاف · R إعادة · M كتم</div>
       <div class="hlbl">اختر بطلك 👇</div><div class="hrow" id="heroT"></div>
     </div>
@@ -120,6 +123,7 @@ select.tg{appearance:auto}
       <option value="gulf">خليجي</option><option value="iq">عراقي</option><option value="ma">مغربي</option>
       <option value="lb">لبناني</option><option value="ps">فلسطيني</option></select></div>
     <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
+    <div class="row"><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
     <div class="lvlpick">اقفز إلى مرحلة: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
   </div></div>
@@ -2407,6 +2411,18 @@ $('bPlay').onclick=()=>{S.deaths=0;save();startGame(1);const x=pick('intro',{pAu
   if(x){later(600,()=>{sayVoice(x,4)}); later(4800,()=>{if(G.deaths===0)say('⬅ ➡ للحركة · ⬆ للقفز. صدّق اللافتات... أو لا 😉','any',3.6)})}};
 $('bCont').onclick=()=>startGame(S.best);
 $('bMenu').onclick=()=>{Snd.init();togglePause()};
+/* share: native share sheet (WhatsApp/Telegram/...), else copy to clipboard. The URL is fixed per build (itch iframes and PWAs have different location.href). */
+const SHARE_URL='https://aminzikra51-oss.github.io/dont-die-habibi/', SHARE_TITLE="Don't Die, Habibi | لا تموت يا حبيبي";
+function shareText(){ return S.deaths>0 ? '💀 متّ '+S.deaths+' مرة ووصلت للمرحلة '+S.best+' بلعبة «لا تموت يا حبيبي» 😭 بتقدر تعمل أحسن؟ 😈' : '😈 جرّب لعبة «لا تموت يا حبيبي»: كل شي آمن هون... وكله كذب' }
+async function shareResult(btn){
+  const txt=shareText(), full=txt+'\n'+SHARE_URL, old=btn.textContent; let copied=false;
+  const flash=m=>{btn.textContent=m; setTimeout(()=>{btn.textContent=old},2200)};
+  try{ if(navigator.share){ await navigator.share({title:SHARE_TITLE,text:txt,url:SHARE_URL}); return } }catch(e){ if(e&&e.name==='AbortError')return }
+  try{ await navigator.clipboard.writeText(full); copied=true }catch(e){
+    try{ const t=document.createElement('textarea'); t.value=full; t.style.cssText='position:fixed;left:-999px;top:0;opacity:0'; document.body.appendChild(t); t.select(); copied=document.execCommand('copy'); t.remove() }catch(_){} }
+  flash(copied?'اننسخ! الصقه بأي قروب 📋':SHARE_URL)
+}
+$('bShare').onclick=()=>shareResult($('bShare')); $('bShareT').onclick=()=>shareResult($('bShareT'));
 /* install-as-app: Android/desktop Chrome fires beforeinstallprompt; iOS Safari needs the Share sheet. Only when served with a manifest (the real PWA, not the artifact). */
 { const bi=$('bInst'), hasMf=!!document.querySelector('link[rel=manifest]'), isApp=matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone; let dip=null;
   if(hasMf&&!isApp){
