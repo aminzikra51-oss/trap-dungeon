@@ -1,10 +1,10 @@
 [
  {
-  "id": "J01_all",
-  "label": "دفعة وحدة: كل الناقص بصوت واحد (أردني)",
+  "id": "J01_heroes",
+  "label": "أبطال: الروبوت BOT 01 + فطر المستكشف (أردني، صوت واحد)",
   "voice": "Puck",
   "prio": 0,
-  "style": "You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 3 lines of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages; then the next 15 lines of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary; then the next 45 line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "style": "You are one voice actor in a funny cartoon video game, speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. Keep the SAME voice and timbre for every line; change only the energy and the emotion. First, 3 lines spoken by BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages. Then 15 lines spoken by a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary. Perform each with big comic emotion, fully in character, natural and quick. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
   "items": [
    {
     "key": "lb_h_win_09",
@@ -18,7 +18,7 @@
    },
    {
     "key": "lb_h_warn_06",
-    "t": "رصدت فخ... متأخر",
+    "t": "رصدت فخ... بس متأخر",
     "k": "h_warn"
    },
    {
@@ -68,7 +68,7 @@
    },
    {
     "key": "ps_h_run_09",
-    "t": "ما كنت ناوي أجري هيك!",
+    "t": "ما كنت ناوي أركض هيك!",
     "k": "h_run"
    },
    {
@@ -95,7 +95,17 @@
     "key": "ps_h_warn_06",
     "t": "يا ساتر! شو هاد؟",
     "k": "h_warn"
-   },
+   }
+  ],
+  "n": 18
+ },
+ {
+  "id": "J02_traps_a",
+  "label": "تعليقات الفخاخ 1 (أردني، صوت واحد)",
+  "voice": "Puck",
+  "prio": 0,
+  "style": "You are one voice actor in a funny cartoon video game, speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. Keep the SAME voice and timbre for every line; change only the energy and the emotion. Every line is a comment shown when the player dies to a trap, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "items": [
    {
     "key": "any_c_fire_01",
     "t": "يا ساتر! ريحة شاورما بالزنزانة!",
@@ -103,7 +113,7 @@
    },
    {
     "key": "any_c_fire_02",
-    "t": "النار قالتلك: على مهلك يا حبيبي!",
+    "t": "النار قالتلك: على مهلك يا زلمة!",
     "k": "c_fire"
    },
    {
@@ -153,12 +163,12 @@
    },
    {
     "key": "any_c_disco_02",
-    "t": "كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!",
+    "t": "كنت بترقص ولا بتنصعق؟ ما بنعرف!",
     "k": "c_disco"
    },
    {
     "key": "any_c_disco_03",
-    "t": "الأرض كلها كهربا يا حبيبي!",
+    "t": "الأرض كلها كهربا يا زلمة!",
     "k": "c_disco"
    },
    {
@@ -173,12 +183,12 @@
    },
    {
     "key": "any_c_laser_01",
-    "t": "اتقسمت نصّين! شو عملت يا عيني؟",
+    "t": "انقسمت نصّين! شو سوّيت يا عيني؟",
     "k": "c_laser"
    },
    {
     "key": "any_c_laser_02",
-    "t": "الليزر ما بيفرّق: نصّك الك ونصّك للأرض!",
+    "t": "الليزر ما بيفرّق: نصّك إلك ونصّك للأرض!",
     "k": "c_laser"
    },
    {
@@ -213,14 +223,24 @@
    },
    {
     "key": "any_c_train_04",
-    "t": "القطار مش واقف على حدا يا حبيبي!",
+    "t": "القطار مش واقف على حدا يا زلمة!",
     "k": "c_train"
    },
    {
     "key": "any_c_train_05",
-    "t": "انفرشت على القضبان مثل الصاج!",
+    "t": "انفرشت عالقضبان مثل الصاج!",
     "k": "c_train"
-   },
+   }
+  ],
+  "n": 25
+ },
+ {
+  "id": "J03_traps_b",
+  "label": "تعليقات الفخاخ 2 (أردني، صوت واحد)",
+  "voice": "Puck",
+  "prio": 0,
+  "style": "You are one voice actor in a funny cartoon video game, speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. Keep the SAME voice and timbre for every line; change only the energy and the emotion. Every line is a comment shown when the player dies to a trap, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.",
+  "items": [
    {
     "key": "any_c_mole_01",
     "t": "الخلد قالك: تفضّل عالقمر!",
@@ -233,7 +253,7 @@
    },
    {
     "key": "any_c_mole_03",
-    "t": "كان تحت رجليك من بدري وما حسّيت!",
+    "t": "كان تحت رجليك من زمان وما حسّيت!",
     "k": "c_mole"
    },
    {
@@ -273,7 +293,7 @@
    },
    {
     "key": "any_c_frog_01",
-    "t": "الضفدع حبّك... بس بطريقته!",
+    "t": "الضفدع حبّك... بس على طريقته!",
     "k": "c_frog"
    },
    {
@@ -288,7 +308,7 @@
    },
    {
     "key": "any_c_frog_04",
-    "t": "اتبلعت وما رجعت! بالهنا!",
+    "t": "انبلعت وما رجعت! بالهنا!",
     "k": "c_frog"
    },
    {
@@ -318,11 +338,11 @@
    },
    {
     "key": "any_c_ceilspike_05",
-    "t": "السقف كان واطي... وإنت كنت عالي!",
+    "t": "السقف كان واطي... وإنت كنت طويل!",
     "k": "c_ceilspike"
    }
   ],
-  "n": 63
+  "n": 20
  },
  {
   "id": "B23_ps",
@@ -338,7 +358,7 @@
    },
    {
     "key": "any_c_fire_02",
-    "t": "النار قالتلك: على مهلك يا حبيبي!",
+    "t": "النار قالتلك: على مهلك يا زلمة!",
     "k": "c_fire"
    },
    {
@@ -388,12 +408,12 @@
    },
    {
     "key": "any_c_disco_02",
-    "t": "كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!",
+    "t": "كنت بترقص ولا بتنصعق؟ ما بنعرف!",
     "k": "c_disco"
    },
    {
     "key": "any_c_disco_03",
-    "t": "الأرض كلها كهربا يا حبيبي!",
+    "t": "الأرض كلها كهربا يا زلمة!",
     "k": "c_disco"
    },
    {
@@ -408,12 +428,12 @@
    },
    {
     "key": "any_c_laser_01",
-    "t": "اتقسمت نصّين! شو عملت يا عيني؟",
+    "t": "انقسمت نصّين! شو سوّيت يا عيني؟",
     "k": "c_laser"
    },
    {
     "key": "any_c_laser_02",
-    "t": "الليزر ما بيفرّق: نصّك الك ونصّك للأرض!",
+    "t": "الليزر ما بيفرّق: نصّك إلك ونصّك للأرض!",
     "k": "c_laser"
    },
    {
@@ -448,12 +468,12 @@
    },
    {
     "key": "any_c_train_04",
-    "t": "القطار مش واقف على حدا يا حبيبي!",
+    "t": "القطار مش واقف على حدا يا زلمة!",
     "k": "c_train"
    },
    {
     "key": "any_c_train_05",
-    "t": "انفرشت على القضبان مثل الصاج!",
+    "t": "انفرشت عالقضبان مثل الصاج!",
     "k": "c_train"
    },
    {
@@ -468,7 +488,7 @@
    },
    {
     "key": "any_c_mole_03",
-    "t": "كان تحت رجليك من بدري وما حسّيت!",
+    "t": "كان تحت رجليك من زمان وما حسّيت!",
     "k": "c_mole"
    },
    {
@@ -508,7 +528,7 @@
    },
    {
     "key": "any_c_frog_01",
-    "t": "الضفدع حبّك... بس بطريقته!",
+    "t": "الضفدع حبّك... بس على طريقته!",
     "k": "c_frog"
    },
    {
@@ -523,7 +543,7 @@
    },
    {
     "key": "any_c_frog_04",
-    "t": "اتبلعت وما رجعت! بالهنا!",
+    "t": "انبلعت وما رجعت! بالهنا!",
     "k": "c_frog"
    },
    {
@@ -553,7 +573,7 @@
    },
    {
     "key": "any_c_ceilspike_05",
-    "t": "السقف كان واطي... وإنت كنت عالي!",
+    "t": "السقف كان واطي... وإنت كنت طويل!",
     "k": "c_ceilspike"
    }
   ],
@@ -578,7 +598,7 @@
    },
    {
     "key": "lb_h_warn_06",
-    "t": "رصدت فخ... متأخر",
+    "t": "رصدت فخ... بس متأخر",
     "k": "h_warn"
    }
   ],
@@ -638,7 +658,7 @@
    },
    {
     "key": "ps_h_run_09",
-    "t": "ما كنت ناوي أجري هيك!",
+    "t": "ما كنت ناوي أركض هيك!",
     "k": "h_run"
    },
    {

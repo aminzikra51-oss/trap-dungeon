@@ -1,6 +1,6 @@
 # سكربت الأصوات لـ Google AI Studio
 
-**63 سطر: إمّا دفعة وحدة (J01) أو 3 دفعات منفصلة بأصوات مختلفة.**
+**63 سطر: إمّا الملفات J (صوت واحد) أو 3 دفعات منفصلة بأصوات مختلفة.**
 
 ## طريقة العمل (لكل دفعة، دقيقتين)
 1. افتح **aistudio.google.com** ← **Generate Media** ← **Speech generation** (أو "Generate speech").
@@ -17,14 +17,14 @@
 
 
 ---
-## J01 — دفعة وحدة: كل الناقص بصوت واحد (أردني)   (أولوية 0، 63 سطر)
+## J01 — أبطال: الروبوت BOT 01 + فطر المستكشف (أردني، صوت واحد)   (أولوية 0، 18 سطر)
 
 - **Voice:** `Puck`
-- **ملف الحفظ:** `J01_all.wav`
+- **ملف الحفظ:** `J01_heroes.wav`
 
 **Style instructions:**
 ```
-You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, all speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. The lines come in this exact order: the first 3 lines of BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages; then the next 15 lines of a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary; then the next 45 line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed. Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.
+You are one voice actor in a funny cartoon video game, speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. Keep the SAME voice and timbre for every line; change only the energy and the emotion. First, 3 lines spoken by BOT 01, a small clumsy retro robot with a flat monotone computer voice that glitches into panic, deadpan and funny, says beep-boop style status messages. Then 15 lines spoken by a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary. Perform each with big comic emotion, fully in character, natural and quick. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.
 ```
 
 **Text:**
@@ -33,7 +33,7 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 
 تنبيه: ضحكة مريبة!
 
-رصدت فخ... متأخر
+رصدت فخ... بس متأخر
 
 يا هلا! مستكشف الفطر هون!
 
@@ -53,7 +53,7 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 
 ركض ركض! الشنطة ثقيلة!
 
-ما كنت ناوي أجري هيك!
+ما كنت ناوي أركض هيك!
 
 اكتشاف عظيم! عدّيت!
 
@@ -64,10 +64,25 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 شو هالصوت؟ مثير للاهتمام!
 
 يا ساتر! شو هاد؟
+```
 
+
+---
+## J02 — تعليقات الفخاخ 1 (أردني، صوت واحد)   (أولوية 0، 25 سطر)
+
+- **Voice:** `Puck`
+- **ملف الحفظ:** `J02_traps_a.wav`
+
+**Style instructions:**
+```
+You are one voice actor in a funny cartoon video game, speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. Keep the SAME voice and timbre for every line; change only the energy and the emotion. Every line is a comment shown when the player dies to a trap, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.
+```
+
+**Text:**
+```
 يا ساتر! ريحة شاورما بالزنزانة!
 
-النار قالتلك: على مهلك يا حبيبي!
+النار قالتلك: على مهلك يا زلمة!
 
 صرت فحمة! حدا معه خبز؟
 
@@ -87,17 +102,17 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 
 ديسكو بلا تذكرة! رقصت يا بطل!
 
-كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!
+كنت بترقص ولا بتنصعق؟ ما بنعرف!
 
-الأرض كلها كهربا يا حبيبي!
+الأرض كلها كهربا يا زلمة!
 
 البلاطة الصفرا كانت تحذير، مش ديكور!
 
 تحت رجليك كهربا! شو كنت متوقع؟
 
-اتقسمت نصّين! شو عملت يا عيني؟
+انقسمت نصّين! شو سوّيت يا عيني؟
 
-الليزر ما بيفرّق: نصّك الك ونصّك للأرض!
+الليزر ما بيفرّق: نصّك إلك ونصّك للأرض!
 
 الشعاع الأحمر كان مكتوب عليه: لا تلمس!
 
@@ -111,15 +126,30 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 
 تشو تشو! وانتهت الرحلة!
 
-القطار مش واقف على حدا يا حبيبي!
+القطار مش واقف على حدا يا زلمة!
 
-انفرشت على القضبان مثل الصاج!
+انفرشت عالقضبان مثل الصاج!
+```
 
+
+---
+## J03 — تعليقات الفخاخ 2 (أردني، صوت واحد)   (أولوية 0، 20 سطر)
+
+- **Voice:** `Puck`
+- **ملف الحفظ:** `J03_traps_b.wav`
+
+**Style instructions:**
+```
+You are one voice actor in a funny cartoon video game, speaking Jordanian Arabic (urban Amman), natural Levantine pronunciation. Keep the SAME voice and timbre for every line; change only the energy and the emotion. Every line is a comment shown when the player dies to a trap, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. Leave a clear silence of about 3 seconds after each line before starting the next one.
+```
+
+**Text:**
+```
 الخلد قالك: تفضّل عالقمر!
 
 قبّعتك وصلت السما وإنت لسا نازل!
 
-كان تحت رجليك من بدري وما حسّيت!
+كان تحت رجليك من زمان وما حسّيت!
 
 مطرقة وطيران! عرض مجاني!
 
@@ -135,13 +165,13 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 
 الصندوق قال: بالهنا والشفا!
 
-الضفدع حبّك... بس بطريقته!
+الضفدع حبّك... بس على طريقته!
 
 لسانه أسرع من إنك تقول يا ضفدع!
 
 وجبة سريعة بدون انتظار!
 
-اتبلعت وما رجعت! بالهنا!
+انبلعت وما رجعت! بالهنا!
 
 كان جعان من الصبح والله!
 
@@ -153,7 +183,7 @@ You are one versatile voice actor in a funny cartoon video game, performing seve
 
 طلّعك المصعد وطلّع روحك معك!
 
-السقف كان واطي... وإنت كنت عالي!
+السقف كان واطي... وإنت كنت طويل!
 ```
 
 
@@ -172,7 +202,7 @@ You are a voice actor for a funny cartoon video game. Accent: Palestinian Levant
 ```
 يا ساتر! ريحة شاورما بالزنزانة!
 
-النار قالتلك: على مهلك يا حبيبي!
+النار قالتلك: على مهلك يا زلمة!
 
 صرت فحمة! حدا معه خبز؟
 
@@ -192,17 +222,17 @@ You are a voice actor for a funny cartoon video game. Accent: Palestinian Levant
 
 ديسكو بلا تذكرة! رقصت يا بطل!
 
-كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!
+كنت بترقص ولا بتنصعق؟ ما بنعرف!
 
-الأرض كلها كهربا يا حبيبي!
+الأرض كلها كهربا يا زلمة!
 
 البلاطة الصفرا كانت تحذير، مش ديكور!
 
 تحت رجليك كهربا! شو كنت متوقع؟
 
-اتقسمت نصّين! شو عملت يا عيني؟
+انقسمت نصّين! شو سوّيت يا عيني؟
 
-الليزر ما بيفرّق: نصّك الك ونصّك للأرض!
+الليزر ما بيفرّق: نصّك إلك ونصّك للأرض!
 
 الشعاع الأحمر كان مكتوب عليه: لا تلمس!
 
@@ -216,15 +246,15 @@ You are a voice actor for a funny cartoon video game. Accent: Palestinian Levant
 
 تشو تشو! وانتهت الرحلة!
 
-القطار مش واقف على حدا يا حبيبي!
+القطار مش واقف على حدا يا زلمة!
 
-انفرشت على القضبان مثل الصاج!
+انفرشت عالقضبان مثل الصاج!
 
 الخلد قالك: تفضّل عالقمر!
 
 قبّعتك وصلت السما وإنت لسا نازل!
 
-كان تحت رجليك من بدري وما حسّيت!
+كان تحت رجليك من زمان وما حسّيت!
 
 مطرقة وطيران! عرض مجاني!
 
@@ -240,13 +270,13 @@ You are a voice actor for a funny cartoon video game. Accent: Palestinian Levant
 
 الصندوق قال: بالهنا والشفا!
 
-الضفدع حبّك... بس بطريقته!
+الضفدع حبّك... بس على طريقته!
 
 لسانه أسرع من إنك تقول يا ضفدع!
 
 وجبة سريعة بدون انتظار!
 
-اتبلعت وما رجعت! بالهنا!
+انبلعت وما رجعت! بالهنا!
 
 كان جعان من الصبح والله!
 
@@ -258,7 +288,7 @@ You are a voice actor for a funny cartoon video game. Accent: Palestinian Levant
 
 طلّعك المصعد وطلّع روحك معك!
 
-السقف كان واطي... وإنت كنت عالي!
+السقف كان واطي... وإنت كنت طويل!
 ```
 
 
@@ -279,7 +309,7 @@ You are the voice of BOT 01, a small clumsy retro robot with a flat monotone com
 
 تنبيه: ضحكة مريبة!
 
-رصدت فخ... متأخر
+رصدت فخ... بس متأخر
 ```
 
 
@@ -314,7 +344,7 @@ You are the voice of a cheerful curious little mushroom explorer with a backpack
 
 ركض ركض! الشنطة ثقيلة!
 
-ما كنت ناوي أجري هيك!
+ما كنت ناوي أركض هيك!
 
 اكتشاف عظيم! عدّيت!
 

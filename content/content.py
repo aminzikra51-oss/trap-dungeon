@@ -363,7 +363,7 @@ _more('eg',
  c_ghost=['هاهاها! قلتلك ماتقفش! الشبح ده بيحب الواقفين!',
           'ههههه! اتخطفت يا باشا! الشبح بيقولك: بووو!'],
  c_wall=['هاهاها! الحيطة جاتلك! هي اللي جت، مش إنت اللي روحتلها!',
-         'ههههه! اتفرشت على الحيطة زي الإعلان!'],
+         'ههههه! انفرشت على الحيطة زي الإعلان!'],
  streak=['هاهاها! مرحلة بتموت فيها كل يوم، دي مش لعبة، دي وظيفة!'],
  quick=['ههههه! حتى الشاي ما اتعملش، ومت!'],
  near=['هههه! الباب كان قدامك! مدّ إيدك يا شيخ!'],
@@ -482,15 +482,15 @@ for d, kinds in D.items():
 
 # ------------------------------------------------------------------ تعليقات الفخاخ الجديدة (لهجة شامية عادية، بصوت واحد، بدون وسم لهجة)
 NEWC = {
- 'fire':      ['يا ساتر! ريحة شاورما بالزنزانة!', 'النار قالتلك: على مهلك يا حبيبي!', 'صرت فحمة! حدا معه خبز؟', 'نفّاثة نار؟ كان لازم تلبس مريول مطبخ!', 'شوّيناك! بالهنا والشفا!'],
+ 'fire':      ['يا ساتر! ريحة شاورما بالزنزانة!', 'النار قالتلك: على مهلك يا زلمة!', 'صرت فحمة! حدا معه خبز؟', 'نفّاثة نار؟ كان لازم تلبس مريول مطبخ!', 'شوّيناك! بالهنا والشفا!'],
  'zap':       ['الغيمة قالتلك: ما توقف مكانك!', 'شعرك وقف! كان لازم تفكّر قبل!', 'صعقة مجانية! بس ما حدا طلبها!', 'الغيمة زعلانة منك! كمّل ركض!', 'برق ورعد وإنت النتيجة!'],
- 'disco':     ['ديسكو بلا تذكرة! رقصت يا بطل!', 'كنت عم ترقص ولا عم تتصعق؟ ما بنعرف!', 'الأرض كلها كهربا يا حبيبي!', 'البلاطة الصفرا كانت تحذير، مش ديكور!', 'تحت رجليك كهربا! شو كنت متوقع؟'],
- 'laser':     ['اتقسمت نصّين! شو عملت يا عيني؟', 'الليزر ما بيفرّق: نصّك الك ونصّك للأرض!', 'الشعاع الأحمر كان مكتوب عليه: لا تلمس!', 'قطعة من هون وقطعة من هناك!', 'ليزر دوّار وإنت صرت بازل!'],
- 'train':     ['القطار زمّر وإنت ما سمعت!', 'صرت ورقة رفيعة خالص!', 'تشو تشو! وانتهت الرحلة!', 'القطار مش واقف على حدا يا حبيبي!', 'انفرشت على القضبان مثل الصاج!'],
- 'mole':      ['الخلد قالك: تفضّل عالقمر!', 'قبّعتك وصلت السما وإنت لسا نازل!', 'كان تحت رجليك من بدري وما حسّيت!', 'مطرقة وطيران! عرض مجاني!', 'الخلد أقوى منك يا بطل!'],
+ 'disco':     ['ديسكو بلا تذكرة! رقصت يا بطل!', 'كنت بترقص ولا بتنصعق؟ ما بنعرف!', 'الأرض كلها كهربا يا زلمة!', 'البلاطة الصفرا كانت تحذير، مش ديكور!', 'تحت رجليك كهربا! شو كنت متوقع؟'],
+ 'laser':     ['انقسمت نصّين! شو سوّيت يا عيني؟', 'الليزر ما بيفرّق: نصّك إلك ونصّك للأرض!', 'الشعاع الأحمر كان مكتوب عليه: لا تلمس!', 'قطعة من هون وقطعة من هناك!', 'ليزر دوّار وإنت صرت بازل!'],
+ 'train':     ['القطار زمّر وإنت ما سمعت!', 'صرت ورقة رفيعة خالص!', 'تشو تشو! وانتهت الرحلة!', 'القطار مش واقف على حدا يا زلمة!', 'انفرشت عالقضبان مثل الصاج!'],
+ 'mole':      ['الخلد قالك: تفضّل عالقمر!', 'قبّعتك وصلت السما وإنت لسا نازل!', 'كان تحت رجليك من زمان وما حسّيت!', 'مطرقة وطيران! عرض مجاني!', 'الخلد أقوى منك يا بطل!'],
  'chest':     ['الصندوق جعان! وإنت الوجبة!', 'قلتلك الصندوق مش آمن! ما سمعت!', 'صندوق بأسنان؟ هاد مش كنز، هاد مطعم!', 'كل الكنوز ببطن الصندوق... وإنت كمان!', 'الصندوق قال: بالهنا والشفا!'],
- 'frog':      ['الضفدع حبّك... بس بطريقته!', 'لسانه أسرع من إنك تقول يا ضفدع!', 'وجبة سريعة بدون انتظار!', 'اتبلعت وما رجعت! بالهنا!', 'كان جعان من الصبح والله!'],
- 'ceilspike': ['المصعد قالك: شو بدك ببقيّة الطوابق؟', 'علّقت بالسقف مثل الثريّا!', 'اللافتة قالت آمن مية بالمية... كذّابة!', 'طلّعك المصعد وطلّع روحك معك!', 'السقف كان واطي... وإنت كنت عالي!'],
+ 'frog':      ['الضفدع حبّك... بس على طريقته!', 'لسانه أسرع من إنك تقول يا ضفدع!', 'وجبة سريعة بدون انتظار!', 'انبلعت وما رجعت! بالهنا!', 'كان جعان من الصبح والله!'],
+ 'ceilspike': ['المصعد قالك: شو بدك ببقيّة الطوابق؟', 'علّقت بالسقف مثل الثريّا!', 'اللافتة قالت آمن مية بالمية... كذّابة!', 'طلّعك المصعد وطلّع روحك معك!', 'السقف كان واطي... وإنت كنت طويل!'],
 }
 # اللبناني + الراوي + ضحكات الفخاخ + الضحك + الصراخ = دفعة وحدة
 seq = [(d_, k, t, {}) for d_ in VOICED for k in ORDER for t in D[d_].get(k, [])]
@@ -601,11 +601,11 @@ HEROES_V = {
       'die':  ['خطأ! خطأ! النظام معطّل!', 'جاري الموت... اكتمل', 'ما في نسخة احتياطية! آخ!', 'ما انبرمجت على الفخاخ!'],
       'run':  ['تحذير! اهرب! اهرب! اهرب!', 'جاري الهروب بأقصى سرعة', 'البطارية ثلاثة بالمية! اركض!'],
       'win':  ['اكتملت المهمة! بيب بوب!', 'نجاح! سأحتفل... بصمت', 'عدّيت وما احترقت دارتي'],
-      'warn': ['تنبيه: ضحكة مريبة!', 'رصدت فخ... متأخر']}),
+      'warn': ['تنبيه: ضحكة مريبة!', 'رصدت فخ... بس متأخر']}),
  'mushroom': dict(name='فطر المستكشف', d='ps', voice='Zephyr', who="a cheerful curious little mushroom explorer with a backpack and notebook, enthusiastic, wide-eyed, narrates his discoveries like a nature documentary",
    L={'pick': ['يا هلا! مستكشف الفطر هون!', 'مغامرة جديدة! يا حلو!', 'يلا نكتشف الزنزانة!'],
       'die':  ['آخ! قبّعتي تفطّرت!', 'ما قرأت عن هالفخ بالكتاب!', 'فطر مسكين! وقعت!', 'سجّلوا: الفخ خطير جداً!'],
-      'run':  ['اهرب يا فطر! اهرب!', 'ركض ركض! الشنطة ثقيلة!', 'ما كنت ناوي أجري هيك!'],
+      'run':  ['اهرب يا فطر! اهرب!', 'ركض ركض! الشنطة ثقيلة!', 'ما كنت ناوي أركض هيك!'],
       'win':  ['اكتشاف عظيم! عدّيت!', 'سجّلت الإنجاز بدفتري!', 'الفطر بيعدّي! هيهي!'],
       'warn': ['شو هالصوت؟ مثير للاهتمام!', 'يا ساتر! شو هاد؟']}),
 }
@@ -651,28 +651,24 @@ for _b in list(batches):
 if 'B03_ps' in batches:
     batches['B03_ps']['style'] = batches['B03_ps']['style'].replace(ACC['ps'], ACC_JO); batches['B03_ps']['label'] = 'أردني: شماتة (سطر واحد)'
 
-# ------------------------------------------------------------------ J01: كل الناقص بدفعة وحدة وصوت واحد (للي ما بدو 8 دفعات)
-def _grp(bid, n):
-    if bid.startswith('H'):
-        v = HEROES_V[bid.split('_', 1)[1]]
-        return f"{n} lines of {v['who']}"
-    if bid == 'K01_boss':
-        return f"{n} lines of the Trap King, a deep booming theatrical pompous villain who gloats, with comic pain and outrage when he is hurt or defeated"
-    return f"{n} line of a gleeful cheeky mocking taunt, like laughing at a friend who just failed"
+# ------------------------------------------------------------------ J01..: كل الناقص بصوت واحد (أردني) — 3 ملفات قصيرة: أبطال، ثم تعليقات بدفعتين
+_SUF = ("Read ONLY the text lines, in order, without any numbering, labels or character names. "
+        "Leave a clear silence of about 3 seconds after each line before starting the next one.")
+_BASE = ("You are one voice actor in a funny cartoon video game, speaking " + ACC_JO + ". "
+         "Keep the SAME voice and timbre for every line; change only the energy and the emotion. ")
 if batches:
-    _order = sorted(batches, key=lambda b: (not b.startswith('H'), b))
-    _groups = []
-    for _i, _b in enumerate(_order):
-        _n = len(batches[_b]['items'])
-        _groups.append(('the first ' if _i == 0 else 'then the next ') + _grp(_b, _n))
-    STYLE_J = ("You are one versatile voice actor in a funny cartoon video game, performing several different characters one after another, "
-     "all speaking " + ACC_JO + ". The lines come in this exact order: " + "; ".join(_groups) + ". "
-     "Change your voice and delivery clearly for each character, with big comic emotion, fully in character, natural and quick, never flat. "
-     "Written laughter such as هههه must be performed as real laughter. Read ONLY the text lines, in order, without any numbering, labels or character names. "
-     "Leave a clear silence of about 3 seconds after each line before starting the next one.")
-    _items = [dict(i) for _b in _order for i in batches[_b]['items']]
-    _j = dict(id='J01_all', label='دفعة وحدة: كل الناقص بصوت واحد (أردني)', voice='Puck', prio=0, style=STYLE_J, items=_items)
-    batches = {'J01_all': _j, **batches}
+    _hb = [b_ for b_ in batches if b_.startswith('H')]
+    _ih = [dict(i) for b_ in _hb for i in batches[b_]['items']]
+    _ir = [dict(i) for b_ in batches if not b_.startswith('H') for i in batches[b_]['items']]
+    _J = []
+    if _ih:
+        _gs = [("First, " if n_ == 0 else "Then ") + f"{len(batches[b_]['items'])} lines spoken by {HEROES_V[b_.split('_', 1)[1]]['who']}." for n_, b_ in enumerate(_hb)]
+        _J.append(('J01_heroes', 'أبطال: ' + ' + '.join(HEROES_V[b_.split('_', 1)[1]]['name'] for b_ in _hb), _BASE + ' '.join(_gs) + " Perform each with big comic emotion, fully in character, natural and quick. " + _SUF, _ih))
+    _ST_R = (_BASE + "Every line is a comment shown when the player dies to a trap, so perform it as gleeful, cheeky, over-the-top mockery, like laughing at a friend who just failed. "
+             "Written laughter such as هههه must be performed as real laughter. " + _SUF)
+    for n_, i_ in enumerate(range(0, len(_ir), 25)):
+        _J.append((f'J{n_ + 2:02d}_traps_{"ab"[n_] if n_ < 2 else n_}', f'تعليقات الفخاخ {n_ + 1}', _ST_R, _ir[i_:i_ + 25]))
+    batches = {**{id_: dict(id=id_, label=lb_ + ' (أردني، صوت واحد)', voice='Puck', prio=0, style=st_, items=it_) for id_, lb_, st_, it_ in _J}, **batches}
 
 # ------------------------------------------------------------------ الأصوات الموجودة أصلاً (10 مقاطع مولّدة) - تبقى بمفاتيحها القديمة
 OLD = {
@@ -711,13 +707,13 @@ write(f'{ROOT}/content/voice_batches.json',
 from collections import Counter
 cnt = Counter((e['d'], e['k']) for e in entries)
 print('lines:', len(entries), 'batches:', len(batches))
-print('voiced (batch) lines:', sum(len(b['items']) for k, b in batches.items() if k != 'J01_all'))
+print('voiced (batch) lines:', sum(len(b['items']) for k, b in batches.items() if not k.startswith('J')))
 
 # ------------------------------------------------------------------ voice_script.md
 md = []
 md.append('# سكربت الأصوات لـ Google AI Studio\n')
-_sep = {k: b for k, b in batches.items() if k != 'J01_all'}
-md.append(f'**{sum(len(b["items"]) for b in _sep.values())} سطر: إمّا دفعة وحدة (J01) أو {len(_sep)} دفعات منفصلة بأصوات مختلفة.**\n')
+_sep = {k: b for k, b in batches.items() if not k.startswith('J')}
+md.append(f'**{sum(len(b["items"]) for b in _sep.values())} سطر: إمّا الملفات J (صوت واحد) أو {len(_sep)} دفعات منفصلة بأصوات مختلفة.**\n')
 md.append('''## طريقة العمل (لكل دفعة، دقيقتين)
 1. افتح **aistudio.google.com** ← **Generate Media** ← **Speech generation** (أو "Generate speech").
 2. اختر نموذج **Gemini TTS** (Flash أو Pro)، والوضع **Single-speaker**.
@@ -738,25 +734,14 @@ for bid, b in batches.items():
     md.append("**Text:**\n```\n" + "\n\n".join(i['t'] for i in b['items']) + "\n```\n")
 write(f'{ROOT}/content/voice_script.md', '\n'.join(md))
 
-if 'J01_all' in batches:
-    _j = batches['J01_all']
-    write(f'{ROOT}/content/voice_one_script.md', f"""# سكربت واحد — دفعة وحدة ({len(_j['items'])} سطر)
-
-1. aistudio.google.com ← **Generate Media** ← **Speech generation** ← نموذج Gemini TTS، وضع **Single-speaker**.
-2. **Voice:** `{_j['voice']}` (جرّب `Orus` إذا بدك الزعيم أعمق).
-3. الصق **Style instructions** أدناه بخانة الستايل، والصق **Text** بخانة النص كما هو.
-4. Run، وسمّ الملف **`J01_all.wav`**، وارفعه بالمحادثة.
-
-لو انقطع الصوت قبل النهاية أو دمج سطرين: ابعتلي الملف زي ما هو، بقصّ اللي طلع منه وبرجّعلك سكربت للباقي بس.
-
-## Style instructions
-```
-{_j['style']}
-```
-
-## Text
-```
-""" + "\n\n".join(i['t'] for i in _j['items']) + "\n```\n")
+_JB = [b_ for b_ in batches if b_.startswith('J')]
+if _JB:
+    _m = [f"# سكربت Google AI Studio — صوت واحد أردني ({sum(len(batches[b_]['items']) for b_ in _JB)} سطر بـ {len(_JB)} ملفات)\n",
+          "لكل ملف: aistudio.google.com ← **Generate Media** ← **Speech generation** ← نموذج Gemini TTS، وضع **Single-speaker**، **نفس الصوت** بالملفات كلها. الصق **Style instructions** بخانة الستايل و**Text** بخانة النص، شغّل، وسمّ الملف بالاسم المكتوب، وارفعه بالمحادثة.\n"]
+    for b_ in _JB:
+        j_ = batches[b_]
+        _m.append(f"\n---\n## {b_} — {j_['label']} ({len(j_['items'])} سطر)\n- **Voice:** `{j_['voice']}`\n- **اسم الملف:** `{b_}.wav`\n\n**Style instructions:**\n```\n{j_['style']}\n```\n\n**Text:**\n```\n" + "\n\n".join(i['t'] for i in j_['items']) + "\n```\n")
+    write(f'{ROOT}/content/voice_studio.md', '\n'.join(_m))
 
 # ------------------------------------------------------------------ الصور
 STYLE_IMG = ("Funny cartoon illustration in a consistent style: thick black outlines, flat bright saturated colors, "
