@@ -22,6 +22,13 @@
 ## قرارات مفتوحة
 - أونلاين / تعاون؟  · (الزعيم والنهاية الحقيقية بعد المرحلة 50 انعملوا — عدّل النصوص بـ `FIN_RANKS`/`bossEnd` بـ `src/w_boss.js`)  · APK لمتجر أندرويد (عبر pwabuilder.com من رابط الـ Pages).
 
+## مستودع الإصدار المستقل (dont-die-habibi)
+- النسخة العامة للاعبين: مستودع منفصل `aminzikra51-oss/dont-die-habibi` فيه الملفات الجاهزة فقط (بدون المصدر) + `LICENSE` (كل الحقوق محفوظة). الرابط: https://aminzikra51-oss.github.io/dont-die-habibi/ (Pages من `main`، الجذر).
+- التحديث: `python3 build.py` ثم `tools/sync_site.sh` (بينسخ `site/` + `release/README.md` + `release/LICENSE` لمجلد `../dont-die-habibi`) ثم `git push` من هناك. `docs/` صار موقع التجربة للمطوّر فقط.
+- كل البناءات بتشارك نفس الرابط (`SHARE_URL` بـ build.py، أو متغير بيئة `SHARE_URL`). صورة المعاينة `pwa/og.jpg` بتتولّد بـ `tools/make_cover.py`.
+- جلسات Claude مربوطة بمستودعات محددة: ما بقدر ينشئ مستودع جديد، لازم تنشئه إنت فاضي ثم يُضاف للجلسة.
+- رسائل القروب: `release/GROUP_MESSAGE.md`. اختبار الزر: `python3 test/share_check.py`.
+
 ## نشر على itch.io (بدون إعلانات)
 - ألعاب HTML5 على itch بتقبل تبرعات فقط (البيع بسعر ثابت يحتاج نسخة تحميل). الاستلام PayPal أو Payoneer، حد أدنى 5$، وخصم ضريبة 30% افتراضياً خارج أمريكا لحد استمارة الضرائب. إفصاح الذكاء الاصطناعي إلزامي (صور، صوت، نص، كود).
 - الحزمة: `python3 tools/make_itch.py dont-die-habibi` → `dist/dont-die-habibi-itch.zip`؛ الغلاف: `python3 tools/make_cover.py`؛ نص الصفحة: `itch/PAGE.md`؛ اختبار iframe: `python3 test/itch_check.py [zip]`؛ لقطات: `python3 test/itch_shots.py`.
