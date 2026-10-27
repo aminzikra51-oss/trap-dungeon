@@ -2412,7 +2412,7 @@ $('bPlay').onclick=()=>{S.deaths=0;save();startGame(1);const x=pick('intro',{pAu
 $('bCont').onclick=()=>startGame(S.best);
 $('bMenu').onclick=()=>{Snd.init();togglePause()};
 /* share: native share sheet (WhatsApp/Telegram/...), else copy to clipboard. The URL is fixed per build (itch iframes and PWAs have different location.href). */
-const SHARE_URL='https://aminzikra51-oss.github.io/dont-die-habibi/', SHARE_TITLE="Don't Die, Habibi | لا تموت يا حبيبي";
+const SHARE_URL='https://aminzikra51-oss.github.io/dont-die-habibi/play/', SHARE_TITLE="Don't Die, Habibi | لا تموت يا حبيبي";
 function shareText(){ return S.deaths>0 ? '💀 متّ '+S.deaths+' مرة ووصلت للمرحلة '+S.best+' بلعبة «لا تموت يا حبيبي» 😭 بتقدر تعمل أحسن؟ 😈' : '😈 جرّب لعبة «لا تموت يا حبيبي»: كل شي آمن هون... وكله كذب' }
 async function shareResult(btn){
   const txt=shareText(), full=txt+'\n'+SHARE_URL, old=btn.textContent; let copied=false;

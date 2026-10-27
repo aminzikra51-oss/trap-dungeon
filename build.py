@@ -13,7 +13,7 @@ src = open(f'{root}/src/index.src.html', encoding='utf-8').read()
 import re as _re
 src = _re.sub(r'/\*@include ([\w.]+)\*/', lambda m: open(f'{root}/src/{m.group(1)}', encoding='utf-8').read(), src)
 assets['voices'] = json.load(open(f'{root}/assets/voices.json', encoding='utf-8'))
-SHARE_URL = os.environ.get('SHARE_URL', 'https://aminzikra51-oss.github.io/dont-die-habibi/')  # canonical link every build shares
+SHARE_URL = os.environ.get('SHARE_URL', 'https://aminzikra51-oss.github.io/dont-die-habibi/play/')  # canonical link every build shares (tiny preview page that redirects to the game)
 out = src.replace('__ASSETS_JSON__', json.dumps(assets, ensure_ascii=False)).replace('__SHARE_URL__', SHARE_URL)
 open(f'{root}/trap-dungeon.html', 'w', encoding='utf-8').write(out)
 print('built', round(len(out)/1024), 'KB; audio:', len(assets['audio']), 'img:', len(assets['img']))
@@ -66,4 +66,12 @@ for d, url in SITES:
     shutil.copy(f'{root}/pwa/manifest.webmanifest', f'{site}/manifest.webmanifest')
     open(f'{site}/sw.js', 'w', encoding='utf-8').write(open(f'{root}/pwa/sw.template.js', encoding='utf-8').read().replace('__HASH__', h))
     open(f'{site}/.nojekyll', 'w').write('')
+    # tiny link-preview page (og tags + instant redirect): chat apps' crawlers fetch a few KB instead of the 7 MB game, and a fresh URL dodges stale preview caches
+    os.makedirs(f'{site}/play', exist_ok=True)
+    open(f'{site}/play/index.html', 'w', encoding='utf-8').write(f'''<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{TITLE}</title>
+<meta name="description" content="{desc}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Don't Die, Habibi"><meta property="og:title" content="{TITLE}"><meta property="og:description" content="{ogd}"><meta property="og:url" content="{url}play/"><meta property="og:image" content="{url}og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{TITLE}"><meta name="twitter:description" content="{ogd}"><meta name="twitter:image" content="{url}og.jpg">
+<meta http-equiv="refresh" content="0;url=../"><style>body{{background:#0b0714;color:#ffd23f;font:700 22px sans-serif;display:grid;place-items:center;height:100vh;margin:0}}a{{color:#ffd23f}}</style></head>
+<body><a href="../">&#9654; Don't Die, Habibi</a><script>location.replace('../'+location.search+location.hash)</script></body></html>''')
     print(f'pwa site {d}/ ->', round(len(page)/1024), 'KB, sw hash', h)

@@ -14,7 +14,7 @@ with sync_playwright() as p:
     pg.evaluate("()=>{window.__sh=[];navigator.share=async d=>{window.__sh.push(d)};TD.S.deaths=0;TD.S.best=1}")
     pg.click('#bShareT'); pg.wait_for_timeout(200)
     sh = pg.evaluate('window.__sh'); chk('native share called once', len(sh) == 1, sh)
-    chk('url is the canonical independent site', sh and sh[0]['url'] == 'https://aminzikra51-oss.github.io/dont-die-habibi/', sh[0]['url'] if sh else '')
+    chk('url is the canonical independent site', sh and sh[0]['url'] == 'https://aminzikra51-oss.github.io/dont-die-habibi/play/', sh[0]['url'] if sh else '')
     chk('fresh-player text is an invite (no death count)', sh and 'متّ' not in sh[0]['text'], sh[0]['text'] if sh else '')
     # 2) with stats
     pg.evaluate("()=>{TD.S.deaths=7;TD.S.best=5;window.__sh=[]}"); pg.click('#bShareT'); pg.wait_for_timeout(200)

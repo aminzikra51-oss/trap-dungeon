@@ -1,12 +1,12 @@
 # رسائل القروب (جولة الأصحاب الأولى)
 
-الرابط: https://aminzikra51-oss.github.io/dont-die-habibi/
+الرابط: https://aminzikra51-oss.github.io/dont-die-habibi/play/
 
 ## الرسالة الأولى (للصق)
 شباب، عملت لعبة صغيرة وبدي رأيكم الصريح 🙏
 اسمها «لا تموت يا حبيبي»: لعبة فخاخ، اللافتات فيها بتكذب عليك، وكل ما تموت بتشمت فيك بصوت بلهجة 😂
 جرّبوها من هون (أحسن على الجوال، وهو أفقي):
-https://aminzikra51-oss.github.io/dont-die-habibi/
+https://aminzikra51-oss.github.io/dont-die-habibi/play/
 
 العبوا 10 دقايق وجاوبوني (جواب قصير بيكفي):
 1) شو جهازك والمتصفح؟
