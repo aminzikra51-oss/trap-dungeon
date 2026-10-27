@@ -41,3 +41,9 @@
 - `content/content.py` ← `HEROES_V`: 15 سطر لكل بطل (ترحيب/موت/هروب/فوز/خوف) بلهجته. الدفعات `H01..H06` في `content/voice_script.md`.
 - ضع ملفات التوليد في `incoming/audio` (اسمها يبدأ برقم الدفعة مثل `H01_falafel.wav`) ← `python3 tools/split_voices.py` ← `python3 build.py`.
 - بدون تسجيلات: تظهر فقاعة النص فوق راس البطل فقط. مع التسجيل: يشتغل الصوت تلقائياً.
+
+## v9: أبطال وفخاخ جديدة
+- **بطلين جداد** من Flux: الروبوت BOT 01 (له إضاءة حافة زرقاء `meta.rim` لأنه غامق على الزنزانة) وفطر المستكشف. تُضاف بـ `python3 tools/make_heroes.py robot mushroom --no-deshadow` (الروبوت كمان `--pockets`)؛ المصدر `raw/heroes/*.jpg` وتُقصّ بـ `tools/cutout.py`.
+- **10 فخاخ جديدة** (`src/w_traps2.js`، تُضاف لـ `FAM`/`POOL`/`NEEDF` وتنفتح تدريجياً من المرحلة 6 إلى 11، ومراحل المطاردة بتستثني اللي بينتظر): `belt` سير متحرك، `mud` طين بطيء (مناطق `zones` — الرسم `drawZoneFloor`)، `chest` صندوق أكّال، `mole` خلد، `elev` مصعد كذّاب، `frog` ضفدع، `fire` نفّاثات، `storm` غيمة، `elec` أرضية كهربا، `laser` شعاع دوّار، `train` قطار.
+- **أنيميشن موت لكل فخ** (`src/draw_death.js`): الجدول `DEATH_MAP` بيربط سبب الموت (`cause`) بنوع الأنيميشن، ولو الجدول فيه مصفوفة بيختار نوع عشوائي كل مرة (`G.dv`) — مثلاً الحفرة 3 أشكال، الوحش إما بيطيّرك أو بيطقّك. نوع جديد = دالة جديدة بـ `DK.<name>` + سطر بالجدول.
+- فحص: `python3 test/trap2_smoke.py` و`python3 test/solver.py 5 60 2 5000 crazy` (كل المراحل انحلّت بالعادي والمجنون)، ولقطات `test/trap2_shots.py` و`test/death_shots.py`.

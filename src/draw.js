@@ -143,8 +143,10 @@ function drawPlayer(c){
 }
 const DEATH_KIND={spike:'xray',arrow:'xray',ghost:'xray',crush:'squash',bait:'squash',boulder:'squash',wall:'squash',saw:'pieces',fakedoor:'pieces',pit:'fall',crumble:'fall',monster:'launch',ball:'launch'};
 function drawDeath(c){
-  const p=P,t=G.deadT,cx=p.x+PW/2,by=p.y+PH,ca=G.cause,kind=DEATH_KIND[ca]||'xray',H=heroDef(),pal=H.pal;
+  const p=P,t=G.deadT,cx=p.x+PW/2,by=p.y+PH,ca=G.cause,kind=deathKind(ca),H=heroDef(),pal=H.pal;
   const st=Object.assign(heroState(),{dead:true,onGround:false,moving:false,scream:true,ex:0,ey:0,blink:false});
+  if(DK[kind]){ const kl=G.killer, vx=kl&&kl.vx?Math.sign(kl.vx):(kl&&kl.dir?kl.dir:0), k=vx||(kl?(Math.sign(cx-entX(kl))||-p.face):(Math.sign(P.dvx)||-p.face));
+    c.save();c.translate(cx,by);c.strokeStyle='#000';c.lineWidth=2.4;c.lineJoin='round';c.lineCap='round'; DK[kind](c,{t,k,p,H,st,pal,cx,by,killer:kl}); c.restore(); return }
   c.save();c.translate(cx,by);c.strokeStyle='#000';c.lineWidth=2.4;c.lineJoin='round';
   if(kind==='fall'){ c.rotate(t*5); c.translate(0,-14); c.scale(p.face,1); c.translate(0,14); drawHero(c,H,st) }
   else if(kind==='launch'){ const k=G.killer?Math.sign(cx-(anchor(G.killer)[0]))||1:-p.face; c.translate(k*150*t,-330*t+620*t*t-14); c.rotate(t*11*k); c.translate(0,14); drawHero(c,H,st) }
@@ -236,6 +238,7 @@ function render(){
     c.fillStyle=(zz&&zz.type==='ice')?'#bfeaff':th.top;c.fillRect(x,y-3,TS,8);c.strokeStyle='#000';c.lineWidth=2;c.beginPath();c.moveTo(x,y-3);c.lineTo(x+TS,y-3);c.stroke();
     const h=(tx*2654435761>>>0)%5;if(h<2&&!(zz&&zz.type==='ice')){c.fillStyle=th.top;c.beginPath();c.moveTo(x+6+h*8,y-3);c.lineTo(x+9+h*8,y-9);c.lineTo(x+12+h*8,y-3);c.fill()}
     if(cr&&(cr.marked||cr.s===1)){c.strokeStyle='#000b';c.lineWidth=2;c.beginPath();c.moveTo(x+6,y-2);c.lineTo(x+14,y+9);c.lineTo(x+10,y+17);c.lineTo(x+20,y+30);c.moveTo(x+22,y-2);c.lineTo(x+18,y+8);c.stroke()} }
+  drawZoneFloor(c,cam);
   // blocks (invisible-until-bumped "!" blocks and the dungeon's brick walls)
   for(const k in L.blocks){const b=L.blocks[k];if(!b.rev)continue;const [tx,ty]=k.split(',').map(Number);if(tx*TS<cam-40||tx*TS>cam+VW+40)continue;const oy=b.bump>0?-Math.sin(b.bump*10)*5:0; if(look3()){drawBlock3(c,th,tx,ty,oy,b.st);continue}
     if(b.st==='b'){ c.fillStyle=th.floor;c.fillRect(tx*TS,ty*TS+oy,TS,TS);c.strokeStyle=th.line;c.lineWidth=2;c.strokeRect(tx*TS+1,ty*TS+1+oy,TS-2,TS-2);c.fillStyle='#ffffff14';c.fillRect(tx*TS+3,ty*TS+3+oy,TS-6,4);c.strokeStyle='#000';c.lineWidth=2.4;c.strokeRect(tx*TS,ty*TS+oy,TS,TS);

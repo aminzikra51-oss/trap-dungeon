@@ -39,7 +39,7 @@ const anchor=e=>{ switch(e.t){
   case'spk':return[e.x+e.w/2,e.by-24];case'hog':return[e.x,e.y-20];case'ceil':return[e.x+e.w/2,e.y+e.len+8];case'tur':return[e.x,GY-70];
   case'thw':return[e.x,e.y-6];case'anv':return[e.x+e.w/2,e.y-4];case'saw':return[e.x,e.y-26];case'pend':{const p=pendPos(e);return[p[0],p[1]-26]}
   case'walk':return[e.x,e.y-e.h-8];case'fish':return[e.x,e.y-22];case'spring':return[e.x+16,GY-30];case'shot':return[e.x,e.y-14];case'fake':return[e.x+16,GY-70];
-  case'chase':return[e.x-(e.v==='wall'?70:0),e.y-(e.v==='wall'?110:60)];case'ghost':return[e.x,e.y-30];case'boss':return[e.x,e.y-100];case'erupt':return[e.x+e.w/2,GY-34];default:return[e.x||0,(e.y||GY)-20] } };
+  case'chase':return[e.x-(e.v==='wall'?70:0),e.y-(e.v==='wall'?110:60)];case'ghost':return[e.x,e.y-30];case'boss':return[e.x,e.y-100];case'erupt':return[e.x+e.w/2,GY-34];default:return[e.ax!==undefined?e.ax:(e.x||0),e.ay!==undefined?e.ay:((e.y||GY)-20)] } };
 
 /* ---------------- floor spikes: static | hidden | pulse | slide | sneak ---------------- */
 function mkSpk(v,tx,len,o){o=o||{};
@@ -100,7 +100,7 @@ B.ceil={
   else if(e.st===2){e.vy+=2300*dt;e.y+=e.vy*dt;if(e.y+e.len>=GY){e.y=GY-e.len;e.st=3;e.tm=.25;Snd.land();puff(e.x+e.w/2,GY,5)}}
   else if(e.st===3){e.tm-=dt;if(e.tm<=0)e.rm=1}
  },
- hit(e){ if(e.v==='drop'&&e.st<2)return null; return hitRect(prect(),{x:e.x+3,y:e.y,w:e.w-6,h:e.len})?'spike':null },
+ hit(e){ if(e.v==='drop'&&e.st<2)return null; return hitRect(prect(),{x:e.x+3,y:e.y,w:e.w-6,h:e.len})?(e.cause||'spike'):null },
  draw(e,c,th){
   c.strokeStyle='#000';c.lineWidth=2.4;const n=Math.max(1,Math.round(e.w/22)),sw=e.w/n,sh=e.st===1?Math.sin(G.t*70)*1.6:0;
   if(e.v==='static'){ c.fillStyle='#2a2140';c.fillRect(e.x,14,e.w,18);c.strokeRect(e.x,14,e.w,18) }
@@ -327,6 +327,10 @@ B.plat={
  move(e,dt){ const ox=e.x,oy=e.y;
   if(e.v==='move'){ e.ph+=dt*e.sp/Math.max(1,e.x1-e.x0)*Math.PI; e.x=e.x0+(e.x1-e.x0)*(.5-.5*Math.cos(e.ph)) }
   else if(e.v==='lift'){ e.ph+=dt*e.sp/Math.max(1,e.y1-e.y0)*Math.PI; e.y=e.y0+(e.y1-e.y0)*(.5-.5*Math.cos(e.ph)) }
+  else if(e.v==='elev'){
+    if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.6;Snd.rumble();snick(e,'طابق واحد بس!')} }
+    else if(e.st===1){ e.tm-=dt; if(e.tm<=0)e.st=2 }
+    else if(e.st===2){ e.y=Math.max(e.y1,e.y-e.sp*dt); if(e.y<=e.y1)e.st=3 } }
   else if(e.v==='vanish'){
     if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.5;Snd.crumble()} }
     else if(e.st===1){e.tm-=dt;if(e.tm<=0){e.st=2;e.tm=2.2;e.on=0}}

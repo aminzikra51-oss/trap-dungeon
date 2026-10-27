@@ -114,17 +114,18 @@ const NEEDF={pit:14,spike:13,crumble:13,arrow:15,walk:13,crush:17,saw:11,terrain
 
 /* overlays: a second trap placed over a finished segment (wind / ice / reverse / float zones, extra arrows, bats, ghosts) */
 const OVER={
- pit:['wind','arrow','bat'],spike:['ice','wind','arrow','bat','rev','ghost'],crumble:['arrow','bat','wind'],arrow:['ice','wind'],crush:['ghost'],saw:['wind','ghost'],walk:['ice','float'],terrain:['wind','bat']
+ pit:['wind','arrow','bat','belt'],spike:['ice','wind','arrow','bat','rev','ghost','belt','mud'],crumble:['arrow','bat','wind','mud'],arrow:['ice','wind','belt','mud'],crush:['ghost','belt'],saw:['wind','ghost','belt','mud'],walk:['ice','float','belt','mud'],terrain:['wind','bat','mud']
 };
 function overlay(L,r,fam,x,used,n,D,prevEnd){
   const list=OVER[fam]; if(!list)return; if(fam==='crumble'&&(D.lastV==='wave'||D.lastV==='rev'))return; const o=list[ri(r,0,list.length-1)];
-  if(D.chase&&(o==='ice'||o==='rev'||o==='float'))return;
+  if(D.chase&&(o==='ice'||o==='rev'||o==='float'||o==='belt'||o==='mud'))return;
+  if((o==='belt'||o==='mud')&&n<6)return;
   if(o==='rev'&&x-prevEnd<7)return;
   if(n<4&&o!=='ice'&&o!=='arrow')return; if((o==='rev'||o==='float'||o==='ghost')&&n<8)return;
-  const lead=o==='rev'?4:(o==='ice'||o==='float'?3:1),x0=Math.max(prevEnd,x-lead)*TS,x1=(x+used+1)*TS,dir=(D.chase&&o==='wind')?1:(r()<.5?-1:1);
+  const lead=o==='rev'?4:(o==='ice'||o==='float'?3:((o==='belt'||o==='mud')?2:1)),x0=Math.max(prevEnd,x-lead)*TS,x1=(x+used+1)*TS,dir=(D.chase&&o==='wind')?1:(r()<.5?-1:1);
   const tail=(o==='wind'&&((fam==='pit'&&used>=5)||D.lastV==='sneak'));       // a headwind over a wide pit would make it physically impossible -> tailwind only
-  if(o==='ice'||o==='wind'||o==='rev'||o==='float'){ L.zones.push({x0,x1,type:o,dir:tail?1:dir}); L.zoneSigns=(L.zoneSigns||0)+1;
-    const txt={ice:'⚠ أرض جليد\nانتبه تزلق',wind:'ريح قوية 💨',rev:'ما في شي غريب\nهون 🙃',float:'جاذبية القمر 🌙'}[o]; if(r()<.8)L.signs.push({tx:x-3,text:txt,tag:'any',lie:o==='rev',seen:false}) }
+  if(o==='ice'||o==='wind'||o==='rev'||o==='float'||o==='belt'||o==='mud'){ L.zones.push({x0,x1,type:o,dir:tail?1:dir}); L.zoneSigns=(L.zoneSigns||0)+1;
+    const txt={ice:'⚠ أرض جليد\nانتبه تزلق',wind:'ريح قوية 💨',rev:'ما في شي غريب\nهون 🙃',float:'جاذبية القمر 🌙',belt:'سير متحرك\nما في مشكلة ✔',mud:'أرض لزجة 🍯\nمريحة للقدم'}[o]; if(r()<.8)L.signs.push({tx:x-3,text:txt,tag:'any',lie:o==='rev',seen:false}) }
   else if(o==='arrow'){ L.ents.push(mkTur(x+used+2,{v:'lane',range:(used+6)*TS,per:D.v(2.8,1.7),spd:D.v(190,270),tele:D.v(.6,.4),hi:false,cd0:1.2})) }
   else if(o==='bat'){ const cx=(x+used/2)*TS; L.ents.push(mkWalk('bat',{cx,cy:GY-66,x:cx,y:GY-66,R:Math.max(60,used*TS*.45),om:D.v(1.5,2.2),h:20,w:30})) }
   else if(o==='ghost'){ L.ents.push(mkGhost(0,{zx0:x0-TS*2,zx1:x1+TS*2,sp:D.v(140,175)})) }
@@ -140,7 +141,7 @@ function buildLevel(n,opt){
   const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138));
   const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:Math.floor((n-1)/5)%THEMES.length,crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
   const chaseKind=n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
-  const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&p[0]==='bait')&&!(D.chase&&p[0]==='crush'));
+  const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
   const PITT={pit:1};

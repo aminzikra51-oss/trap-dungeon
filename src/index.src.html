@@ -375,6 +375,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
 /*@include w_core.js*/
 /*@include w_ents.js*/
 /*@include w_gen.js*/
+/*@include w_traps2.js*/
 /*@include w_boss.js*/
 
 
@@ -438,9 +439,10 @@ function startGame(n){
 }
 function die(cause,e){
   if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; S.deaths++; if(!SIM){save();hud()}
-  P.dvx=P.vx; P.dvy=P.vy; G.shake=9;
+  P.dvx=P.vx; P.dvy=P.vy; G.shake=9; G.dv=Math.random();
   if(!SIM&&S.sfx&&navigator.vibrate){try{navigator.vibrate(G.lvDeaths%4===0?[30,40,30]:28)}catch(e){}}
-  switch(cause){
+  if(DEATH_SFX[cause])DEATH_SFX[cause]();
+  else switch(cause){
    case 'spike':Snd.squeak();break; case 'crush':case 'bait':case 'wall':Snd.splat();break; case 'saw':Snd.splat();Snd.squeak();break;
    case 'boulder':Snd.splat();break; case 'arrow':Snd.bonk();Snd.squeak();break; case 'fakedoor':Snd.squeak();break;
    case 'monster':case 'ball':Snd.bonk();Snd.whistle();break;
@@ -573,9 +575,11 @@ function update(dt){
 }
 
 /*@include draw.js*/
+/*@include draw_death.js*/
 /*@include draw3d.js*/
 /*@include draw3e.js*/
 /*@include draw3f.js*/
+/*@include draw3g.js*/
 
 
 /* =============== MAIN LOOP / INPUT =============== */

@@ -54,10 +54,11 @@ function stepPlats(dt){
 function updatePlayer(dt){
   const p=P, z=zoneAt(p.x+PW/2);
   let dir=(K.r?1:0)-(K.l?1:0); if(z&&z.type==='rev')dir=-dir;
-  let acc=p.onGround?ACC:AIRACC, fr=p.onGround?FRIC:260, g=GRAV, jv=JUMP, ice=false, drift=0;
-  if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88 }
-  if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-RUN,RUN); p.face=dir; }
+  let acc=p.onGround?ACC:AIRACC, fr=p.onGround?FRIC:260, g=GRAV, jv=JUMP, ice=false, drift=0, mx=RUN;
+  if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
+  if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-mx,mx); p.face=dir; }
   else{ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }
+  if(mx<RUN)p.vx=clamp(p.vx,-mx,mx);
   if(K.jp){p.buf=.12;K.jp=false}
   p.buf-=dt; p.coy-=dt; if(p.onGround){p.coy=.1;p.dj=false;p.air=0}else p.air+=dt;
   if(p.buf>0){
