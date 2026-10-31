@@ -18,6 +18,9 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;background
 #hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(var(--u)*6) calc(var(--u)*10);pointer-events:none;font-weight:900;font-size:calc(var(--u)*17);text-shadow:0 2px 0 #000,0 0 6px #000}
 #hud .chip{background:#000a;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*12);padding:calc(var(--u)*2) calc(var(--u)*10);margin:0 calc(var(--u)*3)}
 #hud .r{display:flex;align-items:center;pointer-events:auto}
+#gain{position:absolute;top:calc(var(--u)*46);left:50%;transform:translateX(-50%);opacity:0;font-size:calc(var(--u)*22);font-weight:900;color:#ffd23f;white-space:nowrap;-webkit-text-stroke:calc(var(--u)*1.5) #000;text-shadow:0 calc(var(--u)*3) 0 #000}
+#gain.bad{color:#ff7a7a}
+@keyframes gainup{0%{opacity:0;transform:translate(-50%,calc(var(--u)*10))}12%{opacity:1;transform:translate(-50%,0)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,calc(var(--u)*-14))}}
 .ibtn{pointer-events:auto;background:#000a;color:#fff;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*12);font-size:calc(var(--u)*16);padding:calc(var(--u)*2) calc(var(--u)*10);margin:0 calc(var(--u)*3);cursor:pointer;font-family:inherit;font-weight:900}
 #stage.touch #sub{bottom:auto;top:calc(var(--u)*44)}
 #sub{position:absolute;left:0;right:0;bottom:calc(var(--u)*14);display:flex;justify-content:center;pointer-events:none}
@@ -56,7 +59,22 @@ select.tg{appearance:auto}
 #menu h2{margin:0 0 calc(var(--u)*6);font-size:calc(var(--u)*28);color:var(--gold)}
 .lvlpick{font-size:calc(var(--u)*14);margin-top:calc(var(--u)*8);font-weight:800}
 .lvlpick input{width:calc(var(--u)*60);font-size:calc(var(--u)*15);text-align:center;border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;font-family:inherit;font-weight:900}
-#ed{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
+#ed,#shop{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
+.shw{font-size:calc(var(--u)*18);font-weight:900;color:#ffd23f;flex:1;text-align:center}
+.shtabs{display:flex;gap:calc(var(--u)*6);justify-content:center}
+.shgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*8);overflow:auto;min-height:0;flex:1;padding:calc(var(--u)*2)}
+.shgrid.w{grid-template-columns:repeat(4,1fr)}
+.shc{background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*6);display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3);font-weight:800;font-size:calc(var(--u)*13);justify-content:space-between}
+.shc.sel{background:#3a2a10;border-color:#ffd23f}
+.shc.lock canvas{filter:grayscale(.3) brightness(.78)}
+.shc canvas{position:static;inset:auto;background:none;width:calc(var(--u)*50);height:calc(var(--u)*58)}
+.shgrid.w .shc canvas{width:100%;height:auto;border-radius:calc(var(--u)*6)}
+.shc .nm{font-weight:900;font-size:calc(var(--u)*14);line-height:1.2}
+.shc .sub{font-size:calc(var(--u)*11);opacity:.75;line-height:1.2}
+.shbig{font-size:calc(var(--u)*40);line-height:1.2}
+.shc .btn{font-size:calc(var(--u)*13);padding:calc(var(--u)*3) calc(var(--u)*8);border-width:calc(var(--u)*3);border-radius:calc(var(--u)*10)}
+.shc .btn.poor{filter:grayscale(.7);opacity:.75}
+#shMsg{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;min-height:calc(var(--u)*17)}
 .edbox{width:calc(var(--u)*768);max-height:calc(var(--u)*436);display:flex;flex-direction:column;gap:calc(var(--u)*5);background:#1b1230;border:calc(var(--u)*4) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*8) calc(var(--u)*12);box-shadow:calc(var(--u)*6) calc(var(--u)*6) 0 #000;text-align:center}
 .edtop{display:flex;justify-content:space-between;align-items:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*20);font-weight:900;color:var(--gold)}
 .edst{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;flex:1;text-align:center}
@@ -82,6 +100,9 @@ select.tg{appearance:auto}
 .hrow{display:flex;gap:calc(var(--u)*5);justify-content:center;margin-top:calc(var(--u)*8)}
 .hb{background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*2);cursor:pointer;line-height:0}
 .hb.on{background:#ffd23f}
+.hb{position:relative}
+.hb.lock canvas{filter:grayscale(1) brightness(.5)}
+.hb.lock::after{content:'🔒 ' attr(data-p);position:absolute;left:0;right:0;bottom:calc(var(--u)*2);line-height:1;font-size:calc(var(--u)*11);font-weight:900;color:#fff;text-shadow:0 0 calc(var(--u)*3) #000,0 0 calc(var(--u)*3) #000}
 .hb canvas{position:static;inset:auto;background:none;width:calc(var(--u)*38);height:calc(var(--u)*44)}
 .hlbl{font-size:calc(var(--u)*12);font-weight:800;opacity:.8;margin-top:calc(var(--u)*6)}
 #rot{position:fixed;top:0;left:0;right:0;text-align:center;background:#ffd23f;color:#000;font-weight:900;padding:6px;font-size:14px;z-index:99}
@@ -103,7 +124,7 @@ select.tg{appearance:auto}
 <div id="wrap" dir="rtl" lang="ar"><div id="stage">
   <canvas id="cv"></canvas>
   <div id="hud" class="hide">
-    <div><span class="chip" id="hLvl">المرحلة 1</span><span class="chip" id="hCoin">🪙 0</span></div>
+    <div><span class="chip" id="hLvl">المرحلة 1</span><span class="chip" id="hCoin">🪙 0</span></div><div id="gain"></div>
     <div class="r"><span class="chip" id="hDeath">💀 0</span><button class="ibtn hide" id="bFull" title="ملء الشاشة">⛶</button><button class="ibtn" id="bMenu">⚙</button></div>
   </div>
   <div id="sub"></div>
@@ -121,7 +142,7 @@ select.tg{appearance:auto}
       <p class="tag">كل شي آمن هون... وكله كذب 😇</p>
       <div><button class="btn" id="bPlay">ابدأ اللعب</button></div>
       <div><button class="btn alt hide" id="bCont">كمّل من المرحلة 1</button></div>
-      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button><button class="tg" id="bEdT">🛠 مصمّم المراحل</button></div>
+      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button><button class="tg" id="bEdT">🛠 مصمّم المراحل</button><button class="tg" id="bShopT">🛒 المتجر</button></div>
       <div class="how">⬅ ➡ للحركة · ⬆ أو مسافة للقفز (واضغط مرة ثانية بالهوا!) · P إيقاف · R إعادة · M كتم</div>
       <div class="hlbl">اختر بطلك 👇</div><div class="hrow" id="heroT"></div>
     </div>
@@ -142,13 +163,13 @@ select.tg{appearance:auto}
       <option value="gulf">خليجي</option><option value="iq">عراقي</option><option value="ma">مغربي</option>
       <option value="lb">لبناني</option><option value="ps">فلسطيني</option></select></div>
     <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
-    <div class="row"><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
+    <div class="row"><button class="tg" id="bShop">🛒 المتجر</button><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
     <div class="lvlpick">اقفز إلى مرحلة: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
     <div class="row"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
   </div></div>
   <div id="ed" class="ov hide"><div class="edbox">
-    <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edX">✖ رجوع</button></div>
+    <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edShop">🛒 عوالم</button><button class="tg" id="edX">✖ رجوع</button></div>
     <div class="edset">
       <span>القوة</span><button class="tg" id="edNm">−</button><b id="edN">6</b><button class="tg" id="edNp">+</button>
       <select class="tg" id="edD"><option value="0">عادي 🙂</option><option value="1">مجنون 😈</option><option value="2">مستحيل 💀</option></select>
@@ -163,6 +184,12 @@ select.tg{appearance:auto}
     <div class="edimp hide" id="edImpBox"><textarea id="edIn" placeholder="الصق الكود أو الرسالة كاملة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="edGo">▶ العب</button><button class="tg" id="edLoad">✏ حمّل للتعديل</button></div></div>
     <div id="edMsg"></div>
     <div class="row edact" style="margin-top:0"><button class="btn" id="edPlay">▶ جرّبها</button><button class="btn alt" id="edCopy">📋 انسخ الكود</button><button class="btn alt" id="edImp">📥 كود جاهز</button></div>
+  </div></div>
+  <div id="shop" class="ov hide"><div class="edbox shbox">
+    <div class="edtop"><b>🛒 المتجر</b><span class="shw" id="shW">🪙 0</span><button class="tg" id="shX">✖ رجوع</button></div>
+    <div class="shtabs" id="shTabs"><button class="ch f on" data-t="h">🦸 الأبطال</button><button class="ch f" data-t="w">🌍 العوالم</button></div>
+    <div class="shgrid h" id="shGrid"></div>
+    <div id="shMsg"></div>
   </div></div>
 </div></div>
 <div id="rot" class="hide">قلّب الجوال أفقياً — لا تسأل ليش 🙃</div>
@@ -440,7 +467,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
 
 /* =============== STATE =============== */
 const K={l:false,r:false,j:false,jp:false};
-const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null};
+const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null,pend:[],gain:0};
 let L=null, P=null, parts=[], themeBg=null, SIM=false;
 /* adaptive quality: 3 = full 2.5D | 2 = cheaper light + DPR 1.5 | 1 = no dynamic light, no dust, DPR 1 | 0 = flat classic look */
 const Q={q:3,acc:0,w:0,n:0,bad:0,fps:60,dprCap:[1,1,1.5,2]};
@@ -887,7 +914,7 @@ B.plat={
 function mkCoin(x,y,bait,fx){return{t:'coin',x,y,bait:!!bait,fx:fx||'anvil',got:0,ph:hash01(x,y,3)*6}}
 B.coin={
  upd(e,dt){e.ph+=dt*5},
- hit(e){ if(e.got||!circHit(e.x,e.y,10,prect()))return null; e.got=1; if(!e.bait){G.coins++;Snd.coin();return null} Snd.coin(); onBait(e); return null },
+ hit(e){ if(e.got||!circHit(e.x,e.y,10,prect()))return null; e.got=1; if(!e.bait){G.coins++;econPick(e);Snd.coin();return null} Snd.coin(); onBait(e); return null },
  draw(e,c,th){ if(e.got)return; const w=Math.abs(Math.cos(e.ph)),yy=e.y+Math.sin(e.ph*.7)*2;
   c.fillStyle='#ffd23f';c.strokeStyle='#000';c.lineWidth=2.4;c.beginPath();c.ellipse(e.x,yy,9*Math.max(.18,w),10,0,0,7);c.fill();c.stroke();
   if(w>.5){c.fillStyle='#b8860b';c.font='900 11px Tahoma';c.textAlign='center';c.fillText('$',e.x,yy+4)} }};
@@ -966,7 +993,7 @@ B.ghost={
 /* ---------------- checkpoint flag (it laughs too, but it's honest) ---------------- */
 function mkCp(tx){return{t:'cp',x:tx*TS+16,on:0,tm:0}}
 B.cp={
- upd(e,dt){ if(!e.on&&pcx()>e.x&&P.onGround){e.on=1;e.tm=0;if(e.fake)G.fakeHit=1; else G.cpX=e.x;Snd.coin();if(!SIM)say(rnd(['نقطة حفظ! 🚩 (بس لا تعتمد عليّ)','علم الأمان! اطمّن ولو شوي','🚩 رجعتلك من هون إذا متّ']),'any',2)} if(e.on)e.tm+=dt },
+ upd(e,dt){ if(!e.on&&pcx()>e.x&&P.onGround){e.on=1;e.tm=0;if(e.fake)G.fakeHit=1; else{G.cpX=e.x;econCheckpoint()}Snd.coin();if(!SIM)say(rnd(['نقطة حفظ! 🚩 (بس لا تعتمد عليّ)','علم الأمان! اطمّن ولو شوي','🚩 رجعتلك من هون إذا متّ']),'any',2)} if(e.on)e.tm+=dt },
  hit(){return null},
  draw(e,c,th){ const x=e.x; c.strokeStyle='#000';c.lineWidth=3;c.fillStyle='#d9dde8';c.fillRect(x-2,GY-64,4,64);c.strokeRect(x-2,GY-64,4,64);
   const w=Math.sin(G.t*6)*3;c.fillStyle=e.on?'#35d07f':'#ff4d5e';c.beginPath();c.moveTo(x+2,GY-62);c.quadraticCurveTo(x+16,GY-66+w,x+30,GY-58);c.quadraticCurveTo(x+16,GY-52-w,x+30,GY-44);c.lineTo(x+2,GY-44);c.closePath();c.fill();c.stroke();
@@ -1658,6 +1685,89 @@ function logDeath(cause){
   }catch(e){}
 }
 
+/* =============== ECONOMY (local-first, no ads, no real money) ===============
+   Coins picked up in a level are PENDING (G.pend). They reach the wallet (S.wallet) when you touch a real checkpoint or clear the level; die first and they are lost.
+   Each coin pays only once per level (S.cc[level] = keys already paid) so replaying level 1 is not a money machine. Clearing a level the first time pays a bonus.
+   Custom (editor) maps never pay. Nothing here touches physics: the coin rows added by seedCoins are deterministic (hash01, no RG) and honest coins have no effect on the world. */
+const SHOP={open:false,tab:'h'};
+if(!S.ecoV){ S.ecoV=1; S.own=S.own||{}; S.own[S.hero||'falafel']=1 }          // first run of the economy: keep the hero the player already uses
+S.wallet=S.wallet||0; S.cc=S.cc||{}; S.cl=S.cl||{}; S.nd=S.nd||{}; S.own=S.own||{}; S.own.falafel=1; if(!S.own[S.hero])S.hero='falafel'; S.ow=S.ow||{}; if(S.bgPick==null)S.bgPick=-1;
+
+const HERO_PRICE={falafel:0,uncle:60,chicken:100,cat:160,grandma:220,donkey:280,robot:340,mushroom:400};
+const heroOwned=id=>!!S.own[id];
+const worldPos=i=>WORLD_ORDER.indexOf(i);
+const worldFirstLevel=i=>worldPos(i)*5+1;                                    // the level where the campaign enters this world
+const worldPrice=i=>worldPos(i)<=0?0:40+worldPos(i)*20;                      // buy it early instead of reaching it
+const worldOpen=i=>worldPos(i)<=0||S.best>=worldFirstLevel(i)||!!S.ow[i];
+
+const coinKey=e=>Math.round(e.x/4)*1000+Math.round(e.y/4);
+function econToast(txt,bad){
+  if(SIM)return; const el=$('gain'); if(!el)return; el.textContent=txt; el.className=bad?'bad':'';
+  el.style.animation='none'; void el.offsetWidth; el.style.animation='gainup 1.9s ease-out forwards';
+}
+function econPick(e){ G.pend.push(coinKey(e)); hud() }
+function econBank(){                                  // pending -> wallet; returns what was really paid
+  const pend=G.pend; G.pend=[]; if(SIM||G.custom||!pend.length)return 0;
+  const paid=S.cc[G.level]||(S.cc[G.level]=[]); let g=0;
+  for(const k of pend){ if(!paid.includes(k)){ paid.push(k); g++ } }
+  if(g){ S.wallet+=g; save() }
+  hud(); return g;
+}
+function econCheckpoint(){ const g=econBank(); if(g)econToast('+'+g+' 🪙 انحفظت 🚩') }
+function econClear(){                                 // called once when a real level is cleared
+  if(SIM||G.custom)return; const g=econBank(); let b=0;
+  if(!S.cl[G.level]){ S.cl[G.level]=1; b+=L.boss?30:10 }
+  if(G.lvDeaths===0&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5 }
+  if(b){ S.wallet+=b; save() }
+  G.gain=g+b; if(g+b){ econToast('+'+(g+b)+' 🪙'+(b?'  (بونص '+b+')':'')) }
+  hud();
+}
+function econDeath(){                                 // un-banked coins are gone (the game teases you about it)
+  const n=G.pend.length; G.pend=[]; if(SIM||G.custom||!n)return;
+  econToast('ضاعت '+n+' 🪙 😭 (ما لحقت تحفظها)',1);
+}
+function econBuyHero(id){
+  if(heroOwned(id))return 'owned'; const p=HERO_PRICE[id]; if(p==null)return 'none'; if(S.wallet<p)return 'poor';
+  S.wallet-=p; S.own[id]=1; save(); hud(); return 'ok';
+}
+function econBuyWorld(i){
+  if(worldOpen(i))return 'owned'; const p=worldPrice(i); if(S.wallet<p)return 'poor';
+  S.wallet-=p; S.ow[i]=1; save(); hud(); return 'ok';
+}
+/* cosmetic: the chosen world replaces the level's own background (never the map itself) */
+function econTheme(th){ return (S.bgPick>=0&&S.bgPick<THEMES.length&&worldOpen(S.bgPick))?S.bgPick:th }
+
+/* ---- extra honest coins: rows on safe ground + arcs over pits (risk/reward). Deterministic: hash01 only. ---- */
+function seedCoins(){
+  if(G.custom||L.boss)return; const n=L.n, ex=L.exitTx, w=L.w, have=L.ents.filter(e=>e.t==='coin'&&!e.bait).length;
+  if(have>=10)return;
+  const bad=new Uint8Array(w+14), mark=(a,b)=>{ for(let t=Math.max(0,a);t<=Math.min(w+13,b);t++)bad[t]=1 };
+  for(let t=0;t<w;t++){ if(L.ground[t]<0||L.cr[t])bad[t]=1 }
+  for(const e of L.ents){
+    if(e.t==='coin'||e.t==='cp'||e.t==='chase'||e.t==='ghost')continue;
+    const x=entX(e); if(typeof x==='number'&&isFinite(x)){ const t=Math.floor(x/TS); mark(t-3,t+3) }
+    if(e.x0!=null&&e.x1!=null){ mark(Math.floor(Math.min(e.x0,e.x1)/TS)-1,Math.floor(Math.max(e.x0,e.x1)/TS)+1) }
+  }
+  for(const k in L.blocks){ const t=+k.split(',')[0]; mark(t-1,t+1) }
+  for(const s of L.signs)mark(s.tx-1,s.tx+1);
+  for(const z of L.zones)mark(Math.floor(z.x0/TS),Math.floor(z.x1/TS));
+  const near=(x,y)=>L.ents.some(e=>e.t==='coin'&&Math.abs(e.x-x)<26&&Math.abs(e.y-y)<26);
+  const put=(x,y)=>{ if(!near(x,y))L.ents.push(mkCoin(x,y,false)) };
+  // 1) rows of three on safe ground
+  const rows=clamp(Math.round((ex-20)/10),4,12)-Math.floor(have/3);
+  for(let k=0;k<rows;k++){
+    const base=10+Math.floor((ex-24)*(k+.5)/rows)+Math.floor(hash01(n,k,11)*5)-2;
+    let done=false;
+    for(let d=0;d<=6&&!done;d++)for(const sg of [1,-1]){
+      const t=base+d*sg; if(t<8||t+3>ex-4)continue;
+      if(!bad[t]&&!bad[t+1]&&!bad[t+2]){ for(let i=0;i<3;i++)put((t+i)*TS+16,GY-26); mark(t-1,t+3); done=true; break }
+    }
+  }
+  // 2) arcs over the widest pits: reachable with a normal jump, the reward for crossing
+  const pits=(L.pits||[]).filter(p=>p[1]>=3&&p[0]>=9&&p[0]+p[1]<=ex-4).sort((a,b)=>hash01(n,a[0],5)-hash01(n,b[0],5)).slice(0,3);
+  for(const [px,pl] of pits){ const cx=(px+pl/2)*TS; put(cx-34,GY-58); put(cx,GY-78); put(cx+34,GY-58) }
+}
+
 
 
 /* =============== UI HELPERS =============== */
@@ -1669,16 +1779,16 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return;$('hLvl').textContent=G.custom?'🛠 خريطتي':'المرحلة '+G.level;$('hCoin').textContent='🪙 '+G.coins;$('hDeath').textContent='💀 '+G.deaths}
+function hud(){ if(SIM)return;$('hLvl').textContent=G.custom?'🛠 خريطتي':'المرحلة '+G.level;$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;$('bShopT').textContent='🛒 المتجر · 🪙 '+S.wallet}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
-    const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
+    const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); b.classList.toggle('lock',!heroOwned(id)); b.dataset.p=heroOwned(id)?'':HERO_PRICE[id]; const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
     cx.translate(32,69); if(heroThumb(cx,id))return; cx.scale(1.5,1.5); try{HEROES[id].draw(cx,{moving:false,rs:0,run:0,onGround:true,blink:false,ex:0,ey:0,dead:false,scream:false})}catch(e){} });
 }
 function buildHeroRows(){
   for(const rid of ['heroT','heroM']){ const row=$(rid); row.innerHTML='';
     for(const h of HERO_IDS){ const b=document.createElement('button'); b.className='hb'; b.dataset.h=h; b.title=HEROES[h].name; const c2=document.createElement('canvas'); c2.width=64; c2.height=74; b.appendChild(c2);
-      b.onclick=e=>{e.stopPropagation();S.hero=h;save();syncHeroes();Snd.init();Snd.ui();heroSelectSay()}; row.appendChild(b) } }
+      b.onclick=e=>{e.stopPropagation(); if(!heroOwned(h)){Snd.init();Snd.ui();openShop('h');return} S.hero=h;save();syncHeroes();Snd.init();Snd.ui();heroSelectSay()}; row.appendChild(b) } }
   syncHeroes();
 }
 function syncToggles(){document.querySelectorAll('.tg[data-s]').forEach(b=>b.classList.toggle('on',!!S[b.dataset.s]));$('selDia').value=S.dialect}
@@ -1699,7 +1809,7 @@ function announceLevel(n){
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
 function loadLevel(n,announce,opt){
-  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):buildLevel(n,opt); RG.s=n*104729+17;
+  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):buildLevel(n,opt); G.pend=[]; if(!G.custom){ seedCoins(); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17;
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
   if(G.cpX!=null){ for(const e of L.ents){ if(e.t==='cp'&&e.x<=G.cpX)e.on=1; if(e.t==='chase'){e.x=P.x-(e.v==='wall'?330:430);e.go=P.x+4*TS} } }
   G.camX=clamp(P.x+PW/2-VW*.4,0,Math.max(0,L.w*TS-VW));
@@ -1719,7 +1829,7 @@ function startGame(n){
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom)S.deaths++; if(!SIM){save();hud();logDeath(cause)}
+  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom)S.deaths++; if(!SIM){save();hud();logDeath(cause)} econDeath();
   P.dvx=P.vx; P.dvy=P.vy; G.shake=9; G.dv=Math.random();
   if(!SIM&&S.sfx&&navigator.vibrate){try{navigator.vibrate(G.lvDeaths%4===0?[30,40,30]:28)}catch(e){}}
   if(DEATH_SFX[cause])DEATH_SFX[cause]();
@@ -1804,7 +1914,7 @@ function showCard(){
 }
 function retry(){ loadLevel(G.level,false,G.custom?{custom:G.custom}:undefined); G.state='play'; }
 function winLevel(){
-  if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y);
+  if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y); econClear();
   if(L.boss){ bossEnd(); return }
   const x=pick('win',{legacy:WIN_LINES,pAudio:.9}), ks=Object.keys(A.img).filter(k=>k.startsWith('card_win_'));
   if(x&&x.play)Snd.voice(x.id,{pri:4,delay:.5,ttl:2,wait:1.5});
@@ -3301,7 +3411,7 @@ function anyKeyContinue(){
 }
 addEventListener('keydown',e=>{
   if(e.repeat)return; Snd.init(); Snd.resume();
-  if(G.state==='editor')return;
+  if(G.state==='editor'||SHOP.open)return;
   const k=KM[e.code];
   if(G.state==='title'){ if(e.code==='Enter'||e.code==='Space'){startGame(1);e.preventDefault()} return }
   if(e.code==='KeyP'||e.code==='Escape'){togglePause();return}
@@ -3376,8 +3486,9 @@ const chipTxt=([f,v])=>CF[f].ic+' '+(v?CF[f].vs[v-1][1]:CF[f].nm);
 function edPreview(){            // the canvas behind the panel shows the chosen theme
   try{ const th=ED.c.th; L=buildLevel(1,{script:[['pit','plain']],theme:th,diff:'normal',salt:0}); P=newPlayer(L.spawnTx); themeBg=makeBg(THEMES[th],th*31+7); G.camX=0 }catch(e){}
 }
+function edThemes(){ const th=$('edTh'); th.innerHTML=''; THEMES.forEach((t,i)=>{ const o=new Option((worldOpen(i)?'':'🔒 ')+t.nm,i); o.disabled=!worldOpen(i)&&i!==ED.c.th; th.appendChild(o) }) }
 function edRender(){
-  const c=ED.c, cl=edClr(), nt=cTraps(c);
+  const c=ED.c, cl=edClr(), nt=cTraps(c); edThemes();
   $('edN').textContent=c.n; $('edD').value=c.d; $('edTh').value=c.th; $('edS').textContent=c.s;
   const seq=$('edSeq'); seq.innerHTML='';
   if(!c.seq.length)seq.appendChild(el('span','edhint','اضغط على فخ من تحت لتضيفه ↓'));
@@ -3464,15 +3575,71 @@ $('edLoad').onclick=()=>edImport(false); $('edGo').onclick=()=>edImport(true);
 $('edX').onclick=edClose;
 $('bEdT').onclick=()=>{Snd.init();edOpen(null,'')};
 $('bEdit').onclick=()=>{ if(ED.src==='code')edOpen(null,'',{src:'code',imp:true}); else edOpen(G.custom||ED.c,'') };
-{ // theme + difficulty options
-  const th=$('edTh'); THEMES.forEach((t,i)=>th.appendChild(new Option(t.nm,i)));
-}
 /* link: ...#m=HB1-xxxx opens the import box with the code filled in */
 function edBootHash(){
   const m=/[#&]m=([^&]+)/.exec(location.hash||''); if(!m)return;
   const code=decodeURIComponent(m[1]); if(decodeCustom(code).err)return;
   edOpen(null,'وصلتك خريطة! اضغط «العب»',{src:'code',imp:true,code});
 }
+
+/* =============== SHOP (heroes + worlds) ===============
+   Opens from the title screen, the pause menu and the map editor. Heroes cost coins; worlds unlock by reaching them in the campaign or can be bought early.
+   Owning a world lets you pick it as your own background for the normal levels and use it in the map editor. */
+function paintHero(cv2,id){
+  const cx=cv2.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,cv2.width,cv2.height); cx.translate(cv2.width/2,cv2.height-5);
+  if(heroThumb(cx,id))return; cx.scale(1.5,1.5);
+  try{HEROES[id].draw(cx,{moving:false,rs:0,run:0,onGround:true,blink:false,ex:0,ey:0,dead:false,scream:false})}catch(e){}
+}
+const SHT={};                                                  // world thumbnails, painted once
+function worldThumb(i){
+  if(SHT[i])return SHT[i]; const th=THEMES[i], out=document.createElement('canvas'); out.width=200; out.height=112;
+  try{
+    const big=document.createElement('canvas'); big.width=VW; big.height=VH; const b=big.getContext('2d'), at0=AT; AT=3+i*.7;
+    if(th.sc)drawScene(b,th,0);
+    else{ b.fillStyle=th.bg; b.fillRect(0,0,VW,VH); const t=makeBg(th,i*31+7); for(let x=0;x<VW;x+=256){b.drawImage(t,x,0);b.drawImage(t,x,224)} b.fillStyle='rgba(0,0,0,.35)'; b.fillRect(0,0,VW,VH) }
+    b.fillStyle=th.floor; b.fillRect(0,GY,VW,VH-GY); b.fillStyle=th.top; b.fillRect(0,GY-4,VW,8);
+    AT=at0; out.getContext('2d').drawImage(big,0,0,200,112);
+  }catch(e){}
+  return SHT[i]=out;
+}
+function shopMsg(t){ $('shMsg').textContent=t||'' }
+function shopRender(){
+  $('shW').textContent='🪙 '+S.wallet; document.querySelectorAll('#shTabs .ch').forEach(b=>b.classList.toggle('on',b.dataset.t===SHOP.tab));
+  const g=$('shGrid'); g.innerHTML=''; g.className='shgrid '+SHOP.tab;
+  if(SHOP.tab==='h'){
+    for(const id of HERO_IDS){
+      const own=heroOwned(id), sel=S.hero===id, card=el('div','shc'+(sel?' sel':'')), cv2=document.createElement('canvas'); cv2.width=64; cv2.height=74; paintHero(cv2,id);
+      const nm=el('div','nm',HEROES[id].name), p=HERO_PRICE[id];
+      let btn; if(own) btn=el('button','btn',sel?'✓ مختار':'اختر',()=>{ if(sel)return; S.hero=id; save(); syncHeroes(); Snd.ui(); heroSelectSay(); shopRender() });
+      else{ const poor=S.wallet<p; btn=el('button','btn'+(poor?' poor':''),'🪙 '+p+(poor?'  (ناقصك '+(p-S.wallet)+')':''),()=>{
+        const r=econBuyHero(id); if(r==='ok'){ S.hero=id; save(); syncHeroes(); Snd.coin(); Snd.win(); shopMsg('مبروك! صار '+HEROES[id].name+' إلك 🎉'); heroSelectSay() } else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg('ناقصك '+(p-S.wallet)+' 🪙 — كمّل العب واجمع عملات') } shopRender() }) }
+      card.append(cv2,nm,btn); g.appendChild(card);
+    }
+  } else {
+    const auto=el('div','shc'+(S.bgPick<0?' sel':'')), ab=el('button','btn',S.bgPick<0?'✓ تلقائي':'تلقائي',()=>{ S.bgPick=-1; save(); Snd.ui(); shopRender() });
+    auto.append(el('div','shbig','🎲'),el('div','nm','تلقائي'),el('div','sub','العالم حسب المرحلة'),ab); g.appendChild(auto);
+    const order=WORLD_ORDER.slice(); let k=0;
+    for(const i of order){
+      const th=THEMES[i], open=worldOpen(i), sel=S.bgPick===i, card=el('div','shc'+(sel?' sel':'')+(open?'':' lock')), cv2=document.createElement('canvas'); cv2.width=200; cv2.height=112;
+      const draw=()=>{ if(!SHOP.open||SHOP.tab!=='w'||!cv2.isConnected)return; const t=worldThumb(i); cv2.getContext('2d').drawImage(t,0,0) }; setTimeout(draw,30+(k++)*22);
+      const nm=el('div','nm',th.nm), p=worldPrice(i);
+      let sub, btn;
+      if(open){ sub=el('div','sub',worldPos(i)===0?'أول عالم':(S.ow[i]?'اشتريته':'وصلت له بالتقدم')); btn=el('button','btn',sel?'✓ مستخدمة':'استخدمها كخلفية',()=>{ S.bgPick=sel?-1:i; save(); Snd.ui(); shopRender() }) }
+      else{ const poor=S.wallet<p; sub=el('div','sub','🔒 بتوصله بالمرحلة '+worldFirstLevel(i)); btn=el('button','btn'+(poor?' poor':''),'اشترِ 🪙 '+p+(poor?'  (ناقصك '+(p-S.wallet)+')':''),()=>{
+        const r=econBuyWorld(i); if(r==='ok'){ Snd.coin(); Snd.win(); shopMsg('انفتح عالم «'+th.nm+'» 🎉 — صار متاح بالمحرّر وكخلفية') } else if(r==='poor'){ shopMsg('ناقصك '+(p-S.wallet)+' 🪙') } shopRender() }) }
+      card.append(cv2,nm,sub,btn); g.appendChild(card);
+    }
+  }
+}
+function openShop(tab){
+  if(tab)SHOP.tab=tab; SHOP.open=true; K.l=K.r=K.j=K.jp=false; shopMsg(''); $('shop').classList.remove('hide'); Snd.init(); shopRender();
+}
+function closeShop(){
+  SHOP.open=false; $('shop').classList.add('hide'); syncHeroes(); hud(); if(G.state==='editor')edRender();
+}
+$('shX').onclick=closeShop;
+document.querySelectorAll('#shTabs .ch').forEach(b=>b.onclick=()=>{ SHOP.tab=b.dataset.t; shopMsg(''); shopRender() });
+$('bShopT').onclick=()=>openShop('h'); $('bShop').onclick=()=>openShop('h'); $('edShop').onclick=()=>openShop('w');
 
 
 /* =============== BOOT =============== */
@@ -3483,7 +3650,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id)};
+window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud};
 })();
 </script>
 <script>

@@ -11,8 +11,9 @@ const chipTxt=([f,v])=>CF[f].ic+' '+(v?CF[f].vs[v-1][1]:CF[f].nm);
 function edPreview(){            // the canvas behind the panel shows the chosen theme
   try{ const th=ED.c.th; L=buildLevel(1,{script:[['pit','plain']],theme:th,diff:'normal',salt:0}); P=newPlayer(L.spawnTx); themeBg=makeBg(THEMES[th],th*31+7); G.camX=0 }catch(e){}
 }
+function edThemes(){ const th=$('edTh'); th.innerHTML=''; THEMES.forEach((t,i)=>{ const o=new Option((worldOpen(i)?'':'🔒 ')+t.nm,i); o.disabled=!worldOpen(i)&&i!==ED.c.th; th.appendChild(o) }) }
 function edRender(){
-  const c=ED.c, cl=edClr(), nt=cTraps(c);
+  const c=ED.c, cl=edClr(), nt=cTraps(c); edThemes();
   $('edN').textContent=c.n; $('edD').value=c.d; $('edTh').value=c.th; $('edS').textContent=c.s;
   const seq=$('edSeq'); seq.innerHTML='';
   if(!c.seq.length)seq.appendChild(el('span','edhint','اضغط على فخ من تحت لتضيفه ↓'));
@@ -99,9 +100,6 @@ $('edLoad').onclick=()=>edImport(false); $('edGo').onclick=()=>edImport(true);
 $('edX').onclick=edClose;
 $('bEdT').onclick=()=>{Snd.init();edOpen(null,'')};
 $('bEdit').onclick=()=>{ if(ED.src==='code')edOpen(null,'',{src:'code',imp:true}); else edOpen(G.custom||ED.c,'') };
-{ // theme + difficulty options
-  const th=$('edTh'); THEMES.forEach((t,i)=>th.appendChild(new Option(t.nm,i)));
-}
 /* link: ...#m=HB1-xxxx opens the import box with the code filled in */
 function edBootHash(){
   const m=/[#&]m=([^&]+)/.exec(location.hash||''); if(!m)return;

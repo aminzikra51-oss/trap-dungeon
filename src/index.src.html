@@ -18,6 +18,9 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;background
 #hud{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:calc(var(--u)*6) calc(var(--u)*10);pointer-events:none;font-weight:900;font-size:calc(var(--u)*17);text-shadow:0 2px 0 #000,0 0 6px #000}
 #hud .chip{background:#000a;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*12);padding:calc(var(--u)*2) calc(var(--u)*10);margin:0 calc(var(--u)*3)}
 #hud .r{display:flex;align-items:center;pointer-events:auto}
+#gain{position:absolute;top:calc(var(--u)*46);left:50%;transform:translateX(-50%);opacity:0;font-size:calc(var(--u)*22);font-weight:900;color:#ffd23f;white-space:nowrap;-webkit-text-stroke:calc(var(--u)*1.5) #000;text-shadow:0 calc(var(--u)*3) 0 #000}
+#gain.bad{color:#ff7a7a}
+@keyframes gainup{0%{opacity:0;transform:translate(-50%,calc(var(--u)*10))}12%{opacity:1;transform:translate(-50%,0)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,calc(var(--u)*-14))}}
 .ibtn{pointer-events:auto;background:#000a;color:#fff;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*12);font-size:calc(var(--u)*16);padding:calc(var(--u)*2) calc(var(--u)*10);margin:0 calc(var(--u)*3);cursor:pointer;font-family:inherit;font-weight:900}
 #stage.touch #sub{bottom:auto;top:calc(var(--u)*44)}
 #sub{position:absolute;left:0;right:0;bottom:calc(var(--u)*14);display:flex;justify-content:center;pointer-events:none}
@@ -56,7 +59,22 @@ select.tg{appearance:auto}
 #menu h2{margin:0 0 calc(var(--u)*6);font-size:calc(var(--u)*28);color:var(--gold)}
 .lvlpick{font-size:calc(var(--u)*14);margin-top:calc(var(--u)*8);font-weight:800}
 .lvlpick input{width:calc(var(--u)*60);font-size:calc(var(--u)*15);text-align:center;border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;font-family:inherit;font-weight:900}
-#ed{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
+#ed,#shop{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
+.shw{font-size:calc(var(--u)*18);font-weight:900;color:#ffd23f;flex:1;text-align:center}
+.shtabs{display:flex;gap:calc(var(--u)*6);justify-content:center}
+.shgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*8);overflow:auto;min-height:0;flex:1;padding:calc(var(--u)*2)}
+.shgrid.w{grid-template-columns:repeat(4,1fr)}
+.shc{background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*6);display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3);font-weight:800;font-size:calc(var(--u)*13);justify-content:space-between}
+.shc.sel{background:#3a2a10;border-color:#ffd23f}
+.shc.lock canvas{filter:grayscale(.3) brightness(.78)}
+.shc canvas{position:static;inset:auto;background:none;width:calc(var(--u)*50);height:calc(var(--u)*58)}
+.shgrid.w .shc canvas{width:100%;height:auto;border-radius:calc(var(--u)*6)}
+.shc .nm{font-weight:900;font-size:calc(var(--u)*14);line-height:1.2}
+.shc .sub{font-size:calc(var(--u)*11);opacity:.75;line-height:1.2}
+.shbig{font-size:calc(var(--u)*40);line-height:1.2}
+.shc .btn{font-size:calc(var(--u)*13);padding:calc(var(--u)*3) calc(var(--u)*8);border-width:calc(var(--u)*3);border-radius:calc(var(--u)*10)}
+.shc .btn.poor{filter:grayscale(.7);opacity:.75}
+#shMsg{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;min-height:calc(var(--u)*17)}
 .edbox{width:calc(var(--u)*768);max-height:calc(var(--u)*436);display:flex;flex-direction:column;gap:calc(var(--u)*5);background:#1b1230;border:calc(var(--u)*4) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*8) calc(var(--u)*12);box-shadow:calc(var(--u)*6) calc(var(--u)*6) 0 #000;text-align:center}
 .edtop{display:flex;justify-content:space-between;align-items:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*20);font-weight:900;color:var(--gold)}
 .edst{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;flex:1;text-align:center}
@@ -82,6 +100,9 @@ select.tg{appearance:auto}
 .hrow{display:flex;gap:calc(var(--u)*5);justify-content:center;margin-top:calc(var(--u)*8)}
 .hb{background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*2);cursor:pointer;line-height:0}
 .hb.on{background:#ffd23f}
+.hb{position:relative}
+.hb.lock canvas{filter:grayscale(1) brightness(.5)}
+.hb.lock::after{content:'🔒 ' attr(data-p);position:absolute;left:0;right:0;bottom:calc(var(--u)*2);line-height:1;font-size:calc(var(--u)*11);font-weight:900;color:#fff;text-shadow:0 0 calc(var(--u)*3) #000,0 0 calc(var(--u)*3) #000}
 .hb canvas{position:static;inset:auto;background:none;width:calc(var(--u)*38);height:calc(var(--u)*44)}
 .hlbl{font-size:calc(var(--u)*12);font-weight:800;opacity:.8;margin-top:calc(var(--u)*6)}
 #rot{position:fixed;top:0;left:0;right:0;text-align:center;background:#ffd23f;color:#000;font-weight:900;padding:6px;font-size:14px;z-index:99}
@@ -91,7 +112,7 @@ select.tg{appearance:auto}
 <div id="wrap" dir="rtl" lang="ar"><div id="stage">
   <canvas id="cv"></canvas>
   <div id="hud" class="hide">
-    <div><span class="chip" id="hLvl">المرحلة 1</span><span class="chip" id="hCoin">🪙 0</span></div>
+    <div><span class="chip" id="hLvl">المرحلة 1</span><span class="chip" id="hCoin">🪙 0</span></div><div id="gain"></div>
     <div class="r"><span class="chip" id="hDeath">💀 0</span><button class="ibtn hide" id="bFull" title="ملء الشاشة">⛶</button><button class="ibtn" id="bMenu">⚙</button></div>
   </div>
   <div id="sub"></div>
@@ -109,7 +130,7 @@ select.tg{appearance:auto}
       <p class="tag">كل شي آمن هون... وكله كذب 😇</p>
       <div><button class="btn" id="bPlay">ابدأ اللعب</button></div>
       <div><button class="btn alt hide" id="bCont">كمّل من المرحلة 1</button></div>
-      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button><button class="tg" id="bEdT">🛠 مصمّم المراحل</button></div>
+      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button><button class="tg" id="bEdT">🛠 مصمّم المراحل</button><button class="tg" id="bShopT">🛒 المتجر</button></div>
       <div class="how">⬅ ➡ للحركة · ⬆ أو مسافة للقفز (واضغط مرة ثانية بالهوا!) · P إيقاف · R إعادة · M كتم</div>
       <div class="hlbl">اختر بطلك 👇</div><div class="hrow" id="heroT"></div>
     </div>
@@ -130,13 +151,13 @@ select.tg{appearance:auto}
       <option value="gulf">خليجي</option><option value="iq">عراقي</option><option value="ma">مغربي</option>
       <option value="lb">لبناني</option><option value="ps">فلسطيني</option></select></div>
     <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
-    <div class="row"><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
+    <div class="row"><button class="tg" id="bShop">🛒 المتجر</button><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
     <div class="lvlpick">اقفز إلى مرحلة: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
     <div class="row"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
   </div></div>
   <div id="ed" class="ov hide"><div class="edbox">
-    <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edX">✖ رجوع</button></div>
+    <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edShop">🛒 عوالم</button><button class="tg" id="edX">✖ رجوع</button></div>
     <div class="edset">
       <span>القوة</span><button class="tg" id="edNm">−</button><b id="edN">6</b><button class="tg" id="edNp">+</button>
       <select class="tg" id="edD"><option value="0">عادي 🙂</option><option value="1">مجنون 😈</option><option value="2">مستحيل 💀</option></select>
@@ -151,6 +172,12 @@ select.tg{appearance:auto}
     <div class="edimp hide" id="edImpBox"><textarea id="edIn" placeholder="الصق الكود أو الرسالة كاملة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="edGo">▶ العب</button><button class="tg" id="edLoad">✏ حمّل للتعديل</button></div></div>
     <div id="edMsg"></div>
     <div class="row edact" style="margin-top:0"><button class="btn" id="edPlay">▶ جرّبها</button><button class="btn alt" id="edCopy">📋 انسخ الكود</button><button class="btn alt" id="edImp">📥 كود جاهز</button></div>
+  </div></div>
+  <div id="shop" class="ov hide"><div class="edbox shbox">
+    <div class="edtop"><b>🛒 المتجر</b><span class="shw" id="shW">🪙 0</span><button class="tg" id="shX">✖ رجوع</button></div>
+    <div class="shtabs" id="shTabs"><button class="ch f on" data-t="h">🦸 الأبطال</button><button class="ch f" data-t="w">🌍 العوالم</button></div>
+    <div class="shgrid h" id="shGrid"></div>
+    <div id="shMsg"></div>
   </div></div>
 </div></div>
 <div id="rot" class="hide">قلّب الجوال أفقياً — لا تسأل ليش 🙃</div>
@@ -432,6 +459,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
 /*@include w_traps2.js*/
 /*@include w_boss.js*/
 /*@include w_custom.js*/
+/*@include w_econ.js*/
 
 
 /* =============== UI HELPERS =============== */
@@ -443,16 +471,16 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return;$('hLvl').textContent=G.custom?'🛠 خريطتي':'المرحلة '+G.level;$('hCoin').textContent='🪙 '+G.coins;$('hDeath').textContent='💀 '+G.deaths}
+function hud(){ if(SIM)return;$('hLvl').textContent=G.custom?'🛠 خريطتي':'المرحلة '+G.level;$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;$('bShopT').textContent='🛒 المتجر · 🪙 '+S.wallet}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
-    const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
+    const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); b.classList.toggle('lock',!heroOwned(id)); b.dataset.p=heroOwned(id)?'':HERO_PRICE[id]; const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
     cx.translate(32,69); if(heroThumb(cx,id))return; cx.scale(1.5,1.5); try{HEROES[id].draw(cx,{moving:false,rs:0,run:0,onGround:true,blink:false,ex:0,ey:0,dead:false,scream:false})}catch(e){} });
 }
 function buildHeroRows(){
   for(const rid of ['heroT','heroM']){ const row=$(rid); row.innerHTML='';
     for(const h of HERO_IDS){ const b=document.createElement('button'); b.className='hb'; b.dataset.h=h; b.title=HEROES[h].name; const c2=document.createElement('canvas'); c2.width=64; c2.height=74; b.appendChild(c2);
-      b.onclick=e=>{e.stopPropagation();S.hero=h;save();syncHeroes();Snd.init();Snd.ui();heroSelectSay()}; row.appendChild(b) } }
+      b.onclick=e=>{e.stopPropagation(); if(!heroOwned(h)){Snd.init();Snd.ui();openShop('h');return} S.hero=h;save();syncHeroes();Snd.init();Snd.ui();heroSelectSay()}; row.appendChild(b) } }
   syncHeroes();
 }
 function syncToggles(){document.querySelectorAll('.tg[data-s]').forEach(b=>b.classList.toggle('on',!!S[b.dataset.s]));$('selDia').value=S.dialect}
@@ -473,7 +501,7 @@ function announceLevel(n){
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
 function loadLevel(n,announce,opt){
-  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):buildLevel(n,opt); RG.s=n*104729+17;
+  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):buildLevel(n,opt); G.pend=[]; if(!G.custom){ seedCoins(); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17;
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
   if(G.cpX!=null){ for(const e of L.ents){ if(e.t==='cp'&&e.x<=G.cpX)e.on=1; if(e.t==='chase'){e.x=P.x-(e.v==='wall'?330:430);e.go=P.x+4*TS} } }
   G.camX=clamp(P.x+PW/2-VW*.4,0,Math.max(0,L.w*TS-VW));
@@ -493,7 +521,7 @@ function startGame(n){
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom)S.deaths++; if(!SIM){save();hud();logDeath(cause)}
+  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom)S.deaths++; if(!SIM){save();hud();logDeath(cause)} econDeath();
   P.dvx=P.vx; P.dvy=P.vy; G.shake=9; G.dv=Math.random();
   if(!SIM&&S.sfx&&navigator.vibrate){try{navigator.vibrate(G.lvDeaths%4===0?[30,40,30]:28)}catch(e){}}
   if(DEATH_SFX[cause])DEATH_SFX[cause]();
@@ -578,7 +606,7 @@ function showCard(){
 }
 function retry(){ loadLevel(G.level,false,G.custom?{custom:G.custom}:undefined); G.state='play'; }
 function winLevel(){
-  if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y);
+  if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y); econClear();
   if(L.boss){ bossEnd(); return }
   const x=pick('win',{legacy:WIN_LINES,pAudio:.9}), ks=Object.keys(A.img).filter(k=>k.startsWith('card_win_'));
   if(x&&x.play)Snd.voice(x.id,{pri:4,delay:.5,ttl:2,wait:1.5});
@@ -676,7 +704,7 @@ function anyKeyContinue(){
 }
 addEventListener('keydown',e=>{
   if(e.repeat)return; Snd.init(); Snd.resume();
-  if(G.state==='editor')return;
+  if(G.state==='editor'||SHOP.open)return;
   const k=KM[e.code];
   if(G.state==='title'){ if(e.code==='Enter'||e.code==='Space'){startGame(1);e.preventDefault()} return }
   if(e.code==='KeyP'||e.code==='Escape'){togglePause();return}
@@ -739,6 +767,7 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden&&G.state===
 addEventListener('resize',resize);
 
 /*@include w_editor.js*/
+/*@include w_shop.js*/
 
 /* =============== BOOT =============== */
 if(A.img.card_fakedoor_1)$('decoL').src=A.img.card_fakedoor_1; if(A.img.card_spike_1)$('decoR').src=A.img.card_spike_2||A.img.card_spike_1;
@@ -748,7 +777,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id)};
+window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud};
 })();
 </script>
 </body>

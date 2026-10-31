@@ -349,7 +349,7 @@ B.plat={
 function mkCoin(x,y,bait,fx){return{t:'coin',x,y,bait:!!bait,fx:fx||'anvil',got:0,ph:hash01(x,y,3)*6}}
 B.coin={
  upd(e,dt){e.ph+=dt*5},
- hit(e){ if(e.got||!circHit(e.x,e.y,10,prect()))return null; e.got=1; if(!e.bait){G.coins++;Snd.coin();return null} Snd.coin(); onBait(e); return null },
+ hit(e){ if(e.got||!circHit(e.x,e.y,10,prect()))return null; e.got=1; if(!e.bait){G.coins++;econPick(e);Snd.coin();return null} Snd.coin(); onBait(e); return null },
  draw(e,c,th){ if(e.got)return; const w=Math.abs(Math.cos(e.ph)),yy=e.y+Math.sin(e.ph*.7)*2;
   c.fillStyle='#ffd23f';c.strokeStyle='#000';c.lineWidth=2.4;c.beginPath();c.ellipse(e.x,yy,9*Math.max(.18,w),10,0,0,7);c.fill();c.stroke();
   if(w>.5){c.fillStyle='#b8860b';c.font='900 11px Tahoma';c.textAlign='center';c.fillText('$',e.x,yy+4)} }};
@@ -428,7 +428,7 @@ B.ghost={
 /* ---------------- checkpoint flag (it laughs too, but it's honest) ---------------- */
 function mkCp(tx){return{t:'cp',x:tx*TS+16,on:0,tm:0}}
 B.cp={
- upd(e,dt){ if(!e.on&&pcx()>e.x&&P.onGround){e.on=1;e.tm=0;if(e.fake)G.fakeHit=1; else G.cpX=e.x;Snd.coin();if(!SIM)say(rnd(['نقطة حفظ! 🚩 (بس لا تعتمد عليّ)','علم الأمان! اطمّن ولو شوي','🚩 رجعتلك من هون إذا متّ']),'any',2)} if(e.on)e.tm+=dt },
+ upd(e,dt){ if(!e.on&&pcx()>e.x&&P.onGround){e.on=1;e.tm=0;if(e.fake)G.fakeHit=1; else{G.cpX=e.x;econCheckpoint()}Snd.coin();if(!SIM)say(rnd(['نقطة حفظ! 🚩 (بس لا تعتمد عليّ)','علم الأمان! اطمّن ولو شوي','🚩 رجعتلك من هون إذا متّ']),'any',2)} if(e.on)e.tm+=dt },
  hit(){return null},
  draw(e,c,th){ const x=e.x; c.strokeStyle='#000';c.lineWidth=3;c.fillStyle='#d9dde8';c.fillRect(x-2,GY-64,4,64);c.strokeRect(x-2,GY-64,4,64);
   const w=Math.sin(G.t*6)*3;c.fillStyle=e.on?'#35d07f':'#ff4d5e';c.beginPath();c.moveTo(x+2,GY-62);c.quadraticCurveTo(x+16,GY-66+w,x+30,GY-58);c.quadraticCurveTo(x+16,GY-52-w,x+30,GY-44);c.lineTo(x+2,GY-44);c.closePath();c.fill();c.stroke();
