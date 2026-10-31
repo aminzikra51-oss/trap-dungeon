@@ -139,14 +139,15 @@ function buildLevel(n,opt){
   const salt=opt.salt!=null?opt.salt:(BADSALT[dk+':'+n]||0), r=mulberry32(n*7919+1337+salt*104729+(dk==='normal'?0:dk==='crazy'?9091:18181)), D=mkD(ne); if(opt.D)Object.assign(D,opt.D);
   if(ne>=3){D.combo=clamp(D.combo+DF.combo,0,.95);D.gap=Math.max(1.2,D.gap-DF.gap)}
   const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138));
-  const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:Math.floor((n-1)/5)%THEMES.length,crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
+  const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:themeOf(n),crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
   if(opt.theme!=null)L.theme=opt.theme;
   const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
   const PITT={pit:1};
-  while(guard++<90){
+  const maxIter=script&&script.length>40?script.length*2+30:90;      // long editor recipes need more passes than a generated level
+  while(guard++<maxIter){
     let fam=null,force=null;
     if(script&&si<script.length){fam=script[si][0];force=script[si][1];si++}
     else if(opt.script&&opt.script.length)break;

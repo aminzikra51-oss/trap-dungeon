@@ -20,7 +20,7 @@ function buildBoss(n,opt){
   const hp=Math.min(5,3+(tier>=3?1:0)+(tier>=5?1:0)), f=clamp((ne-10)/60,0,1);
   const prog=(G.bossProg&&G.bossProg.n===n)?G.bossProg.hits:0;
   const L={n,dk,ne,lie:.5,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[4,14,24],
-    theme:Math.floor((n-1)/5)%THEMES.length,crDelay:.3,exitTx:21,spawnTx:2,eid:0,segs:[],cpList:[],gate:GATE_TX,boss:1,tier};
+    theme:themeOf(n),crDelay:.3,exitTx:21,spawnTx:2,eid:0,segs:[],cpList:[],gate:GATE_TX,boss:1,tier};
   L.name='👑 '+BOSS_NAMES[(tier-1)%BOSS_NAMES.length];
   const i0=(prog||G.bossSeen===n)?1.1:2.6;
   const e={t:'boss',always:1,x:BX,y:BY,hp,hits:Math.min(prog,hp),tier,f,dk,col:BOSS_COL[(tier-1)%BOSS_COL.length],st:'intro',tm:i0,i0,nx:1,last:'',cdS:8,said:0,chg:0};

@@ -132,12 +132,12 @@ function drawLight3(c,cam,th){
   if(Q.q<=1){drawVig3(c);return}
   const kk=Q.q>=3?2:3; if(!LC3||LC3.k!==kk){LC3=document.createElement('canvas');LC3.width=Math.round(VW/kk);LC3.height=Math.round(VH/kk);LC3.k=kk}
   const l=LC3.getContext('2d');l.setTransform(1,0,0,1,0,0);l.globalCompositeOperation='source-over';l.clearRect(0,0,LC3.width,LC3.height);
-  const dark=G.state==='title'?.4:.5;l.fillStyle='rgba(5,2,14,'+dark+')';l.fillRect(0,0,LC3.width,LC3.height);
+  const dark=th.dk!=null?th.dk:(G.state==='title'?.4:.5);l.fillStyle='rgba(5,2,14,'+dark+')';l.fillRect(0,0,LC3.width,LC3.height);
   const vg=l.createRadialGradient(LC3.width/2,LC3.height*.52,LC3.height*.45,LC3.width/2,LC3.height*.52,LC3.width*.62);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.4)');l.fillStyle=vg;l.fillRect(0,0,LC3.width,LC3.height);
   l.globalCompositeOperation='destination-out';l.setTransform(1/kk,0,0,1/kk,0,0);
   const pool=(x,y,r,a)=>{const g=l.createRadialGradient(x,y,r*.08,x,y,r);g.addColorStop(0,'rgba(0,0,0,'+a+')');g.addColorStop(.55,'rgba(0,0,0,'+a*.62+')');g.addColorStop(1,'rgba(0,0,0,0)');l.fillStyle=g;l.fillRect(x-r,y-r,r*2,r*2)};
   const hx=P.x+PW/2-cam,hy=P.y+4; if(G.state!=='dead'||G.deadT<.5)pool(hx,hy,250,1);
-  for(const tx of L.torches){const x=tx*TS+16-cam;if(x<-170||x>VW+170)continue;pool(x,150,170,.9)}
+  if(!th.nt)for(const tx of L.torches){const x=tx*TS+16-cam;if(x<-170||x>VW+170)continue;pool(x,150,170,.9)}
   pool(exitPx()+16-cam,GY-30,120,.7);
   l.globalCompositeOperation='source-over';
   c.drawImage(LC3,0,0,VW,VH);

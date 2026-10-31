@@ -27,7 +27,7 @@ const CF=[ // id, icon, Arabic name, unlock power, variants [[id, name, unlock]]
  {f:'cp',ic:'🚩',nm:'علم حفظ',mn:1,vs:[]}
 ];
 const CF_BY=Object.fromEntries(CF.map((c,i)=>[c.f,i]));
-const C_DIFF=['normal','crazy','hell'], C_MAXSEQ=16, C_MAXN=60;
+const C_DIFF=['normal','crazy','hell'], C_MAXSEQ=250, C_MAXN=60;
 const cNew=()=>({n:6,d:1,th:0,s:0,seq:[]});                       // seq items: [familyIndex, variantIndex+1 | 0 = let the generator choose]
 const cNeed=c=>c.seq.reduce((m,[f,v])=>Math.max(m,v?CF[f].vs[v-1][2]:CF[f].mn),1);
 const cTraps=c=>c.seq.filter(it=>CF[it[0]].f!=='cp').length;
@@ -43,7 +43,7 @@ function encodeCustom(c){
 }
 /* returns {c} or {err}. Accepts a whole pasted message: the first HBn-xxxx token is used. */
 function decodeCustom(txt){
-  const m=/HB(\d+)-([A-Za-z0-9_-]{8,120})/.exec(String(txt||'')); if(!m)return{err:'ما لقيت كود (بيبدأ بـ HB1-)'};
+  const m=/HB(\d+)-([A-Za-z0-9_-]{8,420})/.exec(String(txt||'')); if(!m)return{err:'ما لقيت كود (بيبدأ بـ HB1-)'};
   let u; try{ u=unb64u(m[2]) }catch(e){ return{err:'الكود مقصوص أو فيه غلط'} }
   if(u.length<7)return{err:'الكود قصير'};
   const n=u.length-2; if(cSum(u,n)!==((u[n]<<8)|u[n+1]))return{err:'الكود فيه حرف غلط (انسخه كامل)'};

@@ -1,5 +1,5 @@
 /* Don't Die, Habibi service worker — offline play. Cache name carries the build hash, so every new build installs a fresh cache and drops the old one. */
-const V = 'td-1a63231671';
+const V = 'td-de2997374d';
 const FILES = ['./', 'index.html', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png', 'icons/favicon-48.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith('td-') && k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

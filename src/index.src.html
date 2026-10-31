@@ -248,12 +248,29 @@ const WIN_LINES=[['عبرت! (بالغلط أكيد)','sy'],['نجوت! مين �
 const IDLE_LINES=[['لسا عايش؟ غريبة!','sy'],['الفخاخ عم تستناك بشوق','sy'],['كل خطوة محسوبة... عليك','any'],['أنا مجرد راوٍ، ما دخلني بالفخاخ','any'],['خمّن شو بعد؟ ولا حاجة... كذبت','any'],['الحذر واجب، والحظ مو مضمون','any'],['اركض بسرعة، الندم ما بيلحقك','lb'],['يا شاطر! لسا ما متّ!','eg'],['ثقتك بالأرض مؤثرة جداً','any'],['وش ذا الجرأة؟ ما شاء الله','gulf']];
 const SIGN_LIE=[['ما في فخاخ\nهون أبداً 😇','lb'],['منطقة آمنة\nومعتمدة','lb'],['مريح مثل\nالسرير','lb'],['طريق آمن\n100%','any'],['ما في فخاخ\nوعد!','sy'],['الأرض صلبة\nثق بي','any'],['اركض بلا خوف','any'],['حفرة؟ أي حفرة؟','sy'],['ماشي الحال\nكمّل','eg'],['هذا المكان\nخالٍ تماماً','any'],['سهل مثل\nالشاي','iq'],['ولا تهتم\nكله تمام','lb']];
 const SIGN_TRUE=[['انتبه! خطر\nقدّامك','lb'],['مين بيقدر\nيعبر؟ إنت!','lb'],['احذر ولا\nتحذر... سيّان','lb'],['احذر!\nفخ قدّامك','sy'],['هون الموت\nيبدأ','sy'],['اقفز يا\nذكي','eg'],['شد حيلك!','gulf'],['انتبه آ\nصاحبي','ma'],['اقفز هسّه!','iq'],['يلا اقفز\nيا بطل','lb']];
+/* THEMES: the index is stored inside share codes -> APPEND ONLY. nm = editor name. sc = animated scene (draw_bg.js), fx = ambience on the classic dungeon wall.
+   dk = darkness of the light overlay, nt = no wall torches, nc = no dungeon ceiling. */
 const THEMES=[
- {bg:'#1b1235',brick:'#2a1c4d',brick2:'#33235c',line:'#120a26',floor:'#4a3a6b',floor2:'#3d2f5b',top:'#7bd45a',torch:'#ff9a2e'},
- {bg:'#2a0e10',brick:'#4a1a16',brick2:'#5a2118',line:'#1a0707',floor:'#6b3a2a',floor2:'#58301f',top:'#ff7a2e',torch:'#ffb02e'},
- {bg:'#0e1f33',brick:'#1f3f63',brick2:'#274c78',line:'#08121f',floor:'#4a7aa6',floor2:'#3c668f',top:'#d8f4ff',torch:'#7fe7ff'},
- {bg:'#10230f',brick:'#24401c',brick2:'#2c4d22',line:'#08140a',floor:'#4d6b2f',floor2:'#3f5a25',top:'#b6e04a',torch:'#c9ff4a'}
+ {nm:'🟣 القبو',fx:'dust',bg:'#1b1235',brick:'#2a1c4d',brick2:'#33235c',line:'#120a26',floor:'#4a3a6b',floor2:'#3d2f5b',top:'#7bd45a',torch:'#ff9a2e'},
+ {nm:'🔴 الحمم',fx:'embers',bg:'#2a0e10',brick:'#4a1a16',brick2:'#5a2118',line:'#1a0707',floor:'#6b3a2a',floor2:'#58301f',top:'#ff7a2e',torch:'#ffb02e'},
+ {nm:'🔵 الجليد',fx:'snow',bg:'#0e1f33',brick:'#1f3f63',brick2:'#274c78',line:'#08121f',floor:'#4a7aa6',floor2:'#3c668f',top:'#d8f4ff',torch:'#7fe7ff'},
+ {nm:'🟢 الغابة',fx:'fireflies',bg:'#10230f',brick:'#24401c',brick2:'#2c4d22',line:'#08140a',floor:'#4d6b2f',floor2:'#3f5a25',top:'#b6e04a',torch:'#c9ff4a'},
+ {nm:'🌆 مدينة الغروب',sc:'oldcity',dk:.2,nt:1,nc:1,bg:'#4d2253',brick:'#63285a',brick2:'#8a3f72',line:'#2a1238',floor:'#8a4568',floor2:'#763a5a',top:'#ffb36b',torch:'#ffcf6b'},
+ {nm:'🌊 أعماق البحر',sc:'sea',dk:.22,nt:1,nc:1,bg:'#0a3a63',brick:'#0b4470',brick2:'#12a0b5',line:'#07263f',floor:'#c9a96a',floor2:'#b8985a',top:'#58d3a6',torch:'#9dffee'},
+ {nm:'🏜 ليل الصحراء',sc:'desert',dk:.26,nt:1,nc:1,bg:'#1b2a66',brick:'#2b2152',brick2:'#4c3568',line:'#140d2a',floor:'#9a6a46',floor2:'#855a3a',top:'#f0c987',torch:'#ffd9a0'},
+ {nm:'⚰ المقبرة',sc:'grave',dk:.38,nt:1,nc:1,bg:'#1b1233',brick:'#1a1030',brick2:'#33275a',line:'#0b0616',floor:'#463a62',floor2:'#3a2f54',top:'#6f9a68',torch:'#bfc8ff'},
+ {nm:'🍭 أرض الحلوى',sc:'candy',dk:.05,nt:1,nc:1,bg:'#ffd9f0',brick:'#ffb5d8',brick2:'#b8f2d6',line:'#8a3a6e',floor:'#f07ab4',floor2:'#e064a4',top:'#fff3c8',torch:'#ffffff'},
+ {nm:'🌃 مدينة النيون',sc:'neon',dk:.3,nt:1,nc:1,bg:'#1a0836',brick:'#14082e',brick2:'#34196a',line:'#0c0320',floor:'#2e1262',floor2:'#250e52',top:'#37f0ff',torch:'#ff3d8b'},
+ {nm:'🚀 الفضاء',sc:'space',dk:.3,nt:1,nc:1,bg:'#0a0620',brick:'#14102a',brick2:'#5a3cff',line:'#07041a',floor:'#3a3860',floor2:'#2f2d50',top:'#c4c0f0',torch:'#7fe3ff'},
+ {nm:'☁ فوق الغيوم',sc:'sky',dk:.04,nt:1,nc:1,bg:'#8fd0ff',brick:'#a9c9ea',brick2:'#ffffff',line:'#5a7fb0',floor:'#e4eeff',floor2:'#cfdff8',top:'#ffffff',torch:'#fff3b0'},
+ {nm:'⛈ العاصفة',sc:'storm',dk:.28,nt:1,nc:1,bg:'#27323d',brick:'#2b3944',brick2:'#44565f',line:'#0f161c',floor:'#46565e',floor2:'#3a4a52',top:'#7aa088',torch:'#cfe3ff'},
+ {nm:'🍂 الخريف',sc:'autumn',dk:.1,nt:1,nc:1,bg:'#ffa760',brick:'#c5573e',brick2:'#e2552b',line:'#3a1a0e',floor:'#84502e',floor2:'#734424',top:'#ec8a34',torch:'#ffe6a0'},
+ {nm:'💎 كهف الكريستال',sc:'crystal',dk:.36,nt:1,bg:'#06303a',brick:'#052a33',brick2:'#0b4a54',line:'#02161c',floor:'#0f5566',floor2:'#0b4757',top:'#58f5e5',torch:'#58f5e5'},
+ {nm:'⚙ ورشة التروس',sc:'clockwork',dk:.34,bg:'#3a2814',brick:'#3b2a13',brick2:'#6a4d26',line:'#1d130a',floor:'#a47c34',floor2:'#8c6a2a',top:'#f0c460',torch:'#ffb347'}
 ];
+/* which world a level uses: dungeon -> old city -> lava -> sea ... (16 worlds, 5 levels each, then it loops) */
+const WORLD_ORDER=[0,4,1,5,2,6,3,7,8,9,10,11,12,13,14,15];
+const themeOf=n=>WORLD_ORDER[Math.floor((n-1)/5)%WORLD_ORDER.length];
 const FAKE_LINES=[['الباب ضحك عليك! 😝','any'],['هههه الباب مزيّف يا حبيبي','any'],['جرّب الباب التاني!','any']];
 const MOCK_LINES=['كمّل... لسا ما شفت شي 😈','هاي كانت التجربة المجانية','حظ... مو مهارة 💅','عدّيت؟ لا تفرح','الجاي أحلى... صدّقني','بتحسب حالك شاطر؟','كنت قريب! ...من الموت','هيك بتلعب؟ يا حرام','لا تلتفت... أنا ورا ضهرك','أنا بس كنت عم أسخّن','كمّل كمّل... عم أتفرّج'];
 const MOCKT={spk:1,saw:1,tur:1,anv:1,thw:1,pend:1,walk:1,hog:1,ceil:1,fish:1};
@@ -613,6 +630,7 @@ function update(dt){
 }
 
 /*@include draw.js*/
+/*@include draw_bg.js*/
 /*@include draw_death.js*/
 /*@include draw3d.js*/
 /*@include draw3e.js*/
@@ -637,7 +655,7 @@ function frame(ts){
   requestAnimationFrame(frame);
   const dt=Math.min(.1,(ts-last)/1000||0); last=ts;
   try{
-    const w0=performance.now();
+    const w0=performance.now(); AT+=dt;
     if(G.state==='play'||G.state==='dead'||G.state==='win'){acc+=dt;let n=0;while(acc>=1/60&&n++<3){update(1/60);acc-=1/60} if(acc>1/20)acc=0}
     if(L&&ts-lastR>=14.5){const gap=Math.min(.5,(ts-lastR)/1000);lastR=ts;render();qTick(gap,performance.now()-w0)}       // 120 Hz phones render at 60: half the work, same feel
   }catch(e){console.error(e)}
@@ -727,10 +745,10 @@ if(A.img.card_fakedoor_1)$('decoL').src=A.img.card_fakedoor_1; if(A.img.card_spi
 if(A.img.title_1){const t=$('title').style;t.backgroundImage='radial-gradient(circle at 50% 35%,#2a185088,#07030dcc),url("'+A.img.title_1+'")';t.backgroundSize='cover';t.backgroundPosition='center'}
 if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّل من المرحلة '+S.best}
 [...$('selDia').options].forEach(o=>{ if(isSparse(o.value))o.textContent+=' · نص + صوت مختلط' });
-initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); P=newPlayer(); themeBg=makeBg(THEMES[0],38);
+initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG}};
+window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id)};
 })();
 </script>
 </body>

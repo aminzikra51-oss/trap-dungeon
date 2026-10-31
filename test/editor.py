@@ -31,6 +31,7 @@ CODEC = r"""
   ok('garbage rejected', !!T.decodeCustom('hello').err && !!T.decodeCustom('HB1-').err && !!T.decodeCustom('').err);
   ok('code is short', code0.length <= 40, code0.length + ' chars: ' + code0);
   const long = T.cNew(); for (let i = 0; i < 16; i++) long.seq.push([i % 8, 0]); ok('16-item code length', T.encodeCustom(long).length <= 60, T.encodeCustom(long).length);
+  const huge = T.cNew(); for (let i = 0; i < 250; i++) huge.seq.push([i % 8, 0]); const hc = T.encodeCustom(huge), hr = T.decodeCustom(hc); ok('250-item recipe roundtrips', hr.c && hr.c.seq.length === 250, hc.length + ' chars');
   // 3) newer generator version is refused politely
   const u = atob(code0.slice(4).replace(/-/g, '+').replace(/_/g, '/') + '=='.slice(0, (4 - code0.slice(4).length % 4) % 4)).split('').map(x => x.charCodeAt(0)); u[0] = 99;
   // recompute checksum like cSum
@@ -63,9 +64,12 @@ BUILD = r"""
     }
   }
   out.push(['every family/variant builds (pit+X+spike, 2 powers, 2 difficulties)', bad.length === 0, n + ' builds' + (bad.length ? ' | ' + bad.slice(0, 6).join(' ; ') : '')]);
-  // full 16-item mixed recipe
-  const c = T.cNew(); c.n = 14; c.d = 1; for (let i = 0; i < 16; i++) { const f = i % 8; c.seq.push([f, 0]) }
-  const L = T.buildCustom(c); out.push(['16-item recipe is fully placed', (L.segs || []).length === 16, (L.segs || []).length + ' segs, w=' + L.w]);
+  // long mixed recipes (no cap any more): 16, 100 and 250 items must all be placed completely
+  for (const N of [16, 100, 250]) {
+    const c = T.cNew(); c.n = 14; c.d = 1; for (let i = 0; i < N; i++) { const f = i % 8; c.seq.push([f, 0]) }
+    const t0 = performance.now(); const L = T.buildCustom(c);
+    out.push([N + '-item recipe is fully placed', (L.segs || []).length === N, (L.segs || []).length + ' segs, w=' + L.w + ', ' + Math.round(performance.now() - t0) + ' ms']);
+  }
   // low power with a high family must not crash (codes can carry any power)
   let thrown = '';
   try { const c2 = T.cNew(); c2.n = 1; c2.seq = [[17, 0], [18, 0], [16, 0], [8, 0], [0, 8]]; T.buildCustom(c2) } catch (e) { thrown = e.message }

@@ -100,7 +100,7 @@ $('edX').onclick=edClose;
 $('bEdT').onclick=()=>{Snd.init();edOpen(null,'')};
 $('bEdit').onclick=()=>{ if(ED.src==='code')edOpen(null,'',{src:'code',imp:true}); else edOpen(G.custom||ED.c,'') };
 { // theme + difficulty options
-  const th=$('edTh'); ['🟣 القبو','🔴 الحمم','🔵 الجليد','🟢 الغابة'].forEach((n,i)=>th.appendChild(new Option(n,i)));
+  const th=$('edTh'); THEMES.forEach((t,i)=>th.appendChild(new Option(t.nm,i)));
 }
 /* link: ...#m=HB1-xxxx opens the import box with the code filled in */
 function edBootHash(){
