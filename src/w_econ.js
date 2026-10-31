@@ -4,7 +4,7 @@
    Custom (editor) maps never pay. Nothing here touches physics: the coin rows added by seedCoins are deterministic (hash01, no RG) and honest coins have no effect on the world. */
 const SHOP={open:false,tab:'h'};
 if(!S.ecoV){ S.ecoV=1; S.own=S.own||{}; S.own[S.hero||'falafel']=1 }          // first run of the economy: keep the hero the player already uses
-S.wallet=S.wallet||0; S.cc=S.cc||{}; S.cl=S.cl||{}; S.nd=S.nd||{}; S.own=S.own||{}; S.own.falafel=1; if(!S.own[S.hero])S.hero='falafel'; S.ow=S.ow||{}; if(S.bgPick==null)S.bgPick=-1;
+S.wallet=S.wallet||0; S.cc=S.cc||{}; S.cl=S.cl||{}; S.nd=S.nd||{}; S.cs=S.cs||{}; S.bd=S.bd||{}; S.own=S.own||{}; S.own.falafel=1; if(!S.own[S.hero])S.hero='falafel'; S.ow=S.ow||{}; if(S.bgPick==null)S.bgPick=-1;
 
 const HERO_PRICE={falafel:0,uncle:60,chicken:100,cat:160,grandma:220,donkey:280,robot:340,mushroom:400};
 const heroOwned=id=>!!S.own[id];
@@ -18,22 +18,34 @@ function econToast(txt,bad){
   if(SIM)return; const el=$('gain'); if(!el)return; el.textContent=txt; el.className=bad?'bad':'';
   el.style.animation='none'; void el.offsetWidth; el.style.animation='gainup 1.9s ease-out forwards';
 }
-function econPick(e){ G.pend.push(coinKey(e)); hud() }
+function econPick(e){ if(L&&L.trial)return; G.pend.push(coinKey(e)); hud() }
+const legit=()=>!(L&&L.trial)&&G.level<=S.best;                      // levels you jumped to beyond your real progress are a sandbox: no coins, no stars, no medals
 function econBank(){                                  // pending -> wallet; returns what was really paid
   const pend=G.pend; G.pend=[]; if(SIM||G.custom||!pend.length)return 0;
+  if(!legit()){ hud(); return 0 }
   const paid=S.cc[G.level]||(S.cc[G.level]=[]); let g=0;
   for(const k of pend){ if(!paid.includes(k)){ paid.push(k); g++ } }
-  if(g){ S.wallet+=g; save() }
+  if(g){ S.wallet+=g; S.st.c+=g }
+  if(G.ck&&G.ck.length&&!S.cs[G.level]&&G.ck.every(k=>paid.includes(k)))S.cs[G.level]=1;        // third star: every honest coin of the level has been banked at least once
+  if(g||S.cs[G.level])save();
   hud(); return g;
 }
-function econCheckpoint(){ const g=econBank(); if(g)econToast('+'+g+' 🪙 انحفظت 🚩') }
+function econCheckpoint(){ const g=econBank(); if(g)econToast('+'+g+' 🪙 انحفظت 🚩'); heroCheckpoint(); achCheck() }
 function econClear(){                                 // called once when a real level is cleared
-  if(SIM||G.custom)return; const g=econBank(); let b=0;
-  if(!S.cl[G.level]){ S.cl[G.level]=1; b+=L.boss?30:10 }
-  if(G.lvDeaths===0&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5 }
-  if(b){ S.wallet+=b; save() }
-  G.gain=g+b; if(g+b){ econToast('+'+(g+b)+' 🪙'+(b?'  (بونص '+b+')':'')) }
-  hud();
+  if(SIM||G.custom)return;
+  if(L.trial){ trialClear(); return }
+  if(!legit()){ G.pend=[]; econToast('مرحلة تجريبية — بدون مكافآت 🧪'); hud(); return }
+  const first=!S.cl[G.level], s0=starsOf(G.level), g=econBank(); let b=0;
+  if(first){ S.cl[G.level]=1; b+=L.boss?30:10; if(L.boss)S.st.bw++; if(G.lvDeaths>=10)S.st.gr++ }
+  if(G.lvDeaths===0&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5; S.st.ns++; S.st.nm=Math.max(S.st.nm,S.st.ns) }
+  S.bd[G.level]=Math.min(S.bd[G.level]==null?99:S.bd[G.level],G.lvDeaths);
+  if(!(G.ck&&G.ck.length)&&S.bd[G.level]<=2)S.cs[G.level]=1;                                   // levels without coins (bosses): third star = cleared with at most 2 deaths
+  if(b){ S.wallet+=b; S.st.c+=b }
+  heroXpClear(first,G.lvDeaths===0);
+  save();
+  const ds=starsOf(G.level)-s0; G.gain=g+b; G.starGain=ds;
+  if(g+b||ds){ econToast((g+b?'+'+(g+b)+' 🪙'+(b?'  (بونص '+b+')':''):'')+(ds>0?'  '+'⭐'.repeat(ds):'')) }
+  hud(); achCheck();
 }
 function econDeath(){                                 // un-banked coins are gone (the game teases you about it)
   const n=G.pend.length; G.pend=[]; if(SIM||G.custom||!n)return;

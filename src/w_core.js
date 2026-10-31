@@ -1,6 +1,6 @@
 /* =============== STATE =============== */
-const K={l:false,r:false,j:false,jp:false};
-const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null,pend:[],gain:0};
+const K={l:false,r:false,j:false,jp:false,a:false,ap:false};
+const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null,pend:[],gain:0,ts:1,ck:[]};
 let L=null, P=null, parts=[], themeBg=null, SIM=false;
 /* adaptive quality: 3 = full 2.5D | 2 = cheaper light + DPR 1.5 | 1 = no dynamic light, no dust, DPR 1 | 0 = flat classic look */
 const Q={q:3,acc:0,w:0,n:0,bad:0,fps:60,dprCap:[1,1,1.5,2]};
@@ -55,18 +55,19 @@ function updatePlayer(dt){
   const p=P, z=zoneAt(p.x+PW/2);
   let dir=(K.r?1:0)-(K.l?1:0); if(z&&z.type==='rev')dir=-dir;
   let acc=p.onGround?ACC:AIRACC, fr=p.onGround?FRIC:260, g=GRAV, jv=JUMP, ice=false, drift=0, mx=RUN;
+  const hx=hOn()?heroPre(p,dt):(K.ap=false,null), dashing=!!(hx&&hx.dash); if(dashing)g=0;
   if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
-  if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-mx,mx); p.face=dir; }
+  if(dashing){} else if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-mx,mx); p.face=dir; }
   else{ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }
   if(mx<RUN)p.vx=clamp(p.vx,-mx,mx);
   if(K.jp){p.buf=.12;K.jp=false}
   p.buf-=dt; p.coy-=dt; if(p.onGround){p.coy=.1;p.dj=false;p.air=0}else p.air+=dt;
   if(p.buf>0){
-    if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();puff(p.x+PW/2,p.y+PH,3)}
-    else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1);p.dj=true;p.buf=0;p.spin=.32;Snd.dj();ring(p.x+PW/2,p.y+PH)}
+    if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();if(!SIM)S.st.j++;puff(p.x+PW/2,p.y+PH,3)}
+    else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1)*heroJump2();p.dj=true;p.buf=0;p.spin=.32;Snd.dj();if(!SIM)S.st.j++;ring(p.x+PW/2,p.y+PH)}
   }
   if(!K.j&&p.vy<-240)p.vy=-240;
-  p.vy=Math.min(p.vy+g*dt,900);
+  p.vy=Math.min(p.vy+g*dt,900); if(!dashing&&hOn())heroVert(p,dt);
   moveX((p.vx+drift)*dt); moveY(p.vy*dt);
   p.land=Math.max(0,p.land-dt*5); p.spin=Math.max(0,p.spin-dt); p.run+=Math.abs(p.vx)*dt*.09; p.blink-=dt; if(p.blink<-2.5)p.blink=.12;
   // crumble trigger

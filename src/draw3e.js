@@ -345,6 +345,7 @@ function drawBlock3(c,th,tx,ty,oy,st){
   c.save();c.translate(tx*TS,ty*TS+oy);
   if(st==='b'){ box3(c,0,0,TS,TS,3,th.floor,2); c.fillStyle='rgba(255,255,255,.1)';c.fillRect(4,5,TS-8,3);
     if(!L.blocks[tx+','+(ty-1)]){c.fillStyle=th.top;c.beginPath();c.roundRect(-1,-5,TS+2,7,2.5);c.fill();c.strokeStyle=INK;c.lineWidth=1.6;c.stroke();c.fillStyle='rgba(255,255,255,.35)';c.fillRect(2,-4,TS-4,1.5)} }
+  else if(st==='steel'){ box3(c,0,0,TS,TS,3,'#454b62',2); c.fillStyle='rgba(255,255,255,.13)';c.fillRect(3,4,TS-6,3); c.fillStyle='#aeb6cf'; for(const [x,y] of [[6,7],[TS-6,7],[6,TS-5],[TS-6,TS-5]]){c.beginPath();c.arc(x,y,1.7,0,7);c.fill()} }
   else{ box3(c,0,0,TS,TS,4,'#e8a838',2.2); c.fillStyle='#fff7da';c.font='900 20px Arial';c.textAlign='center';c.fillText('!',16,25);c.fillStyle='#8a5a10';c.fillText('!',16,24) }
   c.restore();
 }

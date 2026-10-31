@@ -17,7 +17,8 @@ SUPPLY = r"""() => { const T=window.TD, out=[]; T.FLAGS.noBoss=false;
   return {out, same: out.every((o,i)=>o.sig===again[i])} }
 """
 FLOW = r"""() => { const T=window.TD, S=T.S, G=T.G, R={}; const K=T.K;
-  S.wallet=0; S.cc={}; S.cl={}; S.nd={}; S.own={falafel:1}; S.ow={}; S.bgPick=-1; S.best=1; T.FLAGS.noBoss=true;
+  S.wallet=0; S.cc={}; S.cl={}; S.nd={}; S.own={falafel:1,cat:1}; S.hero='cat'; S.hs={}; S.hx={};   // cat: no coin magnet, so teleporting onto a coin picks exactly that coin
+  S.ow={}; S.bgPick=-1; S.best=99; T.FLAGS.noBoss=true; for(const a of T.ACH)S.ac[a.id]=a.T.length;        // medals are tested in test/ach.py: here they must not pay into the wallet
   function level(n){ G.lastLvl=-1; G.custom=null; T.startGame(n); G.bannerT=0; G.state='play' }
   const coinsOf=()=>T.L.ents.filter(e=>e.t==='coin'&&!e.bait);
   const grab=(c)=>{ T.P.x=c.x-10; T.P.y=c.y-14; T.P.vx=0;T.P.vy=0; c.got=0; T.update(1/60) };
@@ -39,7 +40,7 @@ FLOW = r"""() => { const T=window.TD, S=T.S, G=T.G, R={}; const K=T.K;
   // custom map pays nothing
   const c=T.cNew(); c.seq=[[0,1],[1,1]]; c.n=4; T.startCustom(c,'edit'); G.state='play'; const w3=S.wallet; const cc=T.L.ents.filter(e=>e.t==='coin'&&!e.bait); R.customCoins=cc.length; if(cc.length){grab(cc[0])} T.econBank(); T.econClear(); R.customGain=S.wallet-w3;
   // shop
-  S.wallet=10; R.buyPoor=T.econBuyHero('uncle'); R.walletPoor=S.wallet; S.wallet=500; R.buyOk=T.econBuyHero('uncle'); R.walletOk=S.wallet; R.owned=T.heroOwned('uncle'); R.buyAgain=T.econBuyHero('uncle');
+  S.best=1; S.wallet=10; R.buyPoor=T.econBuyHero('uncle'); R.walletPoor=S.wallet; S.wallet=500; R.buyOk=T.econBuyHero('uncle'); R.walletOk=S.wallet; R.owned=T.heroOwned('uncle'); R.buyAgain=T.econBuyHero('uncle');
   R.world5open=T.worldOpen(5); S.wallet=500; R.worldBuy=T.econBuyWorld(5); R.world5after=T.worldOpen(5); R.worldWallet=S.wallet;
   S.best=1; S.ow={}; R.worldPrice=[...Array(16).keys()].map(i=>T.worldPrice(i));
   S.bgPick=5; S.ow[5]=1; G.lastLvl=-1; T.loadLevel(2); R.themePick=T.L.theme; S.bgPick=-1; G.lastLvl=-1; T.loadLevel(2); R.themeAuto=T.L.theme; S.bgPick=9; S.ow={}; G.lastLvl=-1; T.loadLevel(2); R.themeLocked=T.L.theme;

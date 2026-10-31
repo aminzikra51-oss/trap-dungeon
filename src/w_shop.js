@@ -31,6 +31,8 @@ function shopRender(){
         const r=econBuyHero(id); if(r==='ok'){ S.hero=id; save(); syncHeroes(); Snd.coin(); Snd.win(); shopMsg('مبروك! صار '+HEROES[id].name+' إلك 🎉'); heroSelectSay() } else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg('ناقصك '+(p-S.wallet)+' 🪙 — كمّل العب واجمع عملات') } shopRender() }) }
       card.append(cv2,nm,btn); g.appendChild(card);
     }
+  } else if(SHOP.tab==='u'){ heroUpRender(g)
+  } else if(SHOP.tab==='a'){ accRender(g)
   } else {
     const auto=el('div','shc'+(S.bgPick<0?' sel':'')), ab=el('button','btn',S.bgPick<0?'✓ تلقائي':'تلقائي',()=>{ S.bgPick=-1; save(); Snd.ui(); shopRender() });
     auto.append(el('div','shbig','🎲'),el('div','nm','تلقائي'),el('div','sub','العالم حسب المرحلة'),ab); g.appendChild(auto);
@@ -51,7 +53,7 @@ function openShop(tab){
   if(tab)SHOP.tab=tab; SHOP.open=true; K.l=K.r=K.j=K.jp=false; shopMsg(''); $('shop').classList.remove('hide'); Snd.init(); shopRender();
 }
 function closeShop(){
-  SHOP.open=false; $('shop').classList.add('hide'); syncHeroes(); hud(); if(G.state==='editor')edRender();
+  SHOP.open=false; $('shop').classList.add('hide'); syncHeroes(); hud(); if(G.state==='editor')edRender(); if(typeof WM!=='undefined'&&WM.open)wmRender(true);
 }
 $('shX').onclick=closeShop;
 document.querySelectorAll('#shTabs .ch').forEach(b=>b.onclick=()=>{ SHOP.tab=b.dataset.t; shopMsg(''); shopRender() });

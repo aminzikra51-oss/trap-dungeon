@@ -26,8 +26,10 @@ function drawHeroSprite(c,st,id){
     else lean=clamp(-st.ey*.06,-.14,.14)-.04;
   }
   c.save();c.translate(0,bob);c.rotate(lean);c.scale(sx,sy);
+  accDraw(c,id,w,h,m.cx,'back');
   sprRim(c,o,-w*m.cx,-h,w,h,.8);
   c.drawImage(o.im,-w*m.cx,-h,w,h);
+  accDraw(c,id,w,h,m.cx,'front');
   c.restore();
   if(st.dead){ // dizzy stars
     c.save();c.fillStyle='#ffd23f';c.strokeStyle='#000';c.lineWidth=1.2;
@@ -42,9 +44,11 @@ function heroSlices(c,tt,piece){ // sprite broken in 4 bands (hat / face / belly
   for(const [f0,f1,vx,vy] of cuts){ const yc=-h*(1-(f0+f1)/2); piece(0,yc,vx,vy,()=>c.drawImage(o.im,0,ih*f0,iw,ih*(f1-f0),-w*m.cx,-h*(f1-f0)/2,w,h*(f1-f0))) }
   return true;
 }
-function heroThumb(cx,id){
+function heroThumb(cx,id,ao){                                  // ao = {only,force}: shop preview of a single accessory slot
   const o=sprOf(id); if(!o||!look3())return false; const m=HMETA[id]||{w:o.im.width,h:o.im.height,cx:.5},h=62,w=h*m.w/m.h;
-  sprRim(cx,o,-w*m.cx,-h-1,w,h,.9); cx.drawImage(o.im,-w*m.cx,-h-1,w,h); return true;
+  cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'back',ao); cx.restore();
+  sprRim(cx,o,-w*m.cx,-h-1,w,h,.9); cx.drawImage(o.im,-w*m.cx,-h-1,w,h);
+  cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'front',ao); cx.restore(); return true;
 }
 
 /* ---------- palette cache ---------- */

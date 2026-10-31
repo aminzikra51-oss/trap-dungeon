@@ -191,7 +191,7 @@ function bossEnd(){
   confetti(VW*.3,GY-120); confetti(VW*.7,GY-140); stars(P.x+PW/2,P.y);
   bossSay('win',{force:1,pri:4,delay:.4,max:2.6,dur:3.2});
   if(Math.random()<.6)heroSay('win',{force:1,pri:3,delay:2.2,max:1.6,dur:2.2});
-  S.best=Math.max(S.best,G.level+1); save();
+  if(G.level>=S.best){ S.best=G.level+1; save() }
 }
 function drawEndCard(c){
   const k=G.endCard; if(!k)return; const t=G.winT, a=clamp((t-.35)/.7,0,1); if(a<=0)return;

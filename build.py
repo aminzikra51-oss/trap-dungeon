@@ -1,13 +1,15 @@
 import base64, json, glob, os
 root = os.path.dirname(os.path.abspath(__file__))
 def b64(p): return base64.b64encode(open(p,'rb').read()).decode()
-assets = {'audio':{}, 'img':{}, 'hero':{}, 'heroMeta':{}}
+assets = {'audio':{}, 'img':{}, 'hero':{}, 'heroMeta':{}, 'acc':{}}
 for p in sorted(glob.glob(f'{root}/assets/audio/*.mp3')):
     assets['audio'][os.path.basename(p)[:-4]] = 'data:audio/mpeg;base64,' + b64(p)
 for p in sorted(glob.glob(f'{root}/assets/img/*.jpg')):
     assets['img'][os.path.basename(p)[:-4]] = 'data:image/jpeg;base64,' + b64(p)
 for p in sorted(glob.glob(f'{root}/assets/hero/*.webp')):
     assets['hero'][os.path.basename(p)[:-5]] = 'data:image/webp;base64,' + b64(p)
+for p in sorted(glob.glob(f'{root}/assets/acc/*.webp')):
+    assets['acc'][os.path.basename(p)[:-5]] = 'data:image/webp;base64,' + b64(p)
 if os.path.exists(f'{root}/assets/hero/meta.json'): assets['heroMeta'] = json.load(open(f'{root}/assets/hero/meta.json'))
 src = open(f'{root}/src/index.src.html', encoding='utf-8').read()
 import re as _re

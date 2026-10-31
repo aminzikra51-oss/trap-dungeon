@@ -58,7 +58,7 @@ function startCustom(c,src){
 }
 /* the winning run is the proof: store it next to the code (a server will replay it later; for now it only unlocks sharing on this device) */
 function customCleared(){
-  const code=encodeCustom(G.custom); MP.cleared[code]={t:+G.t.toFixed(2),f:INREC.length,p:rleEnc(INREC),at:Date.now()}; saveMaps();
+  const code=encodeCustom(G.custom); MP.cleared[code]={t:+G.t.toFixed(2),f:INREC.length,p:rleEnc(INREC),at:Date.now()}; saveMaps(); achMapCleared(code);
 }
 function customWon(){
   const c=G.custom, code=encodeCustom(c), cl=MP.cleared[code], t=cl?cl.t.toFixed(1):'?';
@@ -73,7 +73,7 @@ async function edCopy(){
   if(!edClr())return; const txt=edShareText(); let ok=false;
   try{ await navigator.clipboard.writeText(txt); ok=true }catch(e){
     try{ const t=document.createElement('textarea'); t.value=txt; t.style.cssText='position:fixed;left:-999px;top:0;opacity:0'; document.body.appendChild(t); t.select(); ok=document.execCommand('copy'); t.remove() }catch(_){} }
-  ED.msg=ok?'اننسخ! الصقه بأي قروب 📋':'انسخ الكود يدوياً: '+edCode(); edRender();
+  ED.msg=ok?'اننسخ! الصقه بأي قروب 📋':'انسخ الكود يدوياً: '+edCode(); if(ok)achMapShared(edCode()); edRender();
 }
 function edImport(play){
   const r=decodeCustom($('edIn').value);
