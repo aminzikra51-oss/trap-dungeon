@@ -33,7 +33,17 @@ const ACCS={                                       // [slot, picture key, -, sta
  mushroom:[['h','mushroom_h','',1,'هالة الفطر'],     ['n','mushroom_n','',2,'عقد الجواهر'],     ['b','mushroom_b','',3,'أجنحة الجنية']],
 };
 const ACC_AURA={falafel:'#ffb347',uncle:'#7fb2ff',chicken:'#ffe36b',cat:'#c9a0ff',grandma:'#ff9ad0',donkey:'#ffd29a',robot:'#7fe3ff',mushroom:'#9fffd0'};
-const ACCX={};                                     // extra (bought) sets: ACCX[hero]=[[slot, picture key, set number, stage needed, Arabic name, price, optional placement override], ...]
+const ACCX={                                     // set 2 = bought (rare), set 3 = legendary head piece (won in the hero's trial)
+ falafel: [['h','falafel_h2',2,1,'طاقية الشيف',60,{x:.46,y:.24,w:.72,ax:.5,ay:.85}], ['n','falafel_n2',2,2,'بندانة المطبخ',90,{w:.48}], ['b','falafel_b2',2,3,'عباءة البقدونس',140,{w:1.25,y:.55}], ['h','falafel_h3',3,0,'تاج الفرعون',0,{x:.57,y:.43,w:1.1,ay:.55}]],
+ uncle:   [['h','uncle_h2',2,1,'طربوش الباشا',60], ['n','uncle_n2',2,2,'ساعة الجيب',90], ['b','uncle_b2',2,3,'لفّة السجاد',140], ['h','uncle_h3',3,0,'عمامة السلطان',0]],
+ chicken: [['h','chicken_h2',2,1,'خوذة الفضاء',60,{x:.5,y:.2,w:.62,ay:.9}], ['n','chicken_n2',2,2,'طوق النجاة',90,{w:.5,y:.57}], ['b','chicken_b2',2,3,'سلة البيض',140,{x:.5,y:.5,w:1.2,pair:0,rot:0,sw:0}], ['h','chicken_h3',3,0,'ريش العنقاء',0,{w:.62,y:.2}]],
+ cat:     [['h','cat_h2',2,1,'قبعة البحّارة',60,{w:.7,y:.23}], ['n','cat_n2',2,2,'جرس وفيونكة',90], ['b','cat_b2',2,3,'شنطة السمكة',140,{x:.52,y:.62,w:1.1,ax:.5,ay:.5,sw:3,sp:4}], ['h','cat_h3',3,0,'قبعة القمر',0,{w:.74,y:.23}]],
+ grandma: [['h','grandma_h2',2,1,'قبعة القش',60,{x:.56,y:.2,w:.74,ay:.7}], ['n','grandma_n2',2,2,'نظارة القراءة',90,{w:.72,y:.62}], ['b','grandma_b2',2,3,'شنطة الصوف',140,{w:1}], ['h','grandma_h3',3,0,'تاج الورد',0,{x:.56,y:.2,w:.56,ay:.7}]],
+ donkey:  [['h','donkey_h2',2,1,'شعر الروك',60,{x:.47,y:.2,w:.72,ay:.8}], ['n','donkey_n2',2,2,'سلسلة الذهب',90], ['b','donkey_b2',2,3,'جيتار',140,{x:.66,y:.56,w:.8,pair:0,rot:-28}], ['h','donkey_h3',3,0,'خوذة الفايكنغ',0,{x:.47,y:.27,w:1.25,ax:.5,ay:.8}]],
+ robot:   [['h','robot_h2',2,1,'قبعة الطيّار',60,{x:.5,y:.07,w:.46,ay:.85,sw:0}], ['n','robot_n2',2,2,'ببيون معدني',90,{w:.4}], ['b','robot_b2',2,3,'مفتاح الشحن',140,{x:.8,y:.28,w:.3,pair:0,rot:35}], ['h','robot_h3',3,0,'خوذة الكروم',0,{x:.5,y:.08,w:.5,ay:.85,sw:0}]],
+ mushroom:[['h','mushroom_h2',2,1,'إكليل الغابة',60,{sy:.5,gl:'',bob:0,w:.7,y:0}], ['n','mushroom_n2',2,2,'عقد التوت',90,{w:.34,y:.46,ay:.15}], ['b','mushroom_b2',2,3,'قوقعة الحلزون',140,{x:.5,y:.62,w:.95,sw:0}], ['h','mushroom_h3',3,0,'تاج الأميثيست',0,{sy:.55,gl:'',bob:0,w:.7,y:0}]],
+};
+// ACCX[hero]=[[slot, picture key, set number, stage needed, Arabic name, price, optional placement override], ...]
 const ACC_SETCOL=['','#ffd23f','#4dc3ff','#ff7ac8'], ACC_SETRAR=['','c','r','e'], ACC_SETNM=['','الأول','التاني','التالت'];
 function accItem(id,slot,set){                     // one catalogue entry (set 1 = the free stage-unlocked ones above)
   if(set===1){ const a=(ACCS[id]||[]).find(x=>x[0]===slot); return a?{slot,key:a[1],set:1,need:a[3],nm:a[4],price:0,pl:null}:null }
@@ -41,7 +51,7 @@ function accItem(id,slot,set){                     // one catalogue entry (set 1
 }
 const accSel=(id,slot)=>{ const v=(S.hq[id]||{})[slot]; return v===0?0:(v||1) };      // which set is worn on that slot (0 = nothing)
 const accOn=(id,slot)=>accSel(id,slot)>0;
-const accOwn=(id,slot,set)=>set===1||!!S.aq[id+':'+slot+':'+set];
+const accOwn=(id,slot,set)=>set===1||(set===3?!!(S.trn&&S.trn[id]):!!S.aq[id+':'+slot+':'+set]);       // set 3 (legendary) is never bought: it opens when that hero's trial is cleared without dying
 const accSetMax=id=>(ACCX[id]||[]).reduce((m,x)=>Math.max(m,x[2]),1);
 const accReady=(id,it)=>!!it&&accOwn(id,it.slot,it.set)&&heroStage(id)>=it.need;
 function accShown(id,slot,o){                      // the piece to draw on a slot right now (or null)

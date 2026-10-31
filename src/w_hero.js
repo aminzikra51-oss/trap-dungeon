@@ -18,17 +18,18 @@ const HAB={
  mushroom:{ic:'🍄',nm:'لحظة وعي', act:1,ds:'بطء زمن (كل شي بيتباطأ إلا إنت)، وبترى الفخاخ المخفية القريبة',    v:{en:[1.1,1.5,2,2.6],see:[120,150,180,220]}, tx:['1.1 ث','1.5 ث','2 ث','2.6 ث']},
 };
 const NOSHIELD=new Set(['pit','crumble']), ROBOT_IMM=new Set(['zap','laser','disco']);
-const hv=(id,k)=>HAB[id].v[k][heroStage(id)];
+const hid=()=>(P&&P.hid)||S.hero;                      // the hero of the CURRENT player (co-op: each player has his own; single player: your selected hero)
+const hv=(id,k)=>HAB[id].v[k][(P&&P.hst!=null&&P.hid===id)?P.hst:heroStage(id)];       // co-op players carry the stage they started with, so both screens agree
 const hOn=()=>!SIM&&!G.custom&&!(L&&L.nab)&&G.state==='play';        // abilities exist in real levels (and trials), never in editor / shared maps / solver
-const actHero=()=>!!HAB[S.hero].act;
+const actHero=()=>!!HAB[hid()].act;
 
-function abNew(){ const id=S.hero, A=HAB[id]; return {h:id, ch:id==='uncle'?hv(id,'ch'):0, inv:0, cd:0, t:0, dir:1, fuel:(id==='chicken'||id==='robot')?hv(id,'st'):0, en:id==='mushroom'?hv(id,'en'):0, slow:0, sw:0, rv:0, used:0, rch:0, tr:[]} }
-const hab=()=>(P.ab&&P.ab.h===S.hero)?P.ab:(P.ab=abNew());
-const fuelMax=()=>(S.hero==='chicken'||S.hero==='robot')?hv(S.hero,'st'):0;
+function abNew(){ const id=hid(), A=HAB[id]; return {h:id, ch:id==='uncle'?hv(id,'ch'):0, inv:0, cd:0, t:0, dir:1, fuel:(id==='chicken'||id==='robot')?hv(id,'st'):0, en:id==='mushroom'?hv(id,'en'):0, slow:0, sw:0, rv:0, used:0, rch:0, tr:[]} }
+const hab=()=>(P.ab&&P.ab.h===hid())?P.ab:(P.ab=abNew());
+const fuelMax=()=>(hid()==='chicken'||hid()==='robot')?hv(hid(),'st'):0;
 const DASH_V=430, TS_SLOW=.45;
 
 function heroPre(p,dt){                              // timers + activation. returns {dash:true} while the donkey is dashing
-  const a=hab(), id=S.hero; let r=null;
+  const a=hab(), id=hid(); let r=null;
   a.inv=Math.max(0,a.inv-dt); a.cd=Math.max(0,a.cd-dt); a.sw=Math.max(0,a.sw-dt); a.rv=Math.max(0,a.rv-dt);
   if(p.onGround){ a.used=0; a.fl=0; if(id==='chicken'||id==='robot')a.fuel=Math.min(fuelMax(),a.fuel+dt*3) }
   const ap=K.ap; K.ap=false;
@@ -60,17 +61,17 @@ function heroSweep(p,rg){                             // the spoon also shows wh
   for(const k in L.blocks){ const b=L.blocks[k]; if(b.rev)continue; const [tx,ty]=k.split(',').map(Number); if(Math.hypot(tx*TS+16-cx,ty*TS+16-cy)<rg*2.2){ b.rev=true; b.bump=.3 } }
 }
 function heroVert(p,dt){                              // after gravity: glide (chicken) and jet (robot)
-  const a=hab(), id=S.hero; if(p.onGround)return;
+  const a=hab(), id=hid(); if(p.onGround)return;
   if(id==='chicken'&&K.j&&p.vy>50&&a.fuel>0&&p.air>.12){ if(!a.fl){a.fl=1;dayEv('ab',1)} p.vy=Math.min(p.vy,78); a.fuel-=dt; if(!SIM&&Math.random()<.25)puff(p.x+PW/2,p.y+PH,1,'#fff') }
   else if(id==='robot'&&K.j&&p.dj&&a.fuel>0&&p.vy>-150){ if(!a.fl){a.fl=1;dayEv('ab',1)} p.vy=lerp(p.vy,-120,Math.min(1,dt*30)); a.fuel-=dt; if(!SIM&&Math.random()<.5)parts.push({x:p.x+PW/2+(Math.random()-.5)*6,y:p.y+PH,vx:(Math.random()-.5)*30,vy:90+Math.random()*60,g:0,life:.3,max:.3,s:4+Math.random()*3,col:Math.random()<.5?'#ffb81f':'#ff6b35',sh:'c'}) }
 }
-function heroMag(){ return hOn()&&S.hero==='falafel'?hv('falafel','mag'):0 }
-function heroJump2(){ return hOn()&&S.hero==='cat'?hv('cat','j2'):1 }
+function heroMag(){ return hOn()&&hid()==='falafel'?hv('falafel','mag'):0 }
+function heroJump2(){ return hOn()&&hid()==='cat'?hv('cat','j2'):1 }
 function heroGuard(c,e){                              // true = this hit does not kill
   if(!hOn())return false; const a=hab();
   if(a.inv>0)return true;
-  if(S.hero==='robot'&&ROBOT_IMM.has(c))return true;
-  if(S.hero==='uncle'&&a.ch>0&&!NOSHIELD.has(c)){ a.ch--; a.inv=1.4; P.vy=-260; P.onGround=false; dayEv('ab',1);
+  if(hid()==='robot'&&ROBOT_IMM.has(c))return true;
+  if(hid()==='uncle'&&a.ch>0&&!NOSHIELD.has(c)){ a.ch--; a.inv=1.4; P.vy=-260; P.onGround=false; dayEv('ab',1);
     if(!SIM){ stars(P.x+PW/2,P.y+PH/2); Snd.bonk&&Snd.bonk(); G.shake=6; say(rnd(['الدرع بلع الضربة! 🛡️','ما نفع الفخ هالمرة 😏','درع العم... أحسن من التأمين']),'any',1.8) }
     return true }
   if(!NOSHIELD.has(c)&&helpShieldHit()){ a.inv=1.4; P.vy=-260; P.onGround=false;
@@ -78,7 +79,7 @@ function heroGuard(c,e){                              // true = this hit does no
     return true }
   return false;
 }
-function heroCheckpoint(){ if(!hOn())return; const a=hab(); if(S.hero==='uncle'&&hv('uncle','rg')&&a.ch<hv('uncle','ch')){ a.ch=hv('uncle','ch'); if(!SIM)econToast('🛡 الدرع تجدّد') } }
+function heroCheckpoint(){ if(!hOn())return; const a=hab(); if(hid()==='uncle'&&hv('uncle','rg')&&a.ch<hv('uncle','ch')){ a.ch=hv('uncle','ch'); if(!SIM)econToast('🛡 الدرع تجدّد') } }
 
 /* ---- XP + upgrades ---- */
 function heroXpClear(first,noDeath){                  // called from econClear (real, legit levels only)
@@ -98,7 +99,7 @@ function upgradeHero(id){
 /* ---- drawing (visual only) ---- */
 const SHIELD_COL='#7fe3ff';
 function heroFxWorld(c){
-  if(!P||P.dead||!P.ab||!hOn())return; const a=P.ab, id=S.hero, cx=P.x+PW/2, cy=P.y+PH/2;
+  if(!P||P.dead||!P.ab||!hOn())return; const a=P.ab, id=hid(), cx=P.x+PW/2, cy=P.y+PH/2;
   if(a.tr.length){ for(const q of a.tr){ c.globalAlpha=clamp(q.t/.22,0,1)*.35; c.fillStyle='#ffe9a8'; c.fillRect(q.x,q.y,PW,PH) } c.globalAlpha=1 }
   if(id==='uncle'&&(a.ch>0||a.inv>0)){ const pulse=1+Math.sin(G.t*6)*.05, fl=a.inv>0&&Math.floor(G.t*18)%2?.25:1; c.save(); c.globalAlpha=(a.inv>0?.55:.28)*fl; c.fillStyle=SHIELD_COL; c.strokeStyle='#fff'; c.lineWidth=2;
     c.beginPath(); c.ellipse(cx,cy,19*pulse,26*pulse,0,0,7); c.fill(); c.globalAlpha=.9*fl; c.stroke(); c.restore() }
@@ -119,7 +120,7 @@ function heroMarks(c,cx,cy,R,al){                      // little ⚠ above the d
   c.restore();
 }
 function heroFxHud(c){                                  // screen space: slow-mo tint + the ability meter
-  if(!P||G.state==='title'||G.custom||(L&&L.nab)||G.state==='menu')return; const id=S.hero, A=HAB[id], a=P.ab; if(!a)return;
+  if(!P||G.state==='title'||G.custom||(L&&L.nab)||G.state==='menu')return; const id=hid(), A=HAB[id], a=P.ab; if(!a)return;
   if(id==='mushroom'&&a.slow){ c.save(); c.globalAlpha=.16; c.fillStyle='#6fe0ff'; c.fillRect(0,0,VW,VH); const g=c.createRadialGradient(VW/2,VH/2,180,VW/2,VH/2,470); g.addColorStop(0,'#0000'); g.addColorStop(1,'rgba(120,60,220,.5)'); c.globalAlpha=1; c.fillStyle=g; c.fillRect(0,0,VW,VH); c.restore() }
   let frac=1, txt='', warm=false;
   if(id==='uncle'){ txt='×'+a.ch; frac=a.ch/Math.max(1,hv(id,'ch')) }

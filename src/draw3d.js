@@ -12,13 +12,13 @@ for(const k in (A.hero||{})){ const im=new Image(),o={im,ok:false}; HSPR[k]=o; i
 const RIM_D=[[-1,0],[1,0],[0,-1],[0,1]];
 function sprRim(c,o,x,y,w,h,px){ if(!o.rim)return; c.save();c.globalAlpha=.85;for(const [dx,dy] of RIM_D)c.drawImage(o.rim,x+dx*px,y+dy*px,w,h);c.restore() }
 const look3=()=>!!S.look3d&&Q.q>0;
-const sprOf=id=>{const o=HSPR[id||S.hero];return o&&o.ok?o:null};
+const sprOf=id=>{const o=HSPR[id||hid()];return o&&o.ok?o:null};
 const hexRGB=h=>{h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]};
 const mixc=(a,b,t,al)=>{const A1=hexRGB(a),B1=hexRGB(b);return 'rgba('+A1.map((v,i)=>Math.round(v+(B1[i]-v)*t)).join(',')+','+(al==null?1:al)+')'};
 
 /* ---------- hero sprite ---------- */
 function drawHeroSprite(c,st,id){
-  const o=sprOf(id); if(!o)return false; id=id||S.hero; const m=HMETA[id]||{w:o.im.width,h:o.im.height,cx:.5};
+  const o=sprOf(id); if(!o)return false; id=id||hid(); const m=HMETA[id]||{w:o.im.width,h:o.im.height,cx:.5};
   const h=SPR_H,w=h*m.w/m.h; let bob=0,lean=0,sx=1,sy=1;
   if(!st.dead){
     if(st.moving){bob=-Math.abs(st.rs)*2.8;lean=.11+st.rs*.07}
@@ -39,7 +39,7 @@ function drawHeroSprite(c,st,id){
 }
 function drawHero(c,H,st){ if(look3()&&drawHeroSprite(c,st))return; H.draw(c,st) }
 function heroSlices(c,tt,piece){ // sprite broken in 4 bands (hat / face / belly / feet) for the saw & fake-door deaths
-  const o=sprOf(); if(!o||!look3())return false; const m=HMETA[S.hero]||{w:o.im.width,h:o.im.height,cx:.5},h=SPR_H,w=h*m.w/m.h,iw=o.im.width,ih=o.im.height;
+  const o=sprOf(); if(!o||!look3())return false; const m=HMETA[hid()]||{w:o.im.width,h:o.im.height,cx:.5},h=SPR_H,w=h*m.w/m.h,iw=o.im.width,ih=o.im.height;
   const cuts=[[0,.32,40,-210],[.32,.66,-70,-260],[.66,.88,25,-130],[.88,1,-35,-160]];
   for(const [f0,f1,vx,vy] of cuts){ const yc=-h*(1-(f0+f1)/2); piece(0,yc,vx,vy,()=>c.drawImage(o.im,0,ih*f0,iw,ih*(f1-f0),-w*m.cx,-h*(f1-f0)/2,w,h*(f1-f0))) }
   return true;

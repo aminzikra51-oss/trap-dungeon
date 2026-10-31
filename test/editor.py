@@ -17,7 +17,7 @@ CODEC = r"""
   for (let i = 0; i < N; i++) {
     const c = T.cNew(); c.n = 1 + Math.floor(rnd() * 60); c.d = Math.floor(rnd() * 3); c.th = Math.floor(rnd() * 4); c.s = Math.floor(rnd() * 100);
     const k = 1 + Math.floor(rnd() * 16);
-    for (let j = 0; j < k; j++) { const f = Math.floor(rnd() * T.CF.length); c.seq.push([f, Math.floor(rnd() * (T.CF[f].vs.length + 1))]) }
+    for (let j = 0; j < k; j++) { const f = Math.floor(rnd() * T.CF.length); let v = Math.floor(rnd() * (T.CF[f].vs.length + 1)); if (f === T.SIGN_I && v === T.SIGN_CUSTOM) v = 1; c.seq.push([f, v]) }       // custom-text signs have their own test
     if (!T.cTraps(c)) continue;
     const code = T.encodeCustom(c), r = T.decodeCustom('hey look: ' + code + ' bye');
     if (r.c && JSON.stringify([r.c.n, r.c.d, r.c.th, r.c.s, r.c.seq]) === JSON.stringify([c.n, c.d, c.th, c.s, c.seq])) rt++;
@@ -48,7 +48,8 @@ BUILD = r"""
   T.sim(true);
   let n = 0;
   for (let f = 0; f < T.CF.length; f++) {
-    const F = T.CF[f], vs = F.vs.length ? F.vs.map((v, i) => [i + 1, v[2]]) : [[0, F.mn]];
+    const F = T.CF[f]; if (F.cosm) continue;            // decorations/signs never reach the generator (test/edperk.py covers them)
+    const vs = F.vs.length ? F.vs.map((v, i) => [i + 1, v[2]]) : [[0, F.mn]];
     for (const [v, mn] of vs) for (const pw of [mn, Math.max(mn, 20)]) for (const d of [0, 2]) {
       const c = T.cNew(); c.n = pw; c.d = d; c.th = (f + v) % 4; c.seq = [[0, 1], [f, v], [1, 1]];
       try {

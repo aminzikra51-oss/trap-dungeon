@@ -1,0 +1,303 @@
+/* =============== NET: two players over the internet ===============
+   No server of our own. Two interchangeable transports share one tiny interface  open(code, role, onmsg, onstate) -> {send(msg), close()}:
+     'loop' : BroadcastChannel (two tabs of the same browser: tests and local tinkering)
+     'rtdb' : Firebase Realtime Database through plain REST + Server-Sent Events (no SDK). Each side PUTs messages into a ring of 128 slots under
+              /dhr/<code>/<h|g>/s<n> and listens to the OTHER side's folder. NET_CFG.url (or the player's own paste in the lobby, S.nu) is the database URL.
+   CO-OP = lockstep with input delay: both machines run the SAME deterministic simulation (the one the local co-op already uses) and only exchange inputs.
+     frame f is simulated only when both players' input for f is known; our own input is sampled D frames ahead (D from the measured ping), so the
+     local player never waits unless the network is slower than D. Every 30 frames both sides hash the state; if the guest's differs (different float
+     rounding in another browser, a lost packet...) it asks the host for a snapshot of that frame, restores it and re-simulates up to now.
+   RACE = both run their own ordinary single-player engine on the same level; only positions (10 Hz) and the finish are exchanged; the host arbitrates.
+   Nothing here touches the simulation: with G.co null and G.race null every function below is idle. */
+const NET_V='__BUILD__';
+const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app'};      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
+const NET={link:'off',role:null,code:'',kind:'',tr:null,peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
+const KR={l:false,r:false,j:false,jp:false,a:false,ap:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
+const netLock=()=>!!(G.co&&!G.co.local);
+const NET_AL='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+function fnv(s){ let h=0x811c9dc5; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,0x01000193) } return h>>>0 }
+const netDb=()=>S.nu==='-'?'':String(S.nu||NET_CFG.url||'').trim().replace(/\/+$/,'');
+const netKind=()=>netDb()?'rtdb':'loop';
+
+/* ---- transports ---- */
+function tpLoop(code,role,onmsg){
+  const bc=new BroadcastChannel('dhr-'+code);
+  bc.onmessage=e=>{ const d=e.data; if(d&&d.r!==role)onmsg(d.m) };
+  return {send:m=>{ bc.postMessage({r:role,m}) }, close:()=>bc.close()};
+}
+function tpRtdb(code,role,onmsg,onstate){
+  const base=netDb()+'/dhr/'+code, other=role==='h'?'g':'h', seen=new Set(); let seq=Date.now()*1000, es=null, closed=false;
+  const take=(q,m)=>{ if(seen.has(q))return; seen.add(q); if(seen.size>800)seen.delete(seen.values().next().value); let o=null; try{ o=JSON.parse(m) }catch(e){} if(o)onmsg(o) };
+  const ev=e=>{ let d=null; try{ d=JSON.parse(e.data) }catch(_){} if(!d||d.data==null)return;
+    const segs=String(d.path||'/').split('/').filter(Boolean), v=d.data;
+    const slots=segs.length===0?Object.values(v):(segs.length===1?[v]:[]);
+    slots.filter(s=>s&&typeof s.q==='number'&&typeof s.m==='string').sort((a,b)=>a.q-b.q).forEach(s=>take(s.q,s.m)) };
+  const start=()=>{ if(closed)return; es=new EventSource(base+'/'+other+'.json');
+    es.addEventListener('put',ev); es.addEventListener('patch',ev);
+    es.onopen=()=>onstate&&onstate('open'); es.onerror=()=>onstate&&onstate('err') };
+  if(role==='h')fetch(base+'.json',{method:'DELETE'}).catch(()=>{}).then(start); else start();
+  return {
+    send(m){ const q=++seq; fetch(base+'/'+role+'/s'+(q%128)+'.json?print=silent',{method:'PUT',body:JSON.stringify({q,m:JSON.stringify(m)})}).catch(()=>{}) },
+    close(){ closed=true; if(es)es.close(); fetch(base+(role==='h'?'':'/g')+'.json',{method:'DELETE'}).catch(()=>{}) }       // the host removes the whole room, a guest only its own folder
+  };
+}
+
+/* ---- session: rooms, handshake, ping ---- */
+const netNow=()=>performance.now();
+function netOpen(role,code){
+  netClose();
+  const kind=netKind();
+  Object.assign(NET,{role,code,kind,link:role==='h'?'wait':'join',peer:null,rtt:0,pings:[],lastRx:netNow(),joinAt:netNow(),msg:'',st:'',me:role==='h'?0:1,bye:false});
+  NET.tr=(kind==='rtdb'?tpRtdb:tpLoop)(code,role,netRecv,s=>{ NET.st=s; netRender() });
+  NET.timer=setInterval(netTimer,250);
+  netRender();
+}
+function netClose(){
+  const N=NET; if(N.timer){ clearInterval(N.timer); N.timer=0 } if(N.gtimer){ clearInterval(N.gtimer); N.gtimer=0 }
+  if(N.tr){ const t=N.tr; N.tr=null; setTimeout(()=>t.close(),700) }                                    // keep the folder a moment so the 'bye' can still be read
+}
+function netHost(){
+  const code=Array.from({length:5},()=>NET_AL[Math.random()*NET_AL.length|0]).join('');
+  netOpen('h',code); Snd.ui&&Snd.ui();
+}
+function netJoin(code){
+  code=String(code||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(code.length<4){ NET.msg='اكتب كود الغرفة (5 خانات)'; netRender(); return }
+  netOpen('g',code); netSendJoin();
+}
+const netHello=()=>({v:NET_V,h:S.hero,s:heroStage(S.hero),b:Math.max(1,S.best)});
+function netSendJoin(){ if(NET.tr)NET.tr.send(Object.assign({t:'jn'},netHello())) }
+function netTimer(){
+  const N=NET, now=netNow(); if(!N.tr)return;
+  if(N.link==='join'){ if(now-N.joinAt>15000){ netLeave('ما لقيت الغرفة 🤷 تأكد من الكود'); return } if(!N.jr||now-N.jr>1500){ N.jr=now; netSendJoin() } return }
+  if(N.link==='wait')return;
+  if(now-N.lastRx>20000){ netLeave('انقطع الاتصال 📡'); return }
+  if(!N.pgAt||now-N.pgAt>2000){ N.pgAt=now; N.tr.send({t:'pg',ts:now}) }
+  if(N.link==='play'&&N.lock){ netSend(); netStallUi() }
+}
+function netRecv(m){
+  const N=NET; if(!m||!N.tr&&m.t!=='bye')return; N.lastRx=netNow();
+  switch(m.t){
+    case 'jn':
+      if(N.role!=='h')return;
+      if(m.v!==NET_V){ N.tr.send({t:'no',w:'v'}); return }
+      N.peer={hero:m.h,stage:m.s,best:m.b}; if(N.link==='wait')N.link='conn';
+      N.tr.send(Object.assign({t:'wl'},netHello())); netLobbySend(); netRender(); break;
+    case 'wl':
+      if(N.role!=='g')return; N.peer={hero:m.h,stage:m.s,best:m.b}; if(N.link==='join'){ N.link='conn'; N.msg='' } netRender(); break;
+    case 'no': netLeave(m.w==='v'?'نسخة اللعبة مختلفة عن صاحبك — حدّثوا الصفحة الاتنين 🔄':'ما قدرت أدخل الغرفة'); break;
+    case 'pg': N.tr.send({t:'pn',ts:m.ts}); break;
+    case 'pn': { const r=netNow()-m.ts; N.rtt=N.rtt?N.rtt*.7+r*.3:r; N.pings.push(r); if(N.pings.length>7)N.pings.shift(); netRender() } break;
+    case 'lb': if(N.role==='g'&&N.link!=='play')netLobbyRecv(m); break;
+    case 'st': if(N.role==='g')netBegin(m); break;
+    case 'i': netGotInput(m); break;
+    case 'h': netGotHash(m); break;
+    case 'rs': if(N.role==='h'&&N.snaps&&N.snaps[m.f])N.tr.send({t:'sn',f:m.f,s:N.snaps[m.f]}); break;
+    case 'sn': if(N.role==='g'&&N.link==='play'&&N.lock)netApply(m.f,m.s); break;
+    case 'g': raceGot(m); break;
+    case 'fn': raceFin(m); break;
+    case 'rr': raceResult(m); break;
+    case 'ab': netToLobby('صاحبك رجع للغرفة 👋'); break;
+    case 'bye': netLeave('صاحبك طلع من الغرفة 👋',true); break;
+  }
+}
+function netLeave(msg,quiet){
+  const N=NET, was=N.link!=='off'; if(!was&&!N.tr)return;
+  if(!quiet&&N.tr)try{ N.tr.send({t:'bye'}) }catch(e){}
+  netClose(); raceStop(); N.link='off'; N.peer=null; N.lock=false; N.msg=msg||'';
+  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
+  $('netSt').classList.add('hide');
+  if(G.co||G.race||G.state==='play'||G.state==='dead'||G.state==='win'){ const m=msg; goTitle(); if(m){ setTimeout(()=>say(m,'any',3.2),50) } return }
+  if(G.state==='co'){ N.tab=true; coRender() }
+}
+function netToLobby(msg){                                  // back to the online lobby, the connection stays
+  const N=NET; if(N.link==='off')return; raceStop(); N.lock=false; N.link='conn'; G.co=null;
+  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
+  $('netSt').classList.add('hide'); $('raceBar').classList.add('hide'); $('raceCd').classList.add('hide'); $('raceRes').classList.add('hide');
+  N.tab=true; coOpen(msg||'');
+}
+
+/* ---- lobby sync (host chooses) ---- */
+function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
+function netLobbyRecv(m){
+  NET.mode=m.mode==='race'?'race':'co'; CO.sel.n=m.n|0||1;
+  if(m.cu){ const r=decodeCustom(m.cu); CO.sel.custom=r.err?null:r.c } else CO.sel.custom=null;
+  if(G.state==='co')coRender();
+}
+const netHeroes=()=>NET.role==='h'?[S.hero,NET.peer.hero]:[NET.peer.hero,S.hero];
+const netStages=()=>NET.role==='h'?[heroStage(S.hero),NET.peer.stage]:[NET.peer.stage,heroStage(S.hero)];
+function netD(){ const r=NET.pings.length>=2?NET.pings.slice().sort((a,b)=>a-b)[NET.pings.length>>1]:(NET.rtt||120); return clamp(Math.ceil(r/2/16.7)+3,4,16) }
+function netStartHost(){                                       // host presses start
+  const N=NET; if(N.role!=='h'||N.link!=='conn'||!N.peer)return;
+  const s=CO.sel;
+  if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة'; coRender(); return }
+  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:S.diff||'crazy',D:netD(),hero:netHeroes(),stage:netStages(),rtt:N.rtt|0};
+  N.tr.send(o); netBegin(o);
+}
+function netBegin(o){
+  const N=NET; if(N.link==='off'||!N.peer)return;
+  N.mode=o.mode; N.D=o.D; N.link='play'; N.msg='';
+  for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide');
+  const cu=o.cu?(()=>{ const r=decodeCustom(o.cu); return r.err?null:r.c })():null;
+  if(o.mode==='race'){ raceBegin(o,cu); return }
+  N.lock=true; N.f=0; N.smp=-1; N.loc={}; N.rem={}; N.hist={}; N.snaps={}; N.hh={}; N.rh={}; N.ackR=N.D-1; N.remHi=N.D-1; N.lm=-1; N.stallT=0; N.bad=0; N.rsAt=0; N.fixes=0;
+  for(let i=0;i<N.D;i++){ N.loc[i]=0; N.rem[i]=0 }
+  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
+  coStart({hero:o.hero,stage:o.stage,level:o.lv,custom:cu,local:false,me:N.me,df:o.df});
+}
+
+/* ---- lockstep ---- */
+const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32};
+function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; return m }
+function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32) }
+function netSend(){
+  const N=NET; if(!N.tr||!N.lock)return;
+  const hi=N.smp+N.D, from=Math.max(N.ackR+1,hi-90); let a=''; if(hi<from)return;           // only frames we really sampled (smp = the newest sampled frame)
+  for(let f=from;f<=hi;f++)a+=String.fromCharCode(48+(N.loc[f]|0));
+  N.tr.send({t:'i',f:from,a,k:N.remHi});
+}
+function netGotInput(m){
+  const N=NET; if(!N.lock||typeof m.a!=='string')return;
+  for(let i=0;i<m.a.length;i++){ const fr=m.f+i; if(fr>=N.f-1&&N.rem[fr]===undefined)N.rem[fr]=m.a.charCodeAt(i)-48 }
+  while(N.rem[N.remHi+1]!==undefined)N.remHi++;
+  if(m.k>N.ackR)N.ackR=m.k;
+}
+function netPre(){                                          // true = frame N.f may run now (K/K2 are filled with the agreed inputs)
+  const N=NET; if(N.link!=='play'||!N.lock)return false;
+  if(N.smp!==N.f){ N.smp=N.f; const m=netSample(); N.loc[N.f+N.D]=m; if(m!==N.lm||N.f%4===0){ N.lm=m; netSend() } }
+  const r=N.rem[N.f];
+  if(r===undefined){ if(!N.stallT)N.stallT=netNow(); netStallUi(); return false }
+  if(N.stallT){ N.stallTot=(N.stallTot||0)+netNow()-N.stallT; N.stallT=0; netStallUi() }
+  const l=N.loc[N.f]|0; setIn(K,l); setIn(K2,r); N.hist[N.f]=N.me===0?[l,r]:[r,l];
+  return true;
+}
+function netPost(){
+  const N=NET; N.f++; delete N.loc[N.f-4]; delete N.rem[N.f-4]; delete N.hist[N.f-720];
+  if(N.f%30===0&&G.state==='play'){
+    const s=snap(true), h=fnv(s); N.hh[N.f]=h; delete N.hh[N.f-900];
+    if(N.role==='h'||N.keep){ N.snaps[N.f]=s; delete N.snaps[N.f-(N.keep?3000:300)] }
+    N.tr.send({t:'h',f:N.f,h});
+    if(N.rh[N.f]!==undefined){ netCmp(N.f,N.rh[N.f]); delete N.rh[N.f] }
+  }
+}
+function netGotHash(m){ const N=NET; if(!N.lock)return; if(N.hh[m.f]!==undefined)netCmp(m.f,m.h); else N.rh[m.f]=m.h }
+function netCmp(f,h){
+  const N=NET; if(N.hh[f]===h)return; N.bad++;
+  if(N.role==='g'&&netNow()-N.rsAt>1500){ N.rsAt=netNow(); N.tr.send({t:'rs',f}) }
+}
+function netApply(f,s){                                     // guest: adopt the host's state of frame f, then replay our own recorded inputs up to now
+  const N=NET, cur=N.f; restore(s); N.fixes++;
+  if(cur>f){
+    for(N.f=f;N.f<cur;N.f++){ const h=N.hist[N.f]; if(!h)break; setIn(K,N.me===0?h[0]:h[1]); setIn(K2,N.me===0?h[1]:h[0]); update(1/60) }
+  } else { N.f=f; for(let g=cur+N.D;g<f+N.D;g++)if(N.loc[g]===undefined)N.loc[g]=0; N.smp=-1 }
+  netSend();
+}
+function netStallUi(){
+  const N=NET, el=$('netSt'), w=N.stallT?netNow()-N.stallT:0;
+  if(w>500){ el.textContent=w>5000?'📡 الاتصال ضعيف... بستنى صاحبك':'⏳ بستنى صاحبك...'; el.classList.remove('hide') } else el.classList.add('hide');
+}
+const netEscRace=()=>netEsc();
+function netEsc(){                                          // Esc while online: first press warns, second leaves to the lobby
+  const N=NET, now=netNow();
+  if(N.escAt&&now-N.escAt<2500){ N.escAt=0; try{ N.tr.send({t:'ab'}) }catch(e){} netToLobby('رجعتوا للغرفة'); return }
+  N.escAt=now; say('اضغط Esc مرة تانية لترجعوا للغرفة','any',2.4);
+}
+
+/* ---- race: two single-player engines, positions exchanged ---- */
+const RACE_CD=3.2;
+function raceBegin(o,cu){
+  const N=NET;
+  G.race={df:o.df,hold:RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0),opp:newPlayer(0),tx:null,over:false,done:false,res:null,t0:0,seen:false};
+  const op=G.race.opp; op.hid=N.peer.hero; op.hst=N.peer.stage; op.run=0;
+  G.race.fn=null;
+  if(cu)startCustom(cu,'race'); else startGame(o.lv);
+  G.race.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0);
+  $('raceBar').classList.remove('hide'); $('raceRes').classList.add('hide'); raceCdUi();
+  N.gtimer=setInterval(raceSend,100);
+}
+function raceStop(){ if(NET.gtimer){ clearInterval(NET.gtimer); NET.gtimer=0 } if(G.race){ G.race=null } const e=$('raceBar'); if(e)e.classList.add('hide'); const c=$('raceCd'); if(c)c.classList.add('hide') }
+function raceSend(){
+  const r=G.race; if(!r||!NET.tr||r.hold>0&&false)return;
+  NET.tr.send({t:'g',x:Math.round(P.x*10)/10,y:Math.round(P.y*10)/10,vx:Math.round(P.vx),vy:Math.round(P.vy),fc:P.face,og:P.onGround?1:0,dd:P.dead?1:0,ex:L.exitTx*TS});
+}
+function raceGot(m){
+  const r=G.race; if(!r)return; r.tx={x:m.x,y:m.y,vx:m.vx,vy:m.vy,fc:m.fc,og:m.og,dd:m.dd,ex:m.ex}; r.seen=true;
+}
+function raceTick(dt){                                       // every animation frame: ease the ghost toward the last report, keep the HUD bar
+  const r=G.race; if(!r)return;
+  if(r.hold>0){ r.hold-=dt; raceCdUi(); if(r.hold<=0){ r.t0=G.t; $('raceCd').classList.add('hide') } }
+  const o=r.opp, t=r.tx;
+  if(t){ const k=Math.min(1,dt*10); t.x+=t.vx*dt*(t.dd?0:1); o.x+=(t.x-o.x)*k; o.y+=(t.y-o.y)*k; o.vx=t.vx; o.vy=t.vy; o.face=t.fc; o.onGround=!!t.og; o.dead=!!t.dd }
+  o.run=(o.run||0)+Math.abs(o.vx)*dt*.03; o.blink=(o.blink||0);
+  const ex=Math.max(1,L.exitTx*TS), me=clamp(P.x/ex,0,1), op=t?clamp(o.x/ex,0,1):0;
+  $('rbMe').style.left=(me*92)+'%'; $('rbOp').style.left=(op*92)+'%'; $('rbOp').style.opacity=t?1:.25;
+}
+function raceCdUi(){
+  const r=G.race, e=$('raceCd'); if(!r||r.hold<=0){ e.classList.add('hide'); return }
+  const n=Math.ceil(r.hold-.2); e.textContent=n>0?String(n):'يلّا!'; e.classList.remove('hide');
+}
+function raceDraw(c){
+  const r=G.race; if(!r||!r.seen)return;
+  const keep=P; P=r.opp; c.save(); c.globalAlpha=.6;
+  if(!P.dead)drawPlayer(c);
+  c.restore(); P=keep;
+  const x=r.opp.x+PW/2, y=r.opp.y+PH-(typeof SPR_H==='number'&&look3()?SPR_H:44)-4;
+  c.save(); c.textAlign='center'; c.lineJoin='round'; c.fillStyle=CO_COL[1]; c.strokeStyle='#000'; c.lineWidth=2;
+  c.beginPath(); c.moveTo(x-6,y-8); c.lineTo(x+6,y-8); c.lineTo(x,y); c.closePath(); c.fill(); c.stroke(); c.restore();
+}
+function raceFinish(){                                       // I reached the door
+  const r=G.race; if(!r||r.done)return; r.done=true; r.fn=+G.t.toFixed(2);
+  if(NET.role==='h')raceDecide(0); else NET.tr.send({t:'fn',tm:r.fn});
+}
+function raceFin(m){ if(NET.role==='h'&&G.race&&!G.race.res){ G.race.tm1=m.tm; raceDecide(1) } }
+function raceDecide(w){
+  const r=G.race; if(!r||r.res)return; const t0=w===0?r.fn:null, t1=w===1?r.tm1:null;
+  const m={t:'rr',w,tm:[t0,t1]}; NET.tr.send(m); raceResult(m);
+}
+function raceResult(m){
+  const r=G.race; if(!r||r.res)return; r.res=m; r.over=true;
+  const mine=NET.role==='h'?0:1, won=m.w===mine, tm=m.tm[m.w];
+  $('raceCd').classList.add('hide');
+  $('raceRes').innerHTML='<div class="rr1">'+(won?'🏆 كسبت!':'😭 خسرت')+'</div><div class="rr2">'+(tm!=null?((won?'وقتك ':'صاحبك وصل بـ ')+tm.toFixed(1)+' ث'):'')+'</div><button class="btn" id="rrBack">↩ ارجعوا للغرفة</button>';
+  $('raceRes').classList.remove('hide');
+  $('rrBack').onclick=()=>{ try{ NET.tr.send({t:'ab'}) }catch(e){} netToLobby('') };
+  Snd.stopMusic&&Snd.stopMusic();
+}
+
+/* ---- lobby UI (the online half of the co-op lobby) ---- */
+const CO_BLURB_L='الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · ما بتقدروا تبعدوا عن بعض أكتر من شاشة';
+function netRender(){
+  const N=NET, on=N.tab, conn=N.link==='conn'||N.link==='play';
+  if(!$('coNet'))return;
+  $('coTabL').classList.toggle('on',!on); $('coTabN').classList.toggle('on',on);
+  $('coNet').classList.toggle('hide',!on); $('coGo').classList.toggle('hide',on); $('coH2L').classList.toggle('hide',on); $('coH2R').classList.toggle('hide',on);
+  $('nMsg').textContent=on?(N.msg||''):'';
+  if(!on){ $('nGo').classList.add('hide'); $('nGuestWait').classList.add('hide'); $('coBlurb').textContent=CO_BLURB_L; return }
+  const off=N.link==='off';
+  $('nHostBox').classList.toggle('hide',!off); $('nRoom').classList.toggle('hide',off);
+  $('nCodeBig').textContent=N.code||'';
+  const st=N.link==='wait'?'⏳ بستنى صاحبك يدخل بالكود':N.link==='join'?'🔌 عم أتصل...':conn?('✅ متصلين'+(N.rtt?' · '+Math.round(N.rtt)+' ms':'')):'';
+  $('nStat').textContent=st+(N.kind==='loop'&&N.link!=='off'?' (نفس المتصفح فقط — حط رابط القاعدة للعب عن بعد)':'');
+  $('nModeCo').classList.toggle('on',N.mode==='co'); $('nModeRace').classList.toggle('on',N.mode==='race');
+  for(const id of ['nModeCo','nModeRace'])$(id).disabled=!(N.role==='h'||off);
+  $('nDb').value=document.activeElement===$('nDb')?$('nDb').value:(S.nu&&S.nu!=='-'?S.nu:'');
+  $('nGo').classList.toggle('hide',!(N.role==='h'&&N.link==='conn'));
+  $('nGuestWait').classList.toggle('hide',!(N.role==='g'&&conn));
+  $('coPrev').disabled=!(N.role==='h'&&conn)||!!CO.sel.custom; $('coNext').disabled=$('coPrev').disabled; $('coCodeBtn').disabled=!(N.role==='h'&&conn);
+  $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · بلا مكافآت';
+}
+function netTab(on){
+  NET.tab=!!on; if(on&&NET.link==='off'){ NET.msg='' } coRender();
+}
+$('coTabL').onclick=()=>netTab(false); $('coTabN').onclick=()=>netTab(true);
+$('nHost').onclick=()=>{ Snd.init(); netHost() };
+$('nJoin').onclick=()=>{ Snd.init(); netJoin($('nCode').value) };
+$('nCode').addEventListener('keydown',e=>{ e.stopPropagation(); if(e.key==='Enter')netJoin($('nCode').value) });
+$('nCode').addEventListener('input',e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'') });
+$('nDb').addEventListener('keydown',e=>e.stopPropagation());
+$('nDb').addEventListener('change',()=>{ const v=$('nDb').value.trim(); S.nu=/^https?:\/\//i.test(v)?v.replace(/\/+$/,''):''; save(); NET.msg=S.nu?'✅ انحفظ رابط القاعدة':''; netRender() });
+$('nGo').onclick=netStartHost;
+$('nLeave').onclick=()=>netLeave('');
+$('nCopy').onclick=()=>{ const t=NET.code; try{ navigator.clipboard.writeText(t).then(()=>{ NET.msg='📋 اننسخ الكود'; netRender() },()=>{}) }catch(e){} };
+$('nModeCo').onclick=()=>{ NET.mode='co'; netLobbySend(); netRender() };
+$('nModeRace').onclick=()=>{ NET.mode='race'; netLobbySend(); netRender() };

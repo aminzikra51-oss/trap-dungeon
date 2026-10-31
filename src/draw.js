@@ -127,7 +127,7 @@ const HEROES={
    c.fillStyle='#fff';[[-7,-36,1.6],[5,-38,1.9],[10,-33,1.2],[-1,-33,1.1]].forEach(([a,b,r])=>{c.beginPath();c.arc(a,b,r,0,7);c.fill()})}}
 };
 const HERO_IDS=Object.keys(HEROES);
-const heroDef=()=>HEROES[S.hero]||HEROES.falafel;
+const heroDef=()=>HEROES[hid()]||HEROES.falafel;
 function heroState(){
   const p=P; return {moving:Math.abs(p.vx)>20&&p.onGround,rs:Math.sin(p.run*3),run:p.run,onGround:p.onGround,blink:p.blink<0&&p.blink>-.12,
     ex:clamp(p.vx/RUN,-1,1)*1.6,ey:clamp(p.vy/700,-1,1)*1.6,dead:false,scream:false};
@@ -220,6 +220,7 @@ function render(){
     const g=c.createLinearGradient(0,VH-90,0,VH);g.addColorStop(0,'#0000');g.addColorStop(1,'#000c');c.fillStyle=g;c.fillRect(px*TS,VH-90,pl*TS,90);
     if(L.n>=2){ if(pitLaugh&&Math.abs(P.x-cx)<pl*TS/2+120){face(c,cx,VH-22,1.9,'laugh')} else {const ex=clamp((P.x-cx)/90,-1,1)*3,ey=clamp((P.y-VH)/300,-1,0)*2-1;c.fillStyle='#fff';[-11,11].forEach(o=>{c.beginPath();c.ellipse(cx+o,VH-24,7,10,0,0,7);c.fill();c.fillStyle='#000';c.beginPath();c.arc(cx+o+ex,VH-24+ey,3.2,0,7);c.fill();c.fillStyle='#fff'})} } }
   drawZones(c,th,cam);
+  if(L.deco&&L.deco.length)decoDraw(c,cam);
   // signs
   for(const s of L.signs){ if(look3()){drawSign3(c,s,cam);continue} const x=s.tx*TS+16;if(x<cam-60||x>cam+VW+60)continue;
     c.fillStyle='#5b3a1a';c.strokeStyle='#000';c.lineWidth=2.4;c.fillRect(x-2.5,GY-30,5,30);c.strokeRect(x-2.5,GY-30,5,30);
@@ -253,7 +254,8 @@ function render(){
   for(const e of L.ents){ if(e.t==='chase'||e.t==='ghost'||e.t==='coin'||!vis(e))continue; B[e.t].draw(e,c,th) }
   for(const e of L.ents){ if(e.t==='coin'&&vis(e))B.coin.draw(e,c,th) }
   // player
-  if(G.state==='dead')drawDeath(c);else{drawPlayer(c);heroFxWorld(c)}
+  if(G.co)coDraw(c); else if(G.state==='dead')drawDeath(c);else{drawPlayer(c);heroFxWorld(c)}
+  if(G.race)raceDraw(c);
   for(const e of L.ents){ if(e.t==='chase'||e.t==='ghost')B[e.t].draw(e,c,th) }
   // particles
   for(const p of parts){const a=clamp(p.life/(p.max*.6),0,1);c.globalAlpha=a;c.fillStyle=p.col;

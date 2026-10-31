@@ -33,6 +33,7 @@ function shopRender(){
     }
   } else if(SHOP.tab==='u'){ heroUpRender(g)
   } else if(SHOP.tab==='a'){ accRender(g)
+  } else if(SHOP.tab==='e'){ epRender(g)
   } else {
     const auto=el('div','shc'+(S.bgPick<0?' sel':'')), ab=el('button','btn',S.bgPick<0?'✓ تلقائي':'تلقائي',()=>{ S.bgPick=-1; save(); Snd.ui(); shopRender() });
     auto.append(el('div','shbig','🎲'),el('div','nm','تلقائي'),el('div','sub','العالم حسب المرحلة'),ab); g.appendChild(auto);

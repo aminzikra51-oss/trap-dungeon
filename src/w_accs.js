@@ -66,7 +66,8 @@ function accHeroMode(g){
     for(const slot of ['h','n','b']){ const it=accItem(id,slot,s); if(it&&rarOk(ACC_SETRAR[s]))cards.push(accHeroCard(id,st,it,sl[slot])) }
     if(s===1&&rarOk('e'))cards.push(accAuraCard(id,st,sl.a));
     if(!cards.length)continue; shown++;
-    const hd=el('div','achd'); hd.append(el('b',null,'الطقم '+ACC_SETNM[s]),rarBadge(ACC_SETRAR[s]));
+    const hd=el('div','achd'); hd.append(el('b',null,s===3?'القطعة الأسطورية':'الطقم '+ACC_SETNM[s]),rarBadge(ACC_SETRAR[s]));
+    if(s===3)hd.appendChild(el('span','sub','بتنفتح بتخليص تحدّي البطل بدون ولا موتة'));
     if(full===s)hd.appendChild(el('span','full','✓ طقم كامل: هالة بلون الطقم'));
     g.appendChild(hd); for(const c of cards)g.appendChild(c);
   }
@@ -80,7 +81,8 @@ function accPreview(id,slot,set){
 function accHeroCard(id,st,it,subTxt){
   const own=accOwn(id,it.slot,it.set), un=own&&st>=it.need, on=accSel(id,it.slot)===it.set, card=accCard((un&&on?' sel':'')+(un?'':' lock'),ACC_SETRAR[it.set]);
   card.append(accPreview(id,it.slot,it.set),el('div','nm',it.nm),el('div','sub',subTxt));
-  if(!own){ const poor=S.wallet<it.price, need=st<it.need;
+  if(!own&&it.set===3)card.appendChild(el('div','sub','🔒 خلّص تحدّي '+HEROES[id].name+' بدون ولا موتة'));
+  else if(!own){ const poor=S.wallet<it.price, need=st<it.need;
     card.appendChild(el('button','btn'+((poor||need)?' poor':''),'اشترِ 🪙 '+it.price+(poor?'  (ناقصك '+(it.price-S.wallet)+')':''),()=>{
       if(need){ shopMsg('لازم المرحلة '+ROMAN[it.need]+' ('+STAGE_NM[it.need]+') أول'); Snd.bonk&&Snd.bonk(); return }
       const r=accBuy(id+':'+it.slot+':'+it.set,it.price); if(r==='ok'){ const q=S.hq[id]||(S.hq[id]={}); q[it.slot]=it.set; save(); Snd.coin(); Snd.win(); shopMsg('اشتريت «'+it.nm+'» 🎉'); shopRender() } else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg('ناقصك '+(it.price-S.wallet)+' 🪙') } })) }

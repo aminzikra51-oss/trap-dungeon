@@ -16,7 +16,9 @@ import re as _re
 src = _re.sub(r'/\*@include ([\w.]+)\*/', lambda m: open(f'{root}/src/{m.group(1)}', encoding='utf-8').read(), src)
 assets['voices'] = json.load(open(f'{root}/assets/voices.json', encoding='utf-8'))
 SHARE_URL = os.environ.get('SHARE_URL', 'https://aminzikra51-oss.github.io/dont-die-habibi/play/')  # canonical link every build shares (tiny preview page that redirects to the game)
-out = src.replace('__ASSETS_JSON__', json.dumps(assets, ensure_ascii=False)).replace('__SHARE_URL__', SHARE_URL)
+import hashlib as _hl
+BUILD = _hl.sha1(src.encode('utf-8')).hexdigest()[:8]   # net play refuses mixed builds (the simulation must match bit for bit)
+out = src.replace('__BUILD__', BUILD).replace('__ASSETS_JSON__', json.dumps(assets, ensure_ascii=False)).replace('__SHARE_URL__', SHARE_URL)
 open(f'{root}/trap-dungeon.html', 'w', encoding='utf-8').write(out)
 print('built', round(len(out)/1024), 'KB; audio:', len(assets['audio']), 'img:', len(assets['img']))
 

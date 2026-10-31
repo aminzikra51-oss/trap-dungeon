@@ -4,9 +4,9 @@ const ED={c:cNew(),sel:-1,fam:0,msg:'',src:'edit',imp:false};
 try{ const d=MP.draft; if(d&&Array.isArray(d.seq)&&d.n>=1&&d.n<=C_MAXN&&d.d>=0&&d.d<=2&&d.th>=0&&d.th<THEMES.length&&d.seq.every(x=>CF[x[0]]&&x[1]>=0&&x[1]<=CF[x[0]].vs.length))ED.c=cClone(d) }catch(e){}
 const edSave=()=>{ MP.draft=cClone(ED.c); saveMaps() };
 const edCode=()=>cTraps(ED.c)?encodeCustom(ED.c):'';
-const edClr=()=>{ const k=edCode(); return k?MP.cleared[k]:null };
+const edClr=()=>cTraps(ED.c)?MP.cleared[coreCode(ED.c)]||null:null;       // proof is keyed by the WORLD only (decorations/signs do not need a re-clear)
 function el(tag,cls,txt,fn){ const e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; if(fn)e.onclick=fn; return e }
-const chipTxt=([f,v])=>CF[f].ic+' '+(v?CF[f].vs[v-1][1]:CF[f].nm);
+const chipTxt=([f,v,tx])=>f===SIGN_I&&v===SIGN_CUSTOM?'🪧 «'+(tx||'').slice(0,12)+((tx||'').length>12?'…':'')+'»':(f===DECO_I&&v?DECO_EM[v-1]:CF[f].ic)+' '+(v?CF[f].vs[v-1][1]:CF[f].nm);
 
 function edPreview(){            // the canvas behind the panel shows the chosen theme
   try{ const th=ED.c.th; L=buildLevel(1,{script:[['pit','plain']],theme:th,diff:'normal',salt:0}); P=newPlayer(L.spawnTx); themeBg=makeBg(THEMES[th],th*31+7); G.camX=0 }catch(e){}
@@ -19,23 +19,28 @@ function edRender(){
   if(!c.seq.length)seq.appendChild(el('span','edhint','اضغط على فخ من تحت لتضيفه ↓'));
   c.seq.forEach((it,i)=>{ const b=el('button','ch'+(i===ED.sel?' on':''),chipTxt(it),()=>{ ED.sel=ED.sel===i?-1:i; edRender() }); seq.appendChild(b) });
   $('edTools').classList.toggle('hide',ED.sel<0);
+  { const it=c.seq[ED.sel], tx=$('edTx'), isTx=!!it&&it[0]===SIGN_I&&it[1]===SIGN_CUSTOM; tx.classList.toggle('hide',!isTx); if(isTx&&document.activeElement!==tx)tx.value=it[2]||'' }
+  $('edCaps').textContent=epLimits(c);
   const fam=$('edFam'); fam.innerHTML='';
-  CF.forEach((f,i)=>{ fam.appendChild(el('button','ch f'+(i===ED.fam?' on':''),f.ic+' '+f.nm,()=>{ ED.fam=i; if(!f.vs.length)edAdd(i,0); else edRender() })) });
+  CF.forEach((f,i)=>{ const lk=(f.f==='deco'&&!epCap('deco'))||(f.f==='sign'&&!epCap('sign'));
+    fam.appendChild(el('button','ch f'+(i===ED.fam?' on':'')+(lk?' lock':''),f.ic+' '+f.nm+(lk?' 🔒':''),()=>{ ED.fam=i; if(!f.vs.length)edAdd(i,0); else edRender() })) });
   const vr=$('edVar'); vr.innerHTML=''; const F=CF[ED.fam];
   if(F.vs.length){
     vr.appendChild(el('button','ch v','🎲 تلقائي',()=>edAdd(ED.fam,0)));
-    F.vs.forEach((v,j)=>vr.appendChild(el('button','ch v'+(c.n<v[2]?' lock':''),v[1]+(c.n<v[2]?' 🔒'+v[2]:''),()=>edAdd(ED.fam,j+1))));
+    F.vs.forEach((v,j)=>{ const lk=c.n<v[2]||(F.f==='sign'&&j+1===SIGN_CUSTOM&&!epCustomText()); vr.appendChild(el('button','ch v'+(lk?' lock':''),(F.f==='deco'?DECO_EM[j]+' ':'')+v[1]+(c.n<v[2]?' 🔒'+v[2]:(lk?' 🔒':'')),()=>edAdd(ED.fam,j+1))) });
   } else vr.appendChild(el('span','edhint',F.f==='cp'?'علم حفظ حقيقي: لما تموت بترجع منه':'هالفخ بلا أنواع — بينضاف مباشرة'));
+  if(F.cosm){ vr.appendChild(el('span','edhint',F.f==='deco'?'شكل بس — ما بتأثر على اللعب':'يافطة بتكذب على اللاعب 😈')) }
   $('edSt').textContent=(nt?nt+' فخ · ':'')+(cl?'✅ خلّصتها بـ '+cl.t.toFixed(1)+' ث':(nt?'🔒 لسا ما خلّصتها':'خريطة فاضية'));
   $('edPlay').disabled=!nt; $('edCopy').disabled=!(nt&&cl);
   $('edCopy').textContent=cl?'📋 انسخ الكود':'🔒 خلّصها لتنشرها';
   $('edMsg').textContent=ED.msg||''; $('edImpBox').classList.toggle('hide',!ED.imp);
 }
 function edAdd(f,v){
-  const c=ED.c; if(c.seq.length>=C_MAXSEQ){ED.msg='الحد الأقصى '+C_MAXSEQ+' عنصر';edRender();return}
-  const at=ED.sel>=0?ED.sel+1:c.seq.length; c.seq.splice(at,0,[f,v]); ED.sel=at;
+  const c=ED.c, why=epWhy(c,f,v); if(why){ED.msg=why;edRender();return}
+  const at=ED.sel>=0?ED.sel+1:c.seq.length, it=(f===SIGN_I&&v===SIGN_CUSTOM)?[f,v,'يافطتي']:[f,v]; c.seq.splice(at,0,it); ED.sel=at;
   const need=v?CF[f].vs[v-1][2]:CF[f].mn; ED.msg=''; if(c.n<need){c.n=need;ED.msg='رفعت القوة لـ '+need+' عشان هالفخ'}
   edSave(); edRender();
+  if(it.length>2){ const tx=$('edTx'); tx.focus(); tx.select() }
 }
 function edSetN(n){
   const need=cNeed(ED.c), v=clamp(n,1,C_MAXN); ED.msg='';
@@ -50,18 +55,19 @@ function edOpen(c,msg,o){
   $('sub').innerHTML=''; G.state='editor'; $('ed').classList.remove('hide'); edPreview(); edRender();
 }
 function edClose(){ $('ed').classList.add('hide'); goTitle() }
-function startCustom(c,src){
-  Snd.init(); Snd.resume(); for(const id of ['ed','title','menu','card'])$(id).classList.add('hide'); $('hud').classList.remove('hide');
+function startCustom(c,src,co){
+  G.co=co||null; Snd.init(); Snd.resume(); for(const id of ['ed','co','title','menu','card'])$(id).classList.add('hide'); $('hud').classList.remove('hide');
   ED.src=src||'edit'; G.lastLvl=-9; G.cpX=null; G.bossProg=null; G.bossSeen=0; G.lvDeaths=0;
   loadLevel(c.n,false,{custom:cClone(c)}); G.state='play'; if(S.music)Snd.startMusic();
+  if(L.cosmDrop)say('ما لقيت مكان لـ '+L.cosmDrop+' من الزخارف/اليافطات — حط فخاخ أقل أو فراغات أوسع','any',4);
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 /* the winning run is the proof: store it next to the code (a server will replay it later; for now it only unlocks sharing on this device) */
 function customCleared(){
-  const code=encodeCustom(G.custom); MP.cleared[code]={t:+G.t.toFixed(2),f:INREC.length,p:rleEnc(INREC),at:Date.now()}; saveMaps(); achMapCleared(code);
+  const code=coreCode(G.custom); MP.cleared[code]={t:+G.t.toFixed(2),f:INREC.length,p:rleEnc(INREC),at:Date.now()}; saveMaps(); achMapCleared(code);
 }
 function customWon(){
-  const c=G.custom, code=encodeCustom(c), cl=MP.cleared[code], t=cl?cl.t.toFixed(1):'?';
+  const c=G.custom, code=coreCode(c), cl=MP.cleared[code], t=cl?cl.t.toFixed(1):'?';
   if(ED.src==='code') edOpen(null,'🏆 خلّصت الخريطة بـ '+t+' ث',{src:'code',imp:true});
   else edOpen(c,'🏆 خلّصتها بـ '+t+' ث — هلأ بتقدر تنسخ الكود');
 }
@@ -82,7 +88,7 @@ function edImport(play){
   if(MP.draft&&cTraps(MP.draft)&&encodeCustom(MP.draft)!==encodeCustom(r.c)){ try{localStorage.setItem('td_mprev',JSON.stringify(MP.draft))}catch(e){} }
   ED.c=cClone(r.c); ED.sel=-1; ED.imp=false; ED.src='edit'; ED.msg='✅ انحمّلت الخريطة (' +cTraps(r.c)+' فخ)'; edSave(); edPreview(); edRender();
 }
-function goTitle(){ $('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');$('ed').classList.add('hide');G.state='title';$('sub').innerHTML='';Snd.stopMusic() }
+function goTitle(){ G.co=null; $('co').classList.add('hide'); $('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');$('ed').classList.add('hide');G.state='title';$('sub').innerHTML='';Snd.stopMusic() }
 
 /* ---- wiring ---- */
 $('edNm').onclick=()=>edSetN(ED.c.n-1); $('edNp').onclick=()=>edSetN(ED.c.n+1);
@@ -98,6 +104,9 @@ $('edCopy').onclick=edCopy;
 $('edImp').onclick=()=>{ED.imp=!ED.imp;ED.msg='';edRender()};
 $('edLoad').onclick=()=>edImport(false); $('edGo').onclick=()=>edImport(true);
 $('edX').onclick=edClose;
+$('edPerk').onclick=()=>openShop('e');
+$('edTx').oninput=e=>{ const it=ED.c.seq[ED.sel]; if(!it||it[0]!==SIGN_I||it[1]!==SIGN_CUSTOM)return; it[2]=cText(e.target.value)||'يافطتي'; edSave(); const chip=$('edSeq').querySelector('.ch.on'); if(chip)chip.textContent=chipTxt(it) };
+$('edTx').onblur=()=>{ edRender() };
 $('bEdT').onclick=()=>{Snd.init();edOpen(null,'')};
 $('bEdit').onclick=()=>{ if(ED.src==='code')edOpen(null,'',{src:'code',imp:true}); else edOpen(G.custom||ED.c,'') };
 /* link: ...#m=HB1-xxxx opens the import box with the code filled in */

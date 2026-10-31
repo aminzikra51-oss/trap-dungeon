@@ -35,8 +35,8 @@ with sync_playwright() as p:
             A = pg.evaluate("""() => ({chips:[...document.querySelectorAll('.acchips')].pop().querySelectorAll('.ch').length, cards:document.querySelectorAll('#shGrid .shc').length, locked:document.querySelectorAll('#shGrid .shc.lock').length, worn:document.querySelectorAll('#shGrid .shc.sel').length,
                cvs:[...document.querySelectorAll('#shGrid .shc canvas')].map(c=>{const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data; let n=0; for(let i=3;i<d.length;i+=4)if(d[i]>20)n++; return n})})""")
             print('  acc:', json.dumps(A))
-            ok('desk: accessories tab: 4 hero chips and 4 items (3 pieces + aura)', A['chips'] == 4 and A['cards'] == 4, A)
-            ok('desk: cat is stage II so the aura and the back piece stay locked', A['locked'] == 2 and A['worn'] == 2, A)
+            ok('desk: accessories tab: 4 hero chips and 8 items (3 set-1 pieces + aura + 3 rare + 1 legendary)', A['chips'] == 4 and A['cards'] == 8, A)
+            ok('desk: cat is stage II so the aura, the back piece and every unowned set-2/legendary piece stay locked', A['locked'] == 6 and A['worn'] == 2, A)
             ok('desk: every preview canvas shows something', all(n > 150 for n in A['cvs']), A['cvs'])
             if shots: pg.screenshot(path=os.path.join(shots, f'shop_acc_{tag}.png'))
             pg.evaluate("[...document.querySelectorAll('#shGrid .shc')][0].querySelector('.btn').click()"); pg.wait_for_timeout(100)
@@ -45,7 +45,7 @@ with sync_playwright() as p:
             ok('desk: and back on', pg.evaluate("TD.accOn('cat','h')") is True)
             pg.evaluate("[...document.querySelectorAll('.acchips .ch')].find(b=>b.textContent.includes('العم')).click()"); pg.wait_for_timeout(300)
             B = pg.evaluate("({locked:document.querySelectorAll('#shGrid .shc.lock').length, cards:document.querySelectorAll('#shGrid .shc').length})")
-            ok('desk: uncle is at stage IV: nothing is locked', B['locked'] == 0 and B['cards'] == 4, B)
+            ok('desk: uncle is at stage IV: set 1 is all open, only the 4 unowned extra pieces (3 rare + legendary) are locked', B['locked'] == 4 and B['cards'] == 8, B)
             if shots: pg.screenshot(path=os.path.join(shots, f'shop_acc2_{tag}.png'))
         else:
             pg.evaluate("document.querySelector('#shTabs .ch[data-t=a]').click()"); pg.wait_for_timeout(400)

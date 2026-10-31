@@ -19,7 +19,7 @@ function econToast(txt,bad){
   el.style.animation='none'; void el.offsetWidth; el.style.animation='gainup 1.9s ease-out forwards';
 }
 function econPick(e){ if(L&&L.trial)return; G.pend.push(coinKey(e)); hud() }
-const legit=()=>!(L&&L.trial)&&G.level<=S.best;                      // levels you jumped to beyond your real progress are a sandbox: no coins, no stars, no medals
+const legit=()=>!G.co&&!G.race&&!(L&&L.trial)&&G.level<=S.best;                      // levels you jumped to beyond your real progress are a sandbox: no coins, no stars, no medals
 function econBank(){                                  // pending -> wallet; returns what was really paid
   const pend=G.pend; G.pend=[]; if(SIM||G.custom||!pend.length)return 0;
   if(!legit()){ hud(); return 0 }
@@ -34,7 +34,7 @@ function econCheckpoint(){ const g=econBank(); if(g)econToast('+'+g+' 🪙 ان�
 function econClear(){                                 // called once when a real level is cleared
   if(SIM||G.custom)return;
   if(L.trial){ trialClear(); return }
-  if(!legit()){ G.pend=[]; econToast('مرحلة تجريبية — بدون مكافآت 🧪'); hud(); return }
+  if(!legit()){ G.pend=[]; econToast(G.co||G.race?'لعب جماعي 👥 — بدون مكافآت':'مرحلة تجريبية — بدون مكافآت 🧪'); hud(); return }
   const first=!S.cl[G.level], s0=starsOf(G.level), g=econBank(); let b=0;
   if(first){ S.cl[G.level]=1; b+=L.boss?30:10; if(L.boss)S.st.bw++; if(G.lvDeaths>=10)S.st.gr++ }
   if(G.lvDeaths===0&&!G.helped&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5; S.st.ns++; S.st.nm=Math.max(S.st.nm,S.st.ns) }

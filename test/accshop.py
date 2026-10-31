@@ -16,9 +16,9 @@ with sync_playwright() as p:
         pg.evaluate(SETUP); pg.evaluate("TD.openShop('a')"); pg.wait_for_timeout(500)
         # ---- hero mode: rarity badges + set header
         H = pg.evaluate("""() => ({cards:document.querySelectorAll('#shGrid .shc').length, badges:[...document.querySelectorAll('#shGrid .shc .rar')].map(r=>r.textContent), hd:[...document.querySelectorAll('#shGrid .achd')].map(h=>h.textContent)})""")
-        ok(f'{tag}: hero mode shows set 1 (3 pieces + aura) with rarity badges', H['cards'] == 4 and H['badges'].count('عادي') == 3 and H['badges'].count('أسطوري') == 1 and len(H['hd']) == 1 and 'الطقم الأول' in H['hd'][0], H)
+        ok(f'{tag}: hero mode shows set 1 (3 pieces + aura), the rare set 2 (3 pieces) and the legendary piece, with rarity badges', H['cards'] == 8 and H['badges'].count('عادي') == 3 and H['badges'].count('أسطوري') == 2 and H['badges'].count('نادر') == 3 and len(H['hd']) == 3 and 'الطقم الأول' in H['hd'][0] and 'الطقم التاني' in H['hd'][1] and 'القطعة الأسطورية' in H['hd'][2], H)
         pg.evaluate("[...document.querySelectorAll('.acchips .rf')].find(b=>b.textContent==='نادر').click()"); pg.wait_for_timeout(200)
-        ok(f'{tag}: the rare filter hides everything of set 1 (nothing rare for a hero yet)', pg.evaluate("document.querySelectorAll('#shGrid .shc').length") == 0)
+        ok(f'{tag}: the rare filter hides set 1 and the legendary piece and keeps the 3 rare pieces', pg.evaluate("[...document.querySelectorAll('#shGrid .shc .nm')].map(n=>n.textContent)") == ['قبعة البحّارة', 'جرس وفيونكة', 'شنطة السمكة'])
         pg.evaluate("[...document.querySelectorAll('.acchips .rf')].find(b=>b.textContent==='الكل').click()")
         # ---- shared mode / trails
         pg.evaluate("[...document.querySelectorAll('.acchips .ch')].find(b=>b.textContent.includes('مشترك')).click()"); pg.wait_for_timeout(300)
@@ -73,6 +73,17 @@ with sync_playwright() as p:
         pg.evaluate("[...document.querySelectorAll('#shGrid .shc')].find(c=>c.textContent.includes('شنب كبير')).querySelector('.btn').click()"); pg.wait_for_timeout(100)
         ok(f'{tag}: pressing the worn piece takes it off', pg.evaluate("TD.S.hq[TD.SHOP.hero].f") == '')
         if shots: pg.screenshot(path=os.path.join(shots, f'acc_face_{tag}.png'))
+        # ---- legendary set 3 (donkey head): locked until the donkey trial is cleared without dying, never bought, never part of the full-set glow
+        Lg = pg.evaluate("""() => { const T=window.TD, S=T.S, o={w0:S.wallet}; S.own.donkey=1; S.hs.donkey=1; S.hq.donkey={}; S.aq={}; delete S.trn.donkey; T.SHOP.am='hero'; T.SHOP.hero='donkey'; T.SHOP.rf='all'; T.shopRender();
+           const cards=()=>[...document.querySelectorAll('#shGrid .shc')].filter(c=>c.querySelector('.nm').textContent==='خوذة الفايكنغ')[0];
+           let c=cards(); o.locked=!!c&&c.classList.contains('lock'); o.txt=c&&c.textContent; o.buyBtn=!!(c&&[...c.querySelectorAll('button')].some(b=>b.textContent.includes('اشترِ')));
+           o.hd=[...document.querySelectorAll('#shGrid .achd')].map(h=>h.textContent).join('|');
+           o.ownBefore=T.accOwn('donkey','h',3); S.trn.donkey=1; o.ownAfter=T.accOwn('donkey','h',3); T.shopRender(); c=cards();
+           const wear=c&&[...c.querySelectorAll('button')].find(b=>b.textContent.includes('ألبسه')); o.wearBtn=!!wear; if(wear)wear.click();
+           o.sel=T.accSel('donkey','h'); o.shown=T.accShown('donkey','h')&&T.accShown('donkey','h').key; o.full=T.accSetFull('donkey'); o.cost=S.wallet; return o }""")
+        ok(f'{tag}: the legendary helmet is locked with a "clear the trial without dying" hint and has no buy button', Lg['locked'] and 'ولا موتة' in Lg['txt'] and not Lg['buyBtn'] and 'القطعة الأسطورية' in Lg['hd'], Lg)
+        ok(f'{tag}: clearing the donkey trial cleanly unlocks it for free; it can be worn and is drawn', Lg['ownBefore'] is False and Lg['ownAfter'] is True and Lg['wearBtn'] and Lg['sel'] == 3 and Lg['shown'] == 'donkey_h3' and Lg['cost'] == Lg['w0'], Lg)
+        ok(f'{tag}: the legendary piece does not count toward the full-set glow', Lg['full'] == 0, Lg)
         # ---- sets (injected data: set 2 of the cat head slot) + full-set glow
         Q = pg.evaluate("""() => { const T=window.TD, S=T.S; S.wallet=500; S.aq={}; S.hq={}; S.hs={cat:1,uncle:3};
            T.ACCX.cat=[['h','cat_h',2,1,'قبعة تجريبية',60]];
