@@ -63,8 +63,8 @@ function updatePlayer(dt){
   if(K.jp){p.buf=.12;K.jp=false}
   p.buf-=dt; p.coy-=dt; if(p.onGround){p.coy=.1;p.dj=false;p.air=0}else p.air+=dt;
   if(p.buf>0){
-    if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();if(!SIM)S.st.j++;puff(p.x+PW/2,p.y+PH,3)}
-    else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1)*heroJump2();p.dj=true;p.buf=0;p.spin=.32;Snd.dj();if(!SIM)S.st.j++;ring(p.x+PW/2,p.y+PH)}
+    if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();if(!SIM){S.st.j++;dayEv('jump',1)}puff(p.x+PW/2,p.y+PH,3)}
+    else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1)*heroJump2();p.dj=true;p.buf=0;p.spin=.32;Snd.dj();if(!SIM){S.st.j++;dayEv('jump',1);if(heroJump2()>1)dayEv('ab',1)}ring(p.x+PW/2,p.y+PH)}
   }
   if(!K.j&&p.vy<-240)p.vy=-240;
   p.vy=Math.min(p.vy+g*dt,900); if(!dashing&&hOn())heroVert(p,dt);

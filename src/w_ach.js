@@ -47,6 +47,7 @@ function hash32(str){ let h=2166136261; for(let i=0;i<str.length;i++){h^=str.cha
 function achDie(cause){
   if(SIM||G.custom)return; const st=S.st;
   st.d++; st.dc[cause]=(st.dc[cause]||0)+1; st.ns=0; if(G.t<2)st.fa++;
+  dayEv('die',1); dayEv('cause',1,cause);
   achCheck();
 }
 function achMapCleared(code){ if(SIM||!code)return; const k=hash32(code); if(!S.st.mk[k]){ S.st.mk[k]=1; save() } achCheck() }
@@ -85,11 +86,11 @@ function achRender(){
   $('acW').textContent='🪙 '+S.wallet;
   const m=medalsTotal(), tot=ACH.length*4, sum=$('acSum'); sum.innerHTML='';
   sum.append(el('div','rk','🎖 '+titleText()),el('div','sm','الميداليات '+ltr(m+' / '+tot)+'  ·  النجوم '+ltr(starsTotal()+' / '+Math.max(3,Object.keys(S.cl).length*3))+'  ·  المتحف '+ltr(museumCount()+' / '+museumCauses().length)+'  ·  رتبتك: '+rankName()));
-  const L2=$('acList'); L2.innerHTML='';
+  const L2=$('acList'); L2.innerHTML=''; dayRender(L2);
   const sorted=ACH.slice().sort((a,b)=>((S.ac[a.id]|0)>=a.T.length)-((S.ac[b.id]|0)>=b.T.length)); for(const a of sorted)L2.appendChild(achRow(a));
   const mus=el('div','mus'); mus.append(el('b',null,'🏛 متحف الموت: '));
   for(const c of museumCauses()){ const n=S.st.dc[c]|0, sp=el('span','mc'+(n?' on':''),n?(CAUSE_NM[c]||c)+' ×'+n:'؟'); mus.appendChild(sp) }
-  L2.appendChild(mus);
+  L2.appendChild(mus); heatRender(L2);
 }
 const CAUSE_NM={spike:'شوك',arrow:'سهم',ghost:'شبح',crush:'سحق',bait:'عملة خدّاعة',boulder:'صخرة',wall:'جدار',saw:'منشار',fakedoor:'باب مزيّف',monster:'وحش',ball:'كرة',pit:'حفرة',crumble:'أرض تتفتّت',fire:'نار',zap:'كهربا',disco:'ديسكو',laser:'ليزر',train:'قطار',mole:'خلد',chest:'صندوق',frog:'ضفدع',ceilspike:'شوك سقف'};
 function openAch(){ ACHUI.open=true; K.l=K.r=K.j=K.jp=false; $('ach').classList.remove('hide'); Snd.init(); achRender(); $('acList').scrollTop=0 }

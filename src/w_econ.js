@@ -25,8 +25,8 @@ function econBank(){                                  // pending -> wallet; retu
   if(!legit()){ hud(); return 0 }
   const paid=S.cc[G.level]||(S.cc[G.level]=[]); let g=0;
   for(const k of pend){ if(!paid.includes(k)){ paid.push(k); g++ } }
-  if(g){ S.wallet+=g; S.st.c+=g }
-  if(G.ck&&G.ck.length&&!S.cs[G.level]&&G.ck.every(k=>paid.includes(k)))S.cs[G.level]=1;        // third star: every honest coin of the level has been banked at least once
+  if(g){ S.wallet+=g; S.st.c+=g; dayEv('coin',g) }
+  if(G.ck&&G.ck.length&&!S.cs[G.level]&&!G.helped&&G.ck.every(k=>paid.includes(k)))S.cs[G.level]=1;        // third star: every honest coin of the level has been banked at least once
   if(g||S.cs[G.level])save();
   hud(); return g;
 }
@@ -37,13 +37,14 @@ function econClear(){                                 // called once when a real
   if(!legit()){ G.pend=[]; econToast('مرحلة تجريبية — بدون مكافآت 🧪'); hud(); return }
   const first=!S.cl[G.level], s0=starsOf(G.level), g=econBank(); let b=0;
   if(first){ S.cl[G.level]=1; b+=L.boss?30:10; if(L.boss)S.st.bw++; if(G.lvDeaths>=10)S.st.gr++ }
-  if(G.lvDeaths===0&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5; S.st.ns++; S.st.nm=Math.max(S.st.nm,S.st.ns) }
-  S.bd[G.level]=Math.min(S.bd[G.level]==null?99:S.bd[G.level],G.lvDeaths);
-  if(!(G.ck&&G.ck.length)&&S.bd[G.level]<=2)S.cs[G.level]=1;                                   // levels without coins (bosses): third star = cleared with at most 2 deaths
+  if(G.lvDeaths===0&&!G.helped&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5; S.st.ns++; S.st.nm=Math.max(S.st.nm,S.st.ns) }
+  if(!G.helped)S.bd[G.level]=Math.min(S.bd[G.level]==null?99:S.bd[G.level],G.lvDeaths);
+  if(!G.helped&&!(G.ck&&G.ck.length)&&S.bd[G.level]<=2)S.cs[G.level]=1;                                   // levels without coins (bosses): third star = cleared with at most 2 deaths
   if(b){ S.wallet+=b; S.st.c+=b }
-  heroXpClear(first,G.lvDeaths===0);
+  heroXpClear(first,G.lvDeaths===0&&!G.helped);
   save();
   const ds=starsOf(G.level)-s0; G.gain=g+b; G.starGain=ds;
+  dayEv('clear',1); if(G.lvDeaths===0&&!G.helped)dayEv('clean',1); if(ds>0)dayEv('star',ds);
   if(g+b||ds){ econToast((g+b?'+'+(g+b)+' 🪙'+(b?'  (بونص '+b+')':''):'')+(ds>0?'  '+'⭐'.repeat(ds):'')) }
   hud(); achCheck();
 }

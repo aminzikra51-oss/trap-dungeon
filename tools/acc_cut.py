@@ -7,8 +7,9 @@ from scipy import ndimage as ndi
 from rembg import remove, new_session
 sess=new_session('isnet-general-use')
 CROP={'grandma_n':(230,435,830,800),'donkey_n':(200,420,820,880),'donkey_b':(440,400,850,830)}
-ERASE={'cat_b':[(425,470,605,900)]}
-TRIM={'falafel_h':(0,0,1,.80)}
+ERASE={'cat_b':[(425,470,605,900)],'face_monocle':[(270,656,478,790)]}
+TRIM={'falafel_h':(0,0,1,.80),'face_3d':(0,.28,1,1)}
+HOLES={'face_mask'}      # pieces whose openings must be see-through: the orange backdrop seen through them is keyed out
 MAXD=int(os.environ.get('MAXD','220'))
 names=[l.split()[0] for l in open('map.txt')]
 if len(sys.argv)>1: names=sys.argv[1:]
@@ -21,6 +22,13 @@ for n in names:
     for (x0,y0,x1,y1) in ERASE.get(n,[]):
         ox,oy=(CROP[n][0],CROP[n][1]) if n in CROP else (0,0)
         al[y0-oy:y1-oy,x0-ox:x1-ox]=0
+    if n in HOLES:
+        q=np.array(im).astype(int); r_,g_,b_=q[...,0],q[...,1],q[...,2]
+        org=(r_>170)&(b_<125)&(r_-b_>90)&(g_<175)&(r_-g_>45)&(al>20)
+        org=ndi.binary_opening(org,iterations=2); lab_,k_=ndi.label(org)
+        if k_:
+            sz=ndi.sum(org,lab_,range(1,k_+1)); org=np.isin(lab_,[i+1 for i,v in enumerate(sz) if v>=1500])
+        al[ndi.binary_dilation(org,iterations=1)]=0
     m=al>128
     lab,k=ndi.label(m); 
     if k>1:

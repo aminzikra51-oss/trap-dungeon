@@ -81,7 +81,7 @@ with sync_playwright() as p:
     ok('title: default rank, wear an earned one, unearned ignored', R['rank0'] and R['titleWear'] != R['rank0'] and R['titleNotEarned'] == R['rank0'], [R['rank0'], R['titleWear'], R['titleNotEarned']])
     # UI
     pg.evaluate("localStorage.clear(); const T=TD; T.S.st.d=60; T.S.ac={}; T.achCheck(); T.openAch()"); pg.wait_for_timeout(300)
-    ui = pg.evaluate("() => ({rows:document.querySelectorAll('#acList .acr').length, mus:document.querySelectorAll('#acList .mc').length, shown:!document.getElementById('ach').classList.contains('hide'), sum:document.getElementById('acSum').textContent.length, toast:document.getElementById('achT').textContent.length, open:TD.ACHUI.open})")
+    ui = pg.evaluate("() => ({rows:document.querySelectorAll('#acList .acr:not(.dyr)').length, mus:document.querySelectorAll('#acList .mc').length, shown:!document.getElementById('ach').classList.contains('hide'), sum:document.getElementById('acSum').textContent.length, toast:document.getElementById('achT').textContent.length, open:TD.ACHUI.open})")
     ok('achievement screen lists every family + museum', ui['shown'] and ui['rows'] == D['n'] and ui['mus'] == D['museum'] and ui['sum'] > 10, ui)
     ok('unlock toast was shown', ui['toast'] > 5)
     if shots:

@@ -30,17 +30,17 @@ const DASH_V=430, TS_SLOW=.45;
 function heroPre(p,dt){                              // timers + activation. returns {dash:true} while the donkey is dashing
   const a=hab(), id=S.hero; let r=null;
   a.inv=Math.max(0,a.inv-dt); a.cd=Math.max(0,a.cd-dt); a.sw=Math.max(0,a.sw-dt); a.rv=Math.max(0,a.rv-dt);
-  if(p.onGround){ a.used=0; if(id==='chicken'||id==='robot')a.fuel=Math.min(fuelMax(),a.fuel+dt*3) }
+  if(p.onGround){ a.used=0; a.fl=0; if(id==='chicken'||id==='robot')a.fuel=Math.min(fuelMax(),a.fuel+dt*3) }
   const ap=K.ap; K.ap=false;
   if(id==='donkey'){
-    if(ap&&a.cd<=0&&a.t<=0&&!a.used){ a.t=hv(id,'len'); a.dir=p.face; a.cd=hv(id,'cd'); a.used=1; Snd.whoosh&&Snd.whoosh() }
+    if(ap&&a.cd<=0&&a.t<=0&&!a.used){ a.t=hv(id,'len'); a.dir=p.face; a.cd=hv(id,'cd'); a.used=1; Snd.whoosh&&Snd.whoosh(); dayEv('ab',1) }
     if(a.t>0){ if(K.jp){a.t=0} else { a.t-=dt; p.vx=a.dir*DASH_V; p.vy*=.35; heroKick(p,a.dir,28,1); r={dash:true} } }
     if(!SIM&&a.t>0&&G.t%.03<dt)a.tr.push({x:p.x,y:p.y,t:.22}); }
   else if(id==='grandma'){
-    if(ap&&a.cd<=0){ a.sw=.24; a.cd=hv(id,'cd'); a.rv=hv(id,'rv'); a.dir=p.face; Snd.whoosh&&Snd.whoosh(); heroSweep(p,hv(id,'rg')); }
+    if(ap&&a.cd<=0){ a.sw=.24; a.cd=hv(id,'cd'); a.rv=hv(id,'rv'); a.dir=p.face; Snd.whoosh&&Snd.whoosh(); dayEv('ab',1); heroSweep(p,hv(id,'rg')); }
     if(a.sw>0)heroKick(p,a.dir,hv(id,'rg'),0) }
   else if(id==='mushroom'){
-    if(ap){ if(a.slow)a.slow=0; else if(a.en>.25){a.slow=1; Snd.tone&&Snd.tone({t:'sine',f0:520,f1:180,dur:.35,v:.18})} }
+    if(ap){ if(a.slow)a.slow=0; else if(a.en>.25){a.slow=1; dayEv('ab',1); Snd.tone&&Snd.tone({t:'sine',f0:520,f1:180,dur:.35,v:.18})} }
     if(a.slow){ a.en-=dt/TS_SLOW; if(a.en<=0){a.en=0;a.slow=0} } else a.en=Math.min(hv(id,'en'),a.en+dt*.32);
     G.ts=a.slow?TS_SLOW:1 }
   for(const q of a.tr)q.t-=dt; if(a.tr.length&&a.tr[0].t<=0)a.tr=a.tr.filter(q=>q.t>0);
@@ -61,8 +61,8 @@ function heroSweep(p,rg){                             // the spoon also shows wh
 }
 function heroVert(p,dt){                              // after gravity: glide (chicken) and jet (robot)
   const a=hab(), id=S.hero; if(p.onGround)return;
-  if(id==='chicken'&&K.j&&p.vy>50&&a.fuel>0&&p.air>.12){ p.vy=Math.min(p.vy,78); a.fuel-=dt; if(!SIM&&Math.random()<.25)puff(p.x+PW/2,p.y+PH,1,'#fff') }
-  else if(id==='robot'&&K.j&&p.dj&&a.fuel>0&&p.vy>-150){ p.vy=lerp(p.vy,-120,Math.min(1,dt*30)); a.fuel-=dt; if(!SIM&&Math.random()<.5)parts.push({x:p.x+PW/2+(Math.random()-.5)*6,y:p.y+PH,vx:(Math.random()-.5)*30,vy:90+Math.random()*60,g:0,life:.3,max:.3,s:4+Math.random()*3,col:Math.random()<.5?'#ffb81f':'#ff6b35',sh:'c'}) }
+  if(id==='chicken'&&K.j&&p.vy>50&&a.fuel>0&&p.air>.12){ if(!a.fl){a.fl=1;dayEv('ab',1)} p.vy=Math.min(p.vy,78); a.fuel-=dt; if(!SIM&&Math.random()<.25)puff(p.x+PW/2,p.y+PH,1,'#fff') }
+  else if(id==='robot'&&K.j&&p.dj&&a.fuel>0&&p.vy>-150){ if(!a.fl){a.fl=1;dayEv('ab',1)} p.vy=lerp(p.vy,-120,Math.min(1,dt*30)); a.fuel-=dt; if(!SIM&&Math.random()<.5)parts.push({x:p.x+PW/2+(Math.random()-.5)*6,y:p.y+PH,vx:(Math.random()-.5)*30,vy:90+Math.random()*60,g:0,life:.3,max:.3,s:4+Math.random()*3,col:Math.random()<.5?'#ffb81f':'#ff6b35',sh:'c'}) }
 }
 function heroMag(){ return hOn()&&S.hero==='falafel'?hv('falafel','mag'):0 }
 function heroJump2(){ return hOn()&&S.hero==='cat'?hv('cat','j2'):1 }
@@ -70,8 +70,11 @@ function heroGuard(c,e){                              // true = this hit does no
   if(!hOn())return false; const a=hab();
   if(a.inv>0)return true;
   if(S.hero==='robot'&&ROBOT_IMM.has(c))return true;
-  if(S.hero==='uncle'&&a.ch>0&&!NOSHIELD.has(c)){ a.ch--; a.inv=1.4; P.vy=-260; P.onGround=false;
+  if(S.hero==='uncle'&&a.ch>0&&!NOSHIELD.has(c)){ a.ch--; a.inv=1.4; P.vy=-260; P.onGround=false; dayEv('ab',1);
     if(!SIM){ stars(P.x+PW/2,P.y+PH/2); Snd.bonk&&Snd.bonk(); G.shake=6; say(rnd(['الدرع بلع الضربة! 🛡️','ما نفع الفخ هالمرة 😏','درع العم... أحسن من التأمين']),'any',1.8) }
+    return true }
+  if(!NOSHIELD.has(c)&&helpShieldHit()){ a.inv=1.4; P.vy=-260; P.onGround=false;
+    if(!SIM){ stars(P.x+PW/2,P.y+PH/2); Snd.bonk&&Snd.bonk(); G.shake=6; say(rnd(['درع الحفظ بلع الضربة! 🛡️','نجوت... مرة وحدة بس 😏']),'any',1.8) }
     return true }
   return false;
 }
@@ -99,6 +102,8 @@ function heroFxWorld(c){
   if(a.tr.length){ for(const q of a.tr){ c.globalAlpha=clamp(q.t/.22,0,1)*.35; c.fillStyle='#ffe9a8'; c.fillRect(q.x,q.y,PW,PH) } c.globalAlpha=1 }
   if(id==='uncle'&&(a.ch>0||a.inv>0)){ const pulse=1+Math.sin(G.t*6)*.05, fl=a.inv>0&&Math.floor(G.t*18)%2?.25:1; c.save(); c.globalAlpha=(a.inv>0?.55:.28)*fl; c.fillStyle=SHIELD_COL; c.strokeStyle='#fff'; c.lineWidth=2;
     c.beginPath(); c.ellipse(cx,cy,19*pulse,26*pulse,0,0,7); c.fill(); c.globalAlpha=.9*fl; c.stroke(); c.restore() }
+  if(G.help&&G.help.shield>0&&!(id==='uncle'&&a.ch>0)){ const pulse=1+Math.sin(G.t*6)*.05; c.save(); c.globalAlpha=.26; c.fillStyle='#ffd23f'; c.strokeStyle='#fff'; c.lineWidth=2; c.beginPath(); c.ellipse(cx,cy,19*pulse,26*pulse,0,0,7); c.fill(); c.globalAlpha=.8; c.stroke(); c.restore() }
+  if(G.help&&G.help.eye&&id!=='mushroom')heroMarks(c,cx,cy,175,1);
   if(id==='grandma'&&a.sw>0){ const t=1-a.sw/.24, d=a.dir, R=hv(id,'rg'); c.save(); c.translate(cx,cy); c.scale(d,1); c.strokeStyle='#ffe9a8'; c.lineWidth=5; c.lineCap='round'; c.globalAlpha=1-t;
     c.beginPath(); c.arc(0,0,R*.8,-1.1+t*1.4,-.1+t*1.4); c.stroke(); c.lineWidth=2; c.strokeStyle='#fff'; c.beginPath(); c.arc(0,0,R*.8,-1.1+t*1.4,-.1+t*1.4); c.stroke(); c.restore() }
   if((id==='grandma'&&a.rv>0)||id==='mushroom'){ const R=id==='mushroom'?hv(id,'see'):hv(id,'rg')*2.4; if(id==='grandma'||true) heroMarks(c,cx,cy,R,id==='grandma'?clamp(a.rv,0,1):1) }

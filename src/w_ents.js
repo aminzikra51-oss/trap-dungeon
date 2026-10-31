@@ -349,7 +349,7 @@ B.plat={
 function mkCoin(x,y,bait,fx){return{t:'coin',x,y,bait:!!bait,fx:fx||'anvil',got:0,ph:hash01(x,y,3)*6}}
 B.coin={
  upd(e,dt){e.ph+=dt*5},
- hit(e){ if(e.got||!circHit(e.x,e.y,10+(e.bait?0:heroMag()),prect()))return null; e.got=1; if(!e.bait){G.coins++;econPick(e);Snd.coin();return null} Snd.coin(); onBait(e); return null },
+ hit(e){ if(e.got||!circHit(e.x,e.y,10+(e.bait?0:heroMag()),prect()))return null; e.got=1; if(!e.bait){G.coins++;econPick(e);Snd.coin();if(heroMag())dayEv('ab',1);return null} Snd.coin(); onBait(e); return null },
  draw(e,c,th){ if(e.got)return; const w=Math.abs(Math.cos(e.ph)),yy=e.y+Math.sin(e.ph*.7)*2;
   c.fillStyle='#ffd23f';c.strokeStyle='#000';c.lineWidth=2.4;c.beginPath();c.ellipse(e.x,yy,9*Math.max(.18,w),10,0,0,7);c.fill();c.stroke();
   if(w>.5){c.fillStyle='#b8860b';c.font='900 11px Tahoma';c.textAlign='center';c.fillText('$',e.x,yy+4)} }};

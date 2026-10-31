@@ -2,7 +2,7 @@
    Three pieces per hero (head / neck / back) + a stage-IV aura. Each piece unlocks with the hero's upgrade stage (II, III, IV) and can be toggled on/off.
    The pieces are AI-rendered "clay 3D" pictures (assets/acc/<hero>_<h|n|b>.webp, background removed) in the same style as the hero sprites.
    The hero sprites are pictures too (some already wear a miner helmet or sunglasses), so a piece is drawn ABOVE / AROUND the sprite, placed by per-hero fractions (ACC_PL).
-   Pure drawing: no state except S.hq[id] = {h,n,b,a} (0 = switched off). Only in the 3D look (sprites); the flat vector look has none. */
+   Pure drawing: no state except S.hq[id] = {h,n,b,a (0 = switched off), f = face piece key}. Only in the 3D look (sprites); the flat vector look has none. */
 const ACCIMG={};
 for(const k in (A.acc||{})){ const im=new Image(),o={im,ok:false}; ACCIMG[k]=o; im.onload=()=>{o.ok=true}; im.src=A.acc[k] }
 
@@ -69,6 +69,38 @@ function accPic(c,key,x,y,dw,P,mir,t){
   c.imageSmoothingEnabled=true; c.imageSmoothingQuality='high';
   c.drawImage(o.im,-dw*P.ax,-dh*P.ay,dw,dh); c.restore();
 }
+
+/* ---------- face pieces (shared by every hero, bought in the shop: S.aq['f:<key>'], worn per hero: S.hq[id].f) ----------
+   FACE_PL[hero]: x,y = the point between the eyes (fractions of the sprite box), w = width of the face (fraction of the sprite width), ny / my = how far below the eyes the nose / the moustache sit (in face widths), ex = half the distance between the eyes (in face widths).
+   FACE[i]: k = picture width relative to the face width, ax,ay = pinned point inside the picture, ox,oy = shift from the eye point (face widths; 'ny'/'my' take the hero's own value), side = which eye ('l' | 'r') */
+const FACE_PL={
+ falafel: {x:.56,y:.38,w:.78,ny:.10,my:.22,ex:.22},
+ uncle:   {x:.53,y:.26,w:.44,ny:.13,my:.26,ex:.22},
+ chicken: {x:.50,y:.27,w:.66,ny:.13,my:.33,ex:.22},
+ cat:     {x:.485,y:.36,w:.50,ny:.27,my:.42,ex:.22},
+ grandma: {x:.57,y:.355,w:.72,ny:.17,my:.24,ex:.22,mw:.8},
+ donkey:  {x:.52,y:.33,w:.48,ny:.70,my:.85,ex:.22,mw:1.3},
+ robot:   {x:.50,y:.14,w:.40,ny:.25,my:.40,ex:.22},
+ mushroom:{x:.50,y:.30,w:.42,ny:.17,my:.33,ex:.22},
+};
+const FACE=[
+ {k:'nose',   nm:'أنف المهرج',   ic:'🤡',rar:'r',price:40, w:.26,ax:.5, ay:.5, at:'n'},
+ {k:'stache', nm:'شنب كبير',     ic:'👨',rar:'r',price:50, w:.70,ax:.5, ay:.40,at:'m'},
+ {k:'shades', nm:'نظارة شمس',    ic:'😎',rar:'r',price:60, w:1.0,ax:.5, ay:.5},
+ {k:'hearts', nm:'نظارة قلوب',   ic:'😍',rar:'r',price:60, w:1.0,ax:.5, ay:.5},
+ {k:'3d',     nm:'نظارة 3D',     ic:'🥽',rar:'r',price:70, w:1.0,ax:.5, ay:.5},
+ {k:'patch',  nm:'عصابة قرصان',  ic:'🏴‍☠️',rar:'r',price:70, w:.55,ax:.5, ay:.58,side:'l'},
+ {k:'mask',   nm:'قناع البطل',   ic:'🦸',rar:'e',price:100,w:1.08,ax:.5, ay:.5},
+ {k:'monocle',nm:'مونوكل الباشا',ic:'🧐',rar:'e',price:120,w:.36,ax:.5, ay:.33,side:'r',sw:1.6,sp:2.6},
+];
+const faceItem=k=>FACE.find(f=>f.k===k)||null;
+const faceSel=id=>{ const v=(S.hq[id]||{}).f; return typeof v==='string'&&faceItem(v)?v:'' };
+const faceOwn=k=>!!S.aq['f:'+k];
+function faceDraw(c,id,w,h,cx,key,t){
+  const F=faceItem(key), FP=FACE_PL[id]; if(!F||!FP)return; const FW=FP.w*w, dw=FW*F.w*(F.at?(FP.mw||1):1);
+  const x=-w*cx+FP.x*w+(F.side?(F.side==='l'?-1:1)*FP.ex*FW:0), y=-h+FP.y*h+(F.at==='n'?FP.ny:F.at==='m'?FP.my:0)*FW;
+  accPic(c,'face_'+key,x,y,dw,{ax:F.ax,ay:F.ay,sw:F.sw,sp:F.sp},false,t);
+}
 function accDraw(c,id,w,h,cx,layer,o){                   // layer 'back' (before the picture) or 'front' (after). o={only:'h'|'n'|'b'|'a', force:true, set:n} for previews
   const PL=ACC_PL[id]; if(!ACCS[id]||!PL)return; o=o||{}; const X=f=>-w*cx+f*w, Y=f=>-h+f*h, t=(typeof G!=='undefined'?G.t:0);
   if(layer==='back'){
@@ -79,4 +111,5 @@ function accDraw(c,id,w,h,cx,layer,o){                   // layer 'back' (before
     const it=accShown(id,slot,o); if(!it)continue; const P=it.pl?Object.assign({},PL[slot],it.pl):PL[slot], dw=P.w*w;
     if(P.pair){ accPic(c,it.key,X(P.x+P.pair),Y(P.y),dw,P,false,t); accPic(c,it.key,X(P.x-P.pair),Y(P.y),dw,P,true,t) }
     else accPic(c,it.key,X(P.x),Y(P.y),dw,P,false,t) }
+  if(layer==='front'&&(!o.only||o.only==='f')){ const fk=o.face||(o.only?'':faceSel(id)); if(fk&&(o.force||faceOwn(fk)))faceDraw(c,id,w,h,cx,fk,t) }       // face piece on top of everything else
 }

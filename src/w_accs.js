@@ -2,8 +2,9 @@
    Everything here is cosmetic: no ability, physics, hit-box or level is touched, and custom / shared maps look exactly the same for everybody.
    - rarity: عادي (free, unlocks with the hero's upgrade stage) / نادر (coins) / أسطوري (coins or a challenge)
    - hero pieces: set 1 is the stage-unlocked one (w_acc.js), more sets come from ACCX; wearing a whole set gives a small glow in the set's colour
-   - shared pieces (any hero): trails behind the runner (drawn with particles, no pictures)
-   State: S.aq = {key:1} for everything bought ('cat:h:2' hero piece, 't:fire' trail); S.hq[id][slot] = set worn (0 = off); S.trail = the trail worn ('' = none) */
+   - death effects + helper items live in w_cosm.js (shop: the shared mode and the 'مساعدات' mode)
+   - shared pieces (any hero): trails behind the runner (drawn with particles, no pictures) and face pieces (glasses, moustache, mask... pictures, bought once, worn per hero)
+   State: S.aq = {key:1} for everything bought ('cat:h:2' hero piece, 't:fire' trail, 'f:shades' face piece); S.hq[id][slot] = set worn (0 = off), S.hq[id].f = face piece worn ('' = none); S.trail = the trail worn ('' = none) */
 const RAR={c:{nm:'عادي',col:'#9fb0c8'},r:{nm:'نادر',col:'#4dc3ff'},e:{nm:'أسطوري',col:'#ffd23f'}};
 S.aq=S.aq||{}; if(typeof S.trail!=='string')S.trail='';
 SHOP.am=SHOP.am||'hero'; SHOP.rf=SHOP.rf||'all';
@@ -47,11 +48,11 @@ const rarBadge=r=>el('span','rar '+r,RAR[r].nm);
 function accCard(cls,rar){ const c=el('div','shc'+cls); c.appendChild(rarBadge(rar)); return c }
 function accRender(g){
   const bar=el('div','acchips');
-  for(const [m,t] of [['hero','🧢 قطع البطل'],['shared','✨ مشترك (كل الأبطال)']])bar.appendChild(el('button','ch'+(SHOP.am===m?' on':''),t,()=>{ SHOP.am=m; shopRender() }));
-  bar.appendChild(el('span','sep','│'));
-  for(const [r,t] of [['all','الكل'],['c','عادي'],['r','نادر'],['e','أسطوري']])bar.appendChild(el('button','ch rf'+(SHOP.rf===r?' on':''),t,()=>{ SHOP.rf=r; shopRender() }));
+  for(const [m,t] of [['hero','🧢 قطع البطل'],['shared','✨ مشترك (كل الأبطال)'],['help','🎒 مساعدات']])bar.appendChild(el('button','ch'+(SHOP.am===m?' on':''),t,()=>{ SHOP.am=m; shopRender() }));
+  if(SHOP.am!=='help'){ bar.appendChild(el('span','sep','│'));
+    for(const [r,t] of [['all','الكل'],['c','عادي'],['r','نادر'],['e','أسطوري']])bar.appendChild(el('button','ch rf'+(SHOP.rf===r?' on':''),t,()=>{ SHOP.rf=r; shopRender() })) }
   g.appendChild(bar);
-  if(SHOP.am==='hero')accHeroMode(g); else accSharedMode(g);
+  if(SHOP.am==='hero')accHeroMode(g); else if(SHOP.am==='help')accHelpMode(g); else accSharedMode(g);
 }
 function accHeroMode(g){
   const owned=HERO_IDS.filter(heroOwned); if(!SHOP.hero||!heroOwned(SHOP.hero))SHOP.hero=heroOwned(S.hero)?S.hero:owned[0];
@@ -104,6 +105,30 @@ function accSharedMode(g){
     else{ const poor=S.wallet<T.price; card.append(el('div','sub','أثر'),el('button','btn'+(poor?' poor':''),'اشترِ 🪙 '+T.price+(poor?'  (ناقصك '+(T.price-S.wallet)+')':''),()=>{
       const r=accBuy('t:'+T.k,T.price); if(r==='ok'){ S.trail=T.k; save(); Snd.coin(); Snd.win(); shopMsg('اشتريت أثر «'+T.nm+'» 🎉 — جرّبه بالمرحلة'); shopRender() } else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg('ناقصك '+(T.price-S.wallet)+' 🪙') } })) }
     cards.push(card) }
-  if(!cards.length){ g.appendChild(el('div','edhint','ما في قطع بهالفئة')); return }
-  g.appendChild(hd); for(const c of cards)g.appendChild(c);
+  if(cards.length){ g.appendChild(hd); for(const c of cards)g.appendChild(c) }
+  accFaceMode(g, cards.length>0); accDfxMode(g);
+}
+/* ---------- face pieces ---------- */
+function accFacePreview(id,F){
+  const cv2=document.createElement('canvas'); cv2.width=208; cv2.height=200; const cx=cv2.getContext('2d');
+  const m=HMETA[id]||{w:1,h:1.6,cx:.5}, h=62, w=h*m.w/m.h, FP=FACE_PL[id]; if(!FP)return cv2;
+  const FW=FP.w*w, z=Math.min(3.2,64/FW), off=(F.at==='n'?FP.ny:F.at==='m'?FP.my:0)*FW*.7;
+  cx.scale(2,2); cx.translate(52-z*(-w*m.cx+FP.x*w), 52-z*(-1-h+FP.y*h+off)); cx.scale(z,z);
+  try{ heroThumb(cx,id,{only:'f',force:true,face:F.k}) }catch(e){} return cv2;
+}
+function accFaceCard(id,F){
+  const own=faceOwn(F.k), on=faceSel(id)===F.k, card=accCard(on?' sel':'',F.rar);
+  card.append(accFacePreview(id,F),el('div','nm',F.nm),el('div','sub',own?'اشتريته':'وجه'));
+  const wear=()=>{ const q=S.hq[id]||(S.hq[id]={}); q.f=on?'':F.k; save() };
+  if(own)card.appendChild(el('button','btn',on?'✓ لابسه':'ألبسه',()=>{ wear(); Snd.ui&&Snd.ui(); shopRender() }));
+  else{ const poor=S.wallet<F.price; card.appendChild(el('button','btn'+(poor?' poor':''),'اشترِ 🪙 '+F.price+(poor?'  (ناقصك '+(F.price-S.wallet)+')':''),()=>{
+    const r=accBuy('f:'+F.k,F.price); if(r==='ok'){ const q=S.hq[id]||(S.hq[id]={}); q.f=F.k; save(); Snd.coin(); Snd.win(); shopMsg('اشتريت «'+F.nm+'» 🎉 — لابسها '+HEROES[id].name); shopRender() } else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg('ناقصك '+(F.price-S.wallet)+' 🪙') } })) }
+  return card;
+}
+function accFaceMode(g,sep){
+  const list=FACE.filter(F=>rarOk(F.rar)); if(!list.length)return;
+  const owned=HERO_IDS.filter(heroOwned); if(!SHOP.hero||!heroOwned(SHOP.hero))SHOP.hero=heroOwned(S.hero)?S.hero:owned[0]; const id=SHOP.hero;
+  const hd=el('div','achd'); hd.append(el('b',null,'ملحقات الوجه'),el('span','sub','بتشتريها مرة وبتلبسها لأي بطل — بس المنظر'));
+  const row=el('div','acchips'); for(const h of owned)row.appendChild(el('button','ch'+(h===id?' on':''),HEROES[h].name,()=>{ SHOP.hero=h; shopRender() }));
+  g.append(hd,row); for(const F of list)g.appendChild(accFaceCard(id,F));
 }

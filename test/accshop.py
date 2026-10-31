@@ -1,4 +1,4 @@
-"""Accessory shop v2: rarity filters, shared trails (buy / equip / particles), extra sets (buy / wear / full-set glow), cosmetic-only guarantees.
+"""Accessory shop v2: rarity filters, shared trails (buy / equip / particles), face pieces (buy / wear per hero / drawn), extra sets (buy / wear / full-set glow), cosmetic-only guarantees.
 usage: python3 test/accshop.py [--shots DIR]"""
 import sys, json, os
 from playwright.sync_api import sync_playwright
@@ -23,10 +23,10 @@ with sync_playwright() as p:
         # ---- shared mode / trails
         pg.evaluate("[...document.querySelectorAll('.acchips .ch')].find(b=>b.textContent.includes('مشترك')).click()"); pg.wait_for_timeout(300)
         Tn = pg.evaluate("({cards:document.querySelectorAll('#shGrid .shc').length, names:[...document.querySelectorAll('#shGrid .shc .nm')].map(n=>n.textContent)})")
-        ok(f'{tag}: shared mode lists "no trail" + 5 trails', Tn['cards'] == 6, Tn)
+        ok(f'{tag}: shared mode lists "no trail" + 5 trails + 8 face pieces + "no effect" + 7 death effects', Tn['cards'] == 22, Tn)
         if shots: pg.screenshot(path=os.path.join(shots, f'acc_shared_{tag}.png'))
         pg.evaluate("[...document.querySelectorAll('.acchips .rf')].find(b=>b.textContent==='أسطوري').click()"); pg.wait_for_timeout(200)
-        ok(f'{tag}: the legendary filter keeps the 2 legendary trails (fire, party)', pg.evaluate("[...document.querySelectorAll('#shGrid .shc .nm')].map(n=>n.textContent)") == ['نار', 'حفلة'])
+        ok(f'{tag}: the legendary filter keeps the 2 legendary trails, the 2 legendary face pieces and the 3 legendary death effects', pg.evaluate("[...document.querySelectorAll('#shGrid .shc .nm')].map(n=>n.textContent)") == ['نار', 'حفلة', 'قناع البطل', 'مونوكل الباشا', 'مطر الذهب', 'قوس قزح', 'أشباح طايرة'])
         pg.evaluate("[...document.querySelectorAll('.acchips .rf')].find(b=>b.textContent==='الكل').click()"); pg.wait_for_timeout(200)
         # buy: too poor first
         pg.evaluate("TD.S.wallet=10"); pg.evaluate("TD.openShop('a')")
@@ -50,6 +50,29 @@ with sync_playwright() as p:
            T.parts().length=0; T.sim(true); S.trail='hearts'; T.K.r=true; for(let i=0;i<40;i++)T.update(1/60); T.K.r=false; T.sim(false); out.sim=T.parts().filter(p=>p.sh==='h').length; return out }""")
         ok(f'{tag}: a worn + owned trail spawns particles while running', R['hearts'] > 3, R)
         ok(f'{tag}: nothing spawns with no trail / an unowned trail / inside the solver', R['none'] == 0 and R['unowned'] == 0 and R['sim'] == 0, R)
+        # ---- face pieces: bought once (any hero), worn per hero, drawn on top; unowned / unworn pieces are not drawn
+        Fc = pg.evaluate("""() => { const T=window.TD, S=T.S; S.aq={}; S.hq={}; const o={};
+           S.wallet=10; o.poor=T.accBuy('f:shades',60); o.w0=S.wallet; S.wallet=500; o.buy=T.accBuy('f:shades',60); o.w=S.wallet; o.own=T.faceOwn('shades'); o.ownOther=T.faceOwn('hearts'); o.again=T.accBuy('f:shades',60);
+           S.hq.cat={f:'shades'}; o.catSel=T.faceSel('cat'); o.uncleSel=T.faceSel('uncle'); S.hq.uncle={f:'bogus'}; o.bogus=T.faceSel('uncle');
+           o.n=T.FACE.length; o.pl=Object.keys(T.FACE_PL).length; o.img=T.FACE.every(f=>T.ACCIMG['face_'+f.k]&&T.ACCIMG['face_'+f.k].ok);
+           const draw=(f,owned)=>{ S.hq={cat:{f}}; S.aq={}; if(owned)S.aq['f:'+f]=1; const cv=document.createElement('canvas'); cv.width=120; cv.height=140; const c=cv.getContext('2d'); c.translate(60,130); c.scale(2.2,2.2);
+             T.drawHeroSprite(c,{moving:false,rs:0,run:0,onGround:true,blink:false,ex:0,ey:0,dead:false,scream:false},'cat'); return c.getImageData(0,0,120,140).data };
+           const diff=(a,b)=>{ let n=0; for(let i=0;i<a.length;i+=4)if(Math.abs(a[i]-b[i])+Math.abs(a[i+1]-b[i+1])+Math.abs(a[i+2]-b[i+2])>40)n++; return n };
+           const none=draw('',false), unowned=draw('shades',false), worn=draw('shades',true), hearts=draw('hearts',true);
+           o.unownedDiff=diff(none,unowned); o.wornDiff=diff(none,worn); o.heartsVsShades=diff(worn,hearts); return o }""")
+        ok(f'{tag}: face pieces are bought once for 60 and never twice', Fc['poor'] == 'poor' and Fc['w0'] == 10 and Fc['buy'] == 'ok' and Fc['w'] == 440 and Fc['own'] is True and Fc['ownOther'] is False and Fc['again'] == 'owned', Fc)
+        ok(f'{tag}: a face piece is worn per hero (cat yes, uncle no; an unknown key counts as none)', Fc['catSel'] == 'shades' and Fc['uncleSel'] == '' and Fc['bogus'] == '', Fc)
+        ok(f'{tag}: all 8 face pieces have a picture and a placement for all 8 heroes', Fc['n'] == 8 and Fc['pl'] == 8 and Fc['img'] is True, Fc)
+        ok(f'{tag}: a worn + owned face piece is drawn on the hero, an unowned one is not, and pieces differ', Fc['unownedDiff'] == 0 and Fc['wornDiff'] > 40 and Fc['heartsVsShades'] > 40, Fc)
+        # UI: buy a face piece for the selected hero, then take it off
+        pg.evaluate("TD.S.wallet=500; TD.S.aq={}; TD.S.hq={}; TD.S.trail=''; TD.openShop('a')"); pg.wait_for_timeout(200)
+        pg.evaluate("[...document.querySelectorAll('.acchips .ch')].find(b=>b.textContent.includes('مشترك')).click()"); pg.wait_for_timeout(200)
+        pg.evaluate("[...document.querySelectorAll('#shGrid .shc')].find(c=>c.textContent.includes('شنب كبير')).querySelector('.btn').click()"); pg.wait_for_timeout(200)
+        U = pg.evaluate("({w:TD.S.wallet, f:TD.S.hq[TD.SHOP.hero]&&TD.S.hq[TD.SHOP.hero].f, own:!!TD.S.aq['f:stache'], hero:TD.SHOP.hero})")
+        ok(f'{tag}: the card buys the moustache for 50 and the selected hero wears it', U['w'] == 450 and U['f'] == 'stache' and U['own'] is True, U)
+        pg.evaluate("[...document.querySelectorAll('#shGrid .shc')].find(c=>c.textContent.includes('شنب كبير')).querySelector('.btn').click()"); pg.wait_for_timeout(100)
+        ok(f'{tag}: pressing the worn piece takes it off', pg.evaluate("TD.S.hq[TD.SHOP.hero].f") == '')
+        if shots: pg.screenshot(path=os.path.join(shots, f'acc_face_{tag}.png'))
         # ---- sets (injected data: set 2 of the cat head slot) + full-set glow
         Q = pg.evaluate("""() => { const T=window.TD, S=T.S; S.wallet=500; S.aq={}; S.hq={}; S.hs={cat:1,uncle:3};
            T.ACCX.cat=[['h','cat_h',2,1,'قبعة تجريبية',60]];

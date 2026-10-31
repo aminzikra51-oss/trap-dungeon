@@ -19,6 +19,7 @@ SUPPLY = r"""() => { const T=window.TD, out=[]; T.FLAGS.noBoss=false;
 FLOW = r"""() => { const T=window.TD, S=T.S, G=T.G, R={}; const K=T.K;
   S.wallet=0; S.cc={}; S.cl={}; S.nd={}; S.own={falafel:1,cat:1}; S.hero='cat'; S.hs={}; S.hx={};   // cat: no coin magnet, so teleporting onto a coin picks exactly that coin
   S.ow={}; S.bgPick=-1; S.best=99; T.FLAGS.noBoss=true; for(const a of T.ACH)S.ac[a.id]=a.T.length;        // medals are tested in test/ach.py: here they must not pay into the wallet
+  T.dayRoll(); S.dy.t=[{k:'time',n:99999,r:10}]; S.wk.t=[{k:'time',n:99999,r:40}];       // daily/weekly challenges are tested in test/daily.py: here they must not pay into the wallet
   function level(n){ G.lastLvl=-1; G.custom=null; T.startGame(n); G.bannerT=0; G.state='play' }
   const coinsOf=()=>T.L.ents.filter(e=>e.t==='coin'&&!e.bait);
   const grab=(c)=>{ T.P.x=c.x-10; T.P.y=c.y-14; T.P.vx=0;T.P.vy=0; c.got=0; T.update(1/60) };
