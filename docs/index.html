@@ -56,6 +56,25 @@ select.tg{appearance:auto}
 #menu h2{margin:0 0 calc(var(--u)*6);font-size:calc(var(--u)*28);color:var(--gold)}
 .lvlpick{font-size:calc(var(--u)*14);margin-top:calc(var(--u)*8);font-weight:800}
 .lvlpick input{width:calc(var(--u)*60);font-size:calc(var(--u)*15);text-align:center;border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;font-family:inherit;font-weight:900}
+#ed{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
+.edbox{width:calc(var(--u)*768);max-height:calc(var(--u)*436);display:flex;flex-direction:column;gap:calc(var(--u)*5);background:#1b1230;border:calc(var(--u)*4) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*8) calc(var(--u)*12);box-shadow:calc(var(--u)*6) calc(var(--u)*6) 0 #000;text-align:center}
+.edtop{display:flex;justify-content:space-between;align-items:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*20);font-weight:900;color:var(--gold)}
+.edst{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;flex:1;text-align:center}
+.edset{display:flex;gap:calc(var(--u)*6);justify-content:center;align-items:center;flex-wrap:wrap;font-size:calc(var(--u)*14);font-weight:800}
+.edseq,.edfam,.edvar{display:flex;gap:calc(var(--u)*4);flex-wrap:wrap;justify-content:center;align-content:flex-start}
+.edseq{min-height:calc(var(--u)*44);max-height:calc(var(--u)*84);overflow:auto;background:#0007;border:calc(var(--u)*2) dashed #ffffff44;border-radius:calc(var(--u)*10);padding:calc(var(--u)*4)}
+.edvar{min-height:calc(var(--u)*28)}
+.ch{font-family:inherit;font-weight:800;font-size:calc(var(--u)*13);color:#fff;background:#3a2a66;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*9);padding:calc(var(--u)*3) calc(var(--u)*8);cursor:pointer;line-height:1.25}
+.ch.on{background:var(--gold);color:#1b1230}
+.ch.f{background:#2c2150}.ch.f.on{background:#ffb81f}
+.ch.v{background:#2a4a6b}.ch.v.lock{opacity:.6}
+.edhint{font-size:calc(var(--u)*13);opacity:.6;font-weight:700;align-self:center}
+.edtools{display:flex;gap:calc(var(--u)*6);justify-content:center}
+#edMsg{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;min-height:calc(var(--u)*17)}
+.edact .btn{font-size:calc(var(--u)*17);padding:calc(var(--u)*5) calc(var(--u)*14)}
+.edact .btn:disabled{opacity:.45;filter:grayscale(.6)}
+.edimp{display:flex;gap:calc(var(--u)*6);align-items:stretch;justify-content:center}
+.edimp textarea{flex:1;height:calc(var(--u)*50);resize:none;font-family:ui-monospace,Consolas,monospace;font-size:calc(var(--u)*13);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;padding:calc(var(--u)*4);direction:ltr;user-select:text;-webkit-user-select:text}
 #touch{position:absolute;left:0;right:0;bottom:0;height:calc(var(--u)*130);pointer-events:none;z-index:5}
 #touch .tb{position:absolute;bottom:calc(var(--u)*10);width:calc(var(--u)*86);height:calc(var(--u)*86);border-radius:50%;background:#ffffff26;border:calc(var(--u)*4) solid #ffffff66;color:#fff;font-size:calc(var(--u)*40);display:flex;align-items:center;justify-content:center;pointer-events:auto;touch-action:none;font-weight:900}
 #touch .tb.on{background:#ffd23faa}
@@ -102,7 +121,7 @@ select.tg{appearance:auto}
       <p class="tag">كل شي آمن هون... وكله كذب 😇</p>
       <div><button class="btn" id="bPlay">ابدأ اللعب</button></div>
       <div><button class="btn alt hide" id="bCont">كمّل من المرحلة 1</button></div>
-      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button></div>
+      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button><button class="tg" id="bEdT">🛠 مصمّم المراحل</button></div>
       <div class="how">⬅ ➡ للحركة · ⬆ أو مسافة للقفز (واضغط مرة ثانية بالهوا!) · P إيقاف · R إعادة · M كتم</div>
       <div class="hlbl">اختر بطلك 👇</div><div class="hrow" id="heroT"></div>
     </div>
@@ -125,7 +144,25 @@ select.tg{appearance:auto}
     <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
     <div class="row"><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
     <div class="lvlpick">اقفز إلى مرحلة: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
+    <div class="row"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
+  </div></div>
+  <div id="ed" class="ov hide"><div class="edbox">
+    <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edX">✖ رجوع</button></div>
+    <div class="edset">
+      <span>القوة</span><button class="tg" id="edNm">−</button><b id="edN">6</b><button class="tg" id="edNp">+</button>
+      <select class="tg" id="edD"><option value="0">عادي 🙂</option><option value="1">مجنون 😈</option><option value="2">مستحيل 💀</option></select>
+      <select class="tg" id="edTh"></select>
+      <button class="tg" id="edSalt">🎲 تغيير <span id="edS">0</span></button>
+      <button class="tg" id="edWipe">🗑 مسح الكل</button>
+    </div>
+    <div class="edseq" id="edSeq"></div>
+    <div class="edtools hide" id="edTools"><button class="tg" id="edEarly">▶ قدّم</button><button class="tg" id="edLate">◀ أخّر</button><button class="tg" id="edDel">✖ احذف</button></div>
+    <div class="edfam" id="edFam"></div>
+    <div class="edvar" id="edVar"></div>
+    <div class="edimp hide" id="edImpBox"><textarea id="edIn" placeholder="الصق الكود أو الرسالة كاملة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="edGo">▶ العب</button><button class="tg" id="edLoad">✏ حمّل للتعديل</button></div></div>
+    <div id="edMsg"></div>
+    <div class="row edact" style="margin-top:0"><button class="btn" id="edPlay">▶ جرّبها</button><button class="btn alt" id="edCopy">📋 انسخ الكود</button><button class="btn alt" id="edImp">📥 كود جاهز</button></div>
   </div></div>
 </div></div>
 <div id="rot" class="hide">قلّب الجوال أفقياً — لا تسأل ليش 🙃</div>
@@ -386,7 +423,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
 
 /* =============== STATE =============== */
 const K={l:false,r:false,j:false,jp:false};
-const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0};
+const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null};
 let L=null, P=null, parts=[], themeBg=null, SIM=false;
 /* adaptive quality: 3 = full 2.5D | 2 = cheaper light + DPR 1.5 | 1 = no dynamic light, no dust, DPR 1 | 0 = flat classic look */
 const Q={q:3,acc:0,w:0,n:0,bad:0,fps:60,dprCap:[1,1,1.5,2]};
@@ -691,7 +728,9 @@ B.anv={
   c.globalAlpha=1}};
 
 /* ---------------- saws: floor | vert | orbit | roll | hi ---------------- */
-function mkSaw(v,o){return Object.assign({t:'saw',v,x:0,y:GY-14,r:13,rot:0,dir:Math.random()<.5?1:-1,sp:100,ph:0,on:v!=='roll'},o)}
+// positional hash instead of Math.random: the same level must always build the same world (replays, share codes, ghosts)
+const hash01=(a,b,c)=>{const k=Math.sin(a*12.9898+b*78.233+(c||0)*37.719)*43758.5453;return k-Math.floor(k)};
+function mkSaw(v,o){const s=Object.assign({t:'saw',v,x:0,y:GY-14,r:13,rot:0,dir:1,sp:100,ph:0,on:v!=='roll'},o); if(!o||o.dir==null)s.dir=hash01((s.x||0)+(s.cx||0),(s.y||0)+(s.x0||0),(s.ph||0)+1)<.5?1:-1; return s}
 B.saw={
  upd(e,dt){
   e.rot+=dt*14*(e.dir||1);
@@ -828,7 +867,7 @@ B.plat={
   if(e.v==='vanish'&&e.st===1){c.strokeStyle='#000b';c.beginPath();c.moveTo(e.x+8,e.y);c.lineTo(e.x+14,e.y+8);c.lineTo(e.x+11,e.y+12);c.stroke()} }};
 
 /* ---------------- coins: honest or bait (effect fires when picked up) ---------------- */
-function mkCoin(x,y,bait,fx){return{t:'coin',x,y,bait:!!bait,fx:fx||'anvil',got:0,ph:Math.random()*6}}
+function mkCoin(x,y,bait,fx){return{t:'coin',x,y,bait:!!bait,fx:fx||'anvil',got:0,ph:hash01(x,y,3)*6}}
 B.coin={
  upd(e,dt){e.ph+=dt*5},
  hit(e){ if(e.got||!circHit(e.x,e.y,10,prect()))return null; e.got=1; if(!e.bait){G.coins++;Snd.coin();return null} Snd.coin(); onBait(e); return null },
@@ -1071,7 +1110,8 @@ function buildLevel(n,opt){
   if(ne>=3){D.combo=clamp(D.combo+DF.combo,0,.95);D.gap=Math.max(1.2,D.gap-DF.gap)}
   const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138));
   const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:Math.floor((n-1)/5)%THEMES.length,crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
-  const chaseKind=n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
+  if(opt.theme!=null)L.theme=opt.theme;
+  const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
@@ -1082,6 +1122,10 @@ function buildLevel(n,opt){
     else if(opt.script&&opt.script.length)break;
     else{ for(let k=0;k<10;k++){let t=pickW(pool.map(p=>[p[0],p[1]*(hist.slice(-2).includes(p[0])?.35:1)]),r); if(x+NEEDF[t]<=W-14){fam=t;break}} }
     if(!fam||x+8>W-12)break;
+    if(fam==='cp'){                         // map editor: a real checkpoint flag placed on solid ground
+      x=Math.max(x,endX+3); const cx=x+1;
+      if(cx+3<W-12&&[0,1,2].every(i=>L.ground[cx+i]>=0&&!L.cr[cx+i])&&!L.pits.some(p=>cx+2>=p[0]-1&&cx<=p[0]+p[1])){ L.ents.push(mkCp(cx)); (L.segs=L.segs||[]).push(['cp',x,3]); lastCpTx=cx; endX=x+3; prev='cp'; hist.push('cp'); trail=0; x=endX+2 }
+      continue }
     const minGap=trail>0?Math.max(7-trail,3):(PITT[fam]?4:(prev==='spike'?3:2));
     x=Math.max(x,endX+minGap);
     const room=W-14-x; if(room<4)break;
@@ -1496,6 +1540,106 @@ function drawEndCard(c){
   c.restore();
 }
 
+/* =============== CUSTOM LEVELS (map editor v1) ===============
+   A custom level is a small RECIPE, not a drawing: power n, difficulty, theme, salt and an ordered list of trap families/variants.
+   buildLevel(n,{script,...}) turns the recipe into a real level, so a share code is ~30 characters and carries only numbers.
+   The recipe -> world mapping must stay stable, otherwise old codes change meaning: bump GENV when the generator or a trap family
+   changes what an existing recipe builds (test/editor.py keeps a golden hash that fails when that happens by accident).
+   Registry order below is part of the code format: APPEND ONLY. */
+const GENV=1;
+const CF=[ // id, icon, Arabic name, unlock power, variants [[id, name, unlock]]
+ {f:'pit',ic:'🕳',nm:'حفرة',mn:1,vs:[['plain','عادية',1],['wide','واسعة',3],['invis','بلاطة خفية',5],['mover','منصة متحركة',4],['stones','حجارة',5],['fish','سمكة',5],['ceil','سقف',7],['spring','نطّاطة',8]]},
+ {f:'spike',ic:'🔺',nm:'أشواك',mn:1,vs:[['static','ثابتة',1],['hidden','مخفية',3],['pulse','نابضة',3],['slide','منزلقة',4],['hog','قنفذ',5],['sneak','متسللة',6],['check','رقعة',6],['rainspk','مطر أشواك',7]]},
+ {f:'crumble',ic:'🧱',nm:'أرض تتفتت',mn:2,vs:[['plain','عادية',2],['trap','مفخخة',6],['wave','موجة',5],['rev','موجة معكوسة',7]]},
+ {f:'arrow',ic:'🏹',nm:'سهام',mn:2,vs:[['lane','ممر',2],['volley','رشقة',5],['rain','مطر',6],['sniper','قنّاص',8],['rear','من الخلف',9]]},
+ {f:'crush',ic:'🔨',nm:'سحق',mn:4,vs:[['drop','سقوط',4],['thwomp','دعّاس',4],['double','مزدوج',6]]},
+ {f:'saw',ic:'⚙',nm:'منشار',mn:4,vs:[['floor','أرضي',4],['vert','عمودي',5],['pend','بندول',6],['orbit','مدار',7],['roll','متدحرج',8],['hi','عالي',10]]},
+ {f:'walk',ic:'👾',nm:'كائن',mn:2,vs:[['walker','ماشي',2],['spiky','شوكي',4],['jumper','نطّاط',5],['charger','ثور',6],['bat','خفّاش',6]]},
+ {f:'terrain',ic:'⛰',nm:'تضاريس',mn:5,vs:[['wall','جدار',5],['stair','درج',5],['tunnel','نفق',7],['highroad','طريق عالي',6]]},
+ {f:'bait',ic:'🪙',nm:'طُعم',mn:5,vs:[]},
+ {f:'chest',ic:'🎁',nm:'صندوق',mn:6,vs:[]},
+ {f:'mole',ic:'🦔',nm:'خلد',mn:7,vs:[]},
+ {f:'elev',ic:'🛗',nm:'مصعد',mn:7,vs:[]},
+ {f:'frog',ic:'🐸',nm:'ضفدع',mn:8,vs:[]},
+ {f:'fire',ic:'🔥',nm:'نار',mn:8,vs:[]},
+ {f:'storm',ic:'⛈',nm:'عاصفة',mn:9,vs:[]},
+ {f:'elec',ic:'⚡',nm:'كهربا',mn:9,vs:[]},
+ {f:'laser',ic:'🔦',nm:'ليزر',mn:10,vs:[]},
+ {f:'train',ic:'🚂',nm:'قطار',mn:11,vs:[]},
+ {f:'cp',ic:'🚩',nm:'علم حفظ',mn:1,vs:[]}
+];
+const CF_BY=Object.fromEntries(CF.map((c,i)=>[c.f,i]));
+const C_DIFF=['normal','crazy','hell'], C_MAXSEQ=16, C_MAXN=60;
+const cNew=()=>({n:6,d:1,th:0,s:0,seq:[]});                       // seq items: [familyIndex, variantIndex+1 | 0 = let the generator choose]
+const cNeed=c=>c.seq.reduce((m,[f,v])=>Math.max(m,v?CF[f].vs[v-1][2]:CF[f].mn),1);
+const cTraps=c=>c.seq.filter(it=>CF[it[0]].f!=='cp').length;
+
+/* ---- code: "HB1-" + base64url(bytes). bytes = [GENV, n, diff|theme<<2, salt, count, ...items(family*10+variant), checksum x2] ---- */
+const b64u=u8=>btoa(String.fromCharCode.apply(null,u8)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const unb64u=s=>{ const t=atob(s.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((s.length+3)%4)); const u=new Uint8Array(t.length); for(let i=0;i<t.length;i++)u[i]=t.charCodeAt(i); return u };
+const cSum=(u8,n)=>{ let h=2166136261>>>0; for(let i=0;i<n;i++){h^=u8[i];h=Math.imul(h,16777619)>>>0} return h&0xffff };
+function encodeCustom(c){
+  const b=[GENV,c.n,c.d|(c.th<<2),c.s,c.seq.length]; for(const [f,v] of c.seq)b.push(f*10+v);
+  const u=new Uint8Array(b.length+2); u.set(b); const h=cSum(u,b.length); u[b.length]=h>>8; u[b.length+1]=h&255;
+  return 'HB'+GENV+'-'+b64u(u);
+}
+/* returns {c} or {err}. Accepts a whole pasted message: the first HBn-xxxx token is used. */
+function decodeCustom(txt){
+  const m=/HB(\d+)-([A-Za-z0-9_-]{8,120})/.exec(String(txt||'')); if(!m)return{err:'ما لقيت كود (بيبدأ بـ HB1-)'};
+  let u; try{ u=unb64u(m[2]) }catch(e){ return{err:'الكود مقصوص أو فيه غلط'} }
+  if(u.length<7)return{err:'الكود قصير'};
+  const n=u.length-2; if(cSum(u,n)!==((u[n]<<8)|u[n+1]))return{err:'الكود فيه حرف غلط (انسخه كامل)'};
+  if(u[0]>GENV)return{err:'هالخريطة من نسخة أحدث من اللعبة — حدّث الصفحة'};
+  const cnt=u[4]; if(cnt!==n-5||cnt>C_MAXSEQ)return{err:'الكود مو سليم'};
+  const c={n:u[1],d:u[2]&3,th:u[2]>>2,s:u[3],seq:[],gv:u[0]};
+  if(c.n<1||c.n>C_MAXN||c.d>2||c.th>=THEMES.length)return{err:'قيم الكود خارج الحدود'};
+  for(let i=0;i<cnt;i++){ const x=u[5+i], f=(x/10)|0, v=x%10; if(f>=CF.length||v>CF[f].vs.length)return{err:'فيه فخ ما بعرفه (نسخة أحدث؟)'}; c.seq.push([f,v]) }
+  if(!cTraps(c))return{err:'الخريطة فاضية'};
+  return{c};
+}
+const cClone=c=>({n:c.n,d:c.d,th:c.th,s:c.s,seq:c.seq.map(x=>x.slice())});
+
+/* ---- build: the recipe becomes a normal level object. W grows until every item really fits (deterministic, so every device agrees) ---- */
+function buildCustom(c){
+  const script=c.seq.map(([f,v])=>[CF[f].f,v?CF[f].vs[v-1][0]:null]);
+  let W=26+script.reduce((a,it)=>a+((NEEDF[it[0]]||5)+9),0), L=null;
+  for(let k=0;k<10;k++){
+    L=buildLevel(c.n,{script,W,diff:C_DIFF[c.d],salt:c.s,theme:c.th,noChase:true});
+    if((L.segs||[]).length>=script.length)break; W+=14;
+  }
+  L.name='خريطة مخصّصة'; L.custom=true; return L;
+}
+
+/* ---- local storage: draft, cleared maps (with the input recording of the winning run = the proof), death log ---- */
+const MP={draft:null,cleared:{}};
+try{ const j=JSON.parse(localStorage.getItem('td_m')||'null'); if(j){ MP.draft=j.draft||null; MP.cleared=j.cleared||{} } }catch(e){}
+const saveMaps=()=>{ try{ const ks=Object.keys(MP.cleared); if(ks.length>12){ ks.sort((a,b)=>MP.cleared[a].at-MP.cleared[b].at); for(const k of ks.slice(0,ks.length-12))delete MP.cleared[k] } localStorage.setItem('td_m',JSON.stringify(MP)) }catch(e){} };
+/* input recording: one byte per fixed 1/60 s step (bit0 left, bit1 right, bit2 jump held, bit3 jump pressed) */
+let INREC=[];
+const recStep=()=>INREC.push((K.l?1:0)|(K.r?2:0)|(K.j?4:0)|(K.jp?8:0));
+const rleEnc=a=>{ const o=[]; let i=0; while(i<a.length){ let j=i; while(j<a.length&&a[j]===a[i])j++; o.push(a[i].toString(16)+(j-i).toString(36)); i=j } return o.join('.') };
+const rleDec=s=>{ const a=[]; if(!s)return a; for(const t of s.split('.')){ const v=parseInt(t[0],16), c=parseInt(t.slice(1),36); for(let i=0;i<c;i++)a.push(v) } return a };
+/* replay a recording on a fresh copy of the level in simulation mode; true when it ends in a win. Used by tests now, by the server check later. */
+function replayCustom(c,rec,maxFrames){
+  const was=SIM, sv=G.custom; SIM=true; let won=false, f=0;
+  try{
+    G.lastLvl=-9; G.cpX=null; G.custom=c; loadLevel(c.n,false,{custom:c}); G.state='play';
+    for(;f<rec.length&&f<(maxFrames||99999);f++){ const b=rec[f]; K.l=!!(b&1);K.r=!!(b&2);K.j=!!(b&4);K.jp=!!(b&8); update(1/60); if(G.state==='dead'){break} if(G.state==='win'){won=true;f++;break} }
+  } finally { SIM=was; G.custom=sv; K.l=K.r=K.j=K.jp=false }
+  return{won,frames:f};
+}
+/* local death log (step 1 of the roadmap): per level, deaths bucketed by 4 tiles + by cause. Tiny, never leaves the device. */
+let DLOG={}; try{ DLOG=JSON.parse(localStorage.getItem('td_dl')||'{}') }catch(e){}
+function logDeath(cause){
+  try{
+    const key=G.custom?encodeCustom(G.custom):String(G.level);
+    const e=DLOG[key]||(DLOG[key]={n:0,b:{},c:{}}), b=Math.floor(Math.max(0,P.x)/TS/4);
+    e.n++; e.b[b]=(e.b[b]||0)+1; e.c[cause]=(e.c[cause]||0)+1;
+    const ks=Object.keys(DLOG); if(ks.length>150)delete DLOG[ks[0]];
+    localStorage.setItem('td_dl',JSON.stringify(DLOG));
+  }catch(e){}
+}
+
 
 
 /* =============== UI HELPERS =============== */
@@ -1507,7 +1651,7 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return;$('hLvl').textContent='المرحلة '+G.level;$('hCoin').textContent='🪙 '+G.coins;$('hDeath').textContent='💀 '+G.deaths}
+function hud(){ if(SIM)return;$('hLvl').textContent=G.custom?'🛠 خريطتي':'المرحلة '+G.level;$('hCoin').textContent='🪙 '+G.coins;$('hDeath').textContent='💀 '+G.deaths}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
     const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
@@ -1537,26 +1681,27 @@ function announceLevel(n){
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
 function loadLevel(n,announce,opt){
-  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; L=buildLevel(n,opt); RG.s=n*104729+17;
+  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):buildLevel(n,opt); RG.s=n*104729+17;
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
   if(G.cpX!=null){ for(const e of L.ents){ if(e.t==='cp'&&e.x<=G.cpX)e.on=1; if(e.t==='chase'){e.x=P.x-(e.v==='wall'?330:430);e.go=P.x+4*TS} } }
   G.camX=clamp(P.x+PW/2-VW*.4,0,Math.max(0,L.w*TS-VW));
-  if(!SIM){ themeBg=makeBg(THEMES[L.theme],n*31+7); G.bannerT=2.4; G.bannerTxt=['المرحلة '+n,L.name];
+  if(!SIM){ themeBg=makeBg(THEMES[L.theme],n*31+7); G.bannerT=2.4; G.bannerTxt=[G.custom?'🛠 خريطة مخصّصة':'المرحلة '+n,L.name];
     Snd.mus.tempo=clamp(124+n*2.5,124,176);
     $('card').classList.add('hide'); hud();
-    if(n>S.best){S.best=n;save()}
-    if(n===1&&S.deaths===0){say('⬅ ➡ للحركة · ⬆ للقفز · ⬆⬆ قفزة ثانية بالهوا!','any',4.5)}
-    if(announce)announceLevel(n);
+    if(!G.custom&&n>S.best){S.best=n;save()}
+    if(!G.custom&&n===1&&S.deaths===0){say('⬅ ➡ للحركة · ⬆ للقفز · ⬆⬆ قفزة ثانية بالهوا!','any',4.5)}
+    if(announce&&!G.custom)announceLevel(n);
     { const ks=[]; for(const kd of ['tlaugh','scream','taunt']){const a=(byKind[kd]||[]).filter(hasAud); if(a.length)ks.push(rnd(a))} Snd.warm(ks) } }
 }
 function startGame(n){
+  if(G.custom){G.lastLvl=-9;G.cpX=null}      // leaving a custom map: no checkpoint carried into the real levels
   Snd.init(); Snd.resume(); $('title').classList.add('hide'); $('menu').classList.add('hide'); $('hud').classList.remove('hide'); G.bossProg=null; G.bossSeen=0;
   loadLevel(n||1,true); G.state='play'; if(S.music){Snd.startMusic()}
   later(450,()=>heroSay('pick',{force:1,pri:3,delay:0,max:2.2,dur:2.6}));
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; S.deaths++; if(!SIM){save();hud()}
+  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom)S.deaths++; if(!SIM){save();hud();logDeath(cause)}
   P.dvx=P.vx; P.dvy=P.vy; G.shake=9; G.dv=Math.random();
   if(!SIM&&S.sfx&&navigator.vibrate){try{navigator.vibrate(G.lvDeaths%4===0?[30,40,30]:28)}catch(e){}}
   if(DEATH_SFX[cause])DEATH_SFX[cause]();
@@ -1616,13 +1761,13 @@ function cardImage(ctx){
   return pool.length?bagPick('img:'+ctx+':'+G.cause,pool,x=>x):null;
 }
 function cardLabel(ctx){
-  const d=G.deaths,l=G.level,v=G.lvDeaths;
+  const d=G.deaths,l=G.custom?'خريطتك':'المرحلة '+G.level,v=G.lvDeaths;
   if(G.fakeHit&&Math.random()<.85){G.fakeHit=0;return rnd(['🚩 العلم كان مزيّف! 😂','🚩 صدّقت العلم؟ ولا حفظ ولا شي','🚩 "نقطة حفظ" كانت مقلب'])}
   const set={
-   streak:['🔁 المرحلة '+l+' — المحاولة رقم '+v,'📈 '+v+' محاولات وما زلنا هون','🧱 المرحلة '+l+' تحبك كتير'],
+   streak:['🔁 '+l+' — المحاولة رقم '+v,'📈 '+v+' محاولات وما زلنا هون','🧱 '+l+' تحبك كتير'],
    quick:['⚡ أسرع موتة اليوم','⏱ ثواني بس!','🏎 رقم قياسي بالسرعة'],
    near:['😭 كنت قريب كتير!','📏 باقي خطوتين!','🚪 الباب كان يناديك'],
-  }[ctx]||['💀 موتة رقم '+d+' — المرحلة '+l,'☠ الخسارة رقم '+d,'🎬 المشهد: الموت رقم '+d,'📉 رصيد الموت: '+d];
+  }[ctx]||['💀 موتة رقم '+d+' — '+l,'☠ الخسارة رقم '+d,'🎬 المشهد: الموت رقم '+d,'📉 رصيد الموت: '+d];
   return rnd(set);
 }
 function fillCard(top,im,t,d,hint){
@@ -1639,7 +1784,7 @@ function showCard(){
   G.holdMin=x.play?2.4:3.4;       // how long the card stays at least (text-only taunts need reading time)
   fillCard(cardLabel(ctx),cardImage(ctx),x.t,x.d);
 }
-function retry(){ loadLevel(G.level); G.state='play'; }
+function retry(){ loadLevel(G.level,false,G.custom?{custom:G.custom}:undefined); G.state='play'; }
 function winLevel(){
   if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y);
   if(L.boss){ bossEnd(); return }
@@ -1648,12 +1793,13 @@ function winLevel(){
   if(x&&ks.length&&Math.random()<.6){G.winCard={x,im:bagPick('img:win',ks,y=>y)};G.winLen=3.4}
   else if(x)say(x.t,x.d,2.4);
   if(Math.random()<.5)heroSay('win',{force:1,pri:5,delay:.05,max:1.4,dur:2});
-  S.best=Math.max(S.best,G.level+1); save();
+  if(G.custom){ if(!SIM)customCleared() } else { S.best=Math.max(S.best,G.level+1); save() }
 }
-function nextLevel(){ loadLevel(G.level+1,true); G.state='play'; }
+function nextLevel(){ if(G.custom){customWon();return} loadLevel(G.level+1,true); G.state='play'; }
 
 /* =============== UPDATE =============== */
 function update(dt){
+  if(G.custom&&!SIM&&G.state==='play')recStep();      // proof of a custom-map run: the exact inputs of every simulation step
   G.t+=dt; if(subT>0){subT-=dt;if(subT<=0&&!SIM)$('sub').innerHTML=''}
   if(G.bannerT>0)G.bannerT-=dt;
   if(G.shake>0)G.shake=Math.max(0,G.shake-dt*30);
@@ -2902,6 +3048,7 @@ function anyKeyContinue(){
 }
 addEventListener('keydown',e=>{
   if(e.repeat)return; Snd.init(); Snd.resume();
+  if(G.state==='editor')return;
   const k=KM[e.code];
   if(G.state==='title'){ if(e.code==='Enter'||e.code==='Space'){startGame(1);e.preventDefault()} return }
   if(e.code==='KeyP'||e.code==='Escape'){togglePause();return}
@@ -2919,11 +3066,11 @@ document.querySelectorAll('#touch .tb').forEach(b=>{
   const up=e=>{b.classList.remove('on');setKey(k,false)};
   b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up);
 });
-$('stage').addEventListener('pointerdown',e=>{ if(e.target.closest('button,select,input,.tb'))return; Snd.init();Snd.resume(); anyKeyContinue() });
+$('stage').addEventListener('pointerdown',e=>{ if(e.target.closest('button,select,input,textarea,.tb'))return; Snd.init();Snd.resume(); anyKeyContinue() });
 addEventListener('touchstart',()=>{ if(!touchMode){touchMode=true;$('stage').classList.add('touch');if(G.state!=='title')$('touch').classList.remove('hide');resize()} },{passive:true});
 function togglePause(){
   if(G.state==='menu'){ $('menu').classList.add('hide'); G.state=G.pausedFrom||'play'; if(touchMode)$('touch').classList.remove('hide'); return }
-  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').value=G.level; syncToggles() }
+  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').value=G.level; $('bEdit').classList.toggle('hide',!G.custom); syncToggles() }
 }
 $('bPlay').onclick=()=>{S.deaths=0;save();startGame(1);const x=pick('intro',{pAudio:.9});
   if(x){later(600,()=>{sayVoice(x,4)}); later(4800,()=>{if(G.deaths===0)say('⬅ ➡ للحركة · ⬆ للقفز. صدّق اللافتات... أو لا 😉','any',3.6)})}};
@@ -2952,7 +3099,7 @@ $('bShare').onclick=()=>shareResult($('bShare')); $('bShareT').onclick=()=>share
   $('bFull').onclick=()=>{ try{ if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document)} else (de.requestFullscreen||de.webkitRequestFullscreen).call(de) }catch(e){} } } }
 $('bResume').onclick=togglePause;
 $('bGo').onclick=()=>{const n=clamp(parseInt($('inLvl').value)||1,1,999);$('menu').classList.add('hide');G.state='play';startGame(n)};
-$('bHome').onclick=()=>{$('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');G.state='title';$('sub').innerHTML='';Snd.stopMusic()};
+$('bHome').onclick=goTitle;
 document.querySelectorAll('.tg[data-s]').forEach(b=>b.onclick=()=>{S[b.dataset.s]=!S[b.dataset.s];save();syncToggles();Snd.init();Snd.ui();
   if(b.dataset.s==='music'){if(S.music&&G.state!=='title')Snd.startMusic();}});
 $('selDia').onchange=e=>{S.dialect=e.target.value;save()};
@@ -2963,6 +3110,118 @@ $('selDiff').onchange=e=>setDiff(e.target.value); $('selDiffT').onchange=e=>setD
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&G.state==='play')togglePause()});
 addEventListener('resize',resize);
 
+/* =============== MAP EDITOR UI (v1: trap sequence) ===============
+   Pick traps in order -> test-play -> the share code unlocks only after YOU cleared the map (the winning run's inputs are stored as proof). */
+const ED={c:cNew(),sel:-1,fam:0,msg:'',src:'edit',imp:false};
+try{ const d=MP.draft; if(d&&Array.isArray(d.seq)&&d.n>=1&&d.n<=C_MAXN&&d.d>=0&&d.d<=2&&d.th>=0&&d.th<THEMES.length&&d.seq.every(x=>CF[x[0]]&&x[1]>=0&&x[1]<=CF[x[0]].vs.length))ED.c=cClone(d) }catch(e){}
+const edSave=()=>{ MP.draft=cClone(ED.c); saveMaps() };
+const edCode=()=>cTraps(ED.c)?encodeCustom(ED.c):'';
+const edClr=()=>{ const k=edCode(); return k?MP.cleared[k]:null };
+function el(tag,cls,txt,fn){ const e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; if(fn)e.onclick=fn; return e }
+const chipTxt=([f,v])=>CF[f].ic+' '+(v?CF[f].vs[v-1][1]:CF[f].nm);
+
+function edPreview(){            // the canvas behind the panel shows the chosen theme
+  try{ const th=ED.c.th; L=buildLevel(1,{script:[['pit','plain']],theme:th,diff:'normal',salt:0}); P=newPlayer(L.spawnTx); themeBg=makeBg(THEMES[th],th*31+7); G.camX=0 }catch(e){}
+}
+function edRender(){
+  const c=ED.c, cl=edClr(), nt=cTraps(c);
+  $('edN').textContent=c.n; $('edD').value=c.d; $('edTh').value=c.th; $('edS').textContent=c.s;
+  const seq=$('edSeq'); seq.innerHTML='';
+  if(!c.seq.length)seq.appendChild(el('span','edhint','اضغط على فخ من تحت لتضيفه ↓'));
+  c.seq.forEach((it,i)=>{ const b=el('button','ch'+(i===ED.sel?' on':''),chipTxt(it),()=>{ ED.sel=ED.sel===i?-1:i; edRender() }); seq.appendChild(b) });
+  $('edTools').classList.toggle('hide',ED.sel<0);
+  const fam=$('edFam'); fam.innerHTML='';
+  CF.forEach((f,i)=>{ fam.appendChild(el('button','ch f'+(i===ED.fam?' on':''),f.ic+' '+f.nm,()=>{ ED.fam=i; if(!f.vs.length)edAdd(i,0); else edRender() })) });
+  const vr=$('edVar'); vr.innerHTML=''; const F=CF[ED.fam];
+  if(F.vs.length){
+    vr.appendChild(el('button','ch v','🎲 تلقائي',()=>edAdd(ED.fam,0)));
+    F.vs.forEach((v,j)=>vr.appendChild(el('button','ch v'+(c.n<v[2]?' lock':''),v[1]+(c.n<v[2]?' 🔒'+v[2]:''),()=>edAdd(ED.fam,j+1))));
+  } else vr.appendChild(el('span','edhint',F.f==='cp'?'علم حفظ حقيقي: لما تموت بترجع منه':'هالفخ بلا أنواع — بينضاف مباشرة'));
+  $('edSt').textContent=(nt?nt+' فخ · ':'')+(cl?'✅ خلّصتها بـ '+cl.t.toFixed(1)+' ث':(nt?'🔒 لسا ما خلّصتها':'خريطة فاضية'));
+  $('edPlay').disabled=!nt; $('edCopy').disabled=!(nt&&cl);
+  $('edCopy').textContent=cl?'📋 انسخ الكود':'🔒 خلّصها لتنشرها';
+  $('edMsg').textContent=ED.msg||''; $('edImpBox').classList.toggle('hide',!ED.imp);
+}
+function edAdd(f,v){
+  const c=ED.c; if(c.seq.length>=C_MAXSEQ){ED.msg='الحد الأقصى '+C_MAXSEQ+' عنصر';edRender();return}
+  const at=ED.sel>=0?ED.sel+1:c.seq.length; c.seq.splice(at,0,[f,v]); ED.sel=at;
+  const need=v?CF[f].vs[v-1][2]:CF[f].mn; ED.msg=''; if(c.n<need){c.n=need;ED.msg='رفعت القوة لـ '+need+' عشان هالفخ'}
+  edSave(); edRender();
+}
+function edSetN(n){
+  const need=cNeed(ED.c), v=clamp(n,1,C_MAXN); ED.msg='';
+  if(v<need){ED.c.n=need;ED.msg='أقل قوة لهالفخاخ: '+need}else ED.c.n=v;
+  edSave(); edRender();
+}
+function edOpen(c,msg,o){
+  o=o||{}; if(c){ED.c=cClone(c);ED.sel=-1}
+  ED.src=o.src||'edit'; ED.msg=msg||''; ED.imp=!!o.imp; if(o.code!=null)$('edIn').value=o.code;
+  Snd.stopMusic(); K.l=K.r=K.j=K.jp=false;
+  for(const id of ['title','menu','card','hud','touch'])$(id).classList.add('hide');
+  $('sub').innerHTML=''; G.state='editor'; $('ed').classList.remove('hide'); edPreview(); edRender();
+}
+function edClose(){ $('ed').classList.add('hide'); goTitle() }
+function startCustom(c,src){
+  Snd.init(); Snd.resume(); for(const id of ['ed','title','menu','card'])$(id).classList.add('hide'); $('hud').classList.remove('hide');
+  ED.src=src||'edit'; G.lastLvl=-9; G.cpX=null; G.bossProg=null; G.bossSeen=0; G.lvDeaths=0;
+  loadLevel(c.n,false,{custom:cClone(c)}); G.state='play'; if(S.music)Snd.startMusic();
+  if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
+}
+/* the winning run is the proof: store it next to the code (a server will replay it later; for now it only unlocks sharing on this device) */
+function customCleared(){
+  const code=encodeCustom(G.custom); MP.cleared[code]={t:+G.t.toFixed(2),f:INREC.length,p:rleEnc(INREC),at:Date.now()}; saveMaps();
+}
+function customWon(){
+  const c=G.custom, code=encodeCustom(c), cl=MP.cleared[code], t=cl?cl.t.toFixed(1):'?';
+  if(ED.src==='code') edOpen(null,'🏆 خلّصت الخريطة بـ '+t+' ث',{src:'code',imp:true});
+  else edOpen(c,'🏆 خلّصتها بـ '+t+' ث — هلأ بتقدر تنسخ الكود');
+}
+function edShareText(){
+  const cl=edClr(), code=edCode();
+  return '🛠 خريطتي بلعبة «لا تموت يا حبيبي» — أنا خلّصتها بـ '+cl.t.toFixed(1)+' ثانية. بتقدر؟ 😈\nالكود: '+code+'\n(باللعبة: 🛠 مصمّم المراحل ← 📥 كود جاهز)\n'+SHARE_URL;
+}
+async function edCopy(){
+  if(!edClr())return; const txt=edShareText(); let ok=false;
+  try{ await navigator.clipboard.writeText(txt); ok=true }catch(e){
+    try{ const t=document.createElement('textarea'); t.value=txt; t.style.cssText='position:fixed;left:-999px;top:0;opacity:0'; document.body.appendChild(t); t.select(); ok=document.execCommand('copy'); t.remove() }catch(_){} }
+  ED.msg=ok?'اننسخ! الصقه بأي قروب 📋':'انسخ الكود يدوياً: '+edCode(); edRender();
+}
+function edImport(play){
+  const r=decodeCustom($('edIn').value);
+  if(r.err){ED.msg='❌ '+r.err;edRender();return}
+  if(play){ startCustom(r.c,'code'); return }          // receiver path: play it, do not touch the draft
+  if(MP.draft&&cTraps(MP.draft)&&encodeCustom(MP.draft)!==encodeCustom(r.c)){ try{localStorage.setItem('td_mprev',JSON.stringify(MP.draft))}catch(e){} }
+  ED.c=cClone(r.c); ED.sel=-1; ED.imp=false; ED.src='edit'; ED.msg='✅ انحمّلت الخريطة (' +cTraps(r.c)+' فخ)'; edSave(); edPreview(); edRender();
+}
+function goTitle(){ $('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');$('ed').classList.add('hide');G.state='title';$('sub').innerHTML='';Snd.stopMusic() }
+
+/* ---- wiring ---- */
+$('edNm').onclick=()=>edSetN(ED.c.n-1); $('edNp').onclick=()=>edSetN(ED.c.n+1);
+$('edD').onchange=e=>{ED.c.d=+e.target.value;edSave();edRender()};
+$('edTh').onchange=e=>{ED.c.th=+e.target.value;edSave();edPreview();edRender()};
+$('edSalt').onclick=()=>{ED.c.s=(ED.c.s+1)%100;edSave();edRender()};
+$('edEarly').onclick=()=>{ const i=ED.sel; if(i>0){const c=ED.c.seq;[c[i-1],c[i]]=[c[i],c[i-1]];ED.sel=i-1;edSave();edRender()} };
+$('edLate').onclick=()=>{ const i=ED.sel, c=ED.c.seq; if(i>=0&&i<c.length-1){[c[i+1],c[i]]=[c[i],c[i+1]];ED.sel=i+1;edSave();edRender()} };
+$('edDel').onclick=()=>{ if(ED.sel>=0){ED.c.seq.splice(ED.sel,1);ED.sel=-1;edSave();edRender()} };
+$('edWipe').onclick=()=>{ if(ED.c.seq.length){ if(ED.armed){ED.c.seq=[];ED.sel=-1;ED.armed=0;ED.msg='';edSave();edRender()} else {ED.armed=1;ED.msg='اضغط مرة ثانية لمسح كل شي';edRender();setTimeout(()=>{ED.armed=0},2500)} } };
+$('edPlay').onclick=()=>{ if(cTraps(ED.c))startCustom(ED.c,'edit') };
+$('edCopy').onclick=edCopy;
+$('edImp').onclick=()=>{ED.imp=!ED.imp;ED.msg='';edRender()};
+$('edLoad').onclick=()=>edImport(false); $('edGo').onclick=()=>edImport(true);
+$('edX').onclick=edClose;
+$('bEdT').onclick=()=>{Snd.init();edOpen(null,'')};
+$('bEdit').onclick=()=>{ if(ED.src==='code')edOpen(null,'',{src:'code',imp:true}); else edOpen(G.custom||ED.c,'') };
+{ // theme + difficulty options
+  const th=$('edTh'); ['🟣 القبو','🔴 الحمم','🔵 الجليد','🟢 الغابة'].forEach((n,i)=>th.appendChild(new Option(n,i)));
+}
+/* link: ...#m=HB1-xxxx opens the import box with the code filled in */
+function edBootHash(){
+  const m=/[#&]m=([^&]+)/.exec(location.hash||''); if(!m)return;
+  const code=decodeURIComponent(m[1]); if(decodeCustom(code).err)return;
+  edOpen(null,'وصلتك خريطة! اضغط «العب»',{src:'code',imp:true,code});
+}
+
+
 /* =============== BOOT =============== */
 if(A.img.card_fakedoor_1)$('decoL').src=A.img.card_fakedoor_1; if(A.img.card_spike_1)$('decoR').src=A.img.card_spike_2||A.img.card_spike_1;
 if(A.img.title_1){const t=$('title').style;t.backgroundImage='radial-gradient(circle at 50% 35%,#2a185088,#07030dcc),url("'+A.img.title_1+'")';t.backgroundSize='cover';t.backgroundPosition='center'}
@@ -2970,7 +3229,8 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 [...$('selDia').options].forEach(o=>{ if(isSparse(o.value))o.textContent+=' · نص + صوت مختلط' });
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); P=newPlayer(); themeBg=makeBg(THEMES[0],38);
 requestAnimationFrame(frame);
-window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats};
+edBootHash();
+window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG}};
 })();
 </script>
 <script>

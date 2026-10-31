@@ -56,6 +56,25 @@ select.tg{appearance:auto}
 #menu h2{margin:0 0 calc(var(--u)*6);font-size:calc(var(--u)*28);color:var(--gold)}
 .lvlpick{font-size:calc(var(--u)*14);margin-top:calc(var(--u)*8);font-weight:800}
 .lvlpick input{width:calc(var(--u)*60);font-size:calc(var(--u)*15);text-align:center;border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;font-family:inherit;font-weight:900}
+#ed{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
+.edbox{width:calc(var(--u)*768);max-height:calc(var(--u)*436);display:flex;flex-direction:column;gap:calc(var(--u)*5);background:#1b1230;border:calc(var(--u)*4) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*8) calc(var(--u)*12);box-shadow:calc(var(--u)*6) calc(var(--u)*6) 0 #000;text-align:center}
+.edtop{display:flex;justify-content:space-between;align-items:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*20);font-weight:900;color:var(--gold)}
+.edst{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;flex:1;text-align:center}
+.edset{display:flex;gap:calc(var(--u)*6);justify-content:center;align-items:center;flex-wrap:wrap;font-size:calc(var(--u)*14);font-weight:800}
+.edseq,.edfam,.edvar{display:flex;gap:calc(var(--u)*4);flex-wrap:wrap;justify-content:center;align-content:flex-start}
+.edseq{min-height:calc(var(--u)*44);max-height:calc(var(--u)*84);overflow:auto;background:#0007;border:calc(var(--u)*2) dashed #ffffff44;border-radius:calc(var(--u)*10);padding:calc(var(--u)*4)}
+.edvar{min-height:calc(var(--u)*28)}
+.ch{font-family:inherit;font-weight:800;font-size:calc(var(--u)*13);color:#fff;background:#3a2a66;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*9);padding:calc(var(--u)*3) calc(var(--u)*8);cursor:pointer;line-height:1.25}
+.ch.on{background:var(--gold);color:#1b1230}
+.ch.f{background:#2c2150}.ch.f.on{background:#ffb81f}
+.ch.v{background:#2a4a6b}.ch.v.lock{opacity:.6}
+.edhint{font-size:calc(var(--u)*13);opacity:.6;font-weight:700;align-self:center}
+.edtools{display:flex;gap:calc(var(--u)*6);justify-content:center}
+#edMsg{font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8;min-height:calc(var(--u)*17)}
+.edact .btn{font-size:calc(var(--u)*17);padding:calc(var(--u)*5) calc(var(--u)*14)}
+.edact .btn:disabled{opacity:.45;filter:grayscale(.6)}
+.edimp{display:flex;gap:calc(var(--u)*6);align-items:stretch;justify-content:center}
+.edimp textarea{flex:1;height:calc(var(--u)*50);resize:none;font-family:ui-monospace,Consolas,monospace;font-size:calc(var(--u)*13);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;padding:calc(var(--u)*4);direction:ltr;user-select:text;-webkit-user-select:text}
 #touch{position:absolute;left:0;right:0;bottom:0;height:calc(var(--u)*130);pointer-events:none;z-index:5}
 #touch .tb{position:absolute;bottom:calc(var(--u)*10);width:calc(var(--u)*86);height:calc(var(--u)*86);border-radius:50%;background:#ffffff26;border:calc(var(--u)*4) solid #ffffff66;color:#fff;font-size:calc(var(--u)*40);display:flex;align-items:center;justify-content:center;pointer-events:auto;touch-action:none;font-weight:900}
 #touch .tb.on{background:#ffd23faa}
@@ -90,7 +109,7 @@ select.tg{appearance:auto}
       <p class="tag">كل شي آمن هون... وكله كذب 😇</p>
       <div><button class="btn" id="bPlay">ابدأ اللعب</button></div>
       <div><button class="btn alt hide" id="bCont">كمّل من المرحلة 1</button></div>
-      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button></div>
+      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button><button class="tg" id="bEdT">🛠 مصمّم المراحل</button></div>
       <div class="how">⬅ ➡ للحركة · ⬆ أو مسافة للقفز (واضغط مرة ثانية بالهوا!) · P إيقاف · R إعادة · M كتم</div>
       <div class="hlbl">اختر بطلك 👇</div><div class="hrow" id="heroT"></div>
     </div>
@@ -113,7 +132,25 @@ select.tg{appearance:auto}
     <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
     <div class="row"><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
     <div class="lvlpick">اقفز إلى مرحلة: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
+    <div class="row"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
+  </div></div>
+  <div id="ed" class="ov hide"><div class="edbox">
+    <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edX">✖ رجوع</button></div>
+    <div class="edset">
+      <span>القوة</span><button class="tg" id="edNm">−</button><b id="edN">6</b><button class="tg" id="edNp">+</button>
+      <select class="tg" id="edD"><option value="0">عادي 🙂</option><option value="1">مجنون 😈</option><option value="2">مستحيل 💀</option></select>
+      <select class="tg" id="edTh"></select>
+      <button class="tg" id="edSalt">🎲 تغيير <span id="edS">0</span></button>
+      <button class="tg" id="edWipe">🗑 مسح الكل</button>
+    </div>
+    <div class="edseq" id="edSeq"></div>
+    <div class="edtools hide" id="edTools"><button class="tg" id="edEarly">▶ قدّم</button><button class="tg" id="edLate">◀ أخّر</button><button class="tg" id="edDel">✖ احذف</button></div>
+    <div class="edfam" id="edFam"></div>
+    <div class="edvar" id="edVar"></div>
+    <div class="edimp hide" id="edImpBox"><textarea id="edIn" placeholder="الصق الكود أو الرسالة كاملة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="edGo">▶ العب</button><button class="tg" id="edLoad">✏ حمّل للتعديل</button></div></div>
+    <div id="edMsg"></div>
+    <div class="row edact" style="margin-top:0"><button class="btn" id="edPlay">▶ جرّبها</button><button class="btn alt" id="edCopy">📋 انسخ الكود</button><button class="btn alt" id="edImp">📥 كود جاهز</button></div>
   </div></div>
 </div></div>
 <div id="rot" class="hide">قلّب الجوال أفقياً — لا تسأل ليش 🙃</div>
@@ -377,6 +414,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
 /*@include w_gen.js*/
 /*@include w_traps2.js*/
 /*@include w_boss.js*/
+/*@include w_custom.js*/
 
 
 /* =============== UI HELPERS =============== */
@@ -388,7 +426,7 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return;$('hLvl').textContent='المرحلة '+G.level;$('hCoin').textContent='🪙 '+G.coins;$('hDeath').textContent='💀 '+G.deaths}
+function hud(){ if(SIM)return;$('hLvl').textContent=G.custom?'🛠 خريطتي':'المرحلة '+G.level;$('hCoin').textContent='🪙 '+G.coins;$('hDeath').textContent='💀 '+G.deaths}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
     const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
@@ -418,26 +456,27 @@ function announceLevel(n){
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
 function loadLevel(n,announce,opt){
-  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; L=buildLevel(n,opt); RG.s=n*104729+17;
+  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):buildLevel(n,opt); RG.s=n*104729+17;
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
   if(G.cpX!=null){ for(const e of L.ents){ if(e.t==='cp'&&e.x<=G.cpX)e.on=1; if(e.t==='chase'){e.x=P.x-(e.v==='wall'?330:430);e.go=P.x+4*TS} } }
   G.camX=clamp(P.x+PW/2-VW*.4,0,Math.max(0,L.w*TS-VW));
-  if(!SIM){ themeBg=makeBg(THEMES[L.theme],n*31+7); G.bannerT=2.4; G.bannerTxt=['المرحلة '+n,L.name];
+  if(!SIM){ themeBg=makeBg(THEMES[L.theme],n*31+7); G.bannerT=2.4; G.bannerTxt=[G.custom?'🛠 خريطة مخصّصة':'المرحلة '+n,L.name];
     Snd.mus.tempo=clamp(124+n*2.5,124,176);
     $('card').classList.add('hide'); hud();
-    if(n>S.best){S.best=n;save()}
-    if(n===1&&S.deaths===0){say('⬅ ➡ للحركة · ⬆ للقفز · ⬆⬆ قفزة ثانية بالهوا!','any',4.5)}
-    if(announce)announceLevel(n);
+    if(!G.custom&&n>S.best){S.best=n;save()}
+    if(!G.custom&&n===1&&S.deaths===0){say('⬅ ➡ للحركة · ⬆ للقفز · ⬆⬆ قفزة ثانية بالهوا!','any',4.5)}
+    if(announce&&!G.custom)announceLevel(n);
     { const ks=[]; for(const kd of ['tlaugh','scream','taunt']){const a=(byKind[kd]||[]).filter(hasAud); if(a.length)ks.push(rnd(a))} Snd.warm(ks) } }
 }
 function startGame(n){
+  if(G.custom){G.lastLvl=-9;G.cpX=null}      // leaving a custom map: no checkpoint carried into the real levels
   Snd.init(); Snd.resume(); $('title').classList.add('hide'); $('menu').classList.add('hide'); $('hud').classList.remove('hide'); G.bossProg=null; G.bossSeen=0;
   loadLevel(n||1,true); G.state='play'; if(S.music){Snd.startMusic()}
   later(450,()=>heroSay('pick',{force:1,pri:3,delay:0,max:2.2,dur:2.6}));
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; S.deaths++; if(!SIM){save();hud()}
+  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom)S.deaths++; if(!SIM){save();hud();logDeath(cause)}
   P.dvx=P.vx; P.dvy=P.vy; G.shake=9; G.dv=Math.random();
   if(!SIM&&S.sfx&&navigator.vibrate){try{navigator.vibrate(G.lvDeaths%4===0?[30,40,30]:28)}catch(e){}}
   if(DEATH_SFX[cause])DEATH_SFX[cause]();
@@ -497,13 +536,13 @@ function cardImage(ctx){
   return pool.length?bagPick('img:'+ctx+':'+G.cause,pool,x=>x):null;
 }
 function cardLabel(ctx){
-  const d=G.deaths,l=G.level,v=G.lvDeaths;
+  const d=G.deaths,l=G.custom?'خريطتك':'المرحلة '+G.level,v=G.lvDeaths;
   if(G.fakeHit&&Math.random()<.85){G.fakeHit=0;return rnd(['🚩 العلم كان مزيّف! 😂','🚩 صدّقت العلم؟ ولا حفظ ولا شي','🚩 "نقطة حفظ" كانت مقلب'])}
   const set={
-   streak:['🔁 المرحلة '+l+' — المحاولة رقم '+v,'📈 '+v+' محاولات وما زلنا هون','🧱 المرحلة '+l+' تحبك كتير'],
+   streak:['🔁 '+l+' — المحاولة رقم '+v,'📈 '+v+' محاولات وما زلنا هون','🧱 '+l+' تحبك كتير'],
    quick:['⚡ أسرع موتة اليوم','⏱ ثواني بس!','🏎 رقم قياسي بالسرعة'],
    near:['😭 كنت قريب كتير!','📏 باقي خطوتين!','🚪 الباب كان يناديك'],
-  }[ctx]||['💀 موتة رقم '+d+' — المرحلة '+l,'☠ الخسارة رقم '+d,'🎬 المشهد: الموت رقم '+d,'📉 رصيد الموت: '+d];
+  }[ctx]||['💀 موتة رقم '+d+' — '+l,'☠ الخسارة رقم '+d,'🎬 المشهد: الموت رقم '+d,'📉 رصيد الموت: '+d];
   return rnd(set);
 }
 function fillCard(top,im,t,d,hint){
@@ -520,7 +559,7 @@ function showCard(){
   G.holdMin=x.play?2.4:3.4;       // how long the card stays at least (text-only taunts need reading time)
   fillCard(cardLabel(ctx),cardImage(ctx),x.t,x.d);
 }
-function retry(){ loadLevel(G.level); G.state='play'; }
+function retry(){ loadLevel(G.level,false,G.custom?{custom:G.custom}:undefined); G.state='play'; }
 function winLevel(){
   if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y);
   if(L.boss){ bossEnd(); return }
@@ -529,12 +568,13 @@ function winLevel(){
   if(x&&ks.length&&Math.random()<.6){G.winCard={x,im:bagPick('img:win',ks,y=>y)};G.winLen=3.4}
   else if(x)say(x.t,x.d,2.4);
   if(Math.random()<.5)heroSay('win',{force:1,pri:5,delay:.05,max:1.4,dur:2});
-  S.best=Math.max(S.best,G.level+1); save();
+  if(G.custom){ if(!SIM)customCleared() } else { S.best=Math.max(S.best,G.level+1); save() }
 }
-function nextLevel(){ loadLevel(G.level+1,true); G.state='play'; }
+function nextLevel(){ if(G.custom){customWon();return} loadLevel(G.level+1,true); G.state='play'; }
 
 /* =============== UPDATE =============== */
 function update(dt){
+  if(G.custom&&!SIM&&G.state==='play')recStep();      // proof of a custom-map run: the exact inputs of every simulation step
   G.t+=dt; if(subT>0){subT-=dt;if(subT<=0&&!SIM)$('sub').innerHTML=''}
   if(G.bannerT>0)G.bannerT-=dt;
   if(G.shake>0)G.shake=Math.max(0,G.shake-dt*30);
@@ -618,6 +658,7 @@ function anyKeyContinue(){
 }
 addEventListener('keydown',e=>{
   if(e.repeat)return; Snd.init(); Snd.resume();
+  if(G.state==='editor')return;
   const k=KM[e.code];
   if(G.state==='title'){ if(e.code==='Enter'||e.code==='Space'){startGame(1);e.preventDefault()} return }
   if(e.code==='KeyP'||e.code==='Escape'){togglePause();return}
@@ -635,11 +676,11 @@ document.querySelectorAll('#touch .tb').forEach(b=>{
   const up=e=>{b.classList.remove('on');setKey(k,false)};
   b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',up);
 });
-$('stage').addEventListener('pointerdown',e=>{ if(e.target.closest('button,select,input,.tb'))return; Snd.init();Snd.resume(); anyKeyContinue() });
+$('stage').addEventListener('pointerdown',e=>{ if(e.target.closest('button,select,input,textarea,.tb'))return; Snd.init();Snd.resume(); anyKeyContinue() });
 addEventListener('touchstart',()=>{ if(!touchMode){touchMode=true;$('stage').classList.add('touch');if(G.state!=='title')$('touch').classList.remove('hide');resize()} },{passive:true});
 function togglePause(){
   if(G.state==='menu'){ $('menu').classList.add('hide'); G.state=G.pausedFrom||'play'; if(touchMode)$('touch').classList.remove('hide'); return }
-  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').value=G.level; syncToggles() }
+  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').value=G.level; $('bEdit').classList.toggle('hide',!G.custom); syncToggles() }
 }
 $('bPlay').onclick=()=>{S.deaths=0;save();startGame(1);const x=pick('intro',{pAudio:.9});
   if(x){later(600,()=>{sayVoice(x,4)}); later(4800,()=>{if(G.deaths===0)say('⬅ ➡ للحركة · ⬆ للقفز. صدّق اللافتات... أو لا 😉','any',3.6)})}};
@@ -668,7 +709,7 @@ $('bShare').onclick=()=>shareResult($('bShare')); $('bShareT').onclick=()=>share
   $('bFull').onclick=()=>{ try{ if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document)} else (de.requestFullscreen||de.webkitRequestFullscreen).call(de) }catch(e){} } } }
 $('bResume').onclick=togglePause;
 $('bGo').onclick=()=>{const n=clamp(parseInt($('inLvl').value)||1,1,999);$('menu').classList.add('hide');G.state='play';startGame(n)};
-$('bHome').onclick=()=>{$('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');G.state='title';$('sub').innerHTML='';Snd.stopMusic()};
+$('bHome').onclick=goTitle;
 document.querySelectorAll('.tg[data-s]').forEach(b=>b.onclick=()=>{S[b.dataset.s]=!S[b.dataset.s];save();syncToggles();Snd.init();Snd.ui();
   if(b.dataset.s==='music'){if(S.music&&G.state!=='title')Snd.startMusic();}});
 $('selDia').onchange=e=>{S.dialect=e.target.value;save()};
@@ -679,6 +720,8 @@ $('selDiff').onchange=e=>setDiff(e.target.value); $('selDiffT').onchange=e=>setD
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&G.state==='play')togglePause()});
 addEventListener('resize',resize);
 
+/*@include w_editor.js*/
+
 /* =============== BOOT =============== */
 if(A.img.card_fakedoor_1)$('decoL').src=A.img.card_fakedoor_1; if(A.img.card_spike_1)$('decoR').src=A.img.card_spike_2||A.img.card_spike_1;
 if(A.img.title_1){const t=$('title').style;t.backgroundImage='radial-gradient(circle at 50% 35%,#2a185088,#07030dcc),url("'+A.img.title_1+'")';t.backgroundSize='cover';t.backgroundPosition='center'}
@@ -686,7 +729,8 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 [...$('selDia').options].forEach(o=>{ if(isSparse(o.value))o.textContent+=' · نص + صوت مختلط' });
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); P=newPlayer(); themeBg=makeBg(THEMES[0],38);
 requestAnimationFrame(frame);
-window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats};
+edBootHash();
+window.TD={A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,encodeCustom,decodeCustom,buildCustom,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG}};
 })();
 </script>
 </body>

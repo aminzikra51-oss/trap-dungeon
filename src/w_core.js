@@ -1,6 +1,6 @@
 /* =============== STATE =============== */
 const K={l:false,r:false,j:false,jp:false};
-const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0};
+const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null};
 let L=null, P=null, parts=[], themeBg=null, SIM=false;
 /* adaptive quality: 3 = full 2.5D | 2 = cheaper light + DPR 1.5 | 1 = no dynamic light, no dust, DPR 1 | 0 = flat classic look */
 const Q={q:3,acc:0,w:0,n:0,bad:0,fps:60,dprCap:[1,1,1.5,2]};

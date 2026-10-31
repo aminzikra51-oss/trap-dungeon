@@ -140,7 +140,8 @@ function buildLevel(n,opt){
   if(ne>=3){D.combo=clamp(D.combo+DF.combo,0,.95);D.gap=Math.max(1.2,D.gap-DF.gap)}
   const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138));
   const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:Math.floor((n-1)/5)%THEMES.length,crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
-  const chaseKind=n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
+  if(opt.theme!=null)L.theme=opt.theme;
+  const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
@@ -151,6 +152,10 @@ function buildLevel(n,opt){
     else if(opt.script&&opt.script.length)break;
     else{ for(let k=0;k<10;k++){let t=pickW(pool.map(p=>[p[0],p[1]*(hist.slice(-2).includes(p[0])?.35:1)]),r); if(x+NEEDF[t]<=W-14){fam=t;break}} }
     if(!fam||x+8>W-12)break;
+    if(fam==='cp'){                         // map editor: a real checkpoint flag placed on solid ground
+      x=Math.max(x,endX+3); const cx=x+1;
+      if(cx+3<W-12&&[0,1,2].every(i=>L.ground[cx+i]>=0&&!L.cr[cx+i])&&!L.pits.some(p=>cx+2>=p[0]-1&&cx<=p[0]+p[1])){ L.ents.push(mkCp(cx)); (L.segs=L.segs||[]).push(['cp',x,3]); lastCpTx=cx; endX=x+3; prev='cp'; hist.push('cp'); trail=0; x=endX+2 }
+      continue }
     const minGap=trail>0?Math.max(7-trail,3):(PITT[fam]?4:(prev==='spike'?3:2));
     x=Math.max(x,endX+minGap);
     const room=W-14-x; if(room<4)break;

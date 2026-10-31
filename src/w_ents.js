@@ -207,7 +207,9 @@ B.anv={
   c.globalAlpha=1}};
 
 /* ---------------- saws: floor | vert | orbit | roll | hi ---------------- */
-function mkSaw(v,o){return Object.assign({t:'saw',v,x:0,y:GY-14,r:13,rot:0,dir:Math.random()<.5?1:-1,sp:100,ph:0,on:v!=='roll'},o)}
+// positional hash instead of Math.random: the same level must always build the same world (replays, share codes, ghosts)
+const hash01=(a,b,c)=>{const k=Math.sin(a*12.9898+b*78.233+(c||0)*37.719)*43758.5453;return k-Math.floor(k)};
+function mkSaw(v,o){const s=Object.assign({t:'saw',v,x:0,y:GY-14,r:13,rot:0,dir:1,sp:100,ph:0,on:v!=='roll'},o); if(!o||o.dir==null)s.dir=hash01((s.x||0)+(s.cx||0),(s.y||0)+(s.x0||0),(s.ph||0)+1)<.5?1:-1; return s}
 B.saw={
  upd(e,dt){
   e.rot+=dt*14*(e.dir||1);
@@ -344,7 +346,7 @@ B.plat={
   if(e.v==='vanish'&&e.st===1){c.strokeStyle='#000b';c.beginPath();c.moveTo(e.x+8,e.y);c.lineTo(e.x+14,e.y+8);c.lineTo(e.x+11,e.y+12);c.stroke()} }};
 
 /* ---------------- coins: honest or bait (effect fires when picked up) ---------------- */
-function mkCoin(x,y,bait,fx){return{t:'coin',x,y,bait:!!bait,fx:fx||'anvil',got:0,ph:Math.random()*6}}
+function mkCoin(x,y,bait,fx){return{t:'coin',x,y,bait:!!bait,fx:fx||'anvil',got:0,ph:hash01(x,y,3)*6}}
 B.coin={
  upd(e,dt){e.ph+=dt*5},
  hit(e){ if(e.got||!circHit(e.x,e.y,10,prect()))return null; e.got=1; if(!e.bait){G.coins++;Snd.coin();return null} Snd.coin(); onBait(e); return null },
