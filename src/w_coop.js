@@ -9,7 +9,7 @@
    A player's input lives in K when it is the local one (G.co.me) and in K2 otherwise (second player on the same keyboard, or the remote player over the net). */
 const CO_TETHER=600, CO_COL=['#ffd23f','#4dd0ff'], KF=['l','r','j','jp','a','ap'];
 function coSpawn(tx){
-  const co=G.co; PLY=[0,1].map(i=>{ const p=newPlayer(tx+i); p.hid=co.hero[i]; p.hst=co.stage[i]; p.idx=i; return p }); P=PLY[co.me];
+  const co=G.co; PLY=[0,1].map(i=>{ const p=newPlayer(tx+i); p.hid=co.hero[i]; p.hst=co.stage[i]; p.hsk=skinSan(co.hero[i],co.skin&&co.skin[i]); p.idx=i; return p }); P=PLY[co.me];
   for(const f of KF)K2[f]=false;
 }
 function kSwap(){ for(const f of KF){ const t=K[f]; K[f]=K2[f]; K2[f]=t } }
@@ -51,7 +51,7 @@ function coDraw(c){
 const CO={sel:{n:1,h2:null,code:'',custom:null},msg:''};
 function coOwnedHeroes(){ return HERO_IDS.filter(heroOwned) }
 function coStart(o){
-  const co={mode:'co',local:o.local!==false,me:o.me|0,hero:o.hero,stage:o.stage||o.hero.map(h=>heroStage(h)),level:o.level||1,custom:o.custom||null,df:o.df||null};
+  const co={mode:'co',local:o.local!==false,me:o.me|0,hero:o.hero,stage:o.stage||o.hero.map(h=>heroStage(h)),skin:o.skin||o.hero.map(h=>skinSaved(h)),level:o.level||1,custom:o.custom||null,df:o.df||null};
   Snd.init(); Snd.resume(); for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide'); $('hud').classList.remove('hide');
   if(co.custom)startCustom(co.custom,'co',co); else startGame(co.level,co);
 }

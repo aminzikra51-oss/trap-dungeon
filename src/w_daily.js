@@ -21,7 +21,7 @@ const DY_BY={}; for(const p of DY_POOL)DY_BY[p.k]=p;
 if(!S.dy||typeof S.dy!=='object')S.dy={d:-1,t:[],p:{},c:{},a:0};
 if(!S.wk||typeof S.wk!=='object')S.wk={w:-1,t:[],p:{},c:{},a:0};
 
-const DAY_MS=86400000, dyNow=()=>{ const d=new Date(); return d.getTime()-d.getTimezoneOffset()*60000 };       // "local clock" in ms
+const DAY_MS=86400000, dyNow=()=>{ const d=new Date(); return d.getTime()-d.getTimezoneOffset()*60000+(ADMG.doff|0)*86400000 };   // ADMG.doff = days shifted by the admin console (0 in the public build)       // "local clock" in ms
 const dayNum=()=>Math.floor(dyNow()/DAY_MS), weekNum=()=>Math.floor((dayNum()-2)/7);                             // weeks start on Saturday (1 Jan 1970 was a Thursday)
 function dyRng(seed){ let a=(seed^0x9e3779b9)>>>0; return ()=>{ a=(a+0x6D2B79F5)>>>0; let t=a; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296 } }
 function dyGen(seed,key){                                       // 3 different kinds, tier 0..2 = easy..hard

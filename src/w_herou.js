@@ -2,6 +2,7 @@
 SHOP.hero=null;
 const ROMAN=['I','II','III','IV','V'];
 function heroUpRender(g){
+  skinPvStop();
   for(const id of HERO_IDS){
     if(!heroOwned(id))continue;
     const st=heroStage(id), A=HAB[id], need=st<HERO_MAXST?XP_NEED[st]:0, xp=xpOf(id), card=el('div','shc up'+(S.hero===id?' sel':'')), cv2=document.createElement('canvas'); cv2.width=64; cv2.height=84; paintHero(cv2,id);
@@ -19,7 +20,7 @@ function heroUpRender(g){
         const r=upgradeHero(id); if(r==='ok'){ Snd.coin(); Snd.win(); shopMsg('ترقّى '+HEROES[id].name+' للمرحلة '+ROMAN[heroStage(id)]+' 🎉'+(ACCS[id][heroStage(id)-1]?' — اكسسوار جديد: '+ACCS[id][heroStage(id)-1][4]:'')) } else if(r==='xp')shopMsg('بدك خبرة أكتر بهالبطل — العب فيه'); else if(r==='poor')shopMsg('ناقصك عملات 🪙'); shopRender() }) }
     const hasEvo=!!(HSPR[id+'_s1']&&HSPR[id+'_s1'].ok), look=hasEvo?el('button','tg look',classicOf(id)?'🎩 كلاسيكي + إكسسوارات':'🎭 الشكل المتطوّر',()=>{
       S.hcl=S.hcl||{}; if(S.hcl[id])delete S.hcl[id]; else S.hcl[id]=1; save(); try{syncHeroes()}catch(e){} shopMsg(classicOf(id)?'الشكل الكلاسيكي: بتظهر الإكسسوارات اللي لبستها':'الشكل المتطوّر: كل مرحلة صورة جديدة (بلا إكسسوارات)'); shopRender() }):null;
-    info.append(top,pips,abl,nxt,bar,xt,btn); if(look)info.append(look); card.append(cv2,info); g.appendChild(card);
+    info.append(top,pips,abl,nxt,bar,xt,btn); if(look)info.append(look); const skr=hasEvo?skinRow(id,cv2):null; if(skr)info.append(skr); card.append(cv2,info); g.appendChild(card);
   }
   if(!g.children.length)g.appendChild(el('div','edhint','اشترِ بطل من تبويب الأبطال أولاً'));
 }

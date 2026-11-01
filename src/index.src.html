@@ -151,6 +151,7 @@ select.tg{appearance:auto}
 .acchips .ch{font-size:calc(var(--u)*12);padding:calc(var(--u)*3) calc(var(--u)*9)}
 .shc.up{flex-direction:row;align-items:stretch;gap:calc(var(--u)*8);text-align:right}
 .shc.up canvas{width:calc(var(--u)*56);height:calc(var(--u)*74);align-self:center;flex:none}
+.skr{display:flex;flex-direction:column;gap:calc(var(--u)*4);margin-top:calc(var(--u)*3);padding-top:calc(var(--u)*5);border-top:calc(var(--u)*1.5) dashed #fff3}.skt{font-size:calc(var(--u)*12);font-weight:800;color:#ffe9a8}.skc{display:flex;flex-wrap:wrap;gap:calc(var(--u)*4)}.skc .tg.sk{font-size:calc(var(--u)*12);padding:calc(var(--u)*3) calc(var(--u)*7)}.skc .tg.sk.lock{opacity:.8}.skc .tg.sk.pv{outline:calc(var(--u)*2) solid #ffd23f}
 .upi{display:flex;flex-direction:column;gap:calc(var(--u)*3);flex:1;min-width:0;align-items:stretch;justify-content:center}
 .upt{display:flex;justify-content:space-between;align-items:baseline;gap:calc(var(--u)*6)}
 .upt .stg{font-size:calc(var(--u)*11);color:#ffd23f;font-weight:900}
@@ -190,6 +191,7 @@ select.tg{appearance:auto}
 .pfsec{background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*7) calc(var(--u)*9);display:flex;flex-direction:column;gap:calc(var(--u)*6)}
 .pfheadc{flex-direction:row;align-items:center;gap:calc(var(--u)*12)}.pfcol{display:flex;flex-direction:column;gap:calc(var(--u)*4);flex:1;min-width:0}
 #pfName{font-size:calc(var(--u)*18);font-weight:900;font-family:inherit;border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;padding:calc(var(--u)*3) calc(var(--u)*8);width:calc(var(--u)*220);max-width:100%}
+.pfxp{display:flex;align-items:center;gap:calc(var(--u)*6);font-size:calc(var(--u)*12);font-weight:800;color:#cfeaff}.pfxp .bar{flex:1;height:calc(var(--u)*7);background:#0009;border:calc(var(--u)*1.5) solid #000;border-radius:calc(var(--u)*6);overflow:hidden}.pfxp .bar i{display:block;height:100%;background:linear-gradient(90deg,#4cc9f0,#7cfc8a)}.pfxp small{direction:ltr;opacity:.85}
 .pftitle{font-weight:900;color:#ffe9a8;font-size:calc(var(--u)*14)}.pfcode{display:flex;align-items:center;gap:calc(var(--u)*8);font-size:calc(var(--u)*13);font-weight:800}.pfcode b{letter-spacing:calc(var(--u)*1.5);direction:ltr;color:#fff}
 .pfmsg:empty{display:none}.pfmsg{min-height:calc(var(--u)*16);font-size:calc(var(--u)*13);font-weight:800;color:#ffe9a8}
 .pfl{font-size:calc(var(--u)*13);font-weight:900;color:var(--gold)}.pfrow{display:flex;flex-wrap:wrap;gap:calc(var(--u)*5)}
@@ -252,7 +254,7 @@ select.tg{appearance:auto}
 <div id="wrap" dir="rtl" lang="ar"><div id="stage">
   <canvas id="cv"></canvas>
   <div id="hud" class="hide">
-    <div><span class="chip" id="hLvl">المرحلة 1</span><span class="chip" id="hCoin">🪙 0</span></div><div id="gain"></div><div id="achT"></div>
+    <div><span class="chip" id="hLvl">المرحلة 1</span><span class="chip" id="hCoin">🪙 0</span><span class="chip hide" id="hGem">💎 0</span><span class="chip hide" id="hPl">🔰 1</span></div><div id="gain"></div><div id="achT"></div>
     <div class="r"><span class="chip" id="hDeath">💀 0</span><button class="ibtn hide" id="bFull" title="ملء الشاشة">⛶</button><button class="ibtn" id="bMenu">⚙</button></div>
   </div>
   <div id="sub"></div>
@@ -385,7 +387,7 @@ const $=id=>document.getElementById(id);
 /* =============== SETTINGS / STORAGE =============== */
 const S={sfx:true,music:true,voice:true,dialect:'mix',best:1,deaths:0,fin:0,hero:'falafel',look3d:true,diff:'crazy',qm:'auto',q:null};
 try{Object.assign(S,JSON.parse(localStorage.getItem('td_s')||'{}'))}catch(e){}
-const save=()=>{try{localStorage.setItem('td_s',JSON.stringify(S))}catch(e){}};
+const save=()=>{if(save.fz)return;try{localStorage.setItem('td_s',JSON.stringify(S))}catch(e){}};          // save.fz: set by the admin console right before it replaces the save and reloads
 
 /* =============== TEXT DATA =============== */
 const DL={sy:'شامي',eg:'مصري',gulf:'خليجي',iq:'عراقي',ma:'مغربي',lb:'لبناني',ps:'فلسطيني',any:'فصحى مضحكة',en:'English'};
@@ -647,6 +649,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
 /*@include w_boss.js*/
 /*@include w_custom.js*/
 /*@include w_econ.js*/
+/*@include w_gems.js*/
 
 
 /* =============== UI HELPERS =============== */
@@ -658,7 +661,7 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;$('bShopT').textContent='🛒 المتجر · 🪙 '+S.wallet}
+function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;$('bShopT').textContent='🛒 المتجر · 🪙 '+S.wallet+((S.gems|0)>0?' · 💎 '+(S.gems|0):'');{ const g=S.gems|0, e=$('hGem'), l=$('hPl'); e.classList.toggle('hide',!g); e.textContent='💎 '+g; l.classList.toggle('hide',!plOn()); l.textContent='🔰 '+plLevel() }}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
     const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); b.classList.toggle('lock',!heroOwned(id)); b.dataset.p=heroOwned(id)?'':HERO_PRICE[id]; const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
@@ -687,7 +690,7 @@ function announceLevel(n){
   const m=pick('milestone',{lv:n,pAudio:.98}); if(m){later(1000,()=>sayVoice(m,3.6,{pri:3,ttl:1}));return}
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
-const ADMG={on:0,god:0,speed:1};      // admin console switches (the console itself, w_admin.js, is left out of the public build)
+const ADMG={on:0,god:0,speed:1,doff:0};      // admin console switches (the console itself, w_admin.js, is left out of the public build)
 function loadLevel(n,announce,opt){
   K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0;G.help=null;G.helped=false} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):(isTrialN(n)?buildTrial(n):buildLevel(n,coOpt(opt))); G.pend=[]; G.ck=[]; G.ts=1; if(!G.custom&&!L.trial&&!G.co&&!G.race){ seedCoins(); G.ck=L.ents.filter(e=>e.t==='coin'&&!e.bait).map(coinKey); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17; if(announce&&!SIM&&!G.custom&&!L.trial)helpApply();
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); if(G.co)coSpawn(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
@@ -988,6 +991,7 @@ addEventListener('resize',resize);
 /*@include w_acc.js*/
 /*@include w_accs.js*/
 /*@include w_cosm.js*/
+/*@include w_skins.js*/
 /*@include w_herou.js*/
 /*@include w_trial.js*/
 /*@include w_daily.js*/
@@ -1002,7 +1006,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 </body>

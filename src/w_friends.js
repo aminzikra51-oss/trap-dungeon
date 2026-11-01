@@ -20,7 +20,7 @@ const frList=()=>Array.isArray(S.fr)?S.fr:(S.fr=[]);
 function frId(){ if(!frOk(S.fid)){ S.fid=Array.from({length:8},()=>NET_AL[Math.random()*NET_AL.length|0]).join(''); save() } return S.fid }
 const frName=()=>frClean(S.fname)||('لاعب '+frId().slice(0,3));
 const frRoomNow=()=>NET.role==='h'&&NET.link==='wait'?NET.code:'';
-const frSig=()=>frName()+'|'+S.hero+'|'+heroStage(S.hero)+'|'+frRoomNow()+'|'+pfSig();
+const frSig=()=>frName()+'|'+S.hero+'|'+heroStage(S.hero)+'|'+skinSaved(S.hero)+'|'+frRoomNow()+'|'+pfSig();
 const frIsOn=id=>{ const p=FR.pres[id]; return !!(p&&typeof p.ts==='number'&&frNow()-p.ts<65000) };
 const frPanelOpen=()=>!$('co').classList.contains('hide')&&NET.tab&&$('frBox').open;
 
@@ -34,7 +34,7 @@ function frSend(to,obj){                                                        
 function frBeat(){
   if(!FR.on||!frAvail())return; FR.sig=frSig();
   const pf=pfGet();
-  fetch(frUrl('u'+frId()+'/p'),{method:'PUT',body:JSON.stringify({n:frName(),h:S.hero,s:heroStage(S.hero),a:pf.a,f:pf.f,r:frRoomNow(),ts:{'.sv':'timestamp'}})})
+  fetch(frUrl('u'+frId()+'/p'),{method:'PUT',body:JSON.stringify({n:frName(),h:S.hero,s:heroStage(S.hero),k:skinSaved(S.hero),a:pf.a,f:pf.f,r:frRoomNow(),ts:{'.sv':'timestamp'}})})
     .then(r=>r.json()).then(d=>{ if(d&&typeof d.ts==='number')FR.off=d.ts-Date.now() }).catch(()=>{});
   frStatsPut();
 }

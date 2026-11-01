@@ -65,7 +65,7 @@ function netJoin(code){
   if(code.length<4){ NET.msg='اكتب كود الغرفة (5 خانات)'; netRender(); return }
   netOpen('g',code); netSendJoin();
 }
-const netHello=()=>({v:NET_V,h:S.hero,s:heroStage(S.hero),b:Math.max(1,S.best)});
+const netHello=()=>({v:NET_V,h:S.hero,s:heroStage(S.hero),k:skinSaved(S.hero),b:Math.max(1,S.best)});
 function netSendJoin(){ if(NET.tr)NET.tr.send(Object.assign({t:'jn'},netHello())) }
 function netTimer(){
   const N=NET, now=netNow(); if(!N.tr)return;
@@ -81,10 +81,10 @@ function netRecv(m){
     case 'jn':
       if(N.role!=='h')return;
       if(m.v!==NET_V){ N.tr.send({t:'no',w:'v'}); return }
-      N.peer={hero:m.h,stage:m.s,best:m.b}; if(N.link==='wait')N.link='conn';
+      N.peer={hero:m.h,stage:m.s,skin:skinSan(m.h,m.k),best:m.b}; if(N.link==='wait')N.link='conn';
       N.tr.send(Object.assign({t:'wl'},netHello())); netLobbySend(); netRender(); break;
     case 'wl':
-      if(N.role!=='g')return; N.peer={hero:m.h,stage:m.s,best:m.b}; if(N.link==='join'){ N.link='conn'; N.msg='' } netRender(); break;
+      if(N.role!=='g')return; N.peer={hero:m.h,stage:m.s,skin:skinSan(m.h,m.k),best:m.b}; if(N.link==='join'){ N.link='conn'; N.msg='' } netRender(); break;
     case 'no': netLeave(m.w==='v'?'نسخة اللعبة مختلفة عن صاحبك — حدّثوا الصفحة الاتنين 🔄':'ما قدرت أدخل الغرفة'); break;
     case 'pg': N.tr.send({t:'pn',ts:m.ts}); break;
     case 'pn': { const r=netNow()-m.ts; N.rtt=N.rtt?N.rtt*.7+r*.3:r; N.pings.push(r); if(N.pings.length>7)N.pings.shift(); netRender() } break;
@@ -127,12 +127,13 @@ function netLobbyRecv(m){
 }
 const netHeroes=()=>NET.role==='h'?[S.hero,NET.peer.hero]:[NET.peer.hero,S.hero];
 const netStages=()=>NET.role==='h'?[heroStage(S.hero),NET.peer.stage]:[NET.peer.stage,heroStage(S.hero)];
+const netSkins=()=>NET.role==='h'?[skinSaved(S.hero),NET.peer.skin|0]:[NET.peer.skin|0,skinSaved(S.hero)];
 function netD(){ const r=NET.pings.length>=2?NET.pings.slice().sort((a,b)=>a-b)[NET.pings.length>>1]:(NET.rtt||120); return clamp(Math.ceil(r/2/16.7)+3,4,16) }
 function netStartHost(){                                       // host presses start
   const N=NET; if(N.role!=='h'||N.link!=='conn'||!N.peer)return;
   const s=CO.sel;
   if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة'; coRender(); return }
-  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),D:netD(),hero:netHeroes(),stage:netStages(),rtt:N.rtt|0};
+  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),D:netD(),hero:netHeroes(),stage:netStages(),skin:netSkins(),rtt:N.rtt|0};
   N.tr.send(o); netBegin(o);
 }
 function netBegin(o){
@@ -145,7 +146,7 @@ function netBegin(o){
   N.startAt=netNow()+(N.role==='h'?clamp((N.rtt||0)/2,0,400):0);       // the host waits half a ping so both machines start the same frame at about the same moment
   for(let i=0;i<N.dl;i++){ N.loc[i]=0; N.rem[i]=0 }
   for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
-  coStart({hero:o.hero,stage:o.stage,level:o.lv,custom:cu,local:false,me:N.me,df:o.df});
+  coStart({hero:o.hero,stage:o.stage,skin:Array.isArray(o.skin)?o.skin.map((k,i)=>skinSan(o.hero[i],k)):null,level:o.lv,custom:cu,local:false,me:N.me,df:o.df});
 }
 
 /* ---- co-op netcode: prediction + rollback ----
@@ -258,7 +259,7 @@ function raceJudge(tm0,tm1,now,rtt){                          // the host's view
 function raceBegin(o,cu){
   const N=NET;
   G.race={df:o.df,hold:0,goAt:0,opp:newPlayer(0),tx:null,over:false,done:false,res:null,seen:false,fn:null,tm1:null,fnAt:0};
-  const op=G.race.opp; op.hid=N.peer.hero; op.hst=N.peer.stage; op.run=0;
+  const op=G.race.opp; op.hid=N.peer.hero; op.hst=N.peer.stage; op.hsk=skinSan(N.peer.hero,N.peer.skin); op.run=0;
   if(cu)startCustom(cu,'race'); else startGame(o.lv);
   const r=G.race; r.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0); r.goAt=netNow()+r.hold*1000;
   $('raceBar').classList.remove('hide'); $('raceRes').classList.add('hide'); raceCdUi();

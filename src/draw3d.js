@@ -17,9 +17,16 @@ const look3=()=>!!S.look3d&&Q.q>0;
    (heroForm: I-II 1, III-IV 2, V 3), a form picture assets/hero/<id>_f2/_f3.webp when it exists, else the base picture with code-made effects (formFx). */
 const stageOf=id=>(P&&P.hid===id&&P.hst!=null)?P.hst:heroStage(id);
 const isEvoKey=k=>/_s\d$/.test(k);
+/* skins: a hero can have more evolution looks (assets/hero/<id>_k1_s1..5.webp, <id>_k2_...). S.hsk[id] = the one he wears (0 = the first path), S.hso['<id>:<k>'] = owned (w_skins.js).
+   Co-op / race players carry the skin they started with (P.hsk); SKV is the shop preview (a skin and stage shown on a thumbnail without being worn). */
+const SKV={id:'',k:null,st:null};
+const skinSaved=id=>{ const k=(S.hsk&&S.hsk[id])|0; return k>0&&S.hso&&S.hso[id+':'+k]?k:0 };
+const skinOf=id=>{ if(SKV.id===id&&SKV.k!=null)return SKV.k; if(P&&P.hid===id&&P.hsk!=null)return P.hsk; return skinSaved(id) };
 const classicOf=id=>!!(S.hcl&&S.hcl[id]);
 const sprKeyOf=(id,st,classic)=>{
-  if(!(classic!=null?classic:classicOf(id))){ const k=id+'_s'+(st+1), o=HSPR[k]; if(o&&o.ok)return k }
+  if(!(classic!=null?classic:classicOf(id))){
+    const sk=skinOf(id); if(sk>0){ const k=id+'_k'+sk+'_s'+(st+1), o=HSPR[k]; if(o&&o.ok)return k }                         // the skin's picture, else the first path's
+    const k=id+'_s'+(st+1), o=HSPR[k]; if(o&&o.ok)return k }
   for(let f=heroForm(st);f>1;f--){ const k=id+'_f'+f, o=HSPR[k]; if(o&&o.ok)return k } return id };       // the stage picture, else (classic / not loaded) form III, form II, the base one
 const keyForm=k=>{ if(isEvoKey(k))return 9; const m=/_f([23])$/.exec(k); return m?+m[1]:1 };
 const sprOf=(id,st,classic)=>{ id=id||hid(); const o=HSPR[sprKeyOf(id,st!=null?st:stageOf(id),classic)]; return o&&o.ok?o:null };
@@ -74,7 +81,7 @@ function heroSlices(c,tt,piece){ // sprite broken in 4 bands (hat / face / belly
 }
 function heroThumb(cx,id,ao){                                  // ao = {only,force}: shop preview of a single accessory slot
   const cl=ao?true:null;                                       // the accessory previews always use the classic picture (the pieces are fitted to it)
-  const stg=ao&&ao.stage!=null?ao.stage:heroStage(id), key=sprKeyOf(id,stg,cl), o=sprOf(id,stg,cl); if(!o||!look3())return false; const m=HMETA[key]||{w:o.im.width,h:o.im.height,cx:.5}, evo=isEvoKey(key); let h=62*(evo?(m.hk||1):1),w=h*m.w/m.h; if(evo&&w>60){ h*=60/w; w=60 }
+  const stg=ao&&ao.stage!=null?ao.stage:(SKV.id===id&&SKV.st!=null?SKV.st:heroStage(id)), key=sprKeyOf(id,stg,cl), o=sprOf(id,stg,cl); if(!o||!look3())return false; const m=HMETA[key]||{w:o.im.width,h:o.im.height,cx:.5}, evo=isEvoKey(key); let h=62*(evo?(m.hk||1):1),w=h*m.w/m.h; if(evo&&w>60){ h*=60/w; w=60 }
   const form=heroForm(stg), kf=keyForm(key), fx=form>kf&&!(ao&&ao.only), t=performance.now()/1000;
   if(fx){ cx.save(); cx.translate(0,-1); formFx(cx,id,form,w,h,'under',t,.62); cx.restore() }
   if(!evo){ cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'back',ao); cx.restore() }

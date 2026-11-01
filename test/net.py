@@ -48,6 +48,8 @@ def run():
         A.evaluate(SETUP, {'best': 14, 'diff': 'crazy', 'hero': 'falafel', 'own': ['falafel'], 'coins': 5, 'q': 1, 'nu': nu})
         B.evaluate(SETUP, {'best': 9, 'diff': 'hell', 'hero': 'cat', 'own': ['cat', 'robot'], 'coins': 777, 'q': 2, 'nu': nu})
 
+        A.evaluate("() => { const S = window.TD.S; S.hso = {'falafel:1': 1}; S.hsk = {falafel: 1}; S.hcl = {} }")     # both wear a skin: it must reach the other machine
+        B.evaluate("() => { const S = window.TD.S; S.hso = {'cat:1': 1}; S.hsk = {cat: 1}; S.hcl = {} }")
         print('handshake')
         A.evaluate("() => { window.TD.coOpen(''); document.getElementById('coTabN').click(); document.getElementById('nHost').click() }")
         sa = A.evaluate(STATE); ok('host waits with a 5 character code', sa['link'] == 'wait' and len(sa['code']) == 5, sa['code'])
@@ -58,6 +60,7 @@ def run():
         ok('transport in use is the expected one', A.evaluate("() => window.TD.NET.kind") == ('rtdb' if RTDB else 'loop'), A.evaluate("() => window.TD.NET.kind"))
         ok('both connected', sa['link'] == 'conn' and sb['link'] == 'conn', (sa['link'], sb['link']))
         ok('each knows the other hero', sa['peer'] and sa['peer']['hero'] == 'cat' and sb['peer'] and sb['peer']['hero'] == 'falafel')
+        ok('each knows the skin the other one wears', sa['peer'] and sa['peer'].get('skin') == 1 and sb['peer'] and sb['peer'].get('skin') == 1, (sa['peer'], sb['peer']))
         ok('level choice is free online: progress of either player does not limit it', A.evaluate("() => window.TD.coMax()") == 999 and B.evaluate("() => window.TD.coMax()") == 999)
         B.wait_for_timeout(int(1500 * SLOW))
         ok('ping measured', A.evaluate(STATE)['rtt'] >= 0 and len(A.evaluate("() => window.TD.NET.pings")) >= 1)
@@ -82,6 +85,7 @@ def run():
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
         ok('both in a lockstep game', sa['co'] and sb['co'] and sa['link'] == 'play' and sb['link'] == 'play', (sa, sb))
         ok('same level, heroes in host/guest order', sa['lvl'] == 3 and sb['lvl'] == 3 and A.evaluate("() => window.TD.PLY.map(p => p.hid).join()") == 'falafel,cat' and B.evaluate("() => window.TD.PLY.map(p => p.hid).join()") == 'falafel,cat')
+        ok('every player is drawn with his own skin on both machines', A.evaluate("() => window.TD.PLY.map(p => p.hsk).join()") == '1,1' and B.evaluate("() => window.TD.PLY.map(p => p.hsk).join()") == '1,1' and A.evaluate("() => window.TD.sprKeyOf('cat', 2)") != '', A.evaluate("() => window.TD.PLY.map(p => p.hsk).join()"))
         ok('each controls his own player', A.evaluate("() => window.TD.G.co.me") == 0 and B.evaluate("() => window.TD.G.co.me") == 1)
         A.evaluate(MASH, [11, 'KR']); B.evaluate(MASH, [99, 'KR'])
         A.wait_for_timeout(6000)
