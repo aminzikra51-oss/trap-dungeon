@@ -11,7 +11,7 @@ GEN = r"""() => { const T=window.TD, S=T.S, R={};
   const a=T.dyGen(20000*7919+11,'d'), b=T.dyGen(20000*7919+11,'d'), c=T.dyGen(20001*7919+11,'d');
   R.same=JSON.stringify(a)===JSON.stringify(b); R.differs=JSON.stringify(a)!==JSON.stringify(c);
   R.kindsOk=true; R.rewOk=true; R.causeOk=true; R.starNever=true;
-  S.cl={1:1}; S.nd={1:1}; S.cs={1:1};                                         // every star of the only cleared level is taken: a star task would be impossible
+  S.cl={1:3}; S.nd={1:1}; S.cs={1:1};                                         // every star of the only cleared level is taken: a star task would be impossible
   for(let d=0;d<400;d++){ for(const key of ['d','w']){ const t=T.dyGen(d*7919+11,key); if(new Set(t.map(x=>x.k)).size!==3)R.kindsOk=false; if(t.map(x=>x.r).join()!==T.DY_REW[key].join())R.rewOk=false;
       for(const x of t){ if(x.k==='cause'&&!x.c)R.causeOk=false; if(x.k==='star')R.starNever=false } } }
   S.cl={}; S.nd={}; S.cs={}; R.pool=T.DY_POOL.length;

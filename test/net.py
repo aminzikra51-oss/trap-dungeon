@@ -31,7 +31,7 @@ SETUP = """(cfg) => { const T = window.TD, S = T.S; T.sim(false); S.best = cfg.b
 MASH = """([seed, which]) => { let s = seed; const r = () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; const KR = window.TD[which || 'KR'];
   window.__mash = setInterval(() => { KR.r = r() < .7; KR.l = r() < .08; const j = r() < .35; if (j && !KR.j) KR.jp = true; KR.j = j; const a = r() < .1; if (a && !KR.a) KR.ap = true; KR.a = a }, 90) }"""
 STOP = "() => { clearInterval(window.__mash); for (const o of [window.TD.KR, window.TD.K]) o.l = o.r = o.j = o.a = false }"
-STATE = "() => { const T = window.TD, N = T.NET; return {link: N.link, f: N.f, bad: N.bad, fixes: N.fixes, st: T.G.state, co: !!T.G.co, race: !!T.G.race, mode: N.mode, peer: N.peer, rtt: Math.round(N.rtt), D: N.D, lvl: T.G.level, msg: N.msg, code: N.code} }"
+STATE = "() => { const T = window.TD, N = T.NET; return {link: N.link, f: N.f, bad: N.bad, fixes: N.fixes, st: T.G.state, co: !!T.G.co, race: !!T.G.race, mode: N.mode, peer: N.peer, rtt: Math.round(N.rtt), D: N.dl, c: N.c, nrb: N.nrb, rbFr: N.rbFr, maxRb: N.maxRb, lvl: T.G.level, msg: N.msg, code: N.code} }"
 
 def run():
     srv, port = serve(); db = FakeRtdb(LAT) if RTDB else None; nu = db.url if db else '-'
@@ -45,7 +45,7 @@ def run():
             pg.on('pageerror', lambda e, nm=nm: errs.append(nm + ':' + str(e)))
             pg.on('console', lambda m, nm=nm: errs.append(nm + ' C:' + m.text) if m.type == 'error' else None)
             pg.goto(url); pg.wait_for_timeout(500)
-        A.evaluate(SETUP, {'best': 14, 'diff': 'normal', 'hero': 'falafel', 'own': ['falafel'], 'coins': 5, 'q': 1, 'nu': nu})
+        A.evaluate(SETUP, {'best': 14, 'diff': 'crazy', 'hero': 'falafel', 'own': ['falafel'], 'coins': 5, 'q': 1, 'nu': nu})
         B.evaluate(SETUP, {'best': 9, 'diff': 'hell', 'hero': 'cat', 'own': ['cat', 'robot'], 'coins': 777, 'q': 2, 'nu': nu})
 
         print('handshake')
@@ -81,26 +81,47 @@ def run():
         A.wait_for_timeout(6000)
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
         st = A.evaluate("() => Math.round(window.TD.NET.stallTot || 0)"), B.evaluate("() => Math.round(window.TD.NET.stallTot || 0)")
-        ok('waiting for the other player is a small share of the time', max(st) < 2500, ('stalled ms', st, 'D', sa['D'], 'rtt', sa['rtt']))
+        ok('waiting for the other player is (almost) never needed', max(st) < 1200, ('stalled ms', st, 'dl', sa['D'], 'rtt', sa['rtt']))
+        ok('wrong guesses were repaired by rollbacks, and they stay short', (sa['nrb'] + sb['nrb'] >= 1 or not RTDB) and max(sa['maxRb'], sb['maxRb']) <= 24 + 10, (sa['nrb'], sb['nrb'], 'frames', sa['rbFr'], sb['rbFr'], 'max', sa['maxRb'], sb['maxRb']))
         ok('frames advance on both', sa['f'] > 200 and sb['f'] > 200, (sa['f'], sb['f']))
-        ok('frames stay within the input delay', abs(sa['f'] - sb['f']) <= sa['D'] + 6, (sa['f'], sb['f'], 'D', sa['D']))
+        ok('the machines run side by side (within the allowed lead)', abs(sa['f'] - sb['f']) <= 24 + 8 + int(sa['rtt'] / 16.7), (sa['f'], sb['f'], 'rtt', sa['rtt']))
+        ok('confirmed frames trail the head only a little', sa['f'] - sa['c'] <= 24 and sb['f'] - sb['c'] <= 24, (sa['f'] - sa['c'], sb['f'] - sb['c']))
         ha, hb = A.evaluate("() => window.TD.NET.hh"), B.evaluate("() => window.TD.NET.hh")
         common = [k for k in ha if k in hb]
         ok('state hashes were compared', len(common) >= 5, len(common))
         ok('hashes identical on both machines despite different local profiles', all(ha[k] == hb[k] for k in common) and sb['bad'] == 0 and sa['bad'] == 0, (len(common), sa['bad'], sb['bad']))
-        ok('a different local difficulty did not leak into the match', A.evaluate("() => window.TD.G.co.df") == 'normal' and B.evaluate("() => window.TD.G.co.df") == 'normal' and B.evaluate("() => window.TD.S.diff") == 'hell')
+        ok('a different local difficulty did not leak into the match', A.evaluate("() => window.TD.G.co.df") == 'crazy' and B.evaluate("() => window.TD.G.co.df") == 'crazy' and B.evaluate("() => window.TD.S.diff") == 'hell')
         if SHOTS:
             os.makedirs(SHOTS, exist_ok=True); A.locator('#stage').screenshot(path=f'{SHOTS}/net_co_A.png'); B.locator('#stage').screenshot(path=f'{SHOTS}/net_co_B.png')
 
         print('forced drift and resync')
-        A.evaluate(STOP); B.evaluate(STOP)
+        A.evaluate(STOP); B.evaluate(STOP); A.wait_for_timeout(int(900 * SLOW))        # let the last key changes still on the wire land first (a rollback would erase the nudge)
         for _ in range(40):                                    # wait until both are alive in a play state, then nudge only the guest's copy
             if A.evaluate("() => window.TD.G.state") == 'play' and B.evaluate("() => window.TD.G.state") == 'play': break
             A.wait_for_timeout(250)
-        B.evaluate("() => { const T = window.TD; T.PLY[0].x += 0.37; T.PLY[1].vy -= 3 }")
-        A.wait_for_timeout(4500)
+        # my own key must move my own character at once, whatever the connection (this is the whole point of the rollback)
+        imm = {'frames': 99}
+        for key in ('r', 'l', 'r'):
+            imm = A.evaluate("""(key) => new Promise(res => { const T = window.TD, N = T.NET, f0 = N.f, x0 = T.PLY[0].x; T.KR[key] = true; const t0 = performance.now();
+              const iv = setInterval(() => { if (Math.abs(T.PLY[0].x - x0) > 0.01 || N.f - f0 > 40) { clearInterval(iv); T.KR[key] = false; res({frames: N.f - f0, ms: Math.round(performance.now() - t0)}) } }, 2) })""", key)
+            if imm['frames'] <= 6: break
+            A.wait_for_timeout(int(500 * SLOW))
+        ok('my key moves my character within a few frames, not after the round trip', imm['frames'] <= 6, (imm, 'rtt', A.evaluate(STATE)['rtt']))
+        A.wait_for_timeout(int(900 * SLOW))
+        fa, fb = A.evaluate("() => window.TD.NET.fxN"), B.evaluate("() => window.TD.NET.fxN")
+        da, db_ = A.evaluate("() => window.TD.G.deaths"), B.evaluate("() => window.TD.G.deaths")
+        ok('every death / effect ran exactly once, on both machines, only when confirmed', fa.get('d', 0) == fb.get('d', 0) == da == db_, (fa, fb, da, db_))
+        for _try in range(4):
+            for _ in range(40):
+                if A.evaluate("() => window.TD.G.state") == 'play' and B.evaluate("() => window.TD.G.state") == 'play': break
+                A.wait_for_timeout(250)
+            B.evaluate("() => { const T = window.TD; T.PLY[0].x += 0.37; T.PLY[1].vy -= 3 }")
+            A.wait_for_timeout(int(2400 * SLOW))
+            sa, sb = A.evaluate(STATE), B.evaluate(STATE)
+            if sb['bad'] >= 1: break
+        A.wait_for_timeout(int(2000 * SLOW))
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
-        ok('guest noticed the divergence', sb['bad'] >= 1, sb['bad'])
+        ok('guest noticed the divergence', sb['bad'] >= 1, (sb['bad'], sa['bad'], sb['st'], sa['st'], sb['f'], sb['c']))
         ok('guest was repaired from the host snapshot', sb['fixes'] >= 1, sb['fixes'])
         A.wait_for_timeout(2500)
         ha, hb = A.evaluate("() => window.TD.NET.hh"), B.evaluate("() => window.TD.NET.hh")
@@ -128,6 +149,29 @@ def run():
         ok('after the win both land in the lobby, still connected', A.evaluate("() => window.TD.G.state") == 'co' and B.evaluate("() => window.TD.G.state") == 'co' and A.evaluate(STATE)['link'] == 'conn' and B.evaluate(STATE)['link'] == 'conn', (A.evaluate(STATE)['link'], B.evaluate(STATE)['link']))
         A.evaluate(STOP); B.evaluate(STOP)
 
+        print('online puzzles: one bot per machine, each controls only his own player')
+        BOT = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'puzbot.js'), encoding='utf-8').read()
+        for v in ([x for x in os.environ['PUZ'].split(',')] if os.environ.get('PUZ') else (['gate', 'ladder', 'lift'] if RTDB else ['gate', 'ladder', 'bridge', 'sync', 'lift'])):
+            for pg in (A, B): pg.evaluate("(v) => { window.TD.FLAGS.coScript = [['co', v]] }", v)
+            A.evaluate("() => { window.TD.CO.sel.custom = null; window.TD.CO.sel.n = 1; window.TD.coRender() }"); A.wait_for_timeout(int(500 * SLOW))
+            A.evaluate("() => document.getElementById('nGo').click()"); A.wait_for_timeout(int(900 * SLOW))
+            for pg, me in ((A, 0), (B, 1)):
+                pg.evaluate("""([src, me, v]) => { const bot = eval(src)(me, v); window.__bot = setInterval(() => { const k = bot(), KR = window.TD.KR; KR.l = k.l; KR.r = k.r; KR.j = k.j; if (k.jp) KR.jp = true }, 16) }""", [BOT, me, v])
+            done = False
+            for _ in range(int(240 / 0.5)):
+                A.wait_for_timeout(500)
+                fa, fb = A.evaluate("() => window.TD.NET.fxN"), B.evaluate("() => window.TD.NET.fxN")
+                if fa.get('w') and fb.get('w'): done = True; break
+            sa, sb = A.evaluate(STATE), B.evaluate(STATE)
+            ok(f'puzzle {v}: both bots solved it together and the level was won on both machines', done, (fa, fb, 'f', sa['f'], 'deaths', A.evaluate("() => window.TD.G.deaths"), B.evaluate("() => window.TD.G.deaths")))
+            ok(f'puzzle {v}: no desync (hash mismatches) on either machine', sa['bad'] == 0 and sb['bad'] == 0, (sa['bad'], sb['bad'], 'fixes', sa['fixes'], sb['fixes'], 'rollbacks', sa['nrb'], sb['nrb']))
+            for pg in (A, B): pg.evaluate("() => { clearInterval(window.__bot); for (const o of [window.TD.KR, window.TD.K]) o.l = o.r = o.j = o.a = false }")
+            for _ in range(20):
+                A.wait_for_timeout(500)
+                if A.evaluate("() => window.TD.G.state") == 'co' and B.evaluate("() => window.TD.G.state") == 'co': break
+            ok(f'puzzle {v}: both are back in the lobby afterwards', A.evaluate("() => window.TD.G.state") == 'co' and B.evaluate("() => window.TD.G.state") == 'co', (A.evaluate("() => window.TD.G.state"), B.evaluate("() => window.TD.G.state")))
+        for pg in (A, B): pg.evaluate("() => { window.TD.FLAGS.coScript = null }")
+
         print('race')
         A.evaluate("() => document.getElementById('nModeRace').click()"); A.wait_for_timeout(400)
         ok('guest follows the mode switch', B.evaluate("() => window.TD.NET.mode") == 'race')
@@ -138,13 +182,14 @@ def run():
         B.evaluate("() => { window.TD.KR.r = false }")
         A.wait_for_timeout(3800)
         ok('countdown finished', not A.evaluate("() => window.TD.G.race.hold > 0") and not B.evaluate("() => window.TD.G.race.hold > 0"))
-        # only the guest runs
-        B.evaluate(MASH, [8, 'K'])
+        # only the guest runs: it holds "right" for a while (deterministic; a random mash through a crazy level made this check depend on timing)
+        B.evaluate("() => { window.TD.K.r = true; window.TD.KR.r = true }")
         B.wait_for_timeout(1500)
         ghost = A.evaluate("() => { const r = window.TD.G.race; return [r.seen, Math.round(r.opp.x), Math.round(window.TD.P.x)] }")
-        ok('the host sees the guest ghost moving ahead', ghost[0] and ghost[1] > ghost[2] + 40, ghost)
+        ok('the host sees the guest ghost moving ahead', ghost[0] and ghost[1] > ghost[2] + 40, ghost + [A.evaluate("() => [window.TD.G.level, window.TD.L.dk, window.TD.G.state]"), B.evaluate("() => [window.TD.G.level, window.TD.L.dk, Math.round(window.TD.P.x), window.TD.G.state]")])
         ok('race bar shows progress', B.evaluate("() => parseFloat(document.getElementById('rbMe').style.left) > 0"))
         if SHOTS: A.locator('#stage').screenshot(path=f'{SHOTS}/net_race_A.png')
+        B.evaluate(STOP); B.evaluate("() => { window.TD.G.state = 'play'; window.TD.winLevel() }")        # the guest crosses the finish (the result has to travel to the host)
         fin = False
         for _ in range(160):
             B.wait_for_timeout(500)

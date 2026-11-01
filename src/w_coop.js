@@ -13,9 +13,9 @@ function coSpawn(tx){
   for(const f of KF)K2[f]=false;
 }
 function kSwap(){ for(const f of KF){ const t=K[f]; K[f]=K2[f]; K2[f]=t } }
-function coEach(fn){                              // fn runs once per living player, with P and K pointing at him
-  const keep=P, me=G.co.me;
-  for(let i=0;i<PLY.length;i++){ const q=PLY[i]; if(q.dead||G.state!=='play')continue; P=q;
+function coEach(fn,order){                        // fn runs once per living player, with P and K pointing at him (order = optional list of player indexes)
+  const keep=P, me=G.co.me, ord=order||PLY.map((_,i)=>i);
+  for(const i of ord){ const q=PLY[i]; if(q.dead||G.state!=='play')continue; P=q;
     if(i===me)fn(); else { kSwap(); try{ fn() } finally { kSwap() } } }
   P=keep;
 }
@@ -29,8 +29,9 @@ const coMid=()=>PLY.length?(PLY[0].x+PLY[1].x)/2+PW/2:(P?P.x+PW/2:0);
 const coAtExit=()=>PLY.every(q=>q.x+PW/2>L.exitTx*TS+4&&q.onGround);
 function coPlayers(dt){
   platsMove(dt);
-  const x0=PLY.map(q=>q.x);
-  coEach(()=>{ platRide(); updatePlayer(dt) });
+  const x0=PLY.map(q=>q.x), y0=PLY.map(q=>q.y);
+  const ord=PLY.map((_,i)=>i).sort((a,b)=>(PLY[a].stand<0?1:0)-(PLY[b].stand<0?1:0)||a-b);       // whoever stands on somebody's head is moved AFTER him
+  coEach(()=>{ if(P.stand<0){ const o=PLY[-P.stand-1]; if(o&&!o.dead){ P.x+=o.x-x0[o.idx]; P.y+=o.y-y0[o.idx] } else P.stand=0 } platRide(); updatePlayer(dt) },ord);
   if(G.state==='play'&&PLY.length===2){                 // tether: never let a move widen the gap past CO_TETHER
     for(let i=0;i<2;i++){ const q=PLY[i], o=PLY[1-i], gap=Math.abs(q.x-o.x); if(gap>CO_TETHER&&gap>Math.abs(x0[i]-o.x)){ q.x=x0[i]; q.vx=0 } }
   }
@@ -54,7 +55,7 @@ function coStart(o){
   Snd.init(); Snd.resume(); for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide'); $('hud').classList.remove('hide');
   if(co.custom)startCustom(co.custom,'co',co); else startGame(co.level,co);
 }
-function coWon(){ CO.msg='🎉 خلّصتوها بـ '+G.t.toFixed(1)+' ث'+(G.lvDeaths?' وبـ '+G.lvDeaths+' موتة':' بدون ولا موتة! 😎') }
+function coWon(){ CO.msg='🎉 خلّصتوها بـ '+(G.winTime!=null?G.winTime:G.t).toFixed(1)+' ث'+(G.lvDeaths?' وبـ '+G.lvDeaths+' موتة':' بدون ولا موتة! 😎') }
 function coNext(){                                 // after a win: back to the lobby with the next playable level selected
   const was=G.co; if(was&&!was.local){ G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=coMax())n++; CO.sel.n=clamp(n,1,Math.max(1,coMax())) } netToLobby(CO.msg); netLobbySend(); return } G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=S.best)n++; CO.sel.n=clamp(n,1,Math.max(1,S.best)) }
   coOpen(CO.msg,was);
@@ -94,4 +95,5 @@ $('coH2L').onclick=()=>coCycle2(-1); $('coH2R').onclick=()=>coCycle2(1);
 $('coCodeBtn').onclick=()=>{ const s=CO.sel; if(s.custom){ s.custom=null; CO.msg=''; coPreview() } else { s.codeOpen=!s.codeOpen } coRender() };
 $('coCodeGo').onclick=()=>{ const r=decodeCustom($('coCode').value); if(r.err){ CO.msg='❌ '+r.err; coRender(); return } CO.sel.custom=r.c; CO.sel.codeOpen=false; CO.msg='✅ انحمّلت الخريطة'; coPreview(); coRender() };
 
-const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); return d&&!(o&&o.diff)?Object.assign({},o,{diff:d}):o };      // the host's difficulty for an online match (never written to the player's own settings)
+/* FLAGS.coScript: tests build levels that hold only one puzzle */
+const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.custom)o=Object.assign({},o,{co:1},FLAGS.coScript?{script:FLAGS.coScript}:null); return d&&!(o&&o.diff)?Object.assign({},o,{diff:d}):o };      // the host's difficulty for an online match (never written to the player's own settings)

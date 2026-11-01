@@ -108,9 +108,20 @@ select.tg{appearance:auto}
 .wmtr .tb canvas{position:static;inset:auto;width:calc(var(--u)*36);height:calc(var(--u)*42);background:none}
 .wmtr .tb.lock canvas{filter:grayscale(1) brightness(.5)}.wmtr .tb.done{border-color:#5be37d;background:#12361c}
 .wmtr .tb i{position:absolute;top:calc(var(--u)*1);right:calc(var(--u)*3);font-style:normal;font-size:calc(var(--u)*12)}
-.wmtr .tb.on{border-color:#ffd23f;animation:wmpulse 1.4s ease-in-out infinite}
+.wmtr .tb.on{border-color:#ffd23f;animation:tbpulse 1.4s ease-in-out infinite}
 .wmhero{position:absolute;inset:auto;width:calc(var(--u)*40);height:calc(var(--u)*46);transform:translate(-50%,-62%);pointer-events:none;z-index:3;background:none;animation:wmbob .9s ease-in-out infinite;filter:drop-shadow(0 calc(var(--u)*3) 0 #0008)}
-@keyframes wmpulse{50%{transform:translate(-50%,-50%) scale(1.12)}}@keyframes wmbob{50%{transform:translate(-50%,-74%)}}
+@keyframes wmpulse{50%{transform:translate(-50%,-50%) scale(1.12)}}@keyframes tbpulse{50%{transform:scale(1.1)}}@keyframes wmbob{50%{transform:translate(-50%,-74%)}}
+#wmap .edbox{position:relative}
+#wmPk{position:absolute;inset:0;z-index:20;background:#05020ccc;display:flex;align-items:center;justify-content:center;border-radius:inherit}
+#wmPk.hide{display:none}
+#wmPk .pkb{background:linear-gradient(#2a1850,#150a30);border:calc(var(--u)*3) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*14) calc(var(--u)*18);display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*10);max-width:92%;box-shadow:0 calc(var(--u)*6) 0 #000}
+#wmPk .pkt{font-size:calc(var(--u)*22);color:#ffd23f;text-shadow:0 calc(var(--u)*2) 0 #000}#wmPk .pks{font-size:calc(var(--u)*12);color:#cfc6ea;text-align:center}
+#wmPk .pkr{display:flex;gap:calc(var(--u)*10);flex-wrap:wrap;justify-content:center}
+#wmPk .pkd{font-family:inherit;color:#fff;background:#3a2a66;border:calc(var(--u)*3) solid #000;border-radius:calc(var(--u)*12);padding:calc(var(--u)*8) calc(var(--u)*14);min-width:calc(var(--u)*108);display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3);cursor:pointer;box-shadow:0 calc(var(--u)*3) 0 #000}
+#wmPk .pkd b{font-size:calc(var(--u)*17)}#wmPk .pkd .pi{font-size:calc(var(--u)*26);line-height:1}
+#wmPk .pkd.on{border-color:#ffd23f}#wmPk .pkd.got{background:linear-gradient(#2f6f4a,#1c4a30)}
+#wmPk .pkd .pst{display:flex;direction:ltr;font-size:calc(var(--u)*16);line-height:1}#wmPk .pkd .pst i{font-style:normal;color:#0008;-webkit-text-stroke:calc(var(--u)*.6) #000}#wmPk .pkd .pst i.on{color:#ffd23f}
+#wmPk .pkd .pc{font-size:calc(var(--u)*11);color:#9cf5b9;min-height:calc(var(--u)*13)}
 #ed,#shop,#ach,#wmap{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
 .shw{font-size:calc(var(--u)*18);font-weight:900;color:#ffd23f;flex:1;text-align:center}
 .shtabs{display:flex;gap:calc(var(--u)*6);justify-content:center}
@@ -160,7 +171,11 @@ select.tg{appearance:auto}
 .ch.on{background:var(--gold);color:#1b1230}
 .ch.f{background:#2c2150}.ch.f.on{background:#ffb81f}
 .ch.v{background:#2a4a6b}.ch.v.lock{opacity:.6}
-.cobox{max-width:calc(var(--u)*620)}
+.cobox{max-width:calc(var(--u)*620);overflow:hidden}
+.coscr{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:calc(var(--u)*5);padding:calc(var(--u)*8) calc(var(--u)*6) calc(var(--u)*2);touch-action:pan-y;overscroll-behavior:contain;scrollbar-width:thin}
+.coact{flex:none;padding-top:calc(var(--u)*4);border-top:calc(var(--u)*2) solid #ffffff1f}
+.coact .btn{min-width:calc(var(--u)*190)}
+.coscr .copl{flex-wrap:wrap}.coscr .coslot{min-width:calc(var(--u)*150);padding:calc(var(--u)*6) calc(var(--u)*12)}.coscr .coslot canvas{width:calc(var(--u)*46);height:calc(var(--u)*54)}
 .cotabs{display:flex;gap:calc(var(--u)*8);justify-content:center}.cotabs .tg.on,.edset .tg.on{background:#ffd23f;color:#000}
 .conet{display:flex;gap:calc(var(--u)*8);align-items:center;justify-content:center;flex-wrap:wrap;font-weight:800}
 .conet input,.nset input{font:900 calc(var(--u)*15) Tahoma,Arial;letter-spacing:.18em;text-transform:uppercase;text-align:center;width:calc(var(--u)*110);padding:calc(var(--u)*5);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;background:#fff;color:#000}
@@ -248,7 +263,7 @@ select.tg{appearance:auto}
       <option value="lb">لبناني</option><option value="ps">فلسطيني</option></select></div>
     <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
     <div class="row"><button class="tg" id="bShop">🛒 المتجر</button><button class="tg" id="bAch">🏆 الإنجازات</button><button class="tg" id="bMap">🗺 الخريطة</button><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
-    <div class="lvlpick">اقفز إلى مرحلة: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
+    <div class="lvlpick">ارجع لمرحلة وصلتلها: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
     <div class="row"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
   </div></div>
@@ -256,6 +271,7 @@ select.tg{appearance:auto}
   <div id="co" class="ov hide"><div class="edbox cobox">
     <div class="edtop"><b>👥 لاعبين اتنين</b><span class="edst" id="coSt"></span><button class="tg" id="coX">✖ رجوع</button></div>
     <div class="cotabs"><button class="tg on" id="coTabL">🏠 على نفس الجهاز</button><button class="tg" id="coTabN">🌐 أونلاين</button></div>
+    <div class="coscr">
     <div id="coNet" class="hide">
       <div class="edset"><span>الوضع</span><button class="tg on" id="nModeCo">🤝 تعاون</button><button class="tg" id="nModeRace">🏁 سباق</button></div>
       <div id="nHostBox" class="conet"><button class="btn" id="nHost">🏠 أنشئ غرفة</button><span>أو</span><input id="nCode" maxlength="5" placeholder="كود الغرفة" autocomplete="off" spellcheck="false"><button class="btn alt" id="nJoin">🚪 ادخل</button></div>
@@ -271,7 +287,8 @@ select.tg{appearance:auto}
       <div class="coslot"><div class="cotag" style="background:#4dd0ff">2</div><canvas id="coH2c"></canvas><div class="nm" id="coH2n"></div><div class="row" style="margin:0"><button class="tg" id="coH2L">▶</button><button class="tg" id="coH2R">◀</button></div><div class="sub">⬅ ➡ للحركة · ⬆ للقفز</div></div>
     </div>
     <div id="coMsg"></div><div id="nMsg"></div>
-    <div class="row edact" style="margin-top:0"><button class="btn" id="coGo">▶ ابدأوا</button><button class="btn hide" id="nGo">▶ ابدأ اللعب</button><div id="nGuestWait" class="hide">⏳ بانتظار المضيف يبدأ...</div></div>
+    </div>
+    <div class="row edact coact" style="margin-top:0"><button class="btn" id="coGo">▶ ابدأوا</button><button class="btn hide" id="nGo">▶ ابدأ اللعب</button><div id="nGuestWait" class="hide">⏳ بانتظار المضيف يبدأ...</div></div>
   </div></div>
   <div id="ed" class="ov hide"><div class="edbox">
     <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edShop">🛒 عوالم</button><button class="tg" id="edPerk">🛒 ترقيات</button><button class="tg" id="edX">✖ رجوع</button></div>
@@ -295,7 +312,7 @@ select.tg{appearance:auto}
     <div class="edtop"><b>🗺 خريطة الزنزانة</b><span class="shw" id="wmSt"></span><span class="shw" id="wmW" style="flex:none"></span><button class="tg" id="wmAch">🏆</button><button class="tg" id="wmShop">🛒</button><button class="tg" id="wmX">✖ رجوع</button></div>
     <div id="wmTr"></div>
     <div id="wmScroll"><div id="wmInner"></div></div>
-    <div class="edhint" id="wmHint">⭐ خلّصتها · ⭐ بدون موت · ⭐ كل عملاتها انحفظت — اضغط على أي مرحلة وصلتلها لتعيدها</div>
+    <div class="edhint" id="wmHint">⭐ عادي · ⭐⭐ مجنون · ⭐⭐⭐ مستحيل — اضغط على أي مرحلة وصلتلها واختار الصعوبة</div>
   </div></div>
   <div id="shop" class="ov hide"><div class="edbox shbox">
     <div class="edtop"><b>🛒 المتجر</b><span class="shw" id="shW">🪙 0</span><button class="tg" id="shX">✖ رجوع</button></div>
@@ -434,6 +451,7 @@ const STICKERS=['😂','💀','🤡','🙈','😭','👻','🤣','😜','🎉','
 
 /* =============== AUDIO =============== */
 const b64buf=d=>{const s=atob(d.split(',')[1]),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u.buffer};
+let HUSH=false;           // true while a rollback re-simulates frames that were already played: no sound twice
 const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[],nbuf:null,mus:{on:false,step:0,next:0,timer:null,tempo:128},live:[],vq:0,vtok:0,vlog:[],
  init(){
   if(this.ctx){this.resume();return}
@@ -450,14 +468,14 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
  },
  resume(){if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume()},
  tone(o){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0),a=o.a||0.005;
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0),a=o.a||0.005;
   const os=c.createOscillator(),g=c.createGain(); os.type=o.t||'sine';
   os.frequency.setValueAtTime(o.f0,t); if(o.f1)os.frequency.exponentialRampToValueAtTime(o.f1,t+o.dur);
   g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(o.v||0.2,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+a+o.dur);
   os.connect(g); g.connect(o.dest||this.sfxG); os.start(t); os.stop(t+a+o.dur+0.05);
  },
  noise(o){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0);
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0);
   const s=c.createBufferSource(); s.buffer=this.nbuf; s.loop=true; const f=c.createBiquadFilter(); f.type=o.ft||'lowpass'; f.Q.value=o.q||1;
   f.frequency.setValueAtTime(o.f0||800,t); if(o.f1)f.frequency.exponentialRampToValueAtTime(o.f1,t+o.dur);
   const g=c.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(o.v||0.2,t+(o.a||0.005)); g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);
@@ -484,7 +502,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
  boing(){this.tone({t:'sine',f0:180,f1:900,dur:.38,v:.26});this.tone({t:'square',f0:300,f1:1300,dur:.2,v:.05})},
  tlaugh(){[0,.11,.22,.33].forEach((d,i)=>this.tone({t:'square',f0:900-i*70,f1:640-i*40,dur:.08,v:.07,d}))},
  trombone(){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime,notes=[[233,.28],[220,.28],[208,.28],[196,.95]]; let tt=t;
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime,notes=[[233,.28],[220,.28],[208,.28],[196,.95]]; let tt=t;
   notes.forEach(([f,d],i)=>{
    const o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter(); o.type='sawtooth'; lp.type='lowpass'; lp.Q.value=4;
    o.frequency.setValueAtTime(f*1.02,tt); o.frequency.linearRampToValueAtTime(f*(i===3?0.88:0.99),tt+d);
@@ -495,7 +513,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
   });
  },
  laugh(){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime;
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime;
   for(let i=0;i<6;i++){
    const tt=t+i*.15,o=c.createOscillator(),bp=c.createBiquadFilter(),g=c.createGain();
    o.type='sawtooth'; o.frequency.setValueAtTime(300-i*14,tt); o.frequency.exponentialRampToValueAtTime(210-i*10,tt+.11);
@@ -518,7 +536,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
  /* ---- voice director: ONE speaker at a time. Each request has a priority; the higher one wins, equal ones queue only
     if the wait is short, stale ones are dropped, long reaction clips are trimmed with a fade. ---- */
  vl(act,key,pri,t0,end){ if(this.vlog.length>400)this.vlog.shift(); this.vlog.push({act,key,pri,t0:+(t0||0).toFixed(3),end:+(end||0).toFixed(3),at:+(this.ctx?this.ctx.currentTime:0).toFixed(3)}) },
- voice(key,o){
+ voice(key,o){ if(HUSH)return;
   if(typeof o==='number')o={delay:o}; o=o||{};
   if(!this.ctx||!S.voice||!A.audio||!A.audio[key])return false;
   const c=this.ctx,tReq=c.currentTime,pri=o.pri==null?3:o.pri,delay=o.delay||0,ttl=o.ttl==null?1.6:o.ttl,tok=this.vtok;
@@ -649,8 +667,13 @@ function startGame(n,co){
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom&&!G.co&&!G.race)S.deaths++; if(!SIM){save();hud();logDeath(cause)} if(!G.co&&!G.race){econDeath(); achDie(cause); heroXpDeath()}
-  P.dvx=P.vx; P.dvy=P.vy; G.shake=9; G.dv=Math.random();
+  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deathAt=G.t; P.dvx=P.vx; P.dvy=P.vy;
+  if(G.co&&!G.co.local){ netFx({k:'d',c:cause,e:e,pi:P.idx}); return }          // online: sounds and cards wait until the frame is confirmed (it may still be rolled back)
+  dieFx(cause,e);
+}
+function dieFx(cause,e){
+  G.deaths++; G.lvDeaths++; if(!G.custom&&!G.co&&!G.race)S.deaths++; if(!SIM){save();hud();logDeath(cause)} if(!G.co&&!G.race){econDeath(); achDie(cause); heroXpDeath()}
+  G.shake=9; G.dv=Math.random();
   if(!SIM&&S.sfx&&navigator.vibrate){try{navigator.vibrate(G.lvDeaths%4===0?[30,40,30]:28)}catch(e){}}
   if(DEATH_SFX[cause])DEATH_SFX[cause]();
   else switch(cause){
@@ -734,7 +757,12 @@ function showCard(){
 }
 function retry(){ loadLevel(G.level,false,G.custom?{custom:G.custom}:undefined); G.state='play'; }
 function winLevel(){
-  if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y); econClear(); 
+  if(G.state!=='play')return; G.state='win'; G.winT=0; G.winTime=G.t;
+  if(G.co&&!G.co.local){ netFx({k:'w'}); return }
+  winFx();
+}
+function winFx(){
+  Snd.win(); confetti(P.x+PW/2,P.y); econClear(); 
   if(G.race){ if(!SIM)raceFinish(); return }
   if(L.boss){ bossEnd(); return }
   const x=pick('win',{legacy:WIN_LINES,pAudio:.9}), ks=Object.keys(A.img).filter(k=>k.startsWith('card_win_'));
@@ -742,7 +770,7 @@ function winLevel(){
   if(x&&ks.length&&Math.random()<.6){G.winCard={x,im:bagPick('img:win',ks,y=>y)};G.winLen=3.4}
   else if(x)say(x.t,x.d,2.4);
   if(Math.random()<.5)heroSay('win',{force:1,pri:5,delay:.05,max:1.4,dur:2});
-  if(G.co){ if(!SIM)coWon() } else if(G.custom){ if(!SIM)customCleared() } else if(!L.trial&&G.level>=S.best){ S.best=G.level+1; save() }
+  if(G.co){ if(!SIM)coWon() } else if(G.custom){ if(!SIM)customCleared() } else if(!L.trial&&G.level===S.best){ S.best=G.level+1; save() }       // only clearing the level you are ON opens the next one
 }
 function nextLevel(){ if(G.race)return; if(G.co){coNext();return} if(G.custom){customWon();return} if(L.trial){trialExit();return} loadLevel(G.level+1,true); G.state='play'; }
 
@@ -756,7 +784,7 @@ function update(dt){
   if(G.snkCd>0)G.snkCd-=dt; if(G.snk)G.snk.t-=dt; if(G.hsay){G.hsay.t-=dt;if(G.hsay.t<=0)G.hsay=null} if(G.bsay){G.bsay.t-=dt;if(G.bsay.t<=0)G.bsay=null}
   G.warn=Math.max(0,G.warn-dt*3); G.dark+=((G.darkT>0?1:0)-G.dark)*Math.min(1,dt*(G.darkT>0?12:2.4)); if(G.state==='dead'||G.state==='win')G.darkT=Math.min(G.darkT,.2);
   if(G.state==='play'){
-    if(G.co)coPlayers(dt); else { stepPlats(dt); updatePlayer(dt) }
+    if(G.co){ if(L.cg)cgTick(); coPlayers(dt) } else { stepPlats(dt); updatePlayer(dt) }
     if(G.state==='play'){
       for(const k in L.cr){const cr=L.cr[k]; if(cr.s===1){cr.t+=dt; if(cr.t>=(cr.force||L.crDelay)){cr.s=2;debris(k*TS,GY,THEMES[L.theme].floor)}}}
       if(L.zones.length){let g=false;for(const z of L.zones)if(z.tm!=null){z.tm-=dt;if(z.tm<=0)g=true} if(g)L.zones=L.zones.filter(z=>z.tm==null||z.tm>0)}
@@ -769,7 +797,7 @@ function update(dt){
       if(G.state==='play'&&!SIM){ // lights-out pranks + mocking traps
         if(L.dark){ const px2=pcx(); for(const d of L.dark){ if(!d.fired&&px2>d.x0&&px2<d.x1){ d.fired=1; G.darkT=G.darkMax=d.dur; Snd.tone({t:'sawtooth',f0:420,f1:60,dur:.5,v:.22}); say(rnd(['انقطعت الكهربا! 🔌😈','مين طفّى النور؟ مش أنا 😇','شو هالعتمة... صدفة أكيد']),'any',2.2) } } }
         if(G.darkT>0)G.darkT-=dt;
-        if(L.dk!=='normal'){ G.mockCd-=dt; if(G.mockCd<=0&&G.snkCd<=0){ const px3=pcx();
+        if(L.dk!=='normal'&&!(G.co&&!G.co.local)){ G.mockCd-=dt; if(G.mockCd<=0&&G.snkCd<=0){ const px3=pcx();
           for(const e of L.ents){ if(e.mocked||e.rm||!MOCKT[e.t])continue; const d=px3-entX(e); if(d>46&&d<150){ e.mocked=1; if(Math.random()<.55){ snick(e,rnd(MOCK_LINES)); G.mockCd=7+Math.random()*5; break } } } } }
       }
       if(G.state==='play'&&!SIM){ // signs
@@ -780,10 +808,10 @@ function update(dt){
   } else if(G.state==='dead'){
     G.deadT+=dt; const pd=G.cause==='pit'||G.cause==='crumble';
     if(pd){P.vy=Math.min(P.vy+GRAV*dt,900);P.y+=P.vy*dt}
-    if(!G.cardShown&&G.deadT>Math.max(G.killer?0.95:0.55,(G.tauntAt||0)-.05))showCard();
+    if(!G.cardShown&&G.deadT>Math.max(G.killer?0.95:0.55,(G.tauntAt||0)-.05)){ if(G.co&&!G.co.local)netFx({k:'c'}); else showCard() }
     if(G.co&&!G.co.local){ if(G.deadT>2.4)retry() } else if(G.cardShown&&((G.deadT>G.holdMin&&!Snd.voiceBusy())||G.deadT>9))retry();
   } else if(G.state==='win'){
-    G.winT+=dt; if(G.winCard&&G.winT>.5){const w=G.winCard;G.winCard=null;fillCard(rnd(['🎉 عبرت! (مين صدّق؟)','🏆 مبروك... بالغلط','🥳 إنجاز: ما متّ هالمرة']),w.im,w.x.t,w.x.d,'اضغط للمتابعة')} if(G.co&&!G.co.local){ if(G.winT>3)nextLevel() } else if(G.winT>G.winLen&&(!Snd.voiceBusy()||G.winT>6.5))nextLevel();
+    G.winT+=dt; if(G.winCard&&G.winT>.5){const w=G.winCard;G.winCard=null;fillCard(rnd(['🎉 عبرت! (مين صدّق؟)','🏆 مبروك... بالغلط','🥳 إنجاز: ما متّ هالمرة']),w.im,w.x.t,w.x.d,'اضغط للمتابعة')} if(G.co&&!G.co.local){ if(G.winT>3){ G.winT=3.01; netFx({k:'n'}) } } else if(G.winT>G.winLen&&(!Snd.voiceBusy()||G.winT>6.5))nextLevel();
   }
   trailTick(dt);
   updParts(dt);
@@ -864,7 +892,7 @@ function togglePause(){
   if(G.co&&!G.co.local){ netEsc(); return }
   if(G.race){ if(G.race.over)return; netEscRace(); return }
   if(G.state==='menu'){ $('menu').classList.add('hide'); G.state=G.pausedFrom||'play'; if(touchMode)$('touch').classList.remove('hide'); return }
-  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').value=G.level; $('bEdit').classList.toggle('hide',!G.custom); syncToggles() }
+  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').max=Math.max(1,S.best);$('inLvl').value=Math.min(G.level,Math.max(1,S.best)); $('bEdit').classList.toggle('hide',!G.custom); syncToggles() }
 }
 $('bPlay').onclick=()=>{S.deaths=0;save();startGame(1);const x=pick('intro',{pAudio:.9});
   if(x){later(600,()=>{sayVoice(x,4)}); later(4800,()=>{if(G.deaths===0)say('⬅ ➡ للحركة · ⬆ للقفز. صدّق اللافتات... أو لا 😉','any',3.6)})}};
@@ -892,7 +920,7 @@ $('bShare').onclick=()=>shareResult($('bShare')); $('bShareT').onclick=()=>share
 { const de=document.documentElement; if(de.requestFullscreen||de.webkitRequestFullscreen){ $('bFull').classList.remove('hide');
   $('bFull').onclick=()=>{ try{ if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document)} else (de.requestFullscreen||de.webkitRequestFullscreen).call(de) }catch(e){} } } }
 $('bResume').onclick=togglePause;
-$('bGo').onclick=()=>{const n=clamp(parseInt($('inLvl').value)||1,1,999);$('menu').classList.add('hide');G.state='play';startGame(n)};
+$('bGo').onclick=()=>{const n=clamp(parseInt($('inLvl').value)||1,1,Math.max(1,S.best));$('inLvl').value=n;$('menu').classList.add('hide');G.state='play';startGame(n)};      // only levels you have already reached
 $('bHome').onclick=goTitle;
 document.querySelectorAll('.tg[data-s]').forEach(b=>b.onclick=()=>{S[b.dataset.s]=!S[b.dataset.s];save();syncToggles();Snd.init();Snd.ui();
   if(b.dataset.s==='music'){if(S.music&&G.state!=='title')Snd.startMusic();}});
@@ -907,6 +935,7 @@ addEventListener('resize',resize);
 /*@include w_editor.js*/
 /*@include w_shop.js*/
 /*@include w_edperk.js*/
+/*@include w_copuz.js*/
 /*@include w_coop.js*/
 /*@include w_net.js*/
 /*@include w_ach.js*/
@@ -928,7 +957,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,tpLoop,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,tpLoop,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 </body>

@@ -43,7 +43,7 @@ function deathFx(){
 function helpApply(){                                   // a real level has just been entered: use up what is armed
   if(!legit())return; const used=[];
   for(const h of HELP){ if(S.hi.arm[h.k]&&helpN(h.k)>0){ S.hi.n[h.k]--; if(!S.hi.n[h.k])S.hi.arm[h.k]=0; (G.help||(G.help={}))[h.k]=1; G.helped=true; used.push(h) } }
-  if(used.length){ save(); say('🎒 '+used.map(h=>h.ic+' '+h.nm).join(' + ')+' — بدون نجمة الإتقان بهالمرحلة','any',3.6) }
+  if(used.length){ save(); say('🎒 '+used.map(h=>h.ic+' '+h.nm).join(' + ')+' — بدون بونص «بدون موت» بهالمرحلة','any',3.6) }
 }
 function helpShieldHit(){                               // called from heroGuard(): true = the helper shield swallowed this hit
   if(!G.help||!(G.help.shield>0))return false; G.help.shield--; return true;
@@ -70,7 +70,7 @@ function accDfxMode(g){
   for(const D of list)g.appendChild(accDfxCard(D));
 }
 function accHelpMode(g){
-  const hd=el('div','achd'); hd.append(el('b',null,'مساعدات (مرة وحدة)'),el('span','sub','بالمراحل العادية بس · المرحلة اللي بتستعملها فيها بتنحسب خلصانة بس بدون نجمة الإتقان ولا بونص "بدون موت"'));
+  const hd=el('div','achd'); hd.append(el('b',null,'مساعدات (مرة وحدة)'),el('span','sub','بالمراحل العادية بس · المرحلة اللي بتستعملها فيها بتنحسب خلصانة ونجمتها بتنحسب عادي، بس بدون بونص "بدون موت"'));
   g.appendChild(hd);
   for(const h of HELP){ const n=helpN(h.k), armed=!!S.hi.arm[h.k]&&n>0, card=el('div','shc'+(armed?' sel':'')), poor=S.wallet<h.price;
     card.append(el('div','shbig',h.ic),el('div','nm',h.nm),el('div','sub',h.ds),el('div','sub','عندك: '+n));

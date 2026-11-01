@@ -38,10 +38,14 @@ FLOW = r"""() => { const T=window.TD, S=T.S, G=T.G, R={};
   fresh(); S.best=3; lvl(10); R.bestAfterJump=S.best; let cs=coinsOf(); grab(cs[0]); grab(cs[1]); T.econClear(); R.sandboxWallet=S.wallet; R.sandboxCl=Object.keys(S.cl).length;
   // legit level == best advances progress
   fresh(); S.best=3; lvl(3); G.lvDeaths=0; T.winLevel&&0; T.econClear(); R.legitCl=!!S.cl[3];
-  // 5) stars: clear, no-death, all coins
-  fresh(); S.best=99; lvl(4); G.lvDeaths=0; cs=coinsOf(); R.coinN=cs.length; T.econClear(); R.starsNoCoins=T.starsOf(4);     // cleared + no-death, coins missing
-  lvl(4); cs=coinsOf(); for(const c of cs)grab(c); T.econClear(); R.starsAll=T.starsOf(4);
-  fresh(); S.best=99; lvl(4); G.lvDeaths=3; cs=coinsOf(); for(const c of cs)grab(c); T.econClear(); R.starsDeaths=T.starsOf(4);   // cleared + coins, no no-death star
+  // 5) stars = hardest difficulty cleared (normal 1, crazy 2, hell 3); no-death / coins are no longer stars
+  fresh(); S.best=99; S.diff='normal'; lvl(4); G.lvDeaths=0; cs=coinsOf(); R.coinN=cs.length; T.econClear(); R.starsNormal=T.starsOf(4);
+  S.diff='crazy'; lvl(4); T.econClear(); R.starsCrazy=T.starsOf(4);
+  S.diff='hell'; lvl(4); T.econClear(); R.starsHell=T.starsOf(4);
+  S.diff='normal'; lvl(4); T.econClear(); R.starsKept=T.starsOf(4);                                   // an easier replay never takes a star away
+  fresh(); S.best=99; S.diff='normal'; lvl(5); G.lvDeaths=3; cs=coinsOf(); for(const c of cs)grab(c); T.econClear(); R.starsDeathsCoins=T.starsOf(5);   // deaths + every coin: still just 1 star
+  fresh(); S.cl={1:3,2:3,3:3,4:3,5:3,6:2,7:1}; R.sTot=T.starsTotal(); R.cz=T.clearedAt(2); R.hl=T.clearedAt(3); R.pw=T.perfectWorlds();
+  S.cl={1:3,2:3,3:3,4:3,6:3}; R.pw2=T.perfectWorlds(); S.cl={}; S.diff='crazy';
   // 6) streak: new no-death clears extend, a death resets
   fresh(); S.best=99; for(const n of [2,3,4]){ lvl(n); G.lvDeaths=0; T.econClear() } R.streak3=S.st.ns; R.nm3=S.st.nm;
   lvl(5); T.die('spike',null); R.streakAfterDeath=S.st.ns; R.nmKeeps=S.st.nm;
@@ -72,9 +76,11 @@ with sync_playwright() as p:
     ok('jumping to a far level does not move real progress', R['bestAfterJump'] == 3, R['bestAfterJump'])
     ok('sandbox levels pay nothing and record nothing', R['sandboxWallet'] == 0 and R['sandboxCl'] == 0, [R['sandboxWallet'], R['sandboxCl']])
     ok('a level within progress counts', R['legitCl'])
-    ok('stars: clear + no-death (no coins) = 2', R['coinN'] > 0 and R['starsNoCoins'] == 2, R['starsNoCoins'])
-    ok('stars: all coins banked = 3', R['starsAll'] == 3, R['starsAll'])
-    ok('stars: with deaths but all coins = 2', R['starsDeaths'] == 2, R['starsDeaths'])
+    ok('stars: a normal clear = 1', R['coinN'] > 0 and R['starsNormal'] == 1, R['starsNormal'])
+    ok('stars: crazy = 2, impossible = 3 (total, not added up)', R['starsCrazy'] == 2 and R['starsHell'] == 3, [R['starsCrazy'], R['starsHell']])
+    ok('stars: an easier replay keeps the stars', R['starsKept'] == 3, R['starsKept'])
+    ok('stars: deaths and coins do not change the stars', R['starsDeathsCoins'] == 1, R['starsDeathsCoins'])
+    ok('star totals + crazy/impossible counts + perfect worlds', R['sTot'] == 5*3+2+1 and R['cz'] == 6 and R['hl'] == 5 and R['pw'] == 1 and R['pw2'] == 0, [R['sTot'], R['cz'], R['hl'], R['pw'], R['pw2']])
     ok('streak grows on new clean clears, resets on death, best is kept', R['streak3'] == 3 and R['nm3'] == 3 and R['streakAfterDeath'] == 0 and R['nmKeeps'] == 3, [R['streak3'], R['streakAfterDeath'], R['nmKeeps']])
     ok('replaying a clean level does not touch the streak', R['replaySameLevel'] == 0, R['replaySameLevel'])
     ok('editor medals count unique maps', R['mk'] == 2 and R['sk'] == 1, [R['mk'], R['sk']])

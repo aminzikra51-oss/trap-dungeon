@@ -97,7 +97,7 @@ function netRecv(m){
     case 'g': raceGot(m); break;
     case 'fn': raceFin(m); break;
     case 'rr': raceResult(m); break;
-    case 'ab': netToLobby('صاحبك رجع للغرفة 👋'); break;
+    case 'ab': if(N.link==='play')netToLobby(m.w?CO.msg:'صاحبك رجع للغرفة 👋'); break;
     case 'bye': netLeave('صاحبك طلع من الغرفة 👋',true); break;
   }
 }
@@ -140,56 +140,93 @@ function netBegin(o){
   for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide');
   const cu=o.cu?(()=>{ const r=decodeCustom(o.cu); return r.err?null:r.c })():null;
   if(o.mode==='race'){ raceBegin(o,cu); return }
-  N.lock=true; N.f=0; N.smp=-1; N.loc={}; N.rem={}; N.hist={}; N.snaps={}; N.hh={}; N.rh={}; N.ackR=N.D-1; N.remHi=N.D-1; N.lm=-1; N.stallT=0; N.bad=0; N.rsAt=0; N.fixes=0;
-  for(let i=0;i<N.D;i++){ N.loc[i]=0; N.rem[i]=0 }
+  N.lock=true; N.dl=NET_DL; N.D=N.dl; N.f=0; N.c=0; N.smp=-1; N.loc={}; N.rem={}; N.used={}; N.snp={}; N.pl={}; N.snaps={}; N.fx=[]; N.rb=null; N.hh={}; N.rh={}; N.ackR=N.dl-1; N.remHi=N.dl-1; N.remLast=0; N.lm=-1; N.stallT=0; N.stallTot=0; N.bad=0; N.rsAt=0; N.fixes=0; N.nrb=0; N.rbFr=0; N.fxN={}; N.maxRb=0; N.adv=0; N.adj=-1;
+  N.startAt=netNow()+(N.role==='h'?clamp((N.rtt||0)/2,0,400):0);       // the host waits half a ping so both machines start the same frame at about the same moment
+  for(let i=0;i<N.dl;i++){ N.loc[i]=0; N.rem[i]=0 }
   for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
   coStart({hero:o.hero,stage:o.stage,level:o.lv,custom:cu,local:false,me:N.me,df:o.df});
 }
 
-/* ---- lockstep ---- */
+/* ---- co-op netcode: prediction + rollback ----
+   Our own key presses go straight into the simulation (after NET_DL frames ~ 33 ms). The other player's keys are PREDICTED (whatever he was holding, no new
+   presses) until the real ones arrive; if a prediction turns out wrong we restore the snapshot of that frame and re-simulate up to now with the truth.
+   Snapshots are ~2 KB and a step costs ~0.04 ms, so even a 20 frame rollback is invisible. 'Confirmed' = every frame before N.c was simulated with the other
+   side's real input: only those are hashed (cross-checked with the other machine) and only then do deaths/wins make their sounds and cards (a rolled back
+   death must never be heard). During a re-simulation the audio is hushed (HUSH). */
+const NET_DL=2, NET_MAXSPEC=24;
 const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32};
 function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; return m }
 function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32) }
 function netSend(){
   const N=NET; if(!N.tr||!N.lock)return;
-  const hi=N.smp+N.D, from=Math.max(N.ackR+1,hi-90); let a=''; if(hi<from)return;           // only frames we really sampled (smp = the newest sampled frame)
+  const hi=N.smp+N.dl, from=Math.max(N.ackR+1,hi-90); if(hi<from)return; let a='';          // only frames we really sampled (smp = the newest sampled frame)
   for(let f=from;f<=hi;f++)a+=String.fromCharCode(48+(N.loc[f]|0));
-  N.tr.send({t:'i',f:from,a,k:N.remHi});
+  N.tr.send({t:'i',f:from,a,k:N.remHi,cf:N.f});
 }
 function netGotInput(m){
-  const N=NET; if(!N.lock||typeof m.a!=='string')return;
-  for(let i=0;i<m.a.length;i++){ const fr=m.f+i; if(fr>=N.f-1&&N.rem[fr]===undefined)N.rem[fr]=m.a.charCodeAt(i)-48 }
-  while(N.rem[N.remHi+1]!==undefined)N.remHi++;
+  const N=NET; if(!N.lock||typeof m.a!=='string')return; const ri=1-N.me;
+  for(let i=0;i<m.a.length;i++){ const fr=m.f+i, v=m.a.charCodeAt(i)-48; if(fr<N.c||N.rem[fr]!==undefined)continue; N.rem[fr]=v;
+    if(fr<N.f){ const u=N.used[fr]; if(u&&u[ri]!==v){ if(N.rb==null||fr<N.rb)N.rb=fr; if((v&8)&&!(u[ri]&8)&&!HUSH&&Snd.jump)Snd.jump() } } }      // late news: he jumped a moment ago
+  while(N.rem[N.remHi+1]!==undefined)N.remHi++; if(N.rem[N.remHi]!==undefined)N.remLast=N.rem[N.remHi];
   if(m.k>N.ackR)N.ackR=m.k;
+  if(typeof m.cf==='number'&&N.rtt)N.adv=N.adv*.9+((N.f-m.cf)-N.rtt/2/16.7)*.1;                 // how many frames we run ahead of the other machine
 }
-function netPre(){                                          // true = frame N.f may run now (K/K2 are filled with the agreed inputs)
+const netFx=x=>{ const N=NET; if((x.k==='c'||x.k==='n')&&N.fx.some(y=>y.k===x.k))return; x.f=N.f; N.fx.push(x) };                                          // called by die()/winLevel() while online
+function netRunFx(x){
+  const keep=P; NET.fxN[x.k]=(NET.fxN[x.k]||0)+1;
+  if(NET.keep)(NET.fxLog||(NET.fxLog=[])).push([x.k,x.f,NET.f,NET.c,G.state,G.cardShown,+G.deadT.toFixed(2)]);
+  if(x.k==='d'){ const q=PLY[x.pi]; if(q)P=q; try{ dieFx(x.c,x.e) } finally{ P=keep } } else if(x.k==='w')winFx(); else if(x.k==='c'){ if(G.state==='dead'&&!G.cardShown)showCard() } else if(x.k==='n'){ if(G.state==='win'){ if(NET.tr)NET.tr.send({t:'ab',w:1}); nextLevel() } }          // tell him too: he may be missing our last few inputs (we stop sending now)
+}
+function netFrame(f){                                       // fill K (ours) and K2 (his) for frame f, known or predicted
+  const N=NET, l=N.loc[f]|0, r=N.rem[f]!==undefined?N.rem[f]:(N.remLast&~40);
+  N.used[f]=N.me===0?[l,r]:[r,l]; setIn(K,l); setIn(K2,r);
+}
+function netPre(){                                          // true = the next frame may run now
   const N=NET; if(N.link!=='play'||!N.lock)return false;
-  if(N.smp!==N.f){ N.smp=N.f; const m=netSample(); N.loc[N.f+N.D]=m; if(m!==N.lm||N.f%4===0){ N.lm=m; netSend() } }
-  const r=N.rem[N.f];
-  if(r===undefined){ if(!N.stallT)N.stallT=netNow(); netStallUi(); return false }
-  if(N.stallT){ N.stallTot=(N.stallTot||0)+netNow()-N.stallT; N.stallT=0; netStallUi() }
-  const l=N.loc[N.f]|0; setIn(K,l); setIn(K2,r); N.hist[N.f]=N.me===0?[l,r]:[r,l];
+  if(netNow()<N.startAt)return false;
+  if(N.rb!=null)netRollback();
+  netConfirm();
+  if(!N.lock||N.link!=='play')return false;
+  if(N.f-N.c>=NET_MAXSPEC){ if(!N.stallT)N.stallT=netNow(); netStallUi(); return false }      // too far ahead of what we know: wait
+  if(N.stallT){ N.stallTot+=netNow()-N.stallT; N.stallT=0; netStallUi() }
+  if(N.adv>3&&N.f%30===0&&N.adj!==N.f){ N.adj=N.f; N.adv-=1; return false }                  // we run ahead of the other machine: give up a step now and then
+  if(N.smp!==N.f){ N.smp=N.f; const m=netSample(); N.loc[N.f+N.dl]=m; if(m!==N.lm||N.f%4===0){ N.lm=m; netSend() } }
+  netFrame(N.f); N.snp[N.f]=snap(true); N.pl[N.f]=G.state==='play';
   return true;
 }
-function netPost(){
-  const N=NET; N.f++; delete N.loc[N.f-4]; delete N.rem[N.f-4]; delete N.hist[N.f-720];
-  if(N.f%30===0&&G.state==='play'){
-    const s=snap(true), h=fnv(s); N.hh[N.f]=h; delete N.hh[N.f-900];
-    if(N.role==='h'||N.keep){ N.snaps[N.f]=s; delete N.snaps[N.f-(N.keep?3000:300)] }
-    N.tr.send({t:'h',f:N.f,h});
-    if(N.rh[N.f]!==undefined){ netCmp(N.f,N.rh[N.f]); delete N.rh[N.f] }
+function netPost(){ NET.f++ }
+function netRollback(){
+  const N=NET, r=N.rb, head=N.f; N.rb=null;
+  const s=N.snp[r]; if(s===undefined){ N.bad++; return }
+  restore(s); N.fx=N.fx.filter(x=>x.f<r); N.nrb++; N.rbFr+=head-r; if(head-r>N.maxRb)N.maxRb=head-r;
+  HUSH=true;
+  try{ for(N.f=r;N.f<head;N.f++){ if(!N.lock||G.state==='co')break; if(N.f>r){ N.snp[N.f]=snap(true); N.pl[N.f]=G.state==='play' } netFrame(N.f); update(1/60) } }
+  finally{ HUSH=false }
+  if(N.lock)N.f=head;
+}
+function netConfirm(){
+  const N=NET;
+  while(N.c<N.f&&N.rem[N.c]!==undefined){
+    const f=N.c;
+    if(f%30===0&&N.pl[f]&&N.snp[f]!==undefined){                 // hash of the now final state at the start of frame f
+      const h=fnv(N.snp[f]); N.hh[f]=h; delete N.hh[f-900];
+      if(N.role==='h'||N.keep){ N.snaps[f]=N.snp[f]; delete N.snaps[f-(N.keep?3000:300)] }
+      N.tr.send({t:'h',f,h});
+      if(N.rh[f]!==undefined){ netCmp(f,N.rh[f]); delete N.rh[f] }
+    }
+    N.c++; const o=f-1; delete N.snp[o]; delete N.used[o]; delete N.loc[o]; delete N.rem[o]; delete N.pl[o];
   }
+  while(N.fx.length&&N.fx[0].f<N.c)netRunFx(N.fx.shift());
 }
 function netGotHash(m){ const N=NET; if(!N.lock)return; if(N.hh[m.f]!==undefined)netCmp(m.f,m.h); else N.rh[m.f]=m.h }
 function netCmp(f,h){
   const N=NET; if(N.hh[f]===h)return; N.bad++;
   if(N.role==='g'&&netNow()-N.rsAt>1500){ N.rsAt=netNow(); N.tr.send({t:'rs',f}) }
 }
-function netApply(f,s){                                     // guest: adopt the host's state of frame f, then replay our own recorded inputs up to now
-  const N=NET, cur=N.f; restore(s); N.fixes++;
-  if(cur>f){
-    for(N.f=f;N.f<cur;N.f++){ const h=N.hist[N.f]; if(!h)break; setIn(K,N.me===0?h[0]:h[1]); setIn(K2,N.me===0?h[1]:h[0]); update(1/60) }
-  } else { N.f=f; for(let g=cur+N.D;g<f+N.D;g++)if(N.loc[g]===undefined)N.loc[g]=0; N.smp=-1 }
+function netApply(f,s){                                     // guest: adopt the host's state of frame f, then replay up to now
+  const N=NET; N.fixes++; N.snp[f]=s; N.pl[f]=true;
+  if(f<N.f){ N.rb=f; netRollback() }
+  else { restore(s); const old=N.f; N.f=f; N.c=Math.max(N.c,f); N.remHi=Math.max(N.remHi,f-1); for(let g=old+N.dl;g<f+N.dl;g++)if(N.loc[g]===undefined)N.loc[g]=0; N.smp=-1 }
   netSend();
 }
 function netStallUi(){

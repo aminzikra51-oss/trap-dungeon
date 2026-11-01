@@ -5,6 +5,9 @@
 const SHOP={open:false,tab:'h'};
 if(!S.ecoV){ S.ecoV=1; S.own=S.own||{}; S.own[S.hero||'falafel']=1 }          // first run of the economy: keep the hero the player already uses
 S.wallet=S.wallet||0; S.cc=S.cc||{}; S.cl=S.cl||{}; S.nd=S.nd||{}; S.cs=S.cs||{}; S.bd=S.bd||{}; S.own=S.own||{}; S.own.falafel=1; if(!S.own[S.hero])S.hero='falafel'; S.ow=S.ow||{}; if(S.bgPick==null)S.bgPick=-1;
+/* one-time progress repair: the pause-menu "jump to level" used to be able to raise S.best (clear a jumped-to level -> everything below it opened). Progress must be real, so a best
+   that no run of clears supports (past level 81, beyond the first level never cleared) goes back to that level; the old value is kept in S.pb. */
+if(!S.pv){ S.pv=1; let p=0; while(S.cl[p+1])p++; if(S.best>81&&S.best>p+1){ S.pb=S.best; S.best=Math.max(1,p+1) } }
 
 const HERO_PRICE={falafel:0,uncle:60,chicken:100,cat:160,grandma:220,donkey:280,robot:340,mushroom:400};
 const heroOwned=id=>!!S.own[id];
@@ -26,7 +29,7 @@ function econBank(){                                  // pending -> wallet; retu
   const paid=S.cc[G.level]||(S.cc[G.level]=[]); let g=0;
   for(const k of pend){ if(!paid.includes(k)){ paid.push(k); g++ } }
   if(g){ S.wallet+=g; S.st.c+=g; dayEv('coin',g) }
-  if(G.ck&&G.ck.length&&!S.cs[G.level]&&!G.helped&&G.ck.every(k=>paid.includes(k)))S.cs[G.level]=1;        // third star: every honest coin of the level has been banked at least once
+  if(G.ck&&G.ck.length&&!S.cs[G.level]&&!G.helped&&G.ck.every(k=>paid.includes(k)))S.cs[G.level]=1;        // coin bonus flag (no longer a star): every honest coin of the level has been banked at least once
   if(g||S.cs[G.level])save();
   hud(); return g;
 }
@@ -35,11 +38,12 @@ function econClear(){                                 // called once when a real
   if(SIM||G.custom)return;
   if(L.trial){ trialClear(); return }
   if(!legit()){ G.pend=[]; econToast(G.co||G.race?'لعب جماعي 👥 — بدون مكافآت':'مرحلة تجريبية — بدون مكافآت 🧪'); hud(); return }
-  const first=!S.cl[G.level], s0=starsOf(G.level), g=econBank(); let b=0;
-  if(first){ S.cl[G.level]=1; b+=L.boss?30:10; if(L.boss)S.st.bw++; if(G.lvDeaths>=10)S.st.gr++ }
+  const rk=DRANK[L.dk]||1, c0=starsOf(G.level), first=!S.cl[G.level], s0=c0, g=econBank(); let b=0;
+  if(first){ b+=L.boss?30:10; if(L.boss)S.st.bw++; if(G.lvDeaths>=10)S.st.gr++ }
+  if(rk>c0){ S.cl[G.level]=rk; for(let t=Math.max(2,c0+1);t<=rk;t++)b+=t===2?10:20 }                       // a harder clear = more stars; each new star tier pays once per level (crazy +10, impossible +20)
   if(G.lvDeaths===0&&!G.helped&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5; S.st.ns++; S.st.nm=Math.max(S.st.nm,S.st.ns) }
   if(!G.helped)S.bd[G.level]=Math.min(S.bd[G.level]==null?99:S.bd[G.level],G.lvDeaths);
-  if(!G.helped&&!(G.ck&&G.ck.length)&&S.bd[G.level]<=2)S.cs[G.level]=1;                                   // levels without coins (bosses): third star = cleared with at most 2 deaths
+  if(!G.helped&&!(G.ck&&G.ck.length)&&S.bd[G.level]<=2)S.cs[G.level]=1;                                   // levels without coins (bosses): flag = cleared with at most 2 deaths
   if(b){ S.wallet+=b; S.st.c+=b }
   heroXpClear(first,G.lvDeaths===0&&!G.helped);
   save();

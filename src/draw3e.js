@@ -240,7 +240,7 @@ B.spring.draw3=function(e,c,th){ const k=e.st?.5+.5*(1-e.tm/.3):1, h=16*k; gsh3(
   if(e.kind==='troll'||e.st)face3(c,e.x+16,GY-5-h-17,.7,isK(e)||e.st?'laugh':'sly') };
 
 /* ---------- platforms ---------- */
-B.plat.draw3=function(e,c,th){ if(!e.on)return; const sh=e.st===1?Math.sin(G.t*70)*1.5:0, x=e.x+sh, y=e.y, col=e.v==='vanish'?'#a9854f':'#62789c';
+B.plat.draw3=function(e,c,th){ if(!e.on)return; const sh=e.st===1?Math.sin(G.t*70)*1.5:0, x=e.x+sh, y=e.y, col=e.v==='vanish'?'#a9854f':e.v==='colift'?'#d49a38':'#62789c';
   c.fillStyle='rgba(0,0,0,.28)';c.beginPath();c.ellipse(x+e.w/2,y+e.h+5,e.w*.45,3,0,0,7);c.fill();
   c.save();c.translate(x,y);box3(c,0,0,e.w,e.h,3,col,1.8);
   c.fillStyle=th.top;c.beginPath();c.roundRect(0,-5,e.w,6.5,2.5);c.fill();c.strokeStyle=INK;c.lineWidth=1.6;c.stroke();c.fillStyle='rgba(255,255,255,.35)';c.fillRect(2,-4.2,e.w-4,1.5);

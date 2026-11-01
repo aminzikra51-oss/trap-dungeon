@@ -329,6 +329,10 @@ B.plat={
  move(e,dt){ const ox=e.x,oy=e.y;
   if(e.v==='move'){ e.ph+=dt*e.sp/Math.max(1,e.x1-e.x0)*Math.PI; e.x=e.x0+(e.x1-e.x0)*(.5-.5*Math.cos(e.ph)) }
   else if(e.v==='lift'){ e.ph+=dt*e.sp/Math.max(1,e.y1-e.y0)*Math.PI; e.y=e.y0+(e.y1-e.y0)*(.5-.5*Math.cos(e.ph)) }
+  else if(e.v==='colift'){                                  // co-op lift: up while its plate is pressed; after the lever it shuttles by itself
+    const st=(L.cgS&&L.cgS[e.gid])|0, rng=e.y0-e.y1;
+    if(st&1){ if(!e.lm){ e.lm=1; e.ph=Math.acos(clamp(1-2*(e.y0-e.y)/rng,-1,1)) } e.ph+=dt*e.sp/rng*Math.PI; e.y=e.y0-rng*(.5-.5*Math.cos(e.ph)) }
+    else { e.lm=0; const tg=(st&2)?e.y1:e.y0; e.y+=clamp(tg-e.y,-e.sp*dt,e.sp*dt) } }
   else if(e.v==='elev'){
     if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.6;Snd.rumble();snick(e,'طابق واحد بس!')} }
     else if(e.st===1){ e.tm-=dt; if(e.tm<=0)e.st=2 }
@@ -340,7 +344,7 @@ B.plat={
   e.dx=e.x-ox;e.dy=e.y-oy },
  upd(){}, hit(){return null},
  draw(e,c,th){ if(!e.on)return; const sh=e.st===1?Math.sin(G.t*70)*1.5:0; c.strokeStyle='#000';c.lineWidth=2.6;
-  c.fillStyle=e.v==='vanish'?'#9a7b4f':'#5b6f91';c.fillRect(e.x+sh,e.y,e.w,e.h);c.strokeRect(e.x+sh,e.y,e.w,e.h);
+  c.fillStyle=e.v==='vanish'?'#9a7b4f':e.v==='colift'?'#c58a2b':'#5b6f91';c.fillRect(e.x+sh,e.y,e.w,e.h);c.strokeRect(e.x+sh,e.y,e.w,e.h);
   c.fillStyle=th.top;c.fillRect(e.x+sh,e.y-3,e.w,5);c.strokeRect(e.x+sh,e.y-3,e.w,5);
   c.fillStyle='#0004';for(let i=8;i<e.w-4;i+=16){c.fillRect(e.x+sh+i,e.y+4,2,6)}
   if(e.v==='vanish'&&e.st===1){c.strokeStyle='#000b';c.beginPath();c.moveTo(e.x+8,e.y);c.lineTo(e.x+14,e.y+8);c.lineTo(e.x+11,e.y+12);c.stroke()} }};

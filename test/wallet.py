@@ -34,10 +34,16 @@ FLOW = r"""() => { const T=window.TD, S=T.S, G=T.G, R={}; const K=T.K;
   // replay: same coins again must not pay twice
   const before=S.wallet; T.retry(); G.state='play'; cs=coinsOf(); grab(cs[0]); grab(cs[1]); T.econCheckpoint(); R.replayGain=S.wallet-before;
   // clear: first time pays bonus, no-death bonus; second time nothing
+  S.diff='normal'; level(LV);                                                  // a clear is judged by the difficulty the level was BUILT on (L.dk)
   const w0=S.wallet; G.lvDeaths=0; G.state='play'; T.econClear(); R.clear1=S.wallet-w0;
   const w1=S.wallet; G.lvDeaths=0; T.econClear(); R.clear2=S.wallet-w1;
   // with a death the no-death bonus is not paid (new level)
   level(3); G.lvDeaths=2; const w2=S.wallet; T.econClear(); R.clearDeath=S.wallet-w2;
+  // harder difficulty = new star tiers pay once each: crazy +10, impossible +20 (level 3 was cleared on normal above)
+  S.diff='crazy'; level(3); G.lvDeaths=2; const w4=S.wallet; T.econClear(); R.upCrazy=S.wallet-w4;
+  S.diff='hell'; level(3); G.lvDeaths=2; const w5=S.wallet; T.econClear(); R.upHell=S.wallet-w5;
+  level(3); G.lvDeaths=2; const w6=S.wallet; T.econClear(); R.upAgain=S.wallet-w6; R.star3=T.starsOf(3);
+  S.diff='hell'; level(7); G.lvDeaths=2; const w7=S.wallet; T.econClear(); R.firstHell=S.wallet-w7; S.diff='normal';       // first clear straight on impossible pays 10 + 10 + 20
   // custom map pays nothing
   const c=T.cNew(); c.seq=[[0,1],[1,1]]; c.n=4; T.startCustom(c,'edit'); G.state='play'; const w3=S.wallet; const cc=T.L.ents.filter(e=>e.t==='coin'&&!e.bait); R.customCoins=cc.length; if(cc.length){grab(cc[0])} T.econBank(); T.econClear(); R.customGain=S.wallet-w3;
   // shop
@@ -70,6 +76,8 @@ with sync_playwright() as p:
     ok('first clear pays 10 + 5 no-death bonus', R['clear1'] == 15, R['clear1'])
     ok('second clear pays nothing', R['clear2'] == 0, R['clear2'])
     ok('clear after deaths pays the 10 only', R['clearDeath'] == 10, R['clearDeath'])
+    ok('crazy star pays +10 once, impossible star +20 once', R['upCrazy'] == 10 and R['upHell'] == 20 and R['upAgain'] == 0 and R['star3'] == 3, [R['upCrazy'], R['upHell'], R['upAgain'], R['star3']])
+    ok('first clear on impossible pays every tier at once (10 + 10 + 20)', R['firstHell'] == 40, R['firstHell'])
     ok('custom maps never pay', R['customGain'] == 0, R['customGain'])
     ok('hero: poor refused, rich buys, no double charge', R['buyPoor'] == 'poor' and R['walletPoor'] == 10 and R['buyOk'] == 'ok' and R['walletOk'] == 440 and R['owned'] and R['buyAgain'] == 'owned')
     ok('world: locked -> buy -> open', (not R['world5open']) and R['worldBuy'] == 'ok' and R['world5after'] and R['worldWallet'] == 500 - R['worldPrice'][5], R['worldPrice'])

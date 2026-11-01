@@ -27,6 +27,7 @@ function newPlayer(tx){return{x:(tx||2)*TS,y:GY-PH,vx:0,vy:0,face:1,onGround:tru
 function solidTile(tx,ty){
   if(tx<0||tx>=L.w)return true; if(ty<0)return false;
   if(L.gate!=null&&tx===L.gate&&ty<GR)return true;                  // boss room: sealed gate until the boss falls
+  if(L.cg){ const q=L.cg[tx]; if(q)for(const g of q)if(ty>=g.y0&&ty<=g.y1&&(L.cgE[g.id]===1)===!!g.inv)return true }      // co-op puzzle doors / bridges / steps (see w_copuz.js)
   if(ty>=GR&&solidFloor(L,tx))return true;
   const b=L.blocks[tx+','+ty]; return !!b;
 }
@@ -45,11 +46,13 @@ function moveY(dy){
     for(const e of L.ents){ if(e.t!=='plat'||!e.on)continue; if(P.x+PW<=e.x+1||P.x>=e.x+e.w-1)continue;
       if(pb<=e.y+1.5&&P.y+PH>=e.y){ if(P.vy>260){P.land=1;Snd.land();puff(P.x+PW/2,e.y,4)} P.y=e.y-PH;P.vy=0;P.onGround=true;P.stand=e.id;return }
     }
+    if(G.co){ for(const q of PLY){ if(q===P||q.dead)continue; if(P.x+PW<=q.x+3||P.x>=q.x+PW-3)continue;          // co-op: a player can stand on the other one's head (a human ladder)
+      if(pb<=q.y+2&&P.y+PH>=q.y&&P.vy>=0){ if(P.vy>260){P.land=1;Snd.land();puff(P.x+PW/2,q.y,4)} P.y=q.y-PH;P.vy=0;P.onGround=true;P.stand=-(q.idx+1);return } } }
   }
   P.stand=0;
 }
 function platsMove(dt){ for(const e of L.ents){ if(e.t!==('plat'))continue; B.plat.move(e,dt) } }
-function platRide(){ if(P.stand){ const s=L.ents.find(e=>e.t==='plat'&&e.id===P.stand&&e.on); if(s&&P.onGround){P.x+=s.dx;P.y+=s.dy}else P.stand=0 } }
+function platRide(){ if(P.stand>0){ const s=L.ents.find(e=>e.t==='plat'&&e.id===P.stand&&e.on); if(s&&P.onGround){P.x+=s.dx;P.y+=s.dy}else P.stand=0 } }
 function stepPlats(dt){ platsMove(dt); platRide() }
 function updatePlayer(dt){
   const p=P, z=zoneAt(p.x+PW/2);
@@ -94,5 +97,5 @@ function debris(x,y,col){if(SIM)return;for(let i=0;i<5;i++)parts.push({x:x+Math.
 function updParts(dt){for(const p of parts){p.vy+=p.g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(p.vr)p.rot+=p.vr*dt}parts=parts.filter(p=>p.life>0)}
 
 /* =============== SNAPSHOT (used by the offline fairness planner) =============== */
-function snap(np){return JSON.stringify({P:np?undefined:P,pl:G.co?PLY:undefined,ents:L.ents,cr:L.cr,blocks:L.blocks,zones:L.zones,rs:RG.s,t:G.t,st:G.state,ca:G.cause,co:G.coins,cp:G.cpX,ex:L.exitTx,gt:L.gate,bp:G.bossProg})}
-function restore(s){const o=JSON.parse(s);P=o.P;if(o.pl){PLY=o.pl;P=PLY[G.co.me]}L.ents=o.ents;L.cr=o.cr;L.blocks=o.blocks;L.zones=o.zones;RG.s=o.rs;G.t=o.t;G.state=o.st;G.cause=o.ca;G.coins=o.co;G.cpX=o.cp;L.exitTx=o.ex;L.gate=o.gt;G.bossProg=o.bp}
+function snap(np){return JSON.stringify({P:np?undefined:P,pl:G.co?PLY:undefined,ents:L.ents,cr:L.cr,blocks:L.blocks,zones:L.zones,rs:RG.s,t:G.t,st:G.state,ca:G.cause,co:G.coins,cp:G.cpX,ex:L.exitTx,gt:L.gate,bp:G.bossProg,dt:G.deadT,wt:G.winT,cs:L.cgS,ce:L.cgE})}
+function restore(s){const o=JSON.parse(s);P=o.P;if(o.pl){PLY=o.pl;P=PLY[G.co.me]}L.ents=o.ents;L.cr=o.cr;L.blocks=o.blocks;L.zones=o.zones;RG.s=o.rs;G.t=o.t;G.state=o.st;G.cause=o.ca;G.coins=o.co;G.cpX=o.cp;L.exitTx=o.ex;L.gate=o.gt;G.bossProg=o.bp;G.deadT=o.dt||0;G.winT=o.wt||0;if(o.cs){L.cgS=o.cs;L.cgE=o.ce}}

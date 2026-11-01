@@ -108,9 +108,20 @@ select.tg{appearance:auto}
 .wmtr .tb canvas{position:static;inset:auto;width:calc(var(--u)*36);height:calc(var(--u)*42);background:none}
 .wmtr .tb.lock canvas{filter:grayscale(1) brightness(.5)}.wmtr .tb.done{border-color:#5be37d;background:#12361c}
 .wmtr .tb i{position:absolute;top:calc(var(--u)*1);right:calc(var(--u)*3);font-style:normal;font-size:calc(var(--u)*12)}
-.wmtr .tb.on{border-color:#ffd23f;animation:wmpulse 1.4s ease-in-out infinite}
+.wmtr .tb.on{border-color:#ffd23f;animation:tbpulse 1.4s ease-in-out infinite}
 .wmhero{position:absolute;inset:auto;width:calc(var(--u)*40);height:calc(var(--u)*46);transform:translate(-50%,-62%);pointer-events:none;z-index:3;background:none;animation:wmbob .9s ease-in-out infinite;filter:drop-shadow(0 calc(var(--u)*3) 0 #0008)}
-@keyframes wmpulse{50%{transform:translate(-50%,-50%) scale(1.12)}}@keyframes wmbob{50%{transform:translate(-50%,-74%)}}
+@keyframes wmpulse{50%{transform:translate(-50%,-50%) scale(1.12)}}@keyframes tbpulse{50%{transform:scale(1.1)}}@keyframes wmbob{50%{transform:translate(-50%,-74%)}}
+#wmap .edbox{position:relative}
+#wmPk{position:absolute;inset:0;z-index:20;background:#05020ccc;display:flex;align-items:center;justify-content:center;border-radius:inherit}
+#wmPk.hide{display:none}
+#wmPk .pkb{background:linear-gradient(#2a1850,#150a30);border:calc(var(--u)*3) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*14) calc(var(--u)*18);display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*10);max-width:92%;box-shadow:0 calc(var(--u)*6) 0 #000}
+#wmPk .pkt{font-size:calc(var(--u)*22);color:#ffd23f;text-shadow:0 calc(var(--u)*2) 0 #000}#wmPk .pks{font-size:calc(var(--u)*12);color:#cfc6ea;text-align:center}
+#wmPk .pkr{display:flex;gap:calc(var(--u)*10);flex-wrap:wrap;justify-content:center}
+#wmPk .pkd{font-family:inherit;color:#fff;background:#3a2a66;border:calc(var(--u)*3) solid #000;border-radius:calc(var(--u)*12);padding:calc(var(--u)*8) calc(var(--u)*14);min-width:calc(var(--u)*108);display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*3);cursor:pointer;box-shadow:0 calc(var(--u)*3) 0 #000}
+#wmPk .pkd b{font-size:calc(var(--u)*17)}#wmPk .pkd .pi{font-size:calc(var(--u)*26);line-height:1}
+#wmPk .pkd.on{border-color:#ffd23f}#wmPk .pkd.got{background:linear-gradient(#2f6f4a,#1c4a30)}
+#wmPk .pkd .pst{display:flex;direction:ltr;font-size:calc(var(--u)*16);line-height:1}#wmPk .pkd .pst i{font-style:normal;color:#0008;-webkit-text-stroke:calc(var(--u)*.6) #000}#wmPk .pkd .pst i.on{color:#ffd23f}
+#wmPk .pkd .pc{font-size:calc(var(--u)*11);color:#9cf5b9;min-height:calc(var(--u)*13)}
 #ed,#shop,#ach,#wmap{background:radial-gradient(circle at 50% 35%,#2a1850f2,#07030df7)}
 .shw{font-size:calc(var(--u)*18);font-weight:900;color:#ffd23f;flex:1;text-align:center}
 .shtabs{display:flex;gap:calc(var(--u)*6);justify-content:center}
@@ -160,7 +171,11 @@ select.tg{appearance:auto}
 .ch.on{background:var(--gold);color:#1b1230}
 .ch.f{background:#2c2150}.ch.f.on{background:#ffb81f}
 .ch.v{background:#2a4a6b}.ch.v.lock{opacity:.6}
-.cobox{max-width:calc(var(--u)*620)}
+.cobox{max-width:calc(var(--u)*620);overflow:hidden}
+.coscr{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:calc(var(--u)*5);padding:calc(var(--u)*8) calc(var(--u)*6) calc(var(--u)*2);touch-action:pan-y;overscroll-behavior:contain;scrollbar-width:thin}
+.coact{flex:none;padding-top:calc(var(--u)*4);border-top:calc(var(--u)*2) solid #ffffff1f}
+.coact .btn{min-width:calc(var(--u)*190)}
+.coscr .copl{flex-wrap:wrap}.coscr .coslot{min-width:calc(var(--u)*150);padding:calc(var(--u)*6) calc(var(--u)*12)}.coscr .coslot canvas{width:calc(var(--u)*46);height:calc(var(--u)*54)}
 .cotabs{display:flex;gap:calc(var(--u)*8);justify-content:center}.cotabs .tg.on,.edset .tg.on{background:#ffd23f;color:#000}
 .conet{display:flex;gap:calc(var(--u)*8);align-items:center;justify-content:center;flex-wrap:wrap;font-weight:800}
 .conet input,.nset input{font:900 calc(var(--u)*15) Tahoma,Arial;letter-spacing:.18em;text-transform:uppercase;text-align:center;width:calc(var(--u)*110);padding:calc(var(--u)*5);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;background:#fff;color:#000}
@@ -260,7 +275,7 @@ select.tg{appearance:auto}
       <option value="lb">لبناني</option><option value="ps">فلسطيني</option></select></div>
     <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
     <div class="row"><button class="tg" id="bShop">🛒 المتجر</button><button class="tg" id="bAch">🏆 الإنجازات</button><button class="tg" id="bMap">🗺 الخريطة</button><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
-    <div class="lvlpick">اقفز إلى مرحلة: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
+    <div class="lvlpick">ارجع لمرحلة وصلتلها: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
     <div class="row"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
   </div></div>
@@ -268,6 +283,7 @@ select.tg{appearance:auto}
   <div id="co" class="ov hide"><div class="edbox cobox">
     <div class="edtop"><b>👥 لاعبين اتنين</b><span class="edst" id="coSt"></span><button class="tg" id="coX">✖ رجوع</button></div>
     <div class="cotabs"><button class="tg on" id="coTabL">🏠 على نفس الجهاز</button><button class="tg" id="coTabN">🌐 أونلاين</button></div>
+    <div class="coscr">
     <div id="coNet" class="hide">
       <div class="edset"><span>الوضع</span><button class="tg on" id="nModeCo">🤝 تعاون</button><button class="tg" id="nModeRace">🏁 سباق</button></div>
       <div id="nHostBox" class="conet"><button class="btn" id="nHost">🏠 أنشئ غرفة</button><span>أو</span><input id="nCode" maxlength="5" placeholder="كود الغرفة" autocomplete="off" spellcheck="false"><button class="btn alt" id="nJoin">🚪 ادخل</button></div>
@@ -283,7 +299,8 @@ select.tg{appearance:auto}
       <div class="coslot"><div class="cotag" style="background:#4dd0ff">2</div><canvas id="coH2c"></canvas><div class="nm" id="coH2n"></div><div class="row" style="margin:0"><button class="tg" id="coH2L">▶</button><button class="tg" id="coH2R">◀</button></div><div class="sub">⬅ ➡ للحركة · ⬆ للقفز</div></div>
     </div>
     <div id="coMsg"></div><div id="nMsg"></div>
-    <div class="row edact" style="margin-top:0"><button class="btn" id="coGo">▶ ابدأوا</button><button class="btn hide" id="nGo">▶ ابدأ اللعب</button><div id="nGuestWait" class="hide">⏳ بانتظار المضيف يبدأ...</div></div>
+    </div>
+    <div class="row edact coact" style="margin-top:0"><button class="btn" id="coGo">▶ ابدأوا</button><button class="btn hide" id="nGo">▶ ابدأ اللعب</button><div id="nGuestWait" class="hide">⏳ بانتظار المضيف يبدأ...</div></div>
   </div></div>
   <div id="ed" class="ov hide"><div class="edbox">
     <div class="edtop"><b>🛠 مصمّم المراحل</b><span class="edst" id="edSt"></span><button class="tg" id="edShop">🛒 عوالم</button><button class="tg" id="edPerk">🛒 ترقيات</button><button class="tg" id="edX">✖ رجوع</button></div>
@@ -307,7 +324,7 @@ select.tg{appearance:auto}
     <div class="edtop"><b>🗺 خريطة الزنزانة</b><span class="shw" id="wmSt"></span><span class="shw" id="wmW" style="flex:none"></span><button class="tg" id="wmAch">🏆</button><button class="tg" id="wmShop">🛒</button><button class="tg" id="wmX">✖ رجوع</button></div>
     <div id="wmTr"></div>
     <div id="wmScroll"><div id="wmInner"></div></div>
-    <div class="edhint" id="wmHint">⭐ خلّصتها · ⭐ بدون موت · ⭐ كل عملاتها انحفظت — اضغط على أي مرحلة وصلتلها لتعيدها</div>
+    <div class="edhint" id="wmHint">⭐ عادي · ⭐⭐ مجنون · ⭐⭐⭐ مستحيل — اضغط على أي مرحلة وصلتلها واختار الصعوبة</div>
   </div></div>
   <div id="shop" class="ov hide"><div class="edbox shbox">
     <div class="edtop"><b>🛒 المتجر</b><span class="shw" id="shW">🪙 0</span><button class="tg" id="shX">✖ رجوع</button></div>
@@ -446,6 +463,7 @@ const STICKERS=['😂','💀','🤡','🙈','😭','👻','🤣','😜','🎉','
 
 /* =============== AUDIO =============== */
 const b64buf=d=>{const s=atob(d.split(',')[1]),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u.buffer};
+let HUSH=false;           // true while a rollback re-simulates frames that were already played: no sound twice
 const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[],nbuf:null,mus:{on:false,step:0,next:0,timer:null,tempo:128},live:[],vq:0,vtok:0,vlog:[],
  init(){
   if(this.ctx){this.resume();return}
@@ -462,14 +480,14 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
  },
  resume(){if(this.ctx&&this.ctx.state==='suspended')this.ctx.resume()},
  tone(o){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0),a=o.a||0.005;
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0),a=o.a||0.005;
   const os=c.createOscillator(),g=c.createGain(); os.type=o.t||'sine';
   os.frequency.setValueAtTime(o.f0,t); if(o.f1)os.frequency.exponentialRampToValueAtTime(o.f1,t+o.dur);
   g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(o.v||0.2,t+a); g.gain.exponentialRampToValueAtTime(0.0001,t+a+o.dur);
   os.connect(g); g.connect(o.dest||this.sfxG); os.start(t); os.stop(t+a+o.dur+0.05);
  },
  noise(o){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0);
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime+(o.d||0);
   const s=c.createBufferSource(); s.buffer=this.nbuf; s.loop=true; const f=c.createBiquadFilter(); f.type=o.ft||'lowpass'; f.Q.value=o.q||1;
   f.frequency.setValueAtTime(o.f0||800,t); if(o.f1)f.frequency.exponentialRampToValueAtTime(o.f1,t+o.dur);
   const g=c.createGain(); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(o.v||0.2,t+(o.a||0.005)); g.gain.exponentialRampToValueAtTime(0.0001,t+o.dur);
@@ -496,7 +514,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
  boing(){this.tone({t:'sine',f0:180,f1:900,dur:.38,v:.26});this.tone({t:'square',f0:300,f1:1300,dur:.2,v:.05})},
  tlaugh(){[0,.11,.22,.33].forEach((d,i)=>this.tone({t:'square',f0:900-i*70,f1:640-i*40,dur:.08,v:.07,d}))},
  trombone(){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime,notes=[[233,.28],[220,.28],[208,.28],[196,.95]]; let tt=t;
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime,notes=[[233,.28],[220,.28],[208,.28],[196,.95]]; let tt=t;
   notes.forEach(([f,d],i)=>{
    const o=c.createOscillator(),g=c.createGain(),lp=c.createBiquadFilter(); o.type='sawtooth'; lp.type='lowpass'; lp.Q.value=4;
    o.frequency.setValueAtTime(f*1.02,tt); o.frequency.linearRampToValueAtTime(f*(i===3?0.88:0.99),tt+d);
@@ -507,7 +525,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
   });
  },
  laugh(){
-  if(!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime;
+  if(HUSH||!this.ctx||!S.sfx)return; const c=this.ctx,t=c.currentTime;
   for(let i=0;i<6;i++){
    const tt=t+i*.15,o=c.createOscillator(),bp=c.createBiquadFilter(),g=c.createGain();
    o.type='sawtooth'; o.frequency.setValueAtTime(300-i*14,tt); o.frequency.exponentialRampToValueAtTime(210-i*10,tt+.11);
@@ -530,7 +548,7 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
  /* ---- voice director: ONE speaker at a time. Each request has a priority; the higher one wins, equal ones queue only
     if the wait is short, stale ones are dropped, long reaction clips are trimmed with a fade. ---- */
  vl(act,key,pri,t0,end){ if(this.vlog.length>400)this.vlog.shift(); this.vlog.push({act,key,pri,t0:+(t0||0).toFixed(3),end:+(end||0).toFixed(3),at:+(this.ctx?this.ctx.currentTime:0).toFixed(3)}) },
- voice(key,o){
+ voice(key,o){ if(HUSH)return;
   if(typeof o==='number')o={delay:o}; o=o||{};
   if(!this.ctx||!S.voice||!A.audio||!A.audio[key])return false;
   const c=this.ctx,tReq=c.currentTime,pri=o.pri==null?3:o.pri,delay=o.delay||0,ttl=o.ttl==null?1.6:o.ttl,tok=this.vtok;
@@ -623,6 +641,7 @@ function newPlayer(tx){return{x:(tx||2)*TS,y:GY-PH,vx:0,vy:0,face:1,onGround:tru
 function solidTile(tx,ty){
   if(tx<0||tx>=L.w)return true; if(ty<0)return false;
   if(L.gate!=null&&tx===L.gate&&ty<GR)return true;                  // boss room: sealed gate until the boss falls
+  if(L.cg){ const q=L.cg[tx]; if(q)for(const g of q)if(ty>=g.y0&&ty<=g.y1&&(L.cgE[g.id]===1)===!!g.inv)return true }      // co-op puzzle doors / bridges / steps (see w_copuz.js)
   if(ty>=GR&&solidFloor(L,tx))return true;
   const b=L.blocks[tx+','+ty]; return !!b;
 }
@@ -641,11 +660,13 @@ function moveY(dy){
     for(const e of L.ents){ if(e.t!=='plat'||!e.on)continue; if(P.x+PW<=e.x+1||P.x>=e.x+e.w-1)continue;
       if(pb<=e.y+1.5&&P.y+PH>=e.y){ if(P.vy>260){P.land=1;Snd.land();puff(P.x+PW/2,e.y,4)} P.y=e.y-PH;P.vy=0;P.onGround=true;P.stand=e.id;return }
     }
+    if(G.co){ for(const q of PLY){ if(q===P||q.dead)continue; if(P.x+PW<=q.x+3||P.x>=q.x+PW-3)continue;          // co-op: a player can stand on the other one's head (a human ladder)
+      if(pb<=q.y+2&&P.y+PH>=q.y&&P.vy>=0){ if(P.vy>260){P.land=1;Snd.land();puff(P.x+PW/2,q.y,4)} P.y=q.y-PH;P.vy=0;P.onGround=true;P.stand=-(q.idx+1);return } } }
   }
   P.stand=0;
 }
 function platsMove(dt){ for(const e of L.ents){ if(e.t!==('plat'))continue; B.plat.move(e,dt) } }
-function platRide(){ if(P.stand){ const s=L.ents.find(e=>e.t==='plat'&&e.id===P.stand&&e.on); if(s&&P.onGround){P.x+=s.dx;P.y+=s.dy}else P.stand=0 } }
+function platRide(){ if(P.stand>0){ const s=L.ents.find(e=>e.t==='plat'&&e.id===P.stand&&e.on); if(s&&P.onGround){P.x+=s.dx;P.y+=s.dy}else P.stand=0 } }
 function stepPlats(dt){ platsMove(dt); platRide() }
 function updatePlayer(dt){
   const p=P, z=zoneAt(p.x+PW/2);
@@ -690,8 +711,8 @@ function debris(x,y,col){if(SIM)return;for(let i=0;i<5;i++)parts.push({x:x+Math.
 function updParts(dt){for(const p of parts){p.vy+=p.g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(p.vr)p.rot+=p.vr*dt}parts=parts.filter(p=>p.life>0)}
 
 /* =============== SNAPSHOT (used by the offline fairness planner) =============== */
-function snap(np){return JSON.stringify({P:np?undefined:P,pl:G.co?PLY:undefined,ents:L.ents,cr:L.cr,blocks:L.blocks,zones:L.zones,rs:RG.s,t:G.t,st:G.state,ca:G.cause,co:G.coins,cp:G.cpX,ex:L.exitTx,gt:L.gate,bp:G.bossProg})}
-function restore(s){const o=JSON.parse(s);P=o.P;if(o.pl){PLY=o.pl;P=PLY[G.co.me]}L.ents=o.ents;L.cr=o.cr;L.blocks=o.blocks;L.zones=o.zones;RG.s=o.rs;G.t=o.t;G.state=o.st;G.cause=o.ca;G.coins=o.co;G.cpX=o.cp;L.exitTx=o.ex;L.gate=o.gt;G.bossProg=o.bp}
+function snap(np){return JSON.stringify({P:np?undefined:P,pl:G.co?PLY:undefined,ents:L.ents,cr:L.cr,blocks:L.blocks,zones:L.zones,rs:RG.s,t:G.t,st:G.state,ca:G.cause,co:G.coins,cp:G.cpX,ex:L.exitTx,gt:L.gate,bp:G.bossProg,dt:G.deadT,wt:G.winT,cs:L.cgS,ce:L.cgE})}
+function restore(s){const o=JSON.parse(s);P=o.P;if(o.pl){PLY=o.pl;P=PLY[G.co.me]}L.ents=o.ents;L.cr=o.cr;L.blocks=o.blocks;L.zones=o.zones;RG.s=o.rs;G.t=o.t;G.state=o.st;G.cause=o.ca;G.coins=o.co;G.cpX=o.cp;L.exitTx=o.ex;L.gate=o.gt;G.bossProg=o.bp;G.deadT=o.dt||0;G.winT=o.wt||0;if(o.cs){L.cgS=o.cs;L.cgE=o.ce}}
 
 /* =============== ENTITIES (plain data + behaviour table, so a world snapshot is just JSON) =============== */
 const B={};
@@ -1024,6 +1045,10 @@ B.plat={
  move(e,dt){ const ox=e.x,oy=e.y;
   if(e.v==='move'){ e.ph+=dt*e.sp/Math.max(1,e.x1-e.x0)*Math.PI; e.x=e.x0+(e.x1-e.x0)*(.5-.5*Math.cos(e.ph)) }
   else if(e.v==='lift'){ e.ph+=dt*e.sp/Math.max(1,e.y1-e.y0)*Math.PI; e.y=e.y0+(e.y1-e.y0)*(.5-.5*Math.cos(e.ph)) }
+  else if(e.v==='colift'){                                  // co-op lift: up while its plate is pressed; after the lever it shuttles by itself
+    const st=(L.cgS&&L.cgS[e.gid])|0, rng=e.y0-e.y1;
+    if(st&1){ if(!e.lm){ e.lm=1; e.ph=Math.acos(clamp(1-2*(e.y0-e.y)/rng,-1,1)) } e.ph+=dt*e.sp/rng*Math.PI; e.y=e.y0-rng*(.5-.5*Math.cos(e.ph)) }
+    else { e.lm=0; const tg=(st&2)?e.y1:e.y0; e.y+=clamp(tg-e.y,-e.sp*dt,e.sp*dt) } }
   else if(e.v==='elev'){
     if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.6;Snd.rumble();snick(e,'طابق واحد بس!')} }
     else if(e.st===1){ e.tm-=dt; if(e.tm<=0)e.st=2 }
@@ -1035,7 +1060,7 @@ B.plat={
   e.dx=e.x-ox;e.dy=e.y-oy },
  upd(){}, hit(){return null},
  draw(e,c,th){ if(!e.on)return; const sh=e.st===1?Math.sin(G.t*70)*1.5:0; c.strokeStyle='#000';c.lineWidth=2.6;
-  c.fillStyle=e.v==='vanish'?'#9a7b4f':'#5b6f91';c.fillRect(e.x+sh,e.y,e.w,e.h);c.strokeRect(e.x+sh,e.y,e.w,e.h);
+  c.fillStyle=e.v==='vanish'?'#9a7b4f':e.v==='colift'?'#c58a2b':'#5b6f91';c.fillRect(e.x+sh,e.y,e.w,e.h);c.strokeRect(e.x+sh,e.y,e.w,e.h);
   c.fillStyle=th.top;c.fillRect(e.x+sh,e.y-3,e.w,5);c.strokeRect(e.x+sh,e.y-3,e.w,5);
   c.fillStyle='#0004';for(let i=8;i<e.w-4;i+=16){c.fillRect(e.x+sh+i,e.y+4,2,6)}
   if(e.v==='vanish'&&e.st===1){c.strokeStyle='#000b';c.beginPath();c.moveTo(e.x+8,e.y);c.lineTo(e.x+14,e.y+8);c.lineTo(e.x+11,e.y+12);c.stroke()} }};
@@ -1288,13 +1313,16 @@ function buildLevel(n,opt){
   const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
+  let script2=script; if(opt.co&&!opt.script&&script){ script2=script.slice(); script2.splice(Math.max(1,script2.length>>1),0,['co',n===1?'gate':'ladder']) }
+  const nCo=opt.co&&!opt.script&&!script?(W>=120?3:W>=96?2:1):0; let coDone=0;           // co-op levels carry puzzles that need both players
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
   const PITT={pit:1};
   const maxIter=script&&script.length>40?script.length*2+30:90;      // long editor recipes need more passes than a generated level
   while(guard++<maxIter){
     let fam=null,force=null;
-    if(script&&si<script.length){fam=script[si][0];force=script[si][1];si++}
+    if(script2&&si<script2.length){fam=script2[si][0];force=script2[si][1];si++}
     else if(opt.script&&opt.script.length)break;
+    else if(coDone<nCo&&x>=Math.round(W*(.2+.6*coDone/nCo))&&x+NEEDF.co<=W-14){ fam='co' }
     else{ for(let k=0;k<10;k++){let t=pickW(pool.map(p=>[p[0],p[1]*(hist.slice(-2).includes(p[0])?.35:1)]),r); if(x+NEEDF[t]<=W-14){fam=t;break}} }
     if(!fam||x+8>W-12)break;
     if(fam==='cp'){                         // map editor: a real checkpoint flag placed on solid ground
@@ -1305,9 +1333,9 @@ function buildLevel(n,opt){
     x=Math.max(x,endX+minGap);
     const room=W-14-x; if(room<4)break;
     D.force=force; D.room=room;
-    const used=FAM[fam](L,r,x,ne,D,room); D.force=null; (L.segs=L.segs||[]).push([fam,x,used]);
+    const used=FAM[fam](L,r,x,ne,D,room); D.force=null; (L.segs=L.segs||[]).push([fam,x,used]); if(fam==='co'&&used>0)coDone++;
     if(!used){x=endX+3;continue}
-    if(!script&&!opt.script&&n>=3&&r()<D.combo&&sinceOv>=1&&fam!=='coin'&&fam!=='bait'){overlay(L,r,fam,x,used,ne,D,endX);sinceOv=0}else sinceOv++;
+    if(!script&&!opt.script&&n>=3&&r()<D.combo&&sinceOv>=1&&fam!=='coin'&&fam!=='bait'&&fam!=='co'){overlay(L,r,fam,x,used,ne,D,endX);sinceOv=0}else sinceOv++;
     prev=fam;hist.push(fam);endX=x+used;trail=0;for(let i=endX-1;i>=0&&L.ground[i]<0;i--)trail++;
     let g=Math.round(D.gap)+ri(r,0,2);
     sinceCp+=used+g;
@@ -1321,13 +1349,13 @@ function buildLevel(n,opt){
     // the exit door runs away when you get close, and pops spikes where it stood
     if(ne>=(dk==='hell'?4:6)&&r()<(dk==='hell'?.8:.5))L.ents.push({t:'exitrun',x:0,s:0,always:1});
     // lights go out for a moment before a trap segment
-    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[1]>24), nb=ne>=(dk==='hell'?4:7)?DF.troll:0;
+    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[0]!=='co'&&q[1]>24), nb=ne>=(dk==='hell'?4:7)?DF.troll:0;
     L.dark=[]; for(let i=0;i<nb&&sg.length;i++){const q=sg.splice(ri(r,0,sg.length-1),1)[0]; L.dark.push({x0:(q[1]-9)*TS,x1:(q[1]+q[2])*TS,dur:dk==='hell'?2.7:1.9,fired:0})}
   }
   if(chaseKind){const sp=Math.min(176,D.v(112,160)+(n>30?8:0));L.chase=chaseKind;const e=mkChase(chaseKind,sp,chaseKind==='wall'?-60:-140);e.go=6*TS;L.ents.push(e)}
   for(let t=4;t<W;t+=10)L.torches.push(t);
   L.name=n<=LEVEL_NAMES.length?LEVEL_NAMES[n-1]:EXTRA_NAMES[(n*7+3)%EXTRA_NAMES.length];
-  L.cpList=L.ents.filter(e=>e.t==='cp').map(e=>e.x);
+  L.cpList=L.ents.filter(e=>e.t==='cp').map(e=>e.x); cgBuild(L);
   return L;
 }
 
@@ -1702,7 +1730,7 @@ function bossEnd(){
   confetti(VW*.3,GY-120); confetti(VW*.7,GY-140); stars(P.x+PW/2,P.y);
   bossSay('win',{force:1,pri:4,delay:.4,max:2.6,dur:3.2});
   if(Math.random()<.6)heroSay('win',{force:1,pri:3,delay:2.2,max:1.6,dur:2.2});
-  if(G.level>=S.best){ S.best=G.level+1; save() }
+  if(G.level===S.best){ S.best=G.level+1; save() }
 }
 function drawEndCard(c){
   const k=G.endCard; if(!k)return; const t=G.winT, a=clamp((t-.35)/.7,0,1); if(a<=0)return;
@@ -1885,6 +1913,9 @@ function logDeath(cause){
 const SHOP={open:false,tab:'h'};
 if(!S.ecoV){ S.ecoV=1; S.own=S.own||{}; S.own[S.hero||'falafel']=1 }          // first run of the economy: keep the hero the player already uses
 S.wallet=S.wallet||0; S.cc=S.cc||{}; S.cl=S.cl||{}; S.nd=S.nd||{}; S.cs=S.cs||{}; S.bd=S.bd||{}; S.own=S.own||{}; S.own.falafel=1; if(!S.own[S.hero])S.hero='falafel'; S.ow=S.ow||{}; if(S.bgPick==null)S.bgPick=-1;
+/* one-time progress repair: the pause-menu "jump to level" used to be able to raise S.best (clear a jumped-to level -> everything below it opened). Progress must be real, so a best
+   that no run of clears supports (past level 81, beyond the first level never cleared) goes back to that level; the old value is kept in S.pb. */
+if(!S.pv){ S.pv=1; let p=0; while(S.cl[p+1])p++; if(S.best>81&&S.best>p+1){ S.pb=S.best; S.best=Math.max(1,p+1) } }
 
 const HERO_PRICE={falafel:0,uncle:60,chicken:100,cat:160,grandma:220,donkey:280,robot:340,mushroom:400};
 const heroOwned=id=>!!S.own[id];
@@ -1906,7 +1937,7 @@ function econBank(){                                  // pending -> wallet; retu
   const paid=S.cc[G.level]||(S.cc[G.level]=[]); let g=0;
   for(const k of pend){ if(!paid.includes(k)){ paid.push(k); g++ } }
   if(g){ S.wallet+=g; S.st.c+=g; dayEv('coin',g) }
-  if(G.ck&&G.ck.length&&!S.cs[G.level]&&!G.helped&&G.ck.every(k=>paid.includes(k)))S.cs[G.level]=1;        // third star: every honest coin of the level has been banked at least once
+  if(G.ck&&G.ck.length&&!S.cs[G.level]&&!G.helped&&G.ck.every(k=>paid.includes(k)))S.cs[G.level]=1;        // coin bonus flag (no longer a star): every honest coin of the level has been banked at least once
   if(g||S.cs[G.level])save();
   hud(); return g;
 }
@@ -1915,11 +1946,12 @@ function econClear(){                                 // called once when a real
   if(SIM||G.custom)return;
   if(L.trial){ trialClear(); return }
   if(!legit()){ G.pend=[]; econToast(G.co||G.race?'لعب جماعي 👥 — بدون مكافآت':'مرحلة تجريبية — بدون مكافآت 🧪'); hud(); return }
-  const first=!S.cl[G.level], s0=starsOf(G.level), g=econBank(); let b=0;
-  if(first){ S.cl[G.level]=1; b+=L.boss?30:10; if(L.boss)S.st.bw++; if(G.lvDeaths>=10)S.st.gr++ }
+  const rk=DRANK[L.dk]||1, c0=starsOf(G.level), first=!S.cl[G.level], s0=c0, g=econBank(); let b=0;
+  if(first){ b+=L.boss?30:10; if(L.boss)S.st.bw++; if(G.lvDeaths>=10)S.st.gr++ }
+  if(rk>c0){ S.cl[G.level]=rk; for(let t=Math.max(2,c0+1);t<=rk;t++)b+=t===2?10:20 }                       // a harder clear = more stars; each new star tier pays once per level (crazy +10, impossible +20)
   if(G.lvDeaths===0&&!G.helped&&!S.nd[G.level]){ S.nd[G.level]=1; b+=L.boss?15:5; S.st.ns++; S.st.nm=Math.max(S.st.nm,S.st.ns) }
   if(!G.helped)S.bd[G.level]=Math.min(S.bd[G.level]==null?99:S.bd[G.level],G.lvDeaths);
-  if(!G.helped&&!(G.ck&&G.ck.length)&&S.bd[G.level]<=2)S.cs[G.level]=1;                                   // levels without coins (bosses): third star = cleared with at most 2 deaths
+  if(!G.helped&&!(G.ck&&G.ck.length)&&S.bd[G.level]<=2)S.cs[G.level]=1;                                   // levels without coins (bosses): flag = cleared with at most 2 deaths
   if(b){ S.wallet+=b; S.st.c+=b }
   heroXpClear(first,G.lvDeaths===0&&!G.helped);
   save();
@@ -2034,8 +2066,13 @@ function startGame(n,co){
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deaths++; G.lvDeaths++; G.deathAt=G.t; if(!G.custom&&!G.co&&!G.race)S.deaths++; if(!SIM){save();hud();logDeath(cause)} if(!G.co&&!G.race){econDeath(); achDie(cause); heroXpDeath()}
-  P.dvx=P.vx; P.dvy=P.vy; G.shake=9; G.dv=Math.random();
+  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deathAt=G.t; P.dvx=P.vx; P.dvy=P.vy;
+  if(G.co&&!G.co.local){ netFx({k:'d',c:cause,e:e,pi:P.idx}); return }          // online: sounds and cards wait until the frame is confirmed (it may still be rolled back)
+  dieFx(cause,e);
+}
+function dieFx(cause,e){
+  G.deaths++; G.lvDeaths++; if(!G.custom&&!G.co&&!G.race)S.deaths++; if(!SIM){save();hud();logDeath(cause)} if(!G.co&&!G.race){econDeath(); achDie(cause); heroXpDeath()}
+  G.shake=9; G.dv=Math.random();
   if(!SIM&&S.sfx&&navigator.vibrate){try{navigator.vibrate(G.lvDeaths%4===0?[30,40,30]:28)}catch(e){}}
   if(DEATH_SFX[cause])DEATH_SFX[cause]();
   else switch(cause){
@@ -2119,7 +2156,12 @@ function showCard(){
 }
 function retry(){ loadLevel(G.level,false,G.custom?{custom:G.custom}:undefined); G.state='play'; }
 function winLevel(){
-  if(G.state!=='play')return; G.state='win'; G.winT=0; Snd.win(); confetti(P.x+PW/2,P.y); econClear(); 
+  if(G.state!=='play')return; G.state='win'; G.winT=0; G.winTime=G.t;
+  if(G.co&&!G.co.local){ netFx({k:'w'}); return }
+  winFx();
+}
+function winFx(){
+  Snd.win(); confetti(P.x+PW/2,P.y); econClear(); 
   if(G.race){ if(!SIM)raceFinish(); return }
   if(L.boss){ bossEnd(); return }
   const x=pick('win',{legacy:WIN_LINES,pAudio:.9}), ks=Object.keys(A.img).filter(k=>k.startsWith('card_win_'));
@@ -2127,7 +2169,7 @@ function winLevel(){
   if(x&&ks.length&&Math.random()<.6){G.winCard={x,im:bagPick('img:win',ks,y=>y)};G.winLen=3.4}
   else if(x)say(x.t,x.d,2.4);
   if(Math.random()<.5)heroSay('win',{force:1,pri:5,delay:.05,max:1.4,dur:2});
-  if(G.co){ if(!SIM)coWon() } else if(G.custom){ if(!SIM)customCleared() } else if(!L.trial&&G.level>=S.best){ S.best=G.level+1; save() }
+  if(G.co){ if(!SIM)coWon() } else if(G.custom){ if(!SIM)customCleared() } else if(!L.trial&&G.level===S.best){ S.best=G.level+1; save() }       // only clearing the level you are ON opens the next one
 }
 function nextLevel(){ if(G.race)return; if(G.co){coNext();return} if(G.custom){customWon();return} if(L.trial){trialExit();return} loadLevel(G.level+1,true); G.state='play'; }
 
@@ -2141,7 +2183,7 @@ function update(dt){
   if(G.snkCd>0)G.snkCd-=dt; if(G.snk)G.snk.t-=dt; if(G.hsay){G.hsay.t-=dt;if(G.hsay.t<=0)G.hsay=null} if(G.bsay){G.bsay.t-=dt;if(G.bsay.t<=0)G.bsay=null}
   G.warn=Math.max(0,G.warn-dt*3); G.dark+=((G.darkT>0?1:0)-G.dark)*Math.min(1,dt*(G.darkT>0?12:2.4)); if(G.state==='dead'||G.state==='win')G.darkT=Math.min(G.darkT,.2);
   if(G.state==='play'){
-    if(G.co)coPlayers(dt); else { stepPlats(dt); updatePlayer(dt) }
+    if(G.co){ if(L.cg)cgTick(); coPlayers(dt) } else { stepPlats(dt); updatePlayer(dt) }
     if(G.state==='play'){
       for(const k in L.cr){const cr=L.cr[k]; if(cr.s===1){cr.t+=dt; if(cr.t>=(cr.force||L.crDelay)){cr.s=2;debris(k*TS,GY,THEMES[L.theme].floor)}}}
       if(L.zones.length){let g=false;for(const z of L.zones)if(z.tm!=null){z.tm-=dt;if(z.tm<=0)g=true} if(g)L.zones=L.zones.filter(z=>z.tm==null||z.tm>0)}
@@ -2154,7 +2196,7 @@ function update(dt){
       if(G.state==='play'&&!SIM){ // lights-out pranks + mocking traps
         if(L.dark){ const px2=pcx(); for(const d of L.dark){ if(!d.fired&&px2>d.x0&&px2<d.x1){ d.fired=1; G.darkT=G.darkMax=d.dur; Snd.tone({t:'sawtooth',f0:420,f1:60,dur:.5,v:.22}); say(rnd(['انقطعت الكهربا! 🔌😈','مين طفّى النور؟ مش أنا 😇','شو هالعتمة... صدفة أكيد']),'any',2.2) } } }
         if(G.darkT>0)G.darkT-=dt;
-        if(L.dk!=='normal'){ G.mockCd-=dt; if(G.mockCd<=0&&G.snkCd<=0){ const px3=pcx();
+        if(L.dk!=='normal'&&!(G.co&&!G.co.local)){ G.mockCd-=dt; if(G.mockCd<=0&&G.snkCd<=0){ const px3=pcx();
           for(const e of L.ents){ if(e.mocked||e.rm||!MOCKT[e.t])continue; const d=px3-entX(e); if(d>46&&d<150){ e.mocked=1; if(Math.random()<.55){ snick(e,rnd(MOCK_LINES)); G.mockCd=7+Math.random()*5; break } } } } }
       }
       if(G.state==='play'&&!SIM){ // signs
@@ -2165,10 +2207,10 @@ function update(dt){
   } else if(G.state==='dead'){
     G.deadT+=dt; const pd=G.cause==='pit'||G.cause==='crumble';
     if(pd){P.vy=Math.min(P.vy+GRAV*dt,900);P.y+=P.vy*dt}
-    if(!G.cardShown&&G.deadT>Math.max(G.killer?0.95:0.55,(G.tauntAt||0)-.05))showCard();
+    if(!G.cardShown&&G.deadT>Math.max(G.killer?0.95:0.55,(G.tauntAt||0)-.05)){ if(G.co&&!G.co.local)netFx({k:'c'}); else showCard() }
     if(G.co&&!G.co.local){ if(G.deadT>2.4)retry() } else if(G.cardShown&&((G.deadT>G.holdMin&&!Snd.voiceBusy())||G.deadT>9))retry();
   } else if(G.state==='win'){
-    G.winT+=dt; if(G.winCard&&G.winT>.5){const w=G.winCard;G.winCard=null;fillCard(rnd(['🎉 عبرت! (مين صدّق؟)','🏆 مبروك... بالغلط','🥳 إنجاز: ما متّ هالمرة']),w.im,w.x.t,w.x.d,'اضغط للمتابعة')} if(G.co&&!G.co.local){ if(G.winT>3)nextLevel() } else if(G.winT>G.winLen&&(!Snd.voiceBusy()||G.winT>6.5))nextLevel();
+    G.winT+=dt; if(G.winCard&&G.winT>.5){const w=G.winCard;G.winCard=null;fillCard(rnd(['🎉 عبرت! (مين صدّق؟)','🏆 مبروك... بالغلط','🥳 إنجاز: ما متّ هالمرة']),w.im,w.x.t,w.x.d,'اضغط للمتابعة')} if(G.co&&!G.co.local){ if(G.winT>3){ G.winT=3.01; netFx({k:'n'}) } } else if(G.winT>G.winLen&&(!Snd.voiceBusy()||G.winT>6.5))nextLevel();
   }
   trailTick(dt);
   updParts(dt);
@@ -3229,7 +3271,7 @@ B.spring.draw3=function(e,c,th){ const k=e.st?.5+.5*(1-e.tm/.3):1, h=16*k; gsh3(
   if(e.kind==='troll'||e.st)face3(c,e.x+16,GY-5-h-17,.7,isK(e)||e.st?'laugh':'sly') };
 
 /* ---------- platforms ---------- */
-B.plat.draw3=function(e,c,th){ if(!e.on)return; const sh=e.st===1?Math.sin(G.t*70)*1.5:0, x=e.x+sh, y=e.y, col=e.v==='vanish'?'#a9854f':'#62789c';
+B.plat.draw3=function(e,c,th){ if(!e.on)return; const sh=e.st===1?Math.sin(G.t*70)*1.5:0, x=e.x+sh, y=e.y, col=e.v==='vanish'?'#a9854f':e.v==='colift'?'#d49a38':'#62789c';
   c.fillStyle='rgba(0,0,0,.28)';c.beginPath();c.ellipse(x+e.w/2,y+e.h+5,e.w*.45,3,0,0,7);c.fill();
   c.save();c.translate(x,y);box3(c,0,0,e.w,e.h,3,col,1.8);
   c.fillStyle=th.top;c.beginPath();c.roundRect(0,-5,e.w,6.5,2.5);c.fill();c.strokeStyle=INK;c.lineWidth=1.6;c.stroke();c.fillStyle='rgba(255,255,255,.35)';c.fillRect(2,-4.2,e.w-4,1.5);
@@ -3661,7 +3703,7 @@ function togglePause(){
   if(G.co&&!G.co.local){ netEsc(); return }
   if(G.race){ if(G.race.over)return; netEscRace(); return }
   if(G.state==='menu'){ $('menu').classList.add('hide'); G.state=G.pausedFrom||'play'; if(touchMode)$('touch').classList.remove('hide'); return }
-  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').value=G.level; $('bEdit').classList.toggle('hide',!G.custom); syncToggles() }
+  if(G.state==='play'||G.state==='dead'||G.state==='win'){ G.pausedFrom=G.state; G.state='menu'; $('menu').classList.remove('hide'); $('touch').classList.add('hide'); $('inLvl').max=Math.max(1,S.best);$('inLvl').value=Math.min(G.level,Math.max(1,S.best)); $('bEdit').classList.toggle('hide',!G.custom); syncToggles() }
 }
 $('bPlay').onclick=()=>{S.deaths=0;save();startGame(1);const x=pick('intro',{pAudio:.9});
   if(x){later(600,()=>{sayVoice(x,4)}); later(4800,()=>{if(G.deaths===0)say('⬅ ➡ للحركة · ⬆ للقفز. صدّق اللافتات... أو لا 😉','any',3.6)})}};
@@ -3689,7 +3731,7 @@ $('bShare').onclick=()=>shareResult($('bShare')); $('bShareT').onclick=()=>share
 { const de=document.documentElement; if(de.requestFullscreen||de.webkitRequestFullscreen){ $('bFull').classList.remove('hide');
   $('bFull').onclick=()=>{ try{ if(document.fullscreenElement||document.webkitFullscreenElement){(document.exitFullscreen||document.webkitExitFullscreen).call(document)} else (de.requestFullscreen||de.webkitRequestFullscreen).call(de) }catch(e){} } } }
 $('bResume').onclick=togglePause;
-$('bGo').onclick=()=>{const n=clamp(parseInt($('inLvl').value)||1,1,999);$('menu').classList.add('hide');G.state='play';startGame(n)};
+$('bGo').onclick=()=>{const n=clamp(parseInt($('inLvl').value)||1,1,Math.max(1,S.best));$('inLvl').value=n;$('menu').classList.add('hide');G.state='play';startGame(n)};      // only levels you have already reached
 $('bHome').onclick=goTitle;
 document.querySelectorAll('.tg[data-s]').forEach(b=>b.onclick=()=>{S[b.dataset.s]=!S[b.dataset.s];save();syncToggles();Snd.init();Snd.ui();
   if(b.dataset.s==='music'){if(S.music&&G.state!=='title')Snd.startMusic();}});
@@ -3945,6 +3987,149 @@ function decoDraw(c,cam){
   c.restore();
 }
 
+/* =============== CO-OP PUZZLES: things one player cannot do alone ===============
+   Pieces (all plain data in L.ents, so a snapshot is still just JSON; the only extra state is L.cgS / L.cgE):
+   - cplate  : a pressure plate. Pressed while any living player stands on it (feet on its top).
+   - clever  : a lever. Touching it latches its gate open for good (one way).
+   - cgate   : geometry that is solid or not: a door (solid while shut), a bridge / steps (solid while OPEN, `inv`). Several pieces share one gid (the colour).
+   - plat v:'colift' : a lift. Follows its plate (up while pressed); once the lever is pulled it shuttles up and down on its own.
+   L.cgS[gid] = raw bits: 1 = latched (lever / both plates were once pressed), 2 = held (plates satisfied right now). L.cgE[gid] = 1 when the gate is open.
+   cgTick() runs once per step before the players move; it never closes a door (or raises a bridge) on somebody who is standing in it.
+   Written for N players: a plate counts anybody, 'all' plates (sync) means every plate of the group at the same time; nothing assumes two.
+   Also: a player can stand on another one's head (w_core.js moveY / w_coop.js coPlayers) - that is the human ladder. */
+const CGC=['#ffd23f','#4dd0ff','#ff6fa8','#7ee081','#ff9a3c','#b794ff'];
+const cgCol=gid=>CGC[((L.cgc&&L.cgc[gid])|0)%CGC.length];
+const mkPlate=(gid,x,y,w,o)=>Object.assign({t:'cplate',gid,x,y,w,on:0},o||{});
+const mkLever=(gid,x,y)=>({t:'clever',gid,x,y,on:0});
+const mkGate=(gid,tx,w,y0,y1,kind,inv)=>({t:'cgate',gid,x:tx*TS,tx,w,y0,y1,kind,inv:inv?1:0});
+
+function cgBuild(L){                                          // static lookups from the entities (the entities themselves are the snapshot)
+  const gs=L.ents.filter(e=>e.t==='cgate'); L.cg=null; L.cgS=undefined; L.cgE=undefined; L.cgd=null; L.cgG=null; L.cgc=null; cgV={};
+  if(!gs.length)return;
+  L.cg={}; L.cgS={}; L.cgE={}; L.cgd={}; L.cgG={}; L.cgc={}; let k=0;
+  for(const e of gs){ if(L.cgc[e.gid]==null)L.cgc[e.gid]=k++; (L.cgG[e.gid]||(L.cgG[e.gid]=[])).push(e); L.cgS[e.gid]=0; L.cgE[e.gid]=0;
+    for(let i=0;i<e.w;i++)(L.cg[e.tx+i]||(L.cg[e.tx+i]=[])).push({id:e.gid,y0:e.y0,y1:e.y1,inv:e.inv}) }
+  for(const e of L.ents){ if(e.t!=='cplate')continue; const d=L.cgd[e.gid]||(L.cgd[e.gid]={n:0,all:0,lat:0}); d.n++; if(e.all)d.all=1; if(e.lat)d.lat=1 }
+}
+function cgBlocked(gid,want){                                  // would the change make a body solid on top of a player?
+  let blocked=false;
+  for(const g of L.cgG[gid]){ if((want===1)!==!!g.inv)continue;                      // this piece is about to become solid
+    const x0=g.x,x1=g.x+g.w*TS,y0=g.y0*TS,y1=(g.y1+1)*TS;
+    for(const q of PLY){ if(q.dead||!(q.x<x1&&q.x+PW>x0&&q.y<y1&&q.y+PH>y0))continue;
+      if(g.inv){ q.y=y0-PH; q.vy=0; q.onGround=true; q.stand=0 }                    // steps / a bridge rising under his feet carry him up
+      else blocked=true } }                                                         // a door never closes on somebody: it waits until he has left
+  return blocked;
+}
+function cgTick(){
+  if(!L.cg)return; const S1=L.cgS, E=L.cgE, cnt={};
+  for(const e of L.ents){
+    if(e.t==='cplate'){ let on=0;
+      for(const q of PLY){ if(!q.dead&&Math.abs(q.y+PH-e.y)<=4&&q.x+PW>e.x+2&&q.x<e.x+e.w-2){ on=1; break } }
+      if(on!==e.on){ e.on=on; Snd.plate(on) } if(on)cnt[e.gid]=(cnt[e.gid]|0)+1 }
+    else if(e.t==='clever'&&!e.on){
+      for(const q of PLY){ if(!q.dead&&q.x+PW>e.x-12&&q.x<e.x+12&&q.y+PH>e.y-36&&q.y<e.y+2){ e.on=1; S1[e.gid]=(S1[e.gid]|0)|1; Snd.lever(); break } } }
+  }
+  for(const k in L.cgG){ const d=L.cgd[k]||{n:0,all:0,lat:0}, held=d.n?(d.all?cnt[k]===d.n:(cnt[k]|0)>=1):false;
+    let b=(S1[k]|0)&1; if(held&&d.lat)b=1; b|=held?2:0; S1[k]=b;
+    const want=b?1:0; if(want!==(E[k]|0)&&!cgBlocked(k,want)){ E[k]=want; Snd.gate(want) } }
+}
+
+/* ---------------- drawing (visual easing lives OUTSIDE the entities: they are part of the hashed snapshot) ---------------- */
+let cgV={};
+function cgEase(key,tg){ const n=performance.now(), o=cgV[key]||(cgV[key]={v:tg,t:n}); const dt=Math.min(.05,(n-o.t)/1000); o.t=n; o.v+=clamp(tg-o.v,-dt*2.2,dt*2.2); return o.v }
+B.cplate={ hit(){return null},
+ draw(e,c,th){ const col=cgCol(e.gid), dn=e.on?4:0, y=e.y+dn;
+  c.save(); c.lineJoin='round'; c.strokeStyle='#000'; c.lineWidth=2.4;
+  c.fillStyle='#2c2540'; c.fillRect(e.x-3,e.y-2,e.w+6,7); c.strokeRect(e.x-3,e.y-2,e.w+6,7);
+  c.fillStyle=e.on?'#35d07f':col; c.fillRect(e.x,y-6,e.w,7); c.strokeRect(e.x,y-6,e.w,7);
+  c.fillStyle='#0003'; for(let i=6;i<e.w-4;i+=10)c.fillRect(e.x+i,y-5,4,5);
+  if(!e.on){ const bob=Math.sin(G.t*5)*2; c.fillStyle=col; c.beginPath(); c.moveTo(e.x+e.w/2-6,y-22+bob); c.lineTo(e.x+e.w/2+6,y-22+bob); c.lineTo(e.x+e.w/2,y-13+bob); c.closePath(); c.fill(); c.stroke() }
+  c.restore() }};
+B.clever={ hit(){return null},
+ draw(e,c,th){ const col=cgCol(e.gid), a=e.on?.62:-.62, kx=e.x+Math.sin(a)*22, ky=e.y-6-Math.cos(a)*22;
+  c.save(); c.lineJoin='round'; c.lineCap='round'; c.strokeStyle='#000'; c.lineWidth=2.4;
+  c.fillStyle='#2c2540'; c.fillRect(e.x-12,e.y-7,24,8); c.strokeRect(e.x-12,e.y-7,24,8);
+  c.lineWidth=6; c.strokeStyle='#000'; c.beginPath(); c.moveTo(e.x,e.y-6); c.lineTo(kx,ky); c.stroke(); c.lineWidth=3; c.strokeStyle='#cfd4e6'; c.stroke();
+  c.lineWidth=2.4; c.strokeStyle='#000'; c.fillStyle=e.on?'#35d07f':col; c.beginPath(); c.arc(kx,ky,6.5,0,7); c.fill(); c.stroke();
+  if(!e.on){ c.globalAlpha=.55+.45*Math.sin(G.t*5); c.strokeStyle=col; c.lineWidth=2; c.beginPath(); c.arc(kx,ky,11,0,7); c.stroke() }
+  c.restore() }};
+B.cgate={ hit(){return null},
+ draw(e,c,th){ const col=cgCol(e.gid), open=L.cgE&&L.cgE[e.gid]===1, vo=cgEase(e.gid+':'+e.tx, open?1:0), x=e.tx*TS, w=e.w*TS, top=e.y0*TS, h=(e.y1-e.y0+1)*TS;
+  if(e.kind==='none')return;
+  c.save(); c.lineJoin='round'; c.lineCap='round'; c.strokeStyle='#000'; c.lineWidth=2.4;
+  if(e.kind==='bridge'){
+    const n=Math.round(w/TS), shown=vo*n;
+    for(let i=0;i<n;i++){ const a=clamp(shown-i,0,1); if(a<=0)continue; c.globalAlpha=a; c.fillStyle='#9a6b3a'; c.fillRect(x+i*TS+1,GY,TS-2,9); c.strokeRect(x+i*TS+1,GY,TS-2,9); c.fillStyle='#0003'; c.fillRect(x+i*TS+4,GY+2,TS-8,2) }
+    c.globalAlpha=1; if(vo<1){ c.globalAlpha=.4*(1-vo); c.setLineDash([6,6]); c.strokeStyle=col; c.beginPath(); c.moveTo(x,GY+4); c.lineTo(x+w,GY+4); c.stroke(); c.setLineDash([]) }
+    c.globalAlpha=1; c.strokeStyle='#000'; c.fillStyle=col; for(const px of [x-4,x+w-2]){ c.fillRect(px,GY-18,6,22); c.strokeRect(px,GY-18,6,22) } }
+  else if(e.kind==='steps'){
+    for(let tx=0;tx<e.w;tx++)for(let ty=e.y0;ty<=e.y1;ty++){ const bx=x+tx*TS, by=ty*TS+(1-vo)*12;
+      if(vo>.02){ c.globalAlpha=vo; c.fillStyle=th.floor; c.fillRect(bx,by,TS,TS); c.strokeStyle='#000'; c.strokeRect(bx+1,by+1,TS-2,TS-2); c.fillStyle='#ffffff14'; c.fillRect(bx+3,by+3,TS-6,4); if(ty===e.y0){ c.fillStyle=th.top; c.fillRect(bx,by-3,TS,6); c.strokeRect(bx,by-3,TS,6) } }
+      if(vo<.98){ c.globalAlpha=.45*(1-vo); c.strokeStyle=col; c.lineWidth=2; c.setLineDash([5,5]); c.strokeRect(bx+2,ty*TS+2,TS-4,TS-4); c.setLineDash([]); c.lineWidth=2.4 } }
+    c.globalAlpha=1 }
+  else {
+    const bh=h*(1-vo);                                          // a portcullis: it slides up out of the way
+    if(bh>2){ c.fillStyle='#4a5069'; for(let i=0;i<4;i++){ c.fillRect(x+3+i*8,top,4,bh); c.strokeRect(x+3+i*8,top,4,bh) }
+      for(let yy=top+26;yy<top+bh-4;yy+=44){ c.fillRect(x,yy,w,5); c.strokeRect(x,yy,w,5) }
+      c.fillStyle='#8d93aa'; for(let i=0;i<4;i++){ c.beginPath(); c.moveTo(x+3+i*8,top+bh); c.lineTo(x+7+i*8,top+bh); c.lineTo(x+5+i*8,top+bh+8); c.closePath(); c.fill(); c.stroke() } }
+    c.fillStyle=col; c.fillRect(x-3,top,w+6,8); c.strokeRect(x-3,top,w+6,8);
+    c.fillStyle=open?'#35d07f':'#ff4d5e'; c.beginPath(); c.arc(x+w/2,top+16,4.5,0,7); c.fill(); c.stroke() }
+  c.restore() }};
+
+/* little sounds (muted automatically during a rollback replay by Snd's HUSH checks) */
+Snd.plate=function(on){ this.tone({t:'square',f0:on?260:190,f1:on?330:140,dur:.07,v:.14}) };
+Snd.lever=function(){ this.tone({t:'square',f0:170,f1:110,dur:.09,v:.16}); this.tone({t:'triangle',f0:520,f1:780,dur:.16,v:.12,d:.07}) };
+Snd.gate=function(open){ this.noise({dur:.28,v:.14,ft:'lowpass',f:open?500:300}); this.tone({t:'sawtooth',f0:open?90:150,f1:open?150:70,dur:.3,v:.1}) };
+
+/* ---------------- level pieces: each returns the number of tiles it needs ---------------- */
+const coSign=(L,tx,text)=>L.signs.push({tx,text,tag:'any',lie:false,seen:false});
+const coCp=(L,tx)=>{ if(L.ground[tx]>=0&&!L.cr[tx])L.ents.push(mkCp(tx)) };
+const COV={
+ gate(L,x){ const g=newId(L);
+  coCp(L,x); coSign(L,x+3,'واحد يوقف على الزر 🔘\nوالتاني يعبر ويشدّ الرافعة 🎚');
+  L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8), mkGate(g,x+11,1,0,GR-1,'door'), mkLever(g,(x+15)*TS+16,GY));
+  coCp(L,x+19); return 21 },
+ ladder(L,x){ const g=newId(L), wx=x+9;
+  coCp(L,x); coSign(L,x+4,'الحيط عالي! 😅\nواحد يوقف... والتاني يطلع على راسه 🧍');
+  for(let k=1;k<=3;k++){ blk(L,wx,GR-k); blk(L,wx+1,GR-k) }
+  L.ents.push(mkPlat(newId(L),'static',wx*TS,GY-104,2*TS,{}));
+  L.ents.push(mkGate(g,wx-2,1,GR-1,GR-1,'steps',1), mkGate(g,wx-1,1,GR-2,GR-1,'steps',1), mkLever(g,(wx+5)*TS+16,GY));
+  coCp(L,x+19); return 21 },
+ bridge(L,x){ const g=newId(L), gap=11;
+  coCp(L,x); coSign(L,x+3,'الجسر ما بيطلع لحاله 😈\nواحد يكبس الزر ويضل واقف عليه');
+  L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8)); cutPit(L,x+8,gap); L.ents.push(mkGate(g,x+8,gap,GR,GR,'bridge',1), mkLever(g,(x+8+gap+2)*TS+16,GY));
+  coCp(L,x+8+gap+5); return gap+14 },
+ sync(L,x){ const g=newId(L);
+  coCp(L,x); coSign(L,x+3,'كبسوا الزرّين مع بعض! 👯\nواحد تحت وواحد فوق');
+  L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8,{all:1,lat:1}));
+  L.ents.push(mkPlat(newId(L),'static',(x+8)*TS,GY-72,3*TS,{})); L.ents.push(mkPlate(g,(x+9)*TS-4,GY-72,TS*1.8,{all:1,lat:1}));
+  L.ents.push(mkGate(g,x+15,1,0,GR-1,'door'));
+  coCp(L,x+19); return 21 },
+ lift(L,x){ const g=newId(L), H=6, top=GY-H*TS;
+  coCp(L,x); coSign(L,x+3,'المصعد بدّو واحد يوقف على الزر 🛗\nوالتاني يطلع ويشدّ الرافعة');
+  L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8));
+  L.ents.push(mkPlat(newId(L),'colift',(x+8)*TS,GY-30,2*TS,{gid:g,y0:GY-30,y1:top,sp:84,lm:0}));
+  for(let k=1;k<=H;k++)for(let c2=0;c2<5;c2++)blk(L,x+10+c2,GR-k);
+  L.ents.push(mkGate(g,x+8,0,0,0,'none',0), mkLever(g,(x+12)*TS+16,top));
+  coCp(L,x+19); return 21 },
+ relay(L,x){ const a=COV.gate(L,x); const b=COV.gate(L,x+a-2); return a+b-2 },
+};
+const COV_LIST=[['gate',10,1,22],['ladder',10,1,22],['bridge',8,2,26],['sync',8,2,22],['lift',8,3,22],['relay',6,4,44]];
+FAM.co=function(L,r,x,n,D,room){
+  const forced=D.force&&COV[D.force]?D.force:null, last=L.coLast;
+  const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2);
+  const v=forced||pv(r,n,list,room,D); if(!v)return 0;
+  const used=COV[v](L,x); L.coLast=v; (L.coList=L.coList||[]).push([v,x,used]); return used;
+};
+NEEDF.co=22;
+
+/* test / debug helper: a fresh local co-op game on a level that contains only this puzzle ('gate','ladder','bridge','sync','lift','relay') */
+function coPuzTest(v,heroes){
+  coStart({hero:heroes||['falafel','robot'],level:3,local:true,me:0});
+  L=buildLevel(3,{script:[['co',v]],co:1,diff:'normal'}); G.cpX=null; G.deaths=0; G.lvDeaths=0; coSpawn(L.spawnTx); G.state='play'; G.camX=0; G.t=0;
+  return L.coList;
+}
+
 /* =============== CO-OP: two players, one level (foundation) ===============
    Rules (kept deliberately simple so two screens can run the SAME simulation later):
    - shared fate: if either player dies, both go back to the last checkpoint (the death card names who did it)
@@ -3960,9 +4145,9 @@ function coSpawn(tx){
   for(const f of KF)K2[f]=false;
 }
 function kSwap(){ for(const f of KF){ const t=K[f]; K[f]=K2[f]; K2[f]=t } }
-function coEach(fn){                              // fn runs once per living player, with P and K pointing at him
-  const keep=P, me=G.co.me;
-  for(let i=0;i<PLY.length;i++){ const q=PLY[i]; if(q.dead||G.state!=='play')continue; P=q;
+function coEach(fn,order){                        // fn runs once per living player, with P and K pointing at him (order = optional list of player indexes)
+  const keep=P, me=G.co.me, ord=order||PLY.map((_,i)=>i);
+  for(const i of ord){ const q=PLY[i]; if(q.dead||G.state!=='play')continue; P=q;
     if(i===me)fn(); else { kSwap(); try{ fn() } finally { kSwap() } } }
   P=keep;
 }
@@ -3976,8 +4161,9 @@ const coMid=()=>PLY.length?(PLY[0].x+PLY[1].x)/2+PW/2:(P?P.x+PW/2:0);
 const coAtExit=()=>PLY.every(q=>q.x+PW/2>L.exitTx*TS+4&&q.onGround);
 function coPlayers(dt){
   platsMove(dt);
-  const x0=PLY.map(q=>q.x);
-  coEach(()=>{ platRide(); updatePlayer(dt) });
+  const x0=PLY.map(q=>q.x), y0=PLY.map(q=>q.y);
+  const ord=PLY.map((_,i)=>i).sort((a,b)=>(PLY[a].stand<0?1:0)-(PLY[b].stand<0?1:0)||a-b);       // whoever stands on somebody's head is moved AFTER him
+  coEach(()=>{ if(P.stand<0){ const o=PLY[-P.stand-1]; if(o&&!o.dead){ P.x+=o.x-x0[o.idx]; P.y+=o.y-y0[o.idx] } else P.stand=0 } platRide(); updatePlayer(dt) },ord);
   if(G.state==='play'&&PLY.length===2){                 // tether: never let a move widen the gap past CO_TETHER
     for(let i=0;i<2;i++){ const q=PLY[i], o=PLY[1-i], gap=Math.abs(q.x-o.x); if(gap>CO_TETHER&&gap>Math.abs(x0[i]-o.x)){ q.x=x0[i]; q.vx=0 } }
   }
@@ -4001,7 +4187,7 @@ function coStart(o){
   Snd.init(); Snd.resume(); for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide'); $('hud').classList.remove('hide');
   if(co.custom)startCustom(co.custom,'co',co); else startGame(co.level,co);
 }
-function coWon(){ CO.msg='🎉 خلّصتوها بـ '+G.t.toFixed(1)+' ث'+(G.lvDeaths?' وبـ '+G.lvDeaths+' موتة':' بدون ولا موتة! 😎') }
+function coWon(){ CO.msg='🎉 خلّصتوها بـ '+(G.winTime!=null?G.winTime:G.t).toFixed(1)+' ث'+(G.lvDeaths?' وبـ '+G.lvDeaths+' موتة':' بدون ولا موتة! 😎') }
 function coNext(){                                 // after a win: back to the lobby with the next playable level selected
   const was=G.co; if(was&&!was.local){ G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=coMax())n++; CO.sel.n=clamp(n,1,Math.max(1,coMax())) } netToLobby(CO.msg); netLobbySend(); return } G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=S.best)n++; CO.sel.n=clamp(n,1,Math.max(1,S.best)) }
   coOpen(CO.msg,was);
@@ -4041,7 +4227,8 @@ $('coH2L').onclick=()=>coCycle2(-1); $('coH2R').onclick=()=>coCycle2(1);
 $('coCodeBtn').onclick=()=>{ const s=CO.sel; if(s.custom){ s.custom=null; CO.msg=''; coPreview() } else { s.codeOpen=!s.codeOpen } coRender() };
 $('coCodeGo').onclick=()=>{ const r=decodeCustom($('coCode').value); if(r.err){ CO.msg='❌ '+r.err; coRender(); return } CO.sel.custom=r.c; CO.sel.codeOpen=false; CO.msg='✅ انحمّلت الخريطة'; coPreview(); coRender() };
 
-const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); return d&&!(o&&o.diff)?Object.assign({},o,{diff:d}):o };      // the host's difficulty for an online match (never written to the player's own settings)
+/* FLAGS.coScript: tests build levels that hold only one puzzle */
+const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.custom)o=Object.assign({},o,{co:1},FLAGS.coScript?{script:FLAGS.coScript}:null); return d&&!(o&&o.diff)?Object.assign({},o,{diff:d}):o };      // the host's difficulty for an online match (never written to the player's own settings)
 
 /* =============== NET: two players over the internet ===============
    No server of our own. Two interchangeable transports share one tiny interface  open(code, role, onmsg, onstate) -> {send(msg), close()}:
@@ -4054,7 +4241,7 @@ const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); return d&&!(o&&o.
      rounding in another browser, a lost packet...) it asks the host for a snapshot of that frame, restores it and re-simulates up to now.
    RACE = both run their own ordinary single-player engine on the same level; only positions (10 Hz) and the finish are exchanged; the host arbitrates.
    Nothing here touches the simulation: with G.co null and G.race null every function below is idle. */
-const NET_V='bd716fee';
+const NET_V='e991f745';
 const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app'};      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
 const NET={link:'off',role:null,code:'',kind:'',tr:null,peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
 const KR={l:false,r:false,j:false,jp:false,a:false,ap:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
@@ -4142,7 +4329,7 @@ function netRecv(m){
     case 'g': raceGot(m); break;
     case 'fn': raceFin(m); break;
     case 'rr': raceResult(m); break;
-    case 'ab': netToLobby('صاحبك رجع للغرفة 👋'); break;
+    case 'ab': if(N.link==='play')netToLobby(m.w?CO.msg:'صاحبك رجع للغرفة 👋'); break;
     case 'bye': netLeave('صاحبك طلع من الغرفة 👋',true); break;
   }
 }
@@ -4185,56 +4372,93 @@ function netBegin(o){
   for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide');
   const cu=o.cu?(()=>{ const r=decodeCustom(o.cu); return r.err?null:r.c })():null;
   if(o.mode==='race'){ raceBegin(o,cu); return }
-  N.lock=true; N.f=0; N.smp=-1; N.loc={}; N.rem={}; N.hist={}; N.snaps={}; N.hh={}; N.rh={}; N.ackR=N.D-1; N.remHi=N.D-1; N.lm=-1; N.stallT=0; N.bad=0; N.rsAt=0; N.fixes=0;
-  for(let i=0;i<N.D;i++){ N.loc[i]=0; N.rem[i]=0 }
+  N.lock=true; N.dl=NET_DL; N.D=N.dl; N.f=0; N.c=0; N.smp=-1; N.loc={}; N.rem={}; N.used={}; N.snp={}; N.pl={}; N.snaps={}; N.fx=[]; N.rb=null; N.hh={}; N.rh={}; N.ackR=N.dl-1; N.remHi=N.dl-1; N.remLast=0; N.lm=-1; N.stallT=0; N.stallTot=0; N.bad=0; N.rsAt=0; N.fixes=0; N.nrb=0; N.rbFr=0; N.fxN={}; N.maxRb=0; N.adv=0; N.adj=-1;
+  N.startAt=netNow()+(N.role==='h'?clamp((N.rtt||0)/2,0,400):0);       // the host waits half a ping so both machines start the same frame at about the same moment
+  for(let i=0;i<N.dl;i++){ N.loc[i]=0; N.rem[i]=0 }
   for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
   coStart({hero:o.hero,stage:o.stage,level:o.lv,custom:cu,local:false,me:N.me,df:o.df});
 }
 
-/* ---- lockstep ---- */
+/* ---- co-op netcode: prediction + rollback ----
+   Our own key presses go straight into the simulation (after NET_DL frames ~ 33 ms). The other player's keys are PREDICTED (whatever he was holding, no new
+   presses) until the real ones arrive; if a prediction turns out wrong we restore the snapshot of that frame and re-simulate up to now with the truth.
+   Snapshots are ~2 KB and a step costs ~0.04 ms, so even a 20 frame rollback is invisible. 'Confirmed' = every frame before N.c was simulated with the other
+   side's real input: only those are hashed (cross-checked with the other machine) and only then do deaths/wins make their sounds and cards (a rolled back
+   death must never be heard). During a re-simulation the audio is hushed (HUSH). */
+const NET_DL=2, NET_MAXSPEC=24;
 const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32};
 function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; return m }
 function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32) }
 function netSend(){
   const N=NET; if(!N.tr||!N.lock)return;
-  const hi=N.smp+N.D, from=Math.max(N.ackR+1,hi-90); let a=''; if(hi<from)return;           // only frames we really sampled (smp = the newest sampled frame)
+  const hi=N.smp+N.dl, from=Math.max(N.ackR+1,hi-90); if(hi<from)return; let a='';          // only frames we really sampled (smp = the newest sampled frame)
   for(let f=from;f<=hi;f++)a+=String.fromCharCode(48+(N.loc[f]|0));
-  N.tr.send({t:'i',f:from,a,k:N.remHi});
+  N.tr.send({t:'i',f:from,a,k:N.remHi,cf:N.f});
 }
 function netGotInput(m){
-  const N=NET; if(!N.lock||typeof m.a!=='string')return;
-  for(let i=0;i<m.a.length;i++){ const fr=m.f+i; if(fr>=N.f-1&&N.rem[fr]===undefined)N.rem[fr]=m.a.charCodeAt(i)-48 }
-  while(N.rem[N.remHi+1]!==undefined)N.remHi++;
+  const N=NET; if(!N.lock||typeof m.a!=='string')return; const ri=1-N.me;
+  for(let i=0;i<m.a.length;i++){ const fr=m.f+i, v=m.a.charCodeAt(i)-48; if(fr<N.c||N.rem[fr]!==undefined)continue; N.rem[fr]=v;
+    if(fr<N.f){ const u=N.used[fr]; if(u&&u[ri]!==v){ if(N.rb==null||fr<N.rb)N.rb=fr; if((v&8)&&!(u[ri]&8)&&!HUSH&&Snd.jump)Snd.jump() } } }      // late news: he jumped a moment ago
+  while(N.rem[N.remHi+1]!==undefined)N.remHi++; if(N.rem[N.remHi]!==undefined)N.remLast=N.rem[N.remHi];
   if(m.k>N.ackR)N.ackR=m.k;
+  if(typeof m.cf==='number'&&N.rtt)N.adv=N.adv*.9+((N.f-m.cf)-N.rtt/2/16.7)*.1;                 // how many frames we run ahead of the other machine
 }
-function netPre(){                                          // true = frame N.f may run now (K/K2 are filled with the agreed inputs)
+const netFx=x=>{ const N=NET; if((x.k==='c'||x.k==='n')&&N.fx.some(y=>y.k===x.k))return; x.f=N.f; N.fx.push(x) };                                          // called by die()/winLevel() while online
+function netRunFx(x){
+  const keep=P; NET.fxN[x.k]=(NET.fxN[x.k]||0)+1;
+  if(NET.keep)(NET.fxLog||(NET.fxLog=[])).push([x.k,x.f,NET.f,NET.c,G.state,G.cardShown,+G.deadT.toFixed(2)]);
+  if(x.k==='d'){ const q=PLY[x.pi]; if(q)P=q; try{ dieFx(x.c,x.e) } finally{ P=keep } } else if(x.k==='w')winFx(); else if(x.k==='c'){ if(G.state==='dead'&&!G.cardShown)showCard() } else if(x.k==='n'){ if(G.state==='win'){ if(NET.tr)NET.tr.send({t:'ab',w:1}); nextLevel() } }          // tell him too: he may be missing our last few inputs (we stop sending now)
+}
+function netFrame(f){                                       // fill K (ours) and K2 (his) for frame f, known or predicted
+  const N=NET, l=N.loc[f]|0, r=N.rem[f]!==undefined?N.rem[f]:(N.remLast&~40);
+  N.used[f]=N.me===0?[l,r]:[r,l]; setIn(K,l); setIn(K2,r);
+}
+function netPre(){                                          // true = the next frame may run now
   const N=NET; if(N.link!=='play'||!N.lock)return false;
-  if(N.smp!==N.f){ N.smp=N.f; const m=netSample(); N.loc[N.f+N.D]=m; if(m!==N.lm||N.f%4===0){ N.lm=m; netSend() } }
-  const r=N.rem[N.f];
-  if(r===undefined){ if(!N.stallT)N.stallT=netNow(); netStallUi(); return false }
-  if(N.stallT){ N.stallTot=(N.stallTot||0)+netNow()-N.stallT; N.stallT=0; netStallUi() }
-  const l=N.loc[N.f]|0; setIn(K,l); setIn(K2,r); N.hist[N.f]=N.me===0?[l,r]:[r,l];
+  if(netNow()<N.startAt)return false;
+  if(N.rb!=null)netRollback();
+  netConfirm();
+  if(!N.lock||N.link!=='play')return false;
+  if(N.f-N.c>=NET_MAXSPEC){ if(!N.stallT)N.stallT=netNow(); netStallUi(); return false }      // too far ahead of what we know: wait
+  if(N.stallT){ N.stallTot+=netNow()-N.stallT; N.stallT=0; netStallUi() }
+  if(N.adv>3&&N.f%30===0&&N.adj!==N.f){ N.adj=N.f; N.adv-=1; return false }                  // we run ahead of the other machine: give up a step now and then
+  if(N.smp!==N.f){ N.smp=N.f; const m=netSample(); N.loc[N.f+N.dl]=m; if(m!==N.lm||N.f%4===0){ N.lm=m; netSend() } }
+  netFrame(N.f); N.snp[N.f]=snap(true); N.pl[N.f]=G.state==='play';
   return true;
 }
-function netPost(){
-  const N=NET; N.f++; delete N.loc[N.f-4]; delete N.rem[N.f-4]; delete N.hist[N.f-720];
-  if(N.f%30===0&&G.state==='play'){
-    const s=snap(true), h=fnv(s); N.hh[N.f]=h; delete N.hh[N.f-900];
-    if(N.role==='h'||N.keep){ N.snaps[N.f]=s; delete N.snaps[N.f-(N.keep?3000:300)] }
-    N.tr.send({t:'h',f:N.f,h});
-    if(N.rh[N.f]!==undefined){ netCmp(N.f,N.rh[N.f]); delete N.rh[N.f] }
+function netPost(){ NET.f++ }
+function netRollback(){
+  const N=NET, r=N.rb, head=N.f; N.rb=null;
+  const s=N.snp[r]; if(s===undefined){ N.bad++; return }
+  restore(s); N.fx=N.fx.filter(x=>x.f<r); N.nrb++; N.rbFr+=head-r; if(head-r>N.maxRb)N.maxRb=head-r;
+  HUSH=true;
+  try{ for(N.f=r;N.f<head;N.f++){ if(!N.lock||G.state==='co')break; if(N.f>r){ N.snp[N.f]=snap(true); N.pl[N.f]=G.state==='play' } netFrame(N.f); update(1/60) } }
+  finally{ HUSH=false }
+  if(N.lock)N.f=head;
+}
+function netConfirm(){
+  const N=NET;
+  while(N.c<N.f&&N.rem[N.c]!==undefined){
+    const f=N.c;
+    if(f%30===0&&N.pl[f]&&N.snp[f]!==undefined){                 // hash of the now final state at the start of frame f
+      const h=fnv(N.snp[f]); N.hh[f]=h; delete N.hh[f-900];
+      if(N.role==='h'||N.keep){ N.snaps[f]=N.snp[f]; delete N.snaps[f-(N.keep?3000:300)] }
+      N.tr.send({t:'h',f,h});
+      if(N.rh[f]!==undefined){ netCmp(f,N.rh[f]); delete N.rh[f] }
+    }
+    N.c++; const o=f-1; delete N.snp[o]; delete N.used[o]; delete N.loc[o]; delete N.rem[o]; delete N.pl[o];
   }
+  while(N.fx.length&&N.fx[0].f<N.c)netRunFx(N.fx.shift());
 }
 function netGotHash(m){ const N=NET; if(!N.lock)return; if(N.hh[m.f]!==undefined)netCmp(m.f,m.h); else N.rh[m.f]=m.h }
 function netCmp(f,h){
   const N=NET; if(N.hh[f]===h)return; N.bad++;
   if(N.role==='g'&&netNow()-N.rsAt>1500){ N.rsAt=netNow(); N.tr.send({t:'rs',f}) }
 }
-function netApply(f,s){                                     // guest: adopt the host's state of frame f, then replay our own recorded inputs up to now
-  const N=NET, cur=N.f; restore(s); N.fixes++;
-  if(cur>f){
-    for(N.f=f;N.f<cur;N.f++){ const h=N.hist[N.f]; if(!h)break; setIn(K,N.me===0?h[0]:h[1]); setIn(K2,N.me===0?h[1]:h[0]); update(1/60) }
-  } else { N.f=f; for(let g=cur+N.D;g<f+N.D;g++)if(N.loc[g]===undefined)N.loc[g]=0; N.smp=-1 }
+function netApply(f,s){                                     // guest: adopt the host's state of frame f, then replay up to now
+  const N=NET; N.fixes++; N.snp[f]=s; N.pl[f]=true;
+  if(f<N.f){ N.rb=f; netRollback() }
+  else { restore(s); const old=N.f; N.f=f; N.c=Math.max(N.c,f); N.remHi=Math.max(N.remHi,f-1); for(let g=old+N.dl;g<f+N.dl;g++)if(N.loc[g]===undefined)N.loc[g]=0; N.smp=-1 }
   netSend();
 }
 function netStallUi(){
@@ -4356,8 +4580,13 @@ S.st=S.st||{};
 S.ac=S.ac||{}; S.ti=S.ti||'';
 
 const TIER_NM=['برونزي','فضي','ذهبي','ماسي'], TIER_IC=['🥉','🥈','🥇','💎'], TIER_COL=['#cd7f32','#c3cbda','#ffd23f','#7fe3ff'], TIER_COINS=[5,12,30,80];
-const starsOf=n=>S.cl[n]?1+(S.nd[n]?1:0)+(S.cs[n]?1:0):0;
+/* Stars = the hardest difficulty a level was cleared on: normal 1, crazy 2, impossible (hell) 3. S.cl[n] holds that number (old saves hold 1 = normal).
+   "No death" / "all coins" are no longer stars; they still pay their coin bonuses and feed achievements (S.nd / S.cs / S.bd). */
+const DRANK={normal:1,crazy:2,hell:3};
+const starsOf=n=>Math.min(3,S.cl[n]|0);
 const starsTotal=()=>{ let t=0; for(const k in S.cl)t+=starsOf(+k); return t };
+const clearedAt=r=>{ let t=0; for(const k in S.cl)if((S.cl[k]|0)>=r)t++; return t };                      // levels cleared on difficulty rank r or harder
+const perfectWorlds=()=>{ const c={}; for(const k in S.cl)if((S.cl[k]|0)>=3){ const w=Math.floor((+k-1)/5); c[w]=(c[w]||0)+1 } let t=0; for(const w in c)if(c[w]>=5)t++; return t };
 const worldsReached=()=>Math.min(WORLD_ORDER.length,Math.floor((Math.max(1,S.best)-1)/5)+1);
 const museumCauses=()=>Object.keys(DEATH_MAP);
 const museumCount=()=>museumCauses().filter(c=>S.st.dc[c]>0).length;
@@ -4370,7 +4599,10 @@ const ACH=[
  {id:'clean',ic:'🧼',nm:'بدون ولا موتة',     T:[1,5,15,40],       ti:['حظ المبتدئين','نضيف','ما بيموت','شبح الزنزانة'],         v:()=>Object.keys(S.nd).length,       ds:n=>'خلّص '+n+' مرحلة بدون أي موتة'},
  {id:'strk', ic:'🔥',nm:'على نار',           T:[2,4,7,12],        ti:['سخنت','ماشي حاله','على نار','ما حدا بوقّفه'],            v:()=>S.st.nm,                        ds:n=>'خلّص '+n+' مراحل جديدة ورا بعض بدون موت'},
  {id:'coin', ic:'🪙',nm:'جامع العملات',      T:[50,200,600,1500], ti:['جيبه مثقوب','تاجر صغير','صرّاف','قارون الزنزانة'],         v:()=>S.st.c,                         ds:n=>'احفظ '+n+' عملة'},
- {id:'star', ic:'⭐',nm:'نجّام',             T:[10,40,100,200],   ti:['نجمة صغيرة','سماء مرصّعة','مجرّة','ملك النجوم'],           v:starsTotal,                         ds:n=>'اجمع '+n+' نجمة من الخريطة'},
+ {id:'star', ic:'⭐',nm:'نجّام',             T:[10,50,150,400],   ti:['نجمة صغيرة','سماء مرصّعة','مجرّة','ملك النجوم'],           v:starsTotal,                         ds:n=>'اجمع '+n+' نجمة من الخريطة'},
+ {id:'crz',  ic:'😈',nm:'مجنون رسمي',        T:[5,25,60,150],     ti:['بلّش جنونه','مجنون','مجنون مرخّص','ملك الجنون'],          v:()=>clearedAt(2),                   ds:n=>'خلّص '+n+' مرحلة بالمجنون 😈 أو أصعب'},
+ {id:'hel',  ic:'💀',nm:'سيّد المستحيل',     T:[3,15,40,100],     ti:['جرّبت المستحيل','عنيد مستحيل','ما بيهاب المستحيل','أسطورة المستحيل'], v:()=>clearedAt(3),            ds:n=>'خلّص '+n+' مرحلة بالمستحيل 💀'},
+ {id:'wst',  ic:'🌟',nm:'عالم مكتمل',        T:[1,3,8,16],        ti:['عالم بنجومه','ثلاث نجوم','جامع العوالم','الكمال'],         v:perfectWorlds,                      ds:n=>'خذ 3 نجوم بكل مراحل '+n+' عالم (5 مراحل بكل عالم)'},
  {id:'mus',  ic:'🏛',nm:'متحف الموت',        T:[5,10,16,22],      ti:['زائر المتحف','هاوي','أمين المتحف','جرّبت كل الميتات'],    v:museumCount,                        ds:n=>'مُت بـ '+n+' نوع مختلف من الفخاخ'},
  {id:'boss', ic:'👑',nm:'قاتل الزعماء',      T:[1,3,5,8],         ti:['كسرت زعيم','قاهر الزعماء','سفّاح الزعماء','رعب الزعماء'], v:()=>S.st.bw,                        ds:n=>'اهزم '+n+' زعيم'},
  {id:'grit', ic:'🪨',nm:'العنيد',            T:[1,3,8,20],        ti:['عنيد','راس يابس','ما بيستسلم','حجر الصوان'],             v:()=>S.st.gr,                        ds:n=>'خلّص '+n+' مرحلة بعد ما مُتّ فيها 10 مرات أو أكتر'},
@@ -4449,18 +4681,21 @@ for(const id of ['bAchT','bAch'])$(id).onclick=openAch;
 setTimeout(achCheck,900);
 
 /* =============== WORLD MAP ===============
-   A winding path through the 16 worlds (5 levels each, a boss every 10th level), then an endless node.
-   Every level you reached is replayable from here; each cleared level shows up to 3 stars (clear / no death / every coin banked, see w_econ.js).
-   Levels beyond your real progress (S.best) are locked: the map is also the honest way to see how far you are. */
-const WM={open:false,from:null};
-const WMW=700, WM_BAN=62, WM_ROW=60, WM_PAD=26, WM_WH=WM_BAN+WM_PAD+5*WM_ROW+22;     // block width / banner / node row / world block height
+   An endless winding path: worlds of 5 levels (the 16 themes repeat, "cycle 2" and on), a boss every 10th level. The map is as long as your progress plus two preview worlds,
+   and only the worlds around the viewport are built (so level 400 costs the same as level 40).
+   Progress is strictly sequential: level n+1 opens when you clear level n (S.best = the level you are on; only the frontier level moves it). Tapping an open level asks for the
+   difficulty. Stars = the hardest difficulty a level was cleared on: normal 1, crazy 2, impossible 3 (S.cl[n], see w_ach.js). */
+const WM={open:false,from:null,w0:0,w1:-1,raf:0};
+const WMW=700, WM_BAN=62, WM_ROW=60, WM_PAD=26, WM_WH=WM_BAN+WM_PAD+5*WM_ROW+22, WM_MAXW=199;     // block width / banner / node row / world block height / levels stay below the 1001+ hero-trial pseudo levels
+const wmWorlds=()=>Math.min(WM_MAXW,Math.max(4,Math.floor((Math.max(1,S.best)-1)/5)+3));          // the world you are in + 2 ahead (at least 4)
+const wmU=()=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--u'))||1;
 function wmPos(n){                                   // centre of level n (1-based), in map pixels
   const w=Math.floor((n-1)/5), k=(n-1)%5, i=n-1;
   return {x:Math.round(WMW*(.5+.31*Math.sin(i*1.07+.55))), y:Math.round(w*WM_WH+WM_BAN+WM_PAD+k*WM_ROW+WM_ROW*.45)};
 }
-function wmPath(a,b,pts){                            // smooth (Catmull-Rom -> cubic) path through pts[a..b]
-  let d='M'+pts[a].x+' '+pts[a].y;
-  for(let i=a;i<b;i++){ const p0=pts[Math.max(0,i-1)], p1=pts[i], p2=pts[i+1], p3=pts[Math.min(pts.length-1,i+2)];
+function wmPath(a,b){                                // smooth (Catmull-Rom -> cubic) path through the level centres a..b
+  const A=wmPos(a); let d='M'+A.x+' '+A.y;
+  for(let i=a;i<b;i++){ const p0=wmPos(Math.max(1,i-1)), p1=wmPos(i), p2=wmPos(i+1), p3=wmPos(i+2);
     d+=' C'+(p1.x+(p2.x-p0.x)/6).toFixed(1)+' '+(p1.y+(p2.y-p0.y)/6).toFixed(1)+' '+(p2.x-(p3.x-p1.x)/6).toFixed(1)+' '+(p2.y-(p3.y-p1.y)/6).toFixed(1)+' '+p2.x+' '+p2.y }
   return d;
 }
@@ -4468,44 +4703,60 @@ const svgEl=(tag,at)=>{ const e=document.createElementNS('http://www.w3.org/2000
 function wmStart(n){
   closeMap(); G.cpX=null; G.lastLvl=-9; $('menu').classList.add('hide'); G.state='play'; startGame(n);
 }
-function wmRender(keepScroll){
-  const sc=$('wmScroll'), top=sc.scrollTop, root=$('wmInner'); root.innerHTML='';
-  const NW=WORLD_ORDER.length, NL=NW*5, H=NW*WM_WH+120; root.style.height='calc(var(--u)*'+H+')';
-  const pts=[]; for(let n=1;n<=NL+1;n++)pts.push(wmPos(n));
-  // world blocks (background + banner)
-  for(let w=0;w<NW;w++){
-    const i=WORLD_ORDER[w], th=THEMES[i], first=w*5+1, reached=S.best>=first, blk=el('div','wmw'+(reached?'':' lock')+(w%2?' odd':'')), cv2=document.createElement('canvas'); cv2.width=200; cv2.height=112; cv2.className='wmbg';
+const WM_D=[['normal','عادي','🙂'],['crazy','مجنون','😈'],['hell','مستحيل','💀']];
+function wmPick(n){                                  // difficulty chooser for one open level
+  const box0=$('wmap').firstElementChild; let pk=$('wmPk'); if(!pk){ pk=el('div',null); pk.id='wmPk'; pk.onclick=e=>{ if(e.target===pk)pk.classList.add('hide') }; box0.appendChild(pk) }
+  pk.innerHTML=''; pk.classList.remove('hide');
+  const bx=el('div','pkb'), row=el('div','pkr'), got=starsOf(n);
+  bx.append(el('b','pkt',(n%10===0?'👑 ':'')+'المرحلة '+n),el('div','pks','اختار الصعوبة — النجوم بتنحسب على أصعب صعوبة خلّصتها فيها'));
+  for(const [k,nm,ic] of WM_D){
+    const r=DRANK[k], b=el('button','pkd'+(S.diff===k?' on':'')+(got>=r?' got':'')), st=el('span','pst');
+    for(let j=0;j<3;j++)st.appendChild(el('i',j<r?'on':'','★'));
+    b.append(el('span','pi',ic),el('b',null,nm),st,el('span','pc',got>=r?'✓ خلّصتها':'')); b.onclick=()=>{ Snd.init(); Snd.ui&&Snd.ui(); setDiff(k); pk.classList.add('hide'); wmStart(n) }; row.appendChild(b);
+  }
+  bx.append(row,el('button','tg','✖ إلغاء',()=>pk.classList.add('hide'))); pk.appendChild(bx);
+}
+function wmRender(keepScroll,jump){
+  const sc=$('wmScroll'), root=$('wmInner'), u=wmU(), NW=wmWorlds(), NL=NW*5, H=NW*WM_WH+200;
+  root.style.height='calc(var(--u)*'+H+')';
+  if(jump){ const f=Math.min(Math.max(1,S.best),NL+1); sc.scrollTop=Math.max(0,wmPos(f).y*u-sc.clientHeight*.45) }          // open where you are
+  const top=sc.scrollTop, w0=clamp(Math.floor(top/u/WM_WH)-3,0,NW-1), w1=clamp(Math.floor((top+sc.clientHeight)/u/WM_WH)+3,0,NW-1), n0=w0*5+1, n1=w1*5+5; WM.w0=w0; WM.w1=w1; root.innerHTML='';
+  for(let w=w0;w<=w1;w++){                                                              // world blocks (background + banner)
+    const i=WORLD_ORDER[w%WORLD_ORDER.length], cyc=Math.floor(w/WORLD_ORDER.length)+1, th=THEMES[i], first=w*5+1, reached=S.best>=first, blk=el('div','wmw'+(reached?'':' lock')+(w%2?' odd':'')), cv2=document.createElement('canvas'); cv2.width=200; cv2.height=112; cv2.className='wmbg';
     blk.style.top='calc(var(--u)*'+(w*WM_WH)+')'; blk.style.height='calc(var(--u)*'+(WM_WH-4)+')'; blk.style.setProperty('--wc',th.top||'#444'); blk.style.setProperty('--wf',th.floor||'#222');
-    const draw=()=>{ if(!WM.open||!cv2.isConnected)return; try{ cv2.getContext('2d').drawImage(worldThumb(i),0,0) }catch(e){} }; setTimeout(draw,40+w*45);
+    const draw=()=>{ if(!WM.open||!cv2.isConnected)return; try{ cv2.getContext('2d').drawImage(worldThumb(i),0,0) }catch(e){} }; setTimeout(draw,40+(w-w0)*40);
     let st=0; for(let k=0;k<5;k++)st+=starsOf(first+k);
-    const ban=el('div','wmb'); ban.append(el('b',null,'العالم '+(w+1)+' · '+th.nm), el('span','wmst','⭐ '+'⁦'+st+'/15'+'⁩'));
-    if(!reached){ ban.append(el('span','wmlk','🔒 بتوصله بالمرحلة '+first)); const bb=el('button','tg','🛒 خلفية',()=>openShop('w')); ban.appendChild(bb) }
-    else if(S.bgPick===i)ban.append(el('span','wmlk','🎨 خلفيتك'));
+    const ban=el('div','wmb'); ban.append(el('b',null,'العالم '+(w+1)+' · '+th.nm+(cyc>1?' · الدورة '+cyc:'')), el('span','wmst','⭐ '+'\u2066'+st+'/15'+'\u2069'));
+    if(!reached){ ban.append(el('span','wmlk','🔒 بتوصله بالمرحلة '+first)); if(w<WORLD_ORDER.length){ const bb=el('button','tg','🛒 خلفية',()=>openShop('w')); ban.appendChild(bb) } }
+    else if(S.bgPick===i&&w<WORLD_ORDER.length)ban.append(el('span','wmlk','🎨 خلفيتك'));
     blk.append(cv2,ban); root.appendChild(blk);
   }
-  // path
-  const svg=svgEl('svg',{class:'wmsvg',viewBox:'0 0 '+WMW+' '+H,preserveAspectRatio:'none'});
-  svg.appendChild(svgEl('path',{d:wmPath(0,NL,pts),class:'wmp0'}));
-  const cur=Math.min(Math.max(1,S.best),NL+1); if(cur>1)svg.appendChild(svgEl('path',{d:wmPath(0,cur-1,pts),class:'wmp1'}));
+  const svg=svgEl('svg',{class:'wmsvg',viewBox:'0 0 '+WMW+' '+H,preserveAspectRatio:'none'});               // path
+  svg.appendChild(svgEl('path',{d:wmPath(n0,Math.min(n1+1,NL+1)),class:'wmp0'}));
+  const cur=Math.min(Math.max(1,S.best),NL+1), a1=Math.max(1,n0), b1=Math.min(cur,n1+1); if(b1>a1)svg.appendChild(svgEl('path',{d:wmPath(a1,b1),class:'wmp1'}));
   root.appendChild(svg);
-  // nodes
-  for(let n=1;n<=NL+1;n++){
-    const p=pts[n-1], inf=n>NL, boss=!inf&&n%10===0, locked=n>S.best, isCur=n===S.best&&!(S.cl[n]), done=n<S.best||!!S.cl[n], sc3=starsOf(n);
-    const b=el('button','wn'+(boss?' boss':'')+(inf?' inf':'')+(locked?' lock':'')+(done?' done':'')+(isCur?' cur':''));
+  for(let n=n0;n<=Math.min(n1,NL);n++){                                                  // nodes
+    const p=wmPos(n), boss=n%10===0, locked=n>S.best, isCur=n===S.best&&!S.cl[n], done=n<S.best||!!S.cl[n], sc3=starsOf(n);
+    const b=el('button','wn'+(boss?' boss':'')+(locked?' lock':'')+(done?' done':'')+(isCur?' cur':''));
     b.style.left='calc(var(--u)*'+p.x+')'; b.style.top='calc(var(--u)*'+p.y+')';
-    b.append(el('span','n',inf?'∞':(locked?'🔒':(boss?'👑':String(n)))));
+    b.append(el('span','n',locked?'🔒':(boss?'👑':String(n))));
     if(!locked&&boss)b.appendChild(el('span','bn',String(n)));
-    if(inf)b.appendChild(el('span','infcap',S.best>NL?'كمّل '+S.best:'ما بتخلص 😈'));
-    if(!locked&&!inf){ const s=el('span','stars'); for(let k=0;k<3;k++)s.appendChild(el('i',k<sc3?'on':'','★')); b.appendChild(s) }
-    b.title=inf?'مراحل لا نهائية':'المرحلة '+n+(boss?' — زعيم 👑':'');
-    if(!locked)b.onclick=()=>{ Snd.init(); Snd.ui&&Snd.ui(); wmStart(inf?Math.max(S.best,NL+1):n) };
+    if(!locked){ const s=el('span','stars'); for(let k=0;k<3;k++)s.appendChild(el('i',k<sc3?'on':'','★')); b.appendChild(s) }
+    b.title='المرحلة '+n+(boss?' — زعيم 👑':'');
+    b.onclick=locked?()=>wmHint('🔒 لازم تخلّص المرحلة '+S.best+' أول'):()=>{ Snd.init(); Snd.ui&&Snd.ui(); wmPick(n) };
     root.appendChild(b);
     if(isCur){ const hc=document.createElement('canvas'); hc.width=64; hc.height=74; hc.className='wmhero'; hc.style.left='calc(var(--u)*'+(p.x+(p.x>WMW/2?-50:50))+')'; hc.style.top='calc(var(--u)*'+(p.y+6)+')'; paintHero(hc,S.hero||'falafel'); root.appendChild(hc) }
   }
+  if(w1>=NW-1){                                                                          // the road goes on: a locked infinity node at the end
+    const p=wmPos(NL+1), b=el('button','wn inf lock'); b.style.left='calc(var(--u)*'+p.x+')'; b.style.top='calc(var(--u)*'+p.y+')';
+    b.append(el('span','n','∞'),el('span','infcap','المراحل ما بتخلص 😈')); b.onclick=()=>wmHint('♾ كل ما تتقدّم بتنفتح عوالم ومراحل جديدة'); root.appendChild(b);
+  }
   wmTrials();
-  let tot=0; for(const k in S.cl)tot+=starsOf(+k);
-  $('wmSt').textContent='⭐ '+'⁦'+tot+'/'+Math.max(3,(S.best-1)*3)+'⁩  ·  🎖 '+titleText(); $('wmW').textContent='🪙 '+S.wallet;
-  if(keepScroll)sc.scrollTop=top;
+  $('wmSt').textContent='⭐ '+'\u2066'+starsTotal()+'/'+Math.max(3,(S.best-1)*3)+'\u2069  ·  🎖 '+titleText(); $('wmW').textContent='🪙 '+S.wallet;
+}
+function wmChk(){                                     // scrolled out of the built window? rebuild around the viewport
+  WM.raf=0; if(!WM.open)return; const sc=$('wmScroll'), u=wmU(), v0=Math.floor(sc.scrollTop/u/WM_WH), v1=Math.floor((sc.scrollTop+sc.clientHeight)/u/WM_WH);
+  if(v0<WM.w0||v1>WM.w1)wmRender(true);
 }
 function wmTrials(){                                  // the 8 hero trials: always visible above the scrolling map
   const box=$('wmTr'); box.innerHTML=''; box.className='wmtr'; box.appendChild(el('span','lb','🦸 تحدّيات الأبطال'));
@@ -4516,12 +4767,12 @@ function wmTrials(){                                  // the 8 hero trials: alwa
     box.appendChild(b);
   });
 }
-function wmHint(t){ const h=$('wmHint'); if(h){ h.textContent=t; h.classList.add('flash'); setTimeout(()=>h.classList.remove('flash'),1400) } }
+function wmHint(t){ const h=$('wmHint'); if(h){ if(!h.dataset.d)h.dataset.d=h.textContent; h.textContent=t; h.classList.add('flash'); clearTimeout(WM.ht); WM.ht=setTimeout(()=>{ h.classList.remove('flash'); h.textContent=h.dataset.d },2200) } }      // flash a message, then back to the legend
 function openMap(){
-  WM.open=true; K.l=K.r=K.j=K.jp=false; $('wmap').classList.remove('hide'); Snd.init(); wmRender();
-  const sc=$('wmScroll'), u=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--u'))||1, y=wmPos(Math.min(Math.max(1,S.best),WORLD_ORDER.length*5+1)).y*u; sc.scrollTop=Math.max(0,y-sc.clientHeight*.45);
+  WM.open=true; K.l=K.r=K.j=K.jp=false; $('wmap').classList.remove('hide'); Snd.init(); const pk=$('wmPk'); if(pk)pk.classList.add('hide'); wmRender(false,true);
 }
 function closeMap(){ WM.open=false; $('wmap').classList.add('hide'); hud() }
+$('wmScroll').addEventListener('scroll',()=>{ if(WM.open&&!WM.raf)WM.raf=requestAnimationFrame(wmChk) },{passive:true});
 $('wmX').onclick=closeMap; $('wmAch').onclick=openAch; $('wmShop').onclick=()=>openShop('w');
 for(const id of ['bMapT','bMap'])$(id).onclick=openMap;
 
@@ -4968,7 +5219,7 @@ function deathFx(){
 function helpApply(){                                   // a real level has just been entered: use up what is armed
   if(!legit())return; const used=[];
   for(const h of HELP){ if(S.hi.arm[h.k]&&helpN(h.k)>0){ S.hi.n[h.k]--; if(!S.hi.n[h.k])S.hi.arm[h.k]=0; (G.help||(G.help={}))[h.k]=1; G.helped=true; used.push(h) } }
-  if(used.length){ save(); say('🎒 '+used.map(h=>h.ic+' '+h.nm).join(' + ')+' — بدون نجمة الإتقان بهالمرحلة','any',3.6) }
+  if(used.length){ save(); say('🎒 '+used.map(h=>h.ic+' '+h.nm).join(' + ')+' — بدون بونص «بدون موت» بهالمرحلة','any',3.6) }
 }
 function helpShieldHit(){                               // called from heroGuard(): true = the helper shield swallowed this hit
   if(!G.help||!(G.help.shield>0))return false; G.help.shield--; return true;
@@ -4995,7 +5246,7 @@ function accDfxMode(g){
   for(const D of list)g.appendChild(accDfxCard(D));
 }
 function accHelpMode(g){
-  const hd=el('div','achd'); hd.append(el('b',null,'مساعدات (مرة وحدة)'),el('span','sub','بالمراحل العادية بس · المرحلة اللي بتستعملها فيها بتنحسب خلصانة بس بدون نجمة الإتقان ولا بونص "بدون موت"'));
+  const hd=el('div','achd'); hd.append(el('b',null,'مساعدات (مرة وحدة)'),el('span','sub','بالمراحل العادية بس · المرحلة اللي بتستعملها فيها بتنحسب خلصانة ونجمتها بتنحسب عادي، بس بدون بونص "بدون موت"'));
   g.appendChild(hd);
   for(const h of HELP){ const n=helpN(h.k), armed=!!S.hi.arm[h.k]&&n>0, card=el('div','shc'+(armed?' sel':'')), poor=S.wallet<h.price;
     card.append(el('div','shbig',h.ic),el('div','nm',h.nm),el('div','sub',h.ds),el('div','sub','عندك: '+n));
@@ -5231,7 +5482,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,tpLoop,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,tpLoop,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 <script>

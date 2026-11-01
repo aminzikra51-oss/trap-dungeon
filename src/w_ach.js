@@ -7,8 +7,13 @@ S.st=S.st||{};
 S.ac=S.ac||{}; S.ti=S.ti||'';
 
 const TIER_NM=['برونزي','فضي','ذهبي','ماسي'], TIER_IC=['🥉','🥈','🥇','💎'], TIER_COL=['#cd7f32','#c3cbda','#ffd23f','#7fe3ff'], TIER_COINS=[5,12,30,80];
-const starsOf=n=>S.cl[n]?1+(S.nd[n]?1:0)+(S.cs[n]?1:0):0;
+/* Stars = the hardest difficulty a level was cleared on: normal 1, crazy 2, impossible (hell) 3. S.cl[n] holds that number (old saves hold 1 = normal).
+   "No death" / "all coins" are no longer stars; they still pay their coin bonuses and feed achievements (S.nd / S.cs / S.bd). */
+const DRANK={normal:1,crazy:2,hell:3};
+const starsOf=n=>Math.min(3,S.cl[n]|0);
 const starsTotal=()=>{ let t=0; for(const k in S.cl)t+=starsOf(+k); return t };
+const clearedAt=r=>{ let t=0; for(const k in S.cl)if((S.cl[k]|0)>=r)t++; return t };                      // levels cleared on difficulty rank r or harder
+const perfectWorlds=()=>{ const c={}; for(const k in S.cl)if((S.cl[k]|0)>=3){ const w=Math.floor((+k-1)/5); c[w]=(c[w]||0)+1 } let t=0; for(const w in c)if(c[w]>=5)t++; return t };
 const worldsReached=()=>Math.min(WORLD_ORDER.length,Math.floor((Math.max(1,S.best)-1)/5)+1);
 const museumCauses=()=>Object.keys(DEATH_MAP);
 const museumCount=()=>museumCauses().filter(c=>S.st.dc[c]>0).length;
@@ -21,7 +26,10 @@ const ACH=[
  {id:'clean',ic:'🧼',nm:'بدون ولا موتة',     T:[1,5,15,40],       ti:['حظ المبتدئين','نضيف','ما بيموت','شبح الزنزانة'],         v:()=>Object.keys(S.nd).length,       ds:n=>'خلّص '+n+' مرحلة بدون أي موتة'},
  {id:'strk', ic:'🔥',nm:'على نار',           T:[2,4,7,12],        ti:['سخنت','ماشي حاله','على نار','ما حدا بوقّفه'],            v:()=>S.st.nm,                        ds:n=>'خلّص '+n+' مراحل جديدة ورا بعض بدون موت'},
  {id:'coin', ic:'🪙',nm:'جامع العملات',      T:[50,200,600,1500], ti:['جيبه مثقوب','تاجر صغير','صرّاف','قارون الزنزانة'],         v:()=>S.st.c,                         ds:n=>'احفظ '+n+' عملة'},
- {id:'star', ic:'⭐',nm:'نجّام',             T:[10,40,100,200],   ti:['نجمة صغيرة','سماء مرصّعة','مجرّة','ملك النجوم'],           v:starsTotal,                         ds:n=>'اجمع '+n+' نجمة من الخريطة'},
+ {id:'star', ic:'⭐',nm:'نجّام',             T:[10,50,150,400],   ti:['نجمة صغيرة','سماء مرصّعة','مجرّة','ملك النجوم'],           v:starsTotal,                         ds:n=>'اجمع '+n+' نجمة من الخريطة'},
+ {id:'crz',  ic:'😈',nm:'مجنون رسمي',        T:[5,25,60,150],     ti:['بلّش جنونه','مجنون','مجنون مرخّص','ملك الجنون'],          v:()=>clearedAt(2),                   ds:n=>'خلّص '+n+' مرحلة بالمجنون 😈 أو أصعب'},
+ {id:'hel',  ic:'💀',nm:'سيّد المستحيل',     T:[3,15,40,100],     ti:['جرّبت المستحيل','عنيد مستحيل','ما بيهاب المستحيل','أسطورة المستحيل'], v:()=>clearedAt(3),            ds:n=>'خلّص '+n+' مرحلة بالمستحيل 💀'},
+ {id:'wst',  ic:'🌟',nm:'عالم مكتمل',        T:[1,3,8,16],        ti:['عالم بنجومه','ثلاث نجوم','جامع العوالم','الكمال'],         v:perfectWorlds,                      ds:n=>'خذ 3 نجوم بكل مراحل '+n+' عالم (5 مراحل بكل عالم)'},
  {id:'mus',  ic:'🏛',nm:'متحف الموت',        T:[5,10,16,22],      ti:['زائر المتحف','هاوي','أمين المتحف','جرّبت كل الميتات'],    v:museumCount,                        ds:n=>'مُت بـ '+n+' نوع مختلف من الفخاخ'},
  {id:'boss', ic:'👑',nm:'قاتل الزعماء',      T:[1,3,5,8],         ti:['كسرت زعيم','قاهر الزعماء','سفّاح الزعماء','رعب الزعماء'], v:()=>S.st.bw,                        ds:n=>'اهزم '+n+' زعيم'},
  {id:'grit', ic:'🪨',nm:'العنيد',            T:[1,3,8,20],        ti:['عنيد','راس يابس','ما بيستسلم','حجر الصوان'],             v:()=>S.st.gr,                        ds:n=>'خلّص '+n+' مرحلة بعد ما مُتّ فيها 10 مرات أو أكتر'},

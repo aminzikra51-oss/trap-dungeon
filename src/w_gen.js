@@ -144,13 +144,16 @@ function buildLevel(n,opt){
   const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
+  let script2=script; if(opt.co&&!opt.script&&script){ script2=script.slice(); script2.splice(Math.max(1,script2.length>>1),0,['co',n===1?'gate':'ladder']) }
+  const nCo=opt.co&&!opt.script&&!script?(W>=120?3:W>=96?2:1):0; let coDone=0;           // co-op levels carry puzzles that need both players
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
   const PITT={pit:1};
   const maxIter=script&&script.length>40?script.length*2+30:90;      // long editor recipes need more passes than a generated level
   while(guard++<maxIter){
     let fam=null,force=null;
-    if(script&&si<script.length){fam=script[si][0];force=script[si][1];si++}
+    if(script2&&si<script2.length){fam=script2[si][0];force=script2[si][1];si++}
     else if(opt.script&&opt.script.length)break;
+    else if(coDone<nCo&&x>=Math.round(W*(.2+.6*coDone/nCo))&&x+NEEDF.co<=W-14){ fam='co' }
     else{ for(let k=0;k<10;k++){let t=pickW(pool.map(p=>[p[0],p[1]*(hist.slice(-2).includes(p[0])?.35:1)]),r); if(x+NEEDF[t]<=W-14){fam=t;break}} }
     if(!fam||x+8>W-12)break;
     if(fam==='cp'){                         // map editor: a real checkpoint flag placed on solid ground
@@ -161,9 +164,9 @@ function buildLevel(n,opt){
     x=Math.max(x,endX+minGap);
     const room=W-14-x; if(room<4)break;
     D.force=force; D.room=room;
-    const used=FAM[fam](L,r,x,ne,D,room); D.force=null; (L.segs=L.segs||[]).push([fam,x,used]);
+    const used=FAM[fam](L,r,x,ne,D,room); D.force=null; (L.segs=L.segs||[]).push([fam,x,used]); if(fam==='co'&&used>0)coDone++;
     if(!used){x=endX+3;continue}
-    if(!script&&!opt.script&&n>=3&&r()<D.combo&&sinceOv>=1&&fam!=='coin'&&fam!=='bait'){overlay(L,r,fam,x,used,ne,D,endX);sinceOv=0}else sinceOv++;
+    if(!script&&!opt.script&&n>=3&&r()<D.combo&&sinceOv>=1&&fam!=='coin'&&fam!=='bait'&&fam!=='co'){overlay(L,r,fam,x,used,ne,D,endX);sinceOv=0}else sinceOv++;
     prev=fam;hist.push(fam);endX=x+used;trail=0;for(let i=endX-1;i>=0&&L.ground[i]<0;i--)trail++;
     let g=Math.round(D.gap)+ri(r,0,2);
     sinceCp+=used+g;
@@ -177,12 +180,12 @@ function buildLevel(n,opt){
     // the exit door runs away when you get close, and pops spikes where it stood
     if(ne>=(dk==='hell'?4:6)&&r()<(dk==='hell'?.8:.5))L.ents.push({t:'exitrun',x:0,s:0,always:1});
     // lights go out for a moment before a trap segment
-    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[1]>24), nb=ne>=(dk==='hell'?4:7)?DF.troll:0;
+    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[0]!=='co'&&q[1]>24), nb=ne>=(dk==='hell'?4:7)?DF.troll:0;
     L.dark=[]; for(let i=0;i<nb&&sg.length;i++){const q=sg.splice(ri(r,0,sg.length-1),1)[0]; L.dark.push({x0:(q[1]-9)*TS,x1:(q[1]+q[2])*TS,dur:dk==='hell'?2.7:1.9,fired:0})}
   }
   if(chaseKind){const sp=Math.min(176,D.v(112,160)+(n>30?8:0));L.chase=chaseKind;const e=mkChase(chaseKind,sp,chaseKind==='wall'?-60:-140);e.go=6*TS;L.ents.push(e)}
   for(let t=4;t<W;t+=10)L.torches.push(t);
   L.name=n<=LEVEL_NAMES.length?LEVEL_NAMES[n-1]:EXTRA_NAMES[(n*7+3)%EXTRA_NAMES.length];
-  L.cpList=L.ents.filter(e=>e.t==='cp').map(e=>e.x);
+  L.cpList=L.ents.filter(e=>e.t==='cp').map(e=>e.x); cgBuild(L);
   return L;
 }
