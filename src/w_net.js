@@ -97,6 +97,7 @@ function netRecv(m){
     case 'g': raceGot(m); break;
     case 'fn': raceFin(m); break;
     case 'rr': raceResult(m); break;
+    case 'em': if(N.link==='play')rxGot(m); break;
     case 'ab': if(N.link==='play')netToLobby(m.w?CO.msg:'صاحبك رجع للغرفة 👋'); break;
     case 'bye': netLeave('صاحبك طلع من الغرفة 👋',true); break;
   }
@@ -344,9 +345,10 @@ function netRender(){
   $('coPrev').disabled=!(N.role==='h'&&conn)||!!CO.sel.custom; $('coNext').disabled=$('coPrev').disabled; $('coCodeBtn').disabled=!(N.role==='h'&&conn);
   for(const id of ['coPrev10','coNext10','coLvIn'])$(id).disabled=$('coPrev').disabled; for(const b of document.querySelectorAll('#co [data-cdf]'))b.disabled=!(N.role==='h'&&conn)||!!CO.sel.custom;
   $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · بلا مكافآت';
+  frSync();
 }
 function netTab(on){
-  NET.tab=!!on; if(on&&NET.link==='off'){ NET.msg='' } coRender();
+  NET.tab=!!on; if(on&&NET.link==='off'){ NET.msg='' } if(on&&!FR.shown){ FR.shown=true; $('frBox').open=frList().length>0 } coRender();
 }
 $('coTabL').onclick=()=>netTab(false); $('coTabN').onclick=()=>netTab(true);
 $('nHost').onclick=()=>{ Snd.init(); netHost() };

@@ -19,19 +19,23 @@ with sync_playwright() as p:
       return {bad, maxst: T.HERO_MAXST, forms: [0, 1, 2, 3, 4].map(T.heroForm), xp: T.XP_NEED.length, cost: T.UP_COST.length, nm: T.STAGE_NM.length} }""")
     ok('every hero ability has 5 stage values, never getting worse', not D['bad'], D['bad'][:4])
     ok('stages I-V, forms 1,1,2,2,3, 4 upgrade steps', D['maxst'] == 4 and D['forms'] == [1, 1, 2, 2, 3] and D['xp'] == 4 and D['cost'] == 4 and D['nm'] == 5, D)
-    # pictures: none exist for forms yet -> base key; an injected one is picked from its stage on
-    K = pg.evaluate("""() => { const T = window.TD, k = T.sprKeyOf, r = {};
-      r.none = [0, 2, 4].map(s => k('falafel', s));
-      const cv = document.createElement('canvas'); cv.width = 40; cv.height = 60; T.HSPR.falafel_f2 = {im: cv, ok: true};
-      r.f2 = [0, 1, 2, 3, 4].map(s => k('falafel', s)); delete T.HSPR.falafel_f2;
-      T.HSPR.falafel_f3 = {im: cv, ok: true}; r.f3 = [0, 3, 4].map(s => k('falafel', s)); delete T.HSPR.falafel_f3; return r }""")
-    ok('without pictures every stage uses the base picture (effects are code-made)', K['none'] == ['falafel'] * 3, K['none'])
-    ok('a form II picture is used from stage III on, a form III picture only at V; the best older form is the fallback', K['f2'] == ['falafel', 'falafel', 'falafel_f2', 'falafel_f2', 'falafel_f2'] and K['f3'] == ['falafel', 'falafel', 'falafel_f3'], [K['f2'], K['f3']])
+    # pictures: one per stage (<id>_s1..s5) unless the hero switched to his classic look; the old form rule is the fallback
+    K = pg.evaluate("""() => { const T = window.TD, k = T.sprKeyOf, r = {}, S = T.S; delete S.hcl;
+      r.evo = [0, 1, 2, 3, 4].map(s => k('falafel', s));
+      S.hcl = {falafel: 1}; r.classic = [0, 2, 4].map(s => k('falafel', s)); delete S.hcl;
+      const keep = T.HSPR.falafel_s3; T.HSPR.falafel_s3 = {im: keep.im, ok: false}; r.missing = k('falafel', 2); T.HSPR.falafel_s3 = keep;
+      const cv = document.createElement('canvas'); cv.width = 40; cv.height = 60; S.hcl = {falafel: 1}; T.HSPR.falafel_f2 = {im: cv, ok: true};
+      r.f2 = [0, 1, 2, 3, 4].map(s => k('falafel', s)); delete T.HSPR.falafel_f2; delete S.hcl;
+      r.all = Object.keys(T.HAB).every(h => [1, 2, 3, 4, 5].every(n => T.HSPR[h + '_s' + n] && T.HSPR[h + '_s' + n].ok)); return r }""")
+    ok('all 40 stage pictures are loaded', K['all'])
+    ok('evolved look: stage n draws picture n', K['evo'] == [f'falafel_s{n}' for n in range(1, 6)], K['evo'])
+    ok('classic look: the base picture (accessories are fitted to it), the old form rule decides the rest', K['classic'] == ['falafel'] * 3 and K['f2'] == ['falafel', 'falafel', 'falafel_f2', 'falafel_f2', 'falafel_f2'], [K['classic'], K['f2']])
+    ok('a stage picture that is not loaded falls back to the base picture', K['missing'] == 'falafel', K['missing'])
     # looks differ visibly stage to stage (thumbnail pixels), for every hero
     L = pg.evaluate("""() => { const T = window.TD, out = {}; T.S.look3d = true; T.setQ(3);
       for (const h of Object.keys(T.HAB)) { T.S.own[h] = 1; const d = []; for (const s of [0, 1, 2, 3, 4]) { T.S.hs[h] = s; const c = document.createElement('canvas'); c.width = 64; c.height = 74; T.paintHero(c, h); d.push(c.toDataURL().length + ':' + c.toDataURL().slice(-60)) }
-        out[h] = {same01: d[0] === d[1], same23: d[2] === d[3], diff02: d[0] !== d[2], diff24: d[2] !== d[4]} } return out }""")
-    ok('every hero: form changes at III and V in the picture the shop shows', all(v['diff02'] and v['diff24'] for v in L.values()), L)
+        out[h] = {steps: [0, 1, 2, 3].map(i => d[i] !== d[i + 1])} } return out }""")
+    ok('every hero: the picture changes at every stage in the shop', all(all(v['steps']) for v in L.values()), L)
     # a real level render at every stage, every hero, no exceptions
     R = pg.evaluate("""() => { const T = window.TD, G = T.G, errs = []; T.S.best = 9; T.S.look3d = true;
       for (const h of Object.keys(T.HAB)) for (const s of [0, 2, 4]) { try { T.S.hero = h; T.S.own[h] = 1; T.S.hs[h] = s; T.startGame(3); G.state = 'play'; for (let i = 0; i < 20; i++) T.update(1 / 60); T.render() } catch (e) { errs.push(h + s + ':' + e.message) } } return errs }""")
@@ -44,9 +48,11 @@ with sync_playwright() as p:
       T.S.hero = 'falafel'; T.S.hs.falafel = 1; T.openShop('u'); await wait(200); let card = document.querySelector('#shGrid .shc.up');
       o.pips = card.querySelectorAll('.pips2 i').length; o.hint = /بيتغيّر شكله/.test(card.textContent);
       T.S.hs.falafel = 3; T.openShop('u'); await wait(200); card = document.querySelector('#shGrid .shc.up'); o.hint3 = /بيتغيّر شكله/.test(card.textContent);
-      T.S.hs.falafel = 2; T.openShop('u'); await wait(200); card = document.querySelector('#shGrid .shc.up'); o.noHint = !/بيتغيّر شكله/.test(card.textContent);
+      T.S.hs.falafel = 2; T.openShop('u'); await wait(200); card = document.querySelector('#shGrid .shc.up'); o.noHint = /بيتغيّر شكله/.test(card.textContent);
+      const tg = () => document.querySelector('#shGrid .shc.up button.look'); o.look1 = tg() && tg().textContent; tg().click(); await wait(100); o.look2 = tg() && tg().textContent; o.cl = !!(T.S.hcl && T.S.hcl.falafel); tg().click(); await wait(100); o.back = !(T.S.hcl && T.S.hcl.falafel);
       T.S.hs.falafel = 4; T.openShop('u'); await wait(200); card = document.querySelector('#shGrid .shc.up'); o.max = /أقصى مرحلة/.test(card.textContent); return o }""")
-    ok('upgrade card: 5 pips; hint when the NEXT stage changes the form (II->III and IV->V), none otherwise', U['pips'] == 5 and U['hint'] and U['hint3'] and U['noHint'] and U['max'], U)
+    ok('upgrade card: 5 pips; "the look changes" hint at every step (every stage has its own picture); max label', U['pips'] == 5 and U['hint'] and U['hint3'] and U['noHint'] and U['max'], U)
+    ok('upgrade card: a button switches between the evolved and the classic look, and back', 'المتطوّر' in (U['look1'] or '') and 'كلاسيكي' in (U['look2'] or '') and U['cl'] and U['back'], [U['look1'], U['look2']])
     if SHOTS:
         os.makedirs(SHOTS, exist_ok=True)
         pg.evaluate("() => { const T = window.TD; T.S.hero = 'robot'; T.S.own.robot = 1; T.S.hs.robot = 4; T.S.best = 9; T.startGame(3); T.G.state = 'play' }"); pg.wait_for_timeout(900)

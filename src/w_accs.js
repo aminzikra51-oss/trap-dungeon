@@ -59,6 +59,7 @@ function accHeroMode(g){
   const id=SHOP.hero, st=heroStage(id), row=el('div','acchips');
   for(const h of owned)row.appendChild(el('button','ch'+(h===id?' on':''),HEROES[h].name,()=>{ SHOP.hero=h; shopRender() }));
   g.appendChild(row);
+  if(HSPR[id+'_s1']&&HSPR[id+'_s1'].ok&&!classicOf(id))g.appendChild(el('button','btn alt','🎩 هالبطل لابس شكله المتطوّر (بلا إكسسوارات) — البس الكلاسيكي لتشوف قطعك',()=>{ S.hcl=S.hcl||{}; S.hcl[id]=1; save(); try{syncHeroes()}catch(e){} shopRender() }));
   const sl={h:'فوق الراس',n:'الرقبة',b:'الظهر',a:'هالة وميض'}, nSets=accSetMax(id), full=accSetFull(id);
   let shown=0;
   for(let s=1;s<=nSets;s++){

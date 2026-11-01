@@ -273,6 +273,7 @@ function render(){
   else if(G.snk&&G.snk.t>0&&G.state==='play'){const a=anchor(G.snk.e);bubble(c,a[0],a[1],G.snk.txt,.85-G.snk.t+.12)}
   // the hero talks (text bubble even when no recording exists yet)
   if(G.hsay&&G.state!=='title'){ const w=Math.max(34,G.hsay.txt.length*9+20), px=clamp(P.x+PW/2,cam+w/2+6,cam+VW-w/2-6); bubble(c,px,P.y-(G.state==='dead'?46:16),G.hsay.txt,G.hsay.t0-G.hsay.t,'#fff3c4') }
+  if(RX.list.length)rxDraw(c,cam);
   // the boss talks
   if(G.bsay&&L.boss&&G.state!=='title'){ const w=Math.max(34,G.bsay.txt.length*9+20); bubble(c,clamp(BX-215,cam+w/2+6,cam+VW-w/2-6),122,G.bsay.txt,G.bsay.t0-G.bsay.t,'#e9d7ff') }
   // rear-arrow warnings at the screen edge

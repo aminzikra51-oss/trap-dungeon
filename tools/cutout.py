@@ -5,7 +5,7 @@ usage: python3 tools/cutout.py raw/heroes/falafel.jpg out.png [--h 192]"""
 import sys, cv2, numpy as np
 from scipy import ndimage as ndi
 
-def cutout(path, tol=6, h=None, work=640, pockets=False):
+def cutout(path, tol=6, h=None, work=640, pockets=False, full_canvas=False):
     full = cv2.imread(path); H0, W0 = full.shape[:2]
     k = work / max(H0, W0); small = cv2.resize(full, (round(W0 * k), round(H0 * k)), interpolation=cv2.INTER_AREA)
     H, W = small.shape[:2]
@@ -51,6 +51,7 @@ def cutout(path, tol=6, h=None, work=640, pockets=False):
     edge = (a > 0.02) & (a < 0.98)
     out = full.copy(); out[edge] = (0.2 * full[edge] + 0.8 * col[edge]).astype(np.uint8)
     rgba = np.dstack([out, (a * 255).astype(np.uint8)])
+    if full_canvas: return rgba                                  # same size as the input (to compare / combine masks with another cut-out)
     ys, xs = np.where(a > .02); y0, y1, x0, x1 = ys.min(), ys.max() + 1, xs.min(), xs.max() + 1
     rgba = rgba[y0:y1, x0:x1]
     if h: s2 = h / rgba.shape[0]; rgba = cv2.resize(rgba, (max(1, round(rgba.shape[1] * s2)), h), interpolation=cv2.INTER_AREA)

@@ -12,11 +12,17 @@ for(const k in (A.hero||{})){ const im=new Image(),o={im,ok:false}; HSPR[k]=o; i
 const RIM_D=[[-1,0],[1,0],[0,-1],[0,1]];
 function sprRim(c,o,x,y,w,h,px){ if(!o.rim)return; c.save();c.globalAlpha=.85;for(const [dx,dy] of RIM_D)c.drawImage(o.rim,x+dx*px,y+dy*px,w,h);c.restore() }
 const look3=()=>!!S.look3d&&Q.q>0;
-/* evolution forms: stage -> form (heroForm: I-II 1, III-IV 2, V 3). A picture assets/hero/<id>_f2.webp / <id>_f3.webp is used when it exists; otherwise the base picture is drawn with code-made effects (formFx) */
+/* evolution: five pictures per hero, one per upgrade stage (assets/hero/<id>_s1..s5.webp). The hero can switch to his "classic" look (S.hcl[id]) = the original
+   picture + the shop accessories (the accessories are fitted to that picture only). Without stage pictures (or in classic) the older rule applies: stage -> form
+   (heroForm: I-II 1, III-IV 2, V 3), a form picture assets/hero/<id>_f2/_f3.webp when it exists, else the base picture with code-made effects (formFx). */
 const stageOf=id=>(P&&P.hid===id&&P.hst!=null)?P.hst:heroStage(id);
-const sprKeyOf=(id,st)=>{ for(let f=heroForm(st);f>1;f--){ const k=id+'_f'+f, o=HSPR[k]; if(o&&o.ok)return k } return id };       // the best picture for this stage: form III, else form II, else the base one
-const keyForm=k=>{ const m=/_f([23])$/.exec(k); return m?+m[1]:1 };
-const sprOf=(id,st)=>{ id=id||hid(); const o=HSPR[sprKeyOf(id,st!=null?st:stageOf(id))]; return o&&o.ok?o:null };
+const isEvoKey=k=>/_s\d$/.test(k);
+const classicOf=id=>!!(S.hcl&&S.hcl[id]);
+const sprKeyOf=(id,st,classic)=>{
+  if(!(classic!=null?classic:classicOf(id))){ const k=id+'_s'+(st+1), o=HSPR[k]; if(o&&o.ok)return k }
+  for(let f=heroForm(st);f>1;f--){ const k=id+'_f'+f, o=HSPR[k]; if(o&&o.ok)return k } return id };       // the stage picture, else (classic / not loaded) form III, form II, the base one
+const keyForm=k=>{ if(isEvoKey(k))return 9; const m=/_f([23])$/.exec(k); return m?+m[1]:1 };
+const sprOf=(id,st,classic)=>{ id=id||hid(); const o=HSPR[sprKeyOf(id,st!=null?st:stageOf(id),classic)]; return o&&o.ok?o:null };
 function rimTint(o,col){ const tc=o.tc||(o.tc={}); if(tc[col])return tc[col]; const cv=document.createElement('canvas'); cv.width=o.im.width; cv.height=o.im.height; const x=cv.getContext('2d'); x.drawImage(o.im,0,0); x.globalCompositeOperation='source-in'; x.fillStyle=col; x.fillRect(0,0,cv.width,cv.height); return tc[col]=cv }
 function haloDraw(c,w,y,t){ const rw=Math.max(9,w*.3), bob=Math.sin(t*2.4)*1.4; c.save(); c.translate(0,y+bob); c.lineWidth=2.6; c.strokeStyle='#fff3b0'; c.shadowColor='#ffd23f'; c.shadowBlur=6;
   c.beginPath(); c.ellipse(0,0,rw,rw*.28,0,0,7); c.stroke(); c.lineWidth=1.1; c.strokeStyle='#ffb81f'; c.beginPath(); c.ellipse(0,0,rw,rw*.28,0,0,7); c.stroke(); c.restore() }
@@ -35,7 +41,7 @@ const mixc=(a,b,t,al)=>{const A1=hexRGB(a),B1=hexRGB(b);return 'rgba('+A1.map((v
 function drawHeroSprite(c,st,id){
   id=id||hid(); const stg=stageOf(id), key=sprKeyOf(id,stg), o=sprOf(id,stg); if(!o)return false; const m=HMETA[key]||{w:o.im.width,h:o.im.height,cx:.5};
   const form=heroForm(stg), kf=keyForm(key), fx=form>kf, t=G.t;                         // fx: no picture for this form -> effects made in code
-  const h=SPR_H,w=h*m.w/m.h; let bob=0,lean=0,sx=1,sy=1;
+  const evo=isEvoKey(key), h=SPR_H*(m.hk||1),w=h*m.w/m.h; let bob=0,lean=0,sx=1,sy=1;
   if(!st.dead){
     if(st.moving){bob=-Math.abs(st.rs)*2.8;lean=.11+st.rs*.07}
     else if(st.onGround){const b=Math.sin(G.t*3.2);sy=1+b*.02;sx=1-b*.014}
@@ -44,13 +50,13 @@ function drawHeroSprite(c,st,id){
   if(fx){ const k=form===3?1.1:1.05; sx*=k; sy*=k }
   c.save();c.translate(0,bob);c.rotate(lean);c.scale(sx,sy);
   if(fx&&!st.dead)formFx(c,id,form,w,h,'under',t);
-  accDraw(c,id,w,h,m.cx,'back');
+  if(!evo)accDraw(c,id,w,h,m.cx,'back');
   if(fx){ const col=form===3?'#ffe27a':((typeof ACC_AURA!=='undefined'&&ACC_AURA[id])||'#ffd23f'); c.save(); c.globalAlpha=form===3?.95:.75; const px=form===3?1.5:1.1; for(const [dx,dy] of RIM_D)c.drawImage(rimTint(o,col),-w*m.cx+dx*px,-h+dy*px,w,h); c.restore() }
   else sprRim(c,o,-w*m.cx,-h,w,h,.8);
   if(fx&&kf===1&&c.filter!==undefined)c.filter=formFilter(form);
   c.drawImage(o.im,-w*m.cx,-h,w,h);
   if(fx&&kf===1&&c.filter!==undefined)c.filter='none';
-  accDraw(c,id,w,h,m.cx,'front');
+  if(!evo)accDraw(c,id,w,h,m.cx,'front');
   if(fx&&!st.dead)formFx(c,id,form,w,h,'over',t);
   c.restore();
   if(st.dead){ // dizzy stars
@@ -61,21 +67,22 @@ function drawHeroSprite(c,st,id){
 }
 function drawHero(c,H,st){ if(look3()&&drawHeroSprite(c,st))return; H.draw(c,st) }
 function heroSlices(c,tt,piece){ // sprite broken in 4 bands (hat / face / belly / feet) for the saw & fake-door deaths
-  const o=sprOf(); if(!o||!look3())return false; const m=HMETA[sprKeyOf(hid(),stageOf(hid()))]||{w:o.im.width,h:o.im.height,cx:.5},h=SPR_H,w=h*m.w/m.h,iw=o.im.width,ih=o.im.height;
+  const o=sprOf(); if(!o||!look3())return false; const m=HMETA[sprKeyOf(hid(),stageOf(hid()))]||{w:o.im.width,h:o.im.height,cx:.5},h=SPR_H*(m.hk||1),w=h*m.w/m.h,iw=o.im.width,ih=o.im.height;
   const cuts=[[0,.32,40,-210],[.32,.66,-70,-260],[.66,.88,25,-130],[.88,1,-35,-160]];
   for(const [f0,f1,vx,vy] of cuts){ const yc=-h*(1-(f0+f1)/2); piece(0,yc,vx,vy,()=>c.drawImage(o.im,0,ih*f0,iw,ih*(f1-f0),-w*m.cx,-h*(f1-f0)/2,w,h*(f1-f0))) }
   return true;
 }
 function heroThumb(cx,id,ao){                                  // ao = {only,force}: shop preview of a single accessory slot
-  const stg=ao&&ao.stage!=null?ao.stage:heroStage(id), key=sprKeyOf(id,stg), o=sprOf(id,stg); if(!o||!look3())return false; const m=HMETA[key]||{w:o.im.width,h:o.im.height,cx:.5},h=62,w=h*m.w/m.h;
+  const cl=ao?true:null;                                       // the accessory previews always use the classic picture (the pieces are fitted to it)
+  const stg=ao&&ao.stage!=null?ao.stage:heroStage(id), key=sprKeyOf(id,stg,cl), o=sprOf(id,stg,cl); if(!o||!look3())return false; const m=HMETA[key]||{w:o.im.width,h:o.im.height,cx:.5}, evo=isEvoKey(key); let h=62*(evo?(m.hk||1):1),w=h*m.w/m.h; if(evo&&w>60){ h*=60/w; w=60 }
   const form=heroForm(stg), kf=keyForm(key), fx=form>kf&&!(ao&&ao.only), t=performance.now()/1000;
   if(fx){ cx.save(); cx.translate(0,-1); formFx(cx,id,form,w,h,'under',t,.62); cx.restore() }
-  cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'back',ao); cx.restore();
+  if(!evo){ cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'back',ao); cx.restore() }
   if(fx){ const col=form===3?'#ffe27a':((typeof ACC_AURA!=='undefined'&&ACC_AURA[id])||'#ffd23f'); cx.save(); cx.globalAlpha=.9; for(const [dx,dy] of RIM_D)cx.drawImage(rimTint(o,col),-w*m.cx+dx*1.3,-h-1+dy*1.3,w,h); cx.restore() } else sprRim(cx,o,-w*m.cx,-h-1,w,h,.9);
   if(fx&&kf===1&&cx.filter!==undefined)cx.filter=formFilter(form);
   cx.drawImage(o.im,-w*m.cx,-h-1,w,h);
   if(fx&&kf===1&&cx.filter!==undefined)cx.filter='none';
-  cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'front',ao); cx.restore();
+  if(!evo){ cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'front',ao); cx.restore() }
   if(fx){ cx.save(); cx.translate(0,-1); formFx(cx,id,form,w,h,'over',t); cx.restore() } return true;
 }
 

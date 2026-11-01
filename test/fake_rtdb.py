@@ -22,7 +22,9 @@ class FakeRtdb:
                 self.send_response(204); self._cors(); self.end_headers()
             def do_PUT(self):
                 n = int(self.headers.get('Content-Length') or 0); body = self.rfile.read(n).decode() if n else 'null'
-                db.write(self._segs(), json.loads(body)); self.send_response(200); self._cors(); self.send_header('Content-Type', 'application/json'); self.end_headers(); self.wfile.write(b'null')
+                val = db.resolve(json.loads(body)); db.write(self._segs(), val)
+                self.send_response(200); self._cors(); self.send_header('Content-Type', 'application/json'); self.end_headers()
+                self.wfile.write(b'null' if 'print=silent' in self.path else json.dumps(val).encode())       # the real service echoes what it stored (server values resolved)
             def do_DELETE(self):
                 db.write(self._segs(), None); self.send_response(200); self._cors(); self.end_headers(); self.wfile.write(b'null')
             def do_GET(self):
@@ -45,6 +47,12 @@ class FakeRtdb:
         self.srv = ThreadingHTTPServer(('127.0.0.1', 0), H); self.srv.daemon_threads = True
         self.port = self.srv.server_address[1]; self.url = f'http://127.0.0.1:{self.port}'
         threading.Thread(target=self.srv.serve_forever, daemon=True).start()
+    def resolve(self, v):
+        # {".sv": "timestamp"} -> server time in ms, like the real REST API
+        if isinstance(v, dict):
+            if v.get('.sv') == 'timestamp': return int(time.time() * 1000)
+            return {k: self.resolve(x) for k, x in v.items()}
+        return v
     def get(self, segs):
         node = self.tree
         for s in segs:

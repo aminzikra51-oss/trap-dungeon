@@ -1,3 +1,5 @@
+> **قديم / OBSOLETE:** الأبطال صار لكل واحد 5 صور مراحل جاهزة (`assets/hero/<id>_s1..s5.webp`، من `tools/make_stages.py`). هالملف بس مرجع لبرومبتات `_f2/_f3` القديمة وللتوسّع المستقبلي (مسارات تطوّر إضافية).
+
 # Hero evolution pictures (forms II and III)
 
 The game already works WITHOUT these: until a picture exists, a form is drawn in code (colour boost, glow, rim light, sparkles, halo at stage V).

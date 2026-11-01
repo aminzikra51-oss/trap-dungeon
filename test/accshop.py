@@ -55,15 +55,17 @@ with sync_playwright() as p:
            S.wallet=10; o.poor=T.accBuy('f:shades',60); o.w0=S.wallet; S.wallet=500; o.buy=T.accBuy('f:shades',60); o.w=S.wallet; o.own=T.faceOwn('shades'); o.ownOther=T.faceOwn('hearts'); o.again=T.accBuy('f:shades',60);
            S.hq.cat={f:'shades'}; o.catSel=T.faceSel('cat'); o.uncleSel=T.faceSel('uncle'); S.hq.uncle={f:'bogus'}; o.bogus=T.faceSel('uncle');
            o.n=T.FACE.length; o.pl=Object.keys(T.FACE_PL).length; o.img=T.FACE.every(f=>T.ACCIMG['face_'+f.k]&&T.ACCIMG['face_'+f.k].ok);
-           const draw=(f,owned)=>{ S.hq={cat:{f}}; S.aq={}; if(owned)S.aq['f:'+f]=1; const cv=document.createElement('canvas'); cv.width=120; cv.height=140; const c=cv.getContext('2d'); c.translate(60,130); c.scale(2.2,2.2);
+           const draw=(f,owned,evo)=>{ S.hq={cat:{f}}; S.aq={}; S.hcl=evo?{}:{cat:1}; if(owned)S.aq['f:'+f]=1; const cv=document.createElement('canvas'); cv.width=120; cv.height=140; const c=cv.getContext('2d'); c.translate(60,130); c.scale(2.2,2.2);
              T.drawHeroSprite(c,{moving:false,rs:0,run:0,onGround:true,blink:false,ex:0,ey:0,dead:false,scream:false},'cat'); return c.getImageData(0,0,120,140).data };
            const diff=(a,b)=>{ let n=0; for(let i=0;i<a.length;i+=4)if(Math.abs(a[i]-b[i])+Math.abs(a[i+1]-b[i+1])+Math.abs(a[i+2]-b[i+2])>40)n++; return n };
            const none=draw('',false), unowned=draw('shades',false), worn=draw('shades',true), hearts=draw('hearts',true);
-           o.unownedDiff=diff(none,unowned); o.wornDiff=diff(none,worn); o.heartsVsShades=diff(worn,hearts); return o }""")
+           o.unownedDiff=diff(none,unowned); o.wornDiff=diff(none,worn); o.heartsVsShades=diff(worn,hearts);
+           const e0=draw('',false,true), e1=draw('shades',true,true); o.evoDiff=diff(e0,e1); S.hcl={}; return o }""")
         ok(f'{tag}: face pieces are bought once for 60 and never twice', Fc['poor'] == 'poor' and Fc['w0'] == 10 and Fc['buy'] == 'ok' and Fc['w'] == 440 and Fc['own'] is True and Fc['ownOther'] is False and Fc['again'] == 'owned', Fc)
         ok(f'{tag}: a face piece is worn per hero (cat yes, uncle no; an unknown key counts as none)', Fc['catSel'] == 'shades' and Fc['uncleSel'] == '' and Fc['bogus'] == '', Fc)
         ok(f'{tag}: all 8 face pieces have a picture and a placement for all 8 heroes', Fc['n'] == 8 and Fc['pl'] == 8 and Fc['img'] is True, Fc)
         ok(f'{tag}: a worn + owned face piece is drawn on the hero, an unowned one is not, and pieces differ', Fc['unownedDiff'] == 0 and Fc['wornDiff'] > 40 and Fc['heartsVsShades'] > 40, Fc)
+        ok(f'{tag}: the evolved stage picture is drawn as it is - pieces only show on the classic look', Fc['evoDiff'] == 0, Fc['evoDiff'])
         # UI: buy a face piece for the selected hero, then take it off
         pg.evaluate("TD.S.wallet=500; TD.S.aq={}; TD.S.hq={}; TD.S.trail=''; TD.openShop('a')"); pg.wait_for_timeout(200)
         pg.evaluate("[...document.querySelectorAll('.acchips .ch')].find(b=>b.textContent.includes('مشترك')).click()"); pg.wait_for_timeout(200)
