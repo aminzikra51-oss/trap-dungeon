@@ -88,7 +88,7 @@ function edImport(play){
   if(MP.draft&&cTraps(MP.draft)&&encodeCustom(MP.draft)!==encodeCustom(r.c)){ try{localStorage.setItem('td_mprev',JSON.stringify(MP.draft))}catch(e){} }
   ED.c=cClone(r.c); ED.sel=-1; ED.imp=false; ED.src='edit'; ED.msg='✅ انحمّلت الخريطة (' +cTraps(r.c)+' فخ)'; edSave(); edPreview(); edRender();
 }
-function goTitle(){ G.co=null; $('co').classList.add('hide'); $('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');$('ed').classList.add('hide');G.state='title';$('sub').innerHTML='';Snd.stopMusic() }
+function goTitle(){ G.co=null; $('co').classList.add('hide'); $('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');$('ed').classList.add('hide');G.state='title';G.tm=0;$('menu').classList.remove('tm');$('bResume').textContent='كمّل اللعب';$('sub').innerHTML='';Snd.stopMusic();hud() }
 
 /* ---- wiring ---- */
 $('edNm').onclick=()=>edSetN(ED.c.n-1); $('edNp').onclick=()=>edSetN(ED.c.n+1);

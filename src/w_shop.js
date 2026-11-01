@@ -20,7 +20,8 @@ function worldThumb(i){
 }
 function shopMsg(t){ $('shMsg').textContent=t||'' }
 function shopRender(){
-  $('shW').textContent='🪙 '+S.wallet; document.querySelectorAll('#shTabs .ch').forEach(b=>b.classList.toggle('on',b.dataset.t===SHOP.tab));
+  if(SHOP.tab==='g'&&!plOn())SHOP.tab='h';
+  $('shW').textContent='🪙 '+S.wallet+(plOn()?'  💎 '+(S.gems|0):''); document.querySelectorAll('#shTabs .ch').forEach(b=>{ b.classList.toggle('on',b.dataset.t===SHOP.tab); if(b.dataset.t==='g')b.classList.toggle('hide',!plOn()) });
   const g=$('shGrid'); g.innerHTML=''; g.className='shgrid '+SHOP.tab;
   if(SHOP.tab==='h'){
     for(const id of HERO_IDS){
@@ -33,6 +34,7 @@ function shopRender(){
     }
   } else if(SHOP.tab==='u'){ heroUpRender(g)
   } else if(SHOP.tab==='a'){ accRender(g)
+  } else if(SHOP.tab==='g'){ gemRender(g)
   } else if(SHOP.tab==='e'){ epRender(g)
   } else {
     const auto=el('div','shc'+(S.bgPick<0?' sel':'')), ab=el('button','btn',S.bgPick<0?'✓ تلقائي':'تلقائي',()=>{ S.bgPick=-1; save(); Snd.ui(); shopRender() });

@@ -1,6 +1,6 @@
 /* =============== SKINS: more evolution looks per hero ===============
    Every hero has his first evolution path (assets/hero/<id>_s1..s5.webp) and one more (the falafel two more): <id>_k1_s1..s5, <id>_k2_s1..s5. A skin is a COSMETIC: the same hero, the same
-   abilities, the same five stages; only the five pictures differ. A hero wears one skin at a time and swaps for free between the ones he owns. A skin is bought once with coins (SKINS price).
+   abilities, the same five stages; only the five pictures differ. A hero wears one skin at a time and swaps for free between the ones he owns. A skin is bought once with coins (SKINS price) or with gems (GEMX.skin coins per gem).
    State: S.hsk[id] = the skin worn (0 / missing = first path), S.hso['<id>:<k>'] = owned. The picture is chosen by sprKeyOf in draw3d.js (skinOf), which also resolves the skin a co-op / race
    player started with (P.hsk). Skins show in the evolved look only: the classic look (the base picture + shop accessories) has no skins. Picking one switches the hero to the evolved look.
    The shop card shows a preview that walks through the five stages (SKV) before you buy. Nothing here touches the simulation. */
@@ -26,10 +26,12 @@ function skinWear(id,k){                                       // wear an owned 
   if(S.hcl)delete S.hcl[id];                                   // skins are an evolved-look thing
   save(); try{ syncHeroes() }catch(e){} return true;
 }
-function skinBuy(id,k){                                        // 'ok' | 'owned' | 'poor' | 'none'
+const skinGemPrice=(id,k)=>Math.max(1,Math.ceil(skinPrice(id,k)/GEMX.skin));   // the same skin in gems (GEMX.skin coins per gem)
+function skinBuy(id,k,cur){                                    // cur: 'coin' (default) | 'gem'.  Returns 'ok' | 'owned' | 'poor' | 'none'
   k=skinSan(id,k); if(!k)return 'none'; if(skinHas(id,k))return 'owned'; if(!heroOwned(id))return 'none'; if(!skinLoaded(id,k))return 'none';
-  const p=skinPrice(id,k); if((S.wallet|0)<p)return 'poor';
-  S.wallet-=p; S.hso[id+':'+k]=1; save(); skinWear(id,k); hud(); return 'ok';
+  if(cur==='gem'){ if(!gemSpend(skinGemPrice(id,k)))return 'poor' }
+  else{ const p=skinPrice(id,k); if((S.wallet|0)<p)return 'poor'; S.wallet-=p }
+  S.hso[id+':'+k]=1; save(); skinWear(id,k); hud(); return 'ok';
 }
 const SKP={};                                                  // shop: the skin being previewed per hero (not worn until you pick / buy it)
 let skTimer=0;
@@ -49,10 +51,11 @@ function skinRow(id,cv){                                       // the chips + ac
   if(pv!=null){
     const own=skinHas(id,pv), nm=SKINS[id][pv][0], p=skinPrice(id,pv);
     if(own)box.append(el('button','btn','✓ البس «'+nm+'»',()=>{ if(skinWear(id,pv)){ SKP[id]=null; Snd.coin&&Snd.coin(); shopMsg('لبس '+HEROES[id].name+' مظهر «'+nm+'»'); shopRender() } }));
-    else{ const poor=(S.wallet|0)<p;
-      box.append(el('button','btn'+(poor?' poor':''),'اشترِ «'+nm+'» 🪙 '+p+(poor?'  (ناقصك '+(p-(S.wallet|0))+')':''),()=>{
-        const r=skinBuy(id,pv); if(r==='ok'){ SKP[id]=null; Snd.coin(); Snd.win(); shopMsg('اشتريت مظهر «'+nm+'» 🎉 — لابسه هلأ، وبتبدّل بحرّية'); shopRender() }
-        else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg('ناقصك '+(p-(S.wallet|0))+' 🪙') } })) }
+    else{ const poor=(S.wallet|0)<p, buy=cur=>{
+        const r=skinBuy(id,pv,cur); if(r==='ok'){ SKP[id]=null; Snd.coin(); Snd.win(); shopMsg('اشتريت مظهر «'+nm+'» 🎉 — لابسه هلأ، وبتبدّل بحرّية'); shopRender() }
+        else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg(cur==='gem'?'ناقصك '+(skinGemPrice(id,pv)-(S.gems|0))+' 💎':'ناقصك '+(p-(S.wallet|0))+' 🪙') } };
+      box.append(el('button','btn'+(poor?' poor':''),'اشترِ «'+nm+'» 🪙 '+p+(poor?'  (ناقصك '+(p-(S.wallet|0))+')':''),()=>buy('coin')));
+      if(plOn()){ const gp=skinGemPrice(id,pv), gpoor=(S.gems|0)<gp; const gb=el('button','btn gem'+(gpoor?' poor':''),'أو بالجواهر 💎 '+gp+(gpoor?'  (ناقصك '+(gp-(S.gems|0))+')':''),()=>buy('gem')); gb.dataset.cur='gem'; box.append(gb) } }
     skinPvStart(cv,id,pv);
   }
   return box;

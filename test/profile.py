@@ -47,7 +47,7 @@ with sync_playwright() as p:
     S1.evaluate("() => { window.TD.S.hero = 'falafel'; window.TD.S.hs.falafel = 3; window.TD.openPf() }"); S1.wait_for_timeout(400)
     U = S1.evaluate("""() => ({open: window.TD.PF.open, vis: !document.getElementById('pf').classList.contains('hide'), av: document.querySelectorAll('#pfHead .pfav canvas').length,
       emo: document.querySelectorAll('#pfPick .tg.em').length, stats: document.querySelectorAll('#pfStats .pfst').length, code: document.querySelector('.pfcode b').textContent})""")
-    ok('the panel opens: picture (hero face drawn), 24 emoji buttons, 6 stat tiles, my code', U['open'] and U['vis'] and U['av'] == 1 and U['emo'] == 24 and U['stats'] == 6 and len(U['code']) == 9, U)
+    ok('the panel opens: picture (hero face drawn), 24 emoji buttons, 8 stat tiles (6 + 💎 + 🔰 in the private build), my code', U['open'] and U['vis'] and U['av'] == 1 and U['emo'] == 24 and U['stats'] == 8 and len(U['code']) == 9, U)
     ok('the game keys are ignored while it is open', S1.evaluate("() => { const T = window.TD; T.K.r = false; window.dispatchEvent(new KeyboardEvent('keydown', {code: 'ArrowRight'})); return !T.K.r }"))
     S1.fill('#pfName', 'أبو <b>فلافل</b> العظيم جدا'); S1.dispatch_event('#pfName', 'change'); S1.wait_for_timeout(200)
     N = S1.evaluate("() => ({s: window.TD.S.fname, v: document.getElementById('pfName').value})")

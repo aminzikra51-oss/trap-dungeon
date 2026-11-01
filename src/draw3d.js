@@ -8,7 +8,7 @@
 const HSPR={}, HMETA=A.heroMeta||{}, SPR_H=46;
 for(const k in (A.hero||{})){ const im=new Image(),o={im,ok:false}; HSPR[k]=o; im.onload=()=>{o.ok=true;
   const rc=HMETA[k]&&HMETA[k].rim; if(rc){ try{ const cv=document.createElement('canvas');cv.width=im.width;cv.height=im.height;const x=cv.getContext('2d');x.drawImage(im,0,0);x.globalCompositeOperation='source-in';x.fillStyle=rc;x.fillRect(0,0,cv.width,cv.height);o.rim=cv }catch(e){} }
-  try{syncHeroes()}catch(e){}}; im.src=A.hero[k] }
+  try{syncHeroes()}catch(e){} try{titleCard()}catch(e){}}; im.src=A.hero[k] }
 const RIM_D=[[-1,0],[1,0],[0,-1],[0,1]];
 function sprRim(c,o,x,y,w,h,px){ if(!o.rim)return; c.save();c.globalAlpha=.85;for(const [dx,dy] of RIM_D)c.drawImage(o.rim,x+dx*px,y+dy*px,w,h);c.restore() }
 const look3=()=>!!S.look3d&&Q.q>0;

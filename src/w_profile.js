@@ -57,10 +57,20 @@ function pfAv(src,size){                                                        
   return w;
 }
 const pfMine=()=>{ const p=pfGet(); return {a:p.a,f:p.f,h:S.hero,s:heroStage(S.hero),k:skinSaved(S.hero)} };
+let tcSig='';
+function titleCard(){                                          // the profile card on the title screen (top-left): face, name, level + xp bar, coins, gems. Rebuilt only when something it shows changed
+  const b=$('bPfT'); if(!b)return; const m=pfMine(), q=plProg(), on=plOn();
+  const sig=[S.fname||'',m.a,m.f,m.h,m.s,m.k,sprOf(m.h,m.s)?1:0,on?q.n+':'+Math.round(q.pct*100):'-',S.wallet|0,S.gems|0].join('|'); if(sig===tcSig&&b.firstChild)return; tcSig=sig;
+  b.textContent=''; const info=el('span','pfi'), top=el('span','pft'), cu=el('span','pfcu');
+  top.append(el('b',null,'👤 '+(S.fname||'ملفّي'))); if(on)top.append(el('i',null,'🔰 مستوى '+q.n)); info.append(top);
+  if(on){ const bar=el('span','pfxb'), f=el('i'); f.style.width=Math.round(q.pct*100)+'%'; bar.append(f); info.append(bar) }
+  cu.append(el('b',null,'🪙 '+(S.wallet|0))); if(on)cu.append(el('b',null,'💎 '+(S.gems|0))); info.append(cu);
+  b.append(pfAv(m,44),info);
+}
 
 /* ---- the screen ---- */
 function pfMsg(){ const e=$('pfMsg'); if(e)e.textContent=FR.msg||PF.msg||'' }
-function pfChanged(){ frStatsPut(true); if(FR.on)frBeat(); frRender(); if(PF.open){ pfHead(); pfPick(); pfStatsRender(); pfRank() } }
+function pfChanged(){ try{ titleCard() }catch(e){} frStatsPut(true); if(FR.on)frBeat(); frRender(); if(PF.open){ pfHead(); pfPick(); pfStatsRender(); pfRank() } }
 function pfHead(){
   const h=$('pfHead'); if(!h)return; h.textContent='';
   const col=el('div','pfcol');
@@ -70,9 +80,9 @@ function pfHead(){
   const code=el('div','pfcode'); code.append(el('span',null,'كودك كصديق: '),el('b',null,frFmt(frId())),el('button','tg','📋 نسخ',()=>frCopy(frId(),'📋 اننسخ كودك')));
   col.append(nm,el('div','pftitle','🎖 '+titleText()));
   if(plOn()){ const q=plProg(), x=el('div','pfxp'), bar=el('div','bar'), fill=el('i'); fill.style.width=Math.round(q.pct*100)+'%'; bar.append(fill);
-    x.append(el('span',null,'🔰 مستوى '+q.n),bar,el('small',null,q.need?q.cur+' / '+q.need:'MAX')); col.append(x) }
+    x.append(el('span',null,'🔰 مستوى '+q.n),bar,el('small',null,q.need?'\u2066'+q.cur+' / '+q.need+'\u2069':'MAX')); col.append(x) }
   col.append(code);
-  h.append(pfAv(pfMine(),72),col); $('pfW').textContent='🪙 '+S.wallet+((S.gems|0)>0?'  💎 '+(S.gems|0):'');
+  h.append(pfAv(pfMine(),72),col); $('pfW').textContent='🪙 '+S.wallet+(plOn()?'  💎 '+(S.gems|0):'');
 }
 function pfPick(){
   const b=$('pfPick'); if(!b)return; b.textContent=''; const p=pfGet();
@@ -163,3 +173,4 @@ function closePf(){ PF.open=false; clearInterval(PF.poll); PF.poll=0; $('pf').cl
 $('pfX').onclick=closePf;
 for(const id of ['bPfT','bPf'])$(id).onclick=openPf;
 addEventListener('keydown',e=>{ if(PF.open&&e.code==='Escape'&&!(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))){ closePf(); e.preventDefault() } });
+

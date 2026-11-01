@@ -54,6 +54,33 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block;background
 .deco{position:absolute;width:calc(var(--u)*130);height:calc(var(--u)*130);object-fit:cover;border:calc(var(--u)*4) solid #000;border-radius:calc(var(--u)*14);top:calc(var(--u)*30)}
 .deco.l{left:calc(var(--u)*24);transform:rotate(-8deg)}
 .deco.r{right:calc(var(--u)*24);transform:rotate(7deg)}
+/* title screen: a profile card top-left, the difficulty + settings top-right, the big buttons in two columns left / right, the hero strip at the bottom */
+#title .tbox{position:static;width:auto;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#title .tbox h1{font-size:calc(var(--u)*54);margin-top:calc(var(--u)*18)}
+#title .deco{display:none}
+#title .tbox .tag{margin-bottom:calc(var(--u)*8)}
+#title .hlbl{margin-top:calc(var(--u)*8)}
+#title .how{position:absolute;left:0;right:0;bottom:calc(var(--u)*6);margin:0;font-size:calc(var(--u)*11)}
+.tbar{position:absolute;top:calc(var(--u)*10);left:calc(var(--u)*14);right:calc(var(--u)*14);display:flex;justify-content:space-between;align-items:flex-start;direction:ltr}
+.tbr{display:flex;gap:calc(var(--u)*8);align-items:center;direction:rtl}
+.pfc{direction:rtl;font-family:inherit;color:#fff;cursor:pointer;display:flex;gap:calc(var(--u)*8);align-items:center;background:#0009;border:calc(var(--u)*3) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*6) calc(var(--u)*12) calc(var(--u)*6) calc(var(--u)*8);box-shadow:0 calc(var(--u)*4) 0 #000;text-align:right}
+.pfc:active,.tl:active{transform:translateY(calc(var(--u)*3));box-shadow:0 calc(var(--u)*1) 0 #000}
+.pfc .pfav{flex:none}
+.pfi{display:flex;flex-direction:column;gap:calc(var(--u)*4);min-width:calc(var(--u)*150)}
+.pft{display:flex;justify-content:space-between;align-items:center;gap:calc(var(--u)*8);font-weight:900;font-size:calc(var(--u)*14)}
+.pft b{max-width:calc(var(--u)*110);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pft i{font-style:normal;color:#cfeaff;font-size:calc(var(--u)*13)}
+.pfxb{height:calc(var(--u)*9);border-radius:99px;background:#ffffff2e;border:calc(var(--u)*1.5) solid #000;overflow:hidden;direction:ltr}
+.pfxb i{display:block;height:100%;background:linear-gradient(#7dffb0,#2dbd6e)}
+.pfcu{display:flex;gap:calc(var(--u)*6);font-weight:900;font-size:calc(var(--u)*13)}
+.pfcu b{background:#0008;border-radius:99px;padding:calc(var(--u)*1) calc(var(--u)*8);border:calc(var(--u)*1.5) solid #000}
+.tcol{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:calc(var(--u)*10)}
+.tcol.l{left:calc(var(--u)*14)}.tcol.r{right:calc(var(--u)*14)}
+.tl{font-family:inherit;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*3);width:calc(var(--u)*78);height:calc(var(--u)*78);padding:0;border-radius:calc(var(--u)*16);background:linear-gradient(#41277a,#1d1038);border:calc(var(--u)*3) solid #000;box-shadow:0 calc(var(--u)*4) 0 #000;font-weight:900;font-size:calc(var(--u)*12.5);cursor:pointer}
+.tl .ic{font-size:calc(var(--u)*30);line-height:1}
+.tl.hot{background:linear-gradient(#ffe36b,#ffb81f);color:#1b1230}
+.tl.sm{width:calc(var(--u)*44);height:calc(var(--u)*44);border-radius:calc(var(--u)*12)}.tl.sm .ic{font-size:calc(var(--u)*24)}
+#menu.tm .ing{display:none}
 select.tg{appearance:auto}
 #menu .mbox{background:#1b1230;border:calc(var(--u)*4) solid #000;border-radius:calc(var(--u)*16);padding:calc(var(--u)*14) calc(var(--u)*22);text-align:center;box-shadow:calc(var(--u)*6) calc(var(--u)*6) 0 #000}
 #menu h2{margin:0 0 calc(var(--u)*6);font-size:calc(var(--u)*28);color:var(--gold)}
@@ -138,6 +165,12 @@ select.tg{appearance:auto}
 .shc .btn{font-size:calc(var(--u)*13);padding:calc(var(--u)*3) calc(var(--u)*8);border-width:calc(var(--u)*3);border-radius:calc(var(--u)*10)}
 .shc .btn.poor{filter:grayscale(.7);opacity:.75}
 .shgrid.u{grid-template-columns:repeat(2,1fr)}
+.shgrid.g{display:flex;flex-direction:column;gap:calc(var(--u)*10)}
+.gxtop{display:flex;align-items:center;gap:calc(var(--u)*10);background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*6) calc(var(--u)*12);font-weight:900;font-size:calc(var(--u)*15)}
+.gxtop b{color:#9fe8ff;font-size:calc(var(--u)*20)}.gxtop .pfxb{flex:1;min-width:calc(var(--u)*60)}.gxtop small{opacity:.8;font-size:calc(var(--u)*12)}
+.gxt{font-weight:900;font-size:calc(var(--u)*15);color:#ffe9a8;margin-bottom:calc(var(--u)*2)}.gxh{font-size:calc(var(--u)*11);opacity:.7;margin-bottom:calc(var(--u)*4)}
+.gxr{display:grid;grid-template-columns:repeat(4,1fr);gap:calc(var(--u)*8)}.gxs:nth-of-type(n+3) .gxr{grid-template-columns:repeat(3,1fr)}
+.gxr .shbig{font-size:calc(var(--u)*30)}
 .shgrid.a{grid-template-columns:repeat(4,1fr)}
 .shgrid.a .shc canvas{width:calc(var(--u)*92);height:calc(var(--u)*88)}
 .shc{position:relative}
@@ -277,6 +310,12 @@ select.tg{appearance:auto}
     <div class="cstk" id="cstk"></div><div class="ctop" id="ctop"></div><img id="cimg" alt=""><div class="ccap" id="ccap"></div><div class="chint" id="chint">اضغط أي شي لتعيد المحاولة</div>
   </div></div>
   <div id="title" class="ov">
+    <div class="tbar">
+      <button class="pfc" id="bPfT" aria-label="ملفّي"></button>
+      <div class="tbr"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tl sm" id="bGearT" aria-label="الإعدادات"><span class="ic">⚙</span></button></div>
+    </div>
+    <div class="tcol l"><button class="tl hot" id="bShopT"><span class="ic">🛒</span><span class="lb">المتجر</span></button><button class="tl" id="bAchT"><span class="ic">🏆</span><span class="lb">الإنجازات</span></button><button class="tl" id="bMapT"><span class="ic">🗺</span><span class="lb">الخريطة</span></button></div>
+    <div class="tcol r"><button class="tl" id="bCoT"><span class="ic">👥</span><span class="lb">تعاون</span></button><button class="tl" id="bEdT"><span class="ic">🛠</span><span class="lb">المصمّم</span></button><button class="tl" id="bShareT"><span class="ic">📤</span><span class="lb">شارك</span></button></div>
     <div class="tbox">
       <img class="deco l" id="decoL" alt=""><img class="deco r" id="decoR" alt="">
       <h1>لا تموت يا حبيبي</h1>
@@ -284,9 +323,8 @@ select.tg{appearance:auto}
       <p class="tag">كل شي آمن هون... وكله كذب 😇</p>
       <div><button class="btn" id="bPlay">ابدأ اللعب</button></div>
       <div><button class="btn alt hide" id="bCont">كمّل من المرحلة 1</button></div>
-      <div class="row" style="margin-top:0"><select class="tg" id="selDiffT"><option value="normal">عادي 🙂</option><option value="crazy">مجنون 😈</option><option value="hell">مستحيل 💀</option></select><button class="tg" id="bShareT">📤 شارك</button><button class="tg" id="bCoT">👥 تعاون</button><button class="tg" id="bPfT">👤 ملفّي</button><button class="tg" id="bEdT">🛠 مصمّم المراحل</button><button class="tg" id="bShopT">🛒 المتجر</button><button class="tg" id="bAchT">🏆 الإنجازات</button><button class="tg" id="bMapT">🗺 الخريطة</button></div>
-      <div class="how">⬅ ➡ للحركة · ⬆ أو مسافة للقفز (واضغط مرة ثانية بالهوا!) · P إيقاف · R إعادة · M كتم</div>
       <div class="hlbl">اختر بطلك 👇</div><div class="hrow" id="heroT"></div>
+      <div class="how">⬅ ➡ للحركة · ⬆ أو مسافة للقفز (واضغط مرة ثانية بالهوا!) · P إيقاف · R إعادة · M كتم</div>
     </div>
   </div>
   <div id="menu" class="ov hide"><div class="mbox">
@@ -304,11 +342,11 @@ select.tg{appearance:auto}
       <option value="mix">لبناني + مصري + فلسطيني 🎤</option><option value="all">كل اللهجات 🎲</option><option value="sy">شامي</option><option value="eg">مصري</option>
       <option value="gulf">خليجي</option><option value="iq">عراقي</option><option value="ma">مغربي</option>
       <option value="lb">لبناني</option><option value="ps">فلسطيني</option></select></div>
-    <div class="hlbl">البطل</div><div class="hrow" id="heroM"></div>
-    <div class="row"><button class="tg" id="bShop">🛒 المتجر</button><button class="tg" id="bAch">🏆 الإنجازات</button><button class="tg" id="bPf">👤 ملفّي</button><button class="tg" id="bMap">🗺 الخريطة</button><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
-    <div class="lvlpick">ارجع لمرحلة وصلتلها: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
-    <div class="row"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
-    <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt" id="bHome">الشاشة الرئيسية</button></div>
+    <div class="hlbl ing">البطل</div><div class="hrow ing" id="heroM"></div>
+    <div class="row ing"><button class="tg" id="bShop">🛒 المتجر</button><button class="tg" id="bAch">🏆 الإنجازات</button><button class="tg" id="bPf">👤 ملفّي</button><button class="tg" id="bMap">🗺 الخريطة</button><button class="tg" id="bShare">📤 شارك نتيجتك مع الشباب</button></div>
+    <div class="lvlpick ing">ارجع لمرحلة وصلتلها: <input type="number" id="inLvl" min="1" max="999" value="1"> <button class="tg" id="bGo">انطلق</button></div>
+    <div class="row ing"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
+    <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt ing" id="bHome">الشاشة الرئيسية</button></div>
   </div></div>
   <div id="frCard" class="hide"></div><div id="netSt" class="hide"></div><div id="raceBar" class="hide"><div class="rbt"><i id="rbMe">🟡</i><i id="rbOp">🔵</i><b>🏁</b></div></div><button id="rxBtn" class="hide" title="إيموجي وجمل (T)">💬</button><div id="rxBar" class="hide"></div><div id="raceCd" class="hide"></div><div id="raceRes" class="hide"></div>
   <div id="co" class="ov hide"><div class="edbox cobox">
@@ -366,7 +404,7 @@ select.tg{appearance:auto}
   </div></div>
   <div id="shop" class="ov hide"><div class="edbox shbox">
     <div class="edtop"><b>🛒 المتجر</b><span class="shw" id="shW">🪙 0</span><button class="tg" id="shX">✖ رجوع</button></div>
-    <div class="shtabs" id="shTabs"><button class="ch f on" data-t="h">🦸 الأبطال</button><button class="ch f" data-t="u">⬆ التطوير</button><button class="ch f" data-t="a">🎩 إكسسوارات</button><button class="ch f" data-t="e">🛠 المصمّم</button><button class="ch f" data-t="w">🌍 العوالم</button></div>
+    <div class="shtabs" id="shTabs"><button class="ch f on" data-t="h">🦸 الأبطال</button><button class="ch f" data-t="u">⬆ التطوير</button><button class="ch f" data-t="a">🎩 إكسسوارات</button><button class="ch f" data-t="e">🛠 المصمّم</button><button class="ch f" data-t="w">🌍 العوالم</button><button class="ch f hide" data-t="g">💎 الجواهر</button></div>
     <div class="shgrid h" id="shGrid"></div>
     <div id="shMsg"></div>
   </div></div>
@@ -2055,7 +2093,7 @@ function seedCoins(){
      S.gems = gems. The "hard" currency. Later: bought for real money and exchanged for coins. Today NOTHING in the game gives or spends them - only the admin console (w_admin.js).
      S.pxp  = player experience (total). The player level is derived from it (plLevel). It is NOT the hero xp (S.hx[id], which upgrades a hero): this one belongs to the player and shows on
               the profile, the ranking and the HUD. Level n needs plNeed(n) = 50*(n-1)*n xp in total (1:0, 2:100, 3:300, 4:600, 5:1000 ...), capped at level 100.
-   Nothing is shown while both are 0 (plOn()), so a player who never got any sees exactly the old screens. gemAdd / plAdd are the ONE way to change them (clamped, saved, toast), so the later
+   In the PUBLIC build nothing is shown while both are 0 (plOn()), so a player who never got any sees exactly the old screens; the private build always shows them. gemAdd / plAdd are the ONE way to change them (clamped, saved, toast), so the later
    "buy gems" / "earn xp" code has a single door. Honest limit: the save lives in the browser, so these numbers are not secure; real money needs an account + a server wallet first. */
 const GEM_MAX=999999, PL_MAX=100, PXP_MAX=9999999;
 S.gems=Math.max(0,Math.min(GEM_MAX,S.gems|0)); S.pxp=Math.max(0,Math.min(PXP_MAX,S.pxp|0));
@@ -2065,7 +2103,9 @@ function plProg(){                                                            //
   const xp=S.pxp|0, n=plLevel(xp); if(n>=PL_MAX)return {n,cur:0,need:0,pct:1};
   const a=plNeed(n), b=plNeed(n+1); return {n,cur:xp-a,need:b-a,pct:(xp-a)/(b-a)};
 }
-const plOn=()=>(S.gems|0)>0||(S.pxp|0)>0;
+let GEMS_SHOW=0;                                                                // the private build (w_admin.js, which the public build cuts out) sets this to 1: it always shows 💎/🔰 so the owner can see and test them; the public build only once somebody has some
+let GEM_TEST=0;                                                                 // private build: the "buy gems" packs are free test buttons. Public build: 'soon' (real money needs accounts + a server wallet + a payment provider first)
+const plOn=()=>GEMS_SHOW||(S.gems|0)>0||(S.pxp|0)>0;
 function gemAdd(n){                                                           // +/- gems; returns the change really applied
   n=Math.round(+n); if(!isFinite(n)||!n)return 0;
   const was=S.gems|0; S.gems=Math.max(0,Math.min(GEM_MAX,was+n)); const d=S.gems-was; save(); hud();
@@ -2075,6 +2115,25 @@ function plAdd(n){                                                            //
   n=Math.round(+n); if(!isFinite(n)||!n)return 0;
   const was=S.pxp|0, lv0=plLevel(); S.pxp=Math.max(0,Math.min(PXP_MAX,was+n)); const d=S.pxp-was, lv1=plLevel(); save(); hud();
   if(d)econToast('\u2066'+(d>0?'+':'')+d+' XP\u2069'+(lv1>lv0?'  🔰 مستوى '+lv1+'!':lv1<lv0?'  🔰 مستوى '+lv1:''),d<0); return d;      // \u2066..\u2069 keeps "+1730 XP" in one piece inside the right-to-left toast
+}
+
+/* ---------- the gem exchange (shop tab 💎) ----------
+   GEMX is the ONE table of rates; change a number here and the shop, the skins and the tests follow.
+     coins / xp : [gems paid, what you get]; the bigger packs carry a bonus (+10% / +20%).  xp = player xp (plAdd), not hero xp.
+     packs      : [gems, USD] - the "buy gems" packs. PLACEHOLDER prices, nothing sells them yet (gemPack says 'soon' in the public build).
+     skin       : coins per gem when a skin is paid with gems (price in gems = ceil(coins / skin)). */
+const GEMX={ coins:[[10,100],[50,550],[100,1200]], xp:[[10,100],[50,550],[100,1200]], packs:[[80,0.99],[450,4.99],[1000,9.99],[2200,19.99]], skin:10 };
+const gemBonus=(list,i)=>{ const r0=list[0][1]/list[0][0], r=list[i][1]/list[i][0]; return Math.round((r/r0-1)*100) };       // % extra compared with the smallest pack
+function gemSpend(n){ n=Math.round(+n); if(!(n>0)||(S.gems|0)<n)return false; S.gems=(S.gems|0)-n; save(); hud(); return true }          // pay gems (no toast: the caller toasts what you got)
+function gemBuyCoins(i){                                       // 'ok' | 'poor' | 'none'
+  const o=GEMX.coins[i]; if(!o)return 'none'; if(!gemSpend(o[0]))return 'poor';
+  S.wallet=Math.min(999999999,(S.wallet|0)+o[1]); save(); hud(); econToast('\u2066+'+o[1]+'\u2069 🪙'); return 'ok';
+}
+function gemBuyXp(i){                                          // 'ok' | 'poor' | 'none'
+  const o=GEMX.xp[i]; if(!o)return 'none'; if(!gemSpend(o[0]))return 'poor'; plAdd(o[1]); return 'ok';
+}
+function gemPack(i){                                           // 'ok' (private test build: free) | 'soon' (public) | 'none'
+  const o=GEMX.packs[i]; if(!o)return 'none'; if(!GEM_TEST)return 'soon'; gemAdd(o[0]); return 'ok';
 }
 
 
@@ -2088,7 +2147,7 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;$('bShopT').textContent='🛒 المتجر · 🪙 '+S.wallet+((S.gems|0)>0?' · 💎 '+(S.gems|0):'');{ const g=S.gems|0, e=$('hGem'), l=$('hPl'); e.classList.toggle('hide',!g); e.textContent='💎 '+g; l.classList.toggle('hide',!plOn()); l.textContent='🔰 '+plLevel() }}
+function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;try{ titleCard() }catch(e){}{ const g=S.gems|0, e=$('hGem'), l=$('hPl'), on=plOn(); e.classList.toggle('hide',!on); e.textContent='💎 '+g; l.classList.toggle('hide',!on); l.textContent='🔰 '+plLevel() }}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
     const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); b.classList.toggle('lock',!heroOwned(id)); b.dataset.p=heroOwned(id)?'':HERO_PRICE[id]; const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
@@ -2949,7 +3008,7 @@ DK.pitcloud=(c,X)=>{ const t=X.t; c.translate(0,VH-X.by); if(t<.15)return; const
 const HSPR={}, HMETA=A.heroMeta||{}, SPR_H=46;
 for(const k in (A.hero||{})){ const im=new Image(),o={im,ok:false}; HSPR[k]=o; im.onload=()=>{o.ok=true;
   const rc=HMETA[k]&&HMETA[k].rim; if(rc){ try{ const cv=document.createElement('canvas');cv.width=im.width;cv.height=im.height;const x=cv.getContext('2d');x.drawImage(im,0,0);x.globalCompositeOperation='source-in';x.fillStyle=rc;x.fillRect(0,0,cv.width,cv.height);o.rim=cv }catch(e){} }
-  try{syncHeroes()}catch(e){}}; im.src=A.hero[k] }
+  try{syncHeroes()}catch(e){} try{titleCard()}catch(e){}}; im.src=A.hero[k] }
 const RIM_D=[[-1,0],[1,0],[0,-1],[0,1]];
 function sprRim(c,o,x,y,w,h,px){ if(!o.rim)return; c.save();c.globalAlpha=.85;for(const [dx,dy] of RIM_D)c.drawImage(o.rim,x+dx*px,y+dy*px,w,h);c.restore() }
 const look3=()=>!!S.look3d&&Q.q>0;
@@ -3796,7 +3855,7 @@ addEventListener('keydown',e=>{
   if(e.repeat)return; Snd.init(); Snd.resume();
   if(G.state==='editor'||G.state==='co'||SHOP.open||ACHUI.open||WM.open||PF.open)return;
   const loc=!!(G.co&&G.co.local), k=loc?KM_A[e.code]:KM[e.code], k2=loc?KM_B[e.code]:null;
-  if(G.state==='title'){ if(e.code==='Enter'||e.code==='Space'){startGame(1);e.preventDefault()} return }
+  if(G.state==='title'){ if(G.tm){ if(e.code==='Escape'||e.code==='KeyP'){titleMenu(false);e.preventDefault()} return } if(e.code==='Enter'||e.code==='Space'){startGame(1);e.preventDefault()} return }
   if(e.code==='KeyP'||e.code==='Escape'){togglePause();return}
   if(G.state==='menu')return;
   if(e.code==='KeyR'&&G.state==='play'){retry();return}
@@ -3814,7 +3873,11 @@ document.querySelectorAll('#touch .tb').forEach(b=>{
 });
 $('stage').addEventListener('pointerdown',e=>{ if(e.target.closest('button,select,input,textarea,.tb'))return; Snd.init();Snd.resume(); anyKeyContinue() });
 addEventListener('touchstart',()=>{ if(!touchMode){touchMode=true;$('stage').classList.add('touch');if(G.state!=='title')$('touch').classList.remove('hide');resize()} },{passive:true});
+function titleMenu(on){                                          // the settings panel from the title screen (the in-game-only parts of it are hidden by #menu.tm)
+  if(G.state!=='title')return; G.tm=!!on; const m=$('menu'); m.classList.toggle('hide',!on); m.classList.toggle('tm',!!on); $('bResume').textContent=on?'رجوع':'كمّل اللعب'; if(on)syncToggles()
+}
 function togglePause(){
+  if(G.state==='title'){ if(G.tm)titleMenu(false); return }
   if(G.co&&!G.co.local){ netEsc(); return }
   if(G.race){ if(G.race.over)return; netEscRace(); return }
   if(G.state==='menu'){ $('menu').classList.add('hide'); G.state=G.pausedFrom||'play'; if(touchMode)$('touch').classList.remove('hide'); return }
@@ -3823,13 +3886,13 @@ function togglePause(){
 $('bPlay').onclick=()=>{S.deaths=0;save();startGame(1);const x=pick('intro',{pAudio:.9});
   if(x){later(600,()=>{sayVoice(x,4)}); later(4800,()=>{if(G.deaths===0)say('⬅ ➡ للحركة · ⬆ للقفز. صدّق اللافتات... أو لا 😉','any',3.6)})}};
 $('bCont').onclick=()=>startGame(S.best);
-$('bMenu').onclick=()=>{Snd.init();togglePause()};
+$('bMenu').onclick=()=>{Snd.init();togglePause()}; $('bGearT').onclick=()=>{Snd.init();titleMenu(true)};
 /* share: native share sheet (WhatsApp/Telegram/...), else copy to clipboard. The URL is fixed per build (itch iframes and PWAs have different location.href). */
 const SHARE_URL='https://aminzikra51-oss.github.io/dont-die-habibi/play/', SHARE_TITLE="Don't Die, Habibi | لا تموت يا حبيبي";
 function shareText(){ return S.deaths>0 ? '💀 متّ '+S.deaths+' مرة ووصلت للمرحلة '+S.best+' بلعبة «لا تموت يا حبيبي» 😭 لقبي: '+titleText()+' — بتقدر تعمل أحسن؟ 😈' : '😈 جرّب لعبة «لا تموت يا حبيبي»: كل شي آمن هون... وكله كذب' }
 async function shareResult(btn){
-  const txt=shareText(), full=txt+'\n'+SHARE_URL, old=btn.textContent; let copied=false;
-  const flash=m=>{btn.textContent=m; setTimeout(()=>{btn.textContent=old},2200)};
+  const txt=shareText(), full=txt+'\n'+SHARE_URL, old=btn.innerHTML, lb=btn.querySelector('.lb'); let copied=false;
+  const flash=m=>{ if(lb){ lb.textContent=m.length>14?'اننسخ 📋':m; if(m.length>14&&m!=='اننسخ! الصقه بأي قروب 📋')econToast(m) } else btn.textContent=m; setTimeout(()=>{btn.innerHTML=old},2200) };
   try{ if(navigator.share){ await navigator.share({title:SHARE_TITLE,text:txt,url:SHARE_URL}); return } }catch(e){ if(e&&e.name==='AbortError')return }
   try{ await navigator.clipboard.writeText(full); copied=true }catch(e){
     try{ const t=document.createElement('textarea'); t.value=full; t.style.cssText='position:fixed;left:-999px;top:0;opacity:0'; document.body.appendChild(t); t.select(); copied=document.execCommand('copy'); t.remove() }catch(_){} }
@@ -3948,7 +4011,7 @@ function edImport(play){
   if(MP.draft&&cTraps(MP.draft)&&encodeCustom(MP.draft)!==encodeCustom(r.c)){ try{localStorage.setItem('td_mprev',JSON.stringify(MP.draft))}catch(e){} }
   ED.c=cClone(r.c); ED.sel=-1; ED.imp=false; ED.src='edit'; ED.msg='✅ انحمّلت الخريطة (' +cTraps(r.c)+' فخ)'; edSave(); edPreview(); edRender();
 }
-function goTitle(){ G.co=null; $('co').classList.add('hide'); $('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');$('ed').classList.add('hide');G.state='title';$('sub').innerHTML='';Snd.stopMusic() }
+function goTitle(){ G.co=null; $('co').classList.add('hide'); $('menu').classList.add('hide');$('hud').classList.add('hide');$('touch').classList.add('hide');$('title').classList.remove('hide');$('card').classList.add('hide');$('ed').classList.add('hide');G.state='title';G.tm=0;$('menu').classList.remove('tm');$('bResume').textContent='كمّل اللعب';$('sub').innerHTML='';Snd.stopMusic();hud() }
 
 /* ---- wiring ---- */
 $('edNm').onclick=()=>edSetN(ED.c.n-1); $('edNp').onclick=()=>edSetN(ED.c.n+1);
@@ -3998,7 +4061,8 @@ function worldThumb(i){
 }
 function shopMsg(t){ $('shMsg').textContent=t||'' }
 function shopRender(){
-  $('shW').textContent='🪙 '+S.wallet; document.querySelectorAll('#shTabs .ch').forEach(b=>b.classList.toggle('on',b.dataset.t===SHOP.tab));
+  if(SHOP.tab==='g'&&!plOn())SHOP.tab='h';
+  $('shW').textContent='🪙 '+S.wallet+(plOn()?'  💎 '+(S.gems|0):''); document.querySelectorAll('#shTabs .ch').forEach(b=>{ b.classList.toggle('on',b.dataset.t===SHOP.tab); if(b.dataset.t==='g')b.classList.toggle('hide',!plOn()) });
   const g=$('shGrid'); g.innerHTML=''; g.className='shgrid '+SHOP.tab;
   if(SHOP.tab==='h'){
     for(const id of HERO_IDS){
@@ -4011,6 +4075,7 @@ function shopRender(){
     }
   } else if(SHOP.tab==='u'){ heroUpRender(g)
   } else if(SHOP.tab==='a'){ accRender(g)
+  } else if(SHOP.tab==='g'){ gemRender(g)
   } else if(SHOP.tab==='e'){ epRender(g)
   } else {
     const auto=el('div','shc'+(S.bgPick<0?' sel':'')), ab=el('button','btn',S.bgPick<0?'✓ تلقائي':'تلقائي',()=>{ S.bgPick=-1; save(); Snd.ui(); shopRender() });
@@ -4369,7 +4434,7 @@ const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.cu
      rounding in another browser, a lost packet...) it asks the host for a snapshot of that frame, restores it and re-simulates up to now.
    RACE = both run their own ordinary single-player engine on the same level; only positions (10 Hz) and the finish are exchanged; the host arbitrates.
    Nothing here touches the simulation: with G.co null and G.race null every function below is idle. */
-const NET_V='5168af34';
+const NET_V='a76f2bb5';
 const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app'};      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
 const NET={link:'off',role:null,code:'',kind:'',tr:null,peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
 const KR={l:false,r:false,j:false,jp:false,a:false,ap:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
@@ -5007,10 +5072,20 @@ function pfAv(src,size){                                                        
   return w;
 }
 const pfMine=()=>{ const p=pfGet(); return {a:p.a,f:p.f,h:S.hero,s:heroStage(S.hero),k:skinSaved(S.hero)} };
+let tcSig='';
+function titleCard(){                                          // the profile card on the title screen (top-left): face, name, level + xp bar, coins, gems. Rebuilt only when something it shows changed
+  const b=$('bPfT'); if(!b)return; const m=pfMine(), q=plProg(), on=plOn();
+  const sig=[S.fname||'',m.a,m.f,m.h,m.s,m.k,sprOf(m.h,m.s)?1:0,on?q.n+':'+Math.round(q.pct*100):'-',S.wallet|0,S.gems|0].join('|'); if(sig===tcSig&&b.firstChild)return; tcSig=sig;
+  b.textContent=''; const info=el('span','pfi'), top=el('span','pft'), cu=el('span','pfcu');
+  top.append(el('b',null,'👤 '+(S.fname||'ملفّي'))); if(on)top.append(el('i',null,'🔰 مستوى '+q.n)); info.append(top);
+  if(on){ const bar=el('span','pfxb'), f=el('i'); f.style.width=Math.round(q.pct*100)+'%'; bar.append(f); info.append(bar) }
+  cu.append(el('b',null,'🪙 '+(S.wallet|0))); if(on)cu.append(el('b',null,'💎 '+(S.gems|0))); info.append(cu);
+  b.append(pfAv(m,44),info);
+}
 
 /* ---- the screen ---- */
 function pfMsg(){ const e=$('pfMsg'); if(e)e.textContent=FR.msg||PF.msg||'' }
-function pfChanged(){ frStatsPut(true); if(FR.on)frBeat(); frRender(); if(PF.open){ pfHead(); pfPick(); pfStatsRender(); pfRank() } }
+function pfChanged(){ try{ titleCard() }catch(e){} frStatsPut(true); if(FR.on)frBeat(); frRender(); if(PF.open){ pfHead(); pfPick(); pfStatsRender(); pfRank() } }
 function pfHead(){
   const h=$('pfHead'); if(!h)return; h.textContent='';
   const col=el('div','pfcol');
@@ -5020,9 +5095,9 @@ function pfHead(){
   const code=el('div','pfcode'); code.append(el('span',null,'كودك كصديق: '),el('b',null,frFmt(frId())),el('button','tg','📋 نسخ',()=>frCopy(frId(),'📋 اننسخ كودك')));
   col.append(nm,el('div','pftitle','🎖 '+titleText()));
   if(plOn()){ const q=plProg(), x=el('div','pfxp'), bar=el('div','bar'), fill=el('i'); fill.style.width=Math.round(q.pct*100)+'%'; bar.append(fill);
-    x.append(el('span',null,'🔰 مستوى '+q.n),bar,el('small',null,q.need?q.cur+' / '+q.need:'MAX')); col.append(x) }
+    x.append(el('span',null,'🔰 مستوى '+q.n),bar,el('small',null,q.need?'\u2066'+q.cur+' / '+q.need+'\u2069':'MAX')); col.append(x) }
   col.append(code);
-  h.append(pfAv(pfMine(),72),col); $('pfW').textContent='🪙 '+S.wallet+((S.gems|0)>0?'  💎 '+(S.gems|0):'');
+  h.append(pfAv(pfMine(),72),col); $('pfW').textContent='🪙 '+S.wallet+(plOn()?'  💎 '+(S.gems|0):'');
 }
 function pfPick(){
   const b=$('pfPick'); if(!b)return; b.textContent=''; const p=pfGet();
@@ -5113,6 +5188,7 @@ function closePf(){ PF.open=false; clearInterval(PF.poll); PF.poll=0; $('pf').cl
 $('pfX').onclick=closePf;
 for(const id of ['bPfT','bPf'])$(id).onclick=openPf;
 addEventListener('keydown',e=>{ if(PF.open&&e.code==='Escape'&&!(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))){ closePf(); e.preventDefault() } });
+
 
 /* =============== EMOJI + QUICK PHRASES between two online players (co-op and race) ===============
    A fixed table, no free text (nothing to moderate): 8 emojis and 8 funny phrases, sent as {t:'em',i:0..15} over the SAME channel the game already uses (NET.tr).
@@ -5851,7 +5927,7 @@ function accHelpMode(g){
 
 /* =============== SKINS: more evolution looks per hero ===============
    Every hero has his first evolution path (assets/hero/<id>_s1..s5.webp) and one more (the falafel two more): <id>_k1_s1..s5, <id>_k2_s1..s5. A skin is a COSMETIC: the same hero, the same
-   abilities, the same five stages; only the five pictures differ. A hero wears one skin at a time and swaps for free between the ones he owns. A skin is bought once with coins (SKINS price).
+   abilities, the same five stages; only the five pictures differ. A hero wears one skin at a time and swaps for free between the ones he owns. A skin is bought once with coins (SKINS price) or with gems (GEMX.skin coins per gem).
    State: S.hsk[id] = the skin worn (0 / missing = first path), S.hso['<id>:<k>'] = owned. The picture is chosen by sprKeyOf in draw3d.js (skinOf), which also resolves the skin a co-op / race
    player started with (P.hsk). Skins show in the evolved look only: the classic look (the base picture + shop accessories) has no skins. Picking one switches the hero to the evolved look.
    The shop card shows a preview that walks through the five stages (SKV) before you buy. Nothing here touches the simulation. */
@@ -5877,10 +5953,12 @@ function skinWear(id,k){                                       // wear an owned 
   if(S.hcl)delete S.hcl[id];                                   // skins are an evolved-look thing
   save(); try{ syncHeroes() }catch(e){} return true;
 }
-function skinBuy(id,k){                                        // 'ok' | 'owned' | 'poor' | 'none'
+const skinGemPrice=(id,k)=>Math.max(1,Math.ceil(skinPrice(id,k)/GEMX.skin));   // the same skin in gems (GEMX.skin coins per gem)
+function skinBuy(id,k,cur){                                    // cur: 'coin' (default) | 'gem'.  Returns 'ok' | 'owned' | 'poor' | 'none'
   k=skinSan(id,k); if(!k)return 'none'; if(skinHas(id,k))return 'owned'; if(!heroOwned(id))return 'none'; if(!skinLoaded(id,k))return 'none';
-  const p=skinPrice(id,k); if((S.wallet|0)<p)return 'poor';
-  S.wallet-=p; S.hso[id+':'+k]=1; save(); skinWear(id,k); hud(); return 'ok';
+  if(cur==='gem'){ if(!gemSpend(skinGemPrice(id,k)))return 'poor' }
+  else{ const p=skinPrice(id,k); if((S.wallet|0)<p)return 'poor'; S.wallet-=p }
+  S.hso[id+':'+k]=1; save(); skinWear(id,k); hud(); return 'ok';
 }
 const SKP={};                                                  // shop: the skin being previewed per hero (not worn until you pick / buy it)
 let skTimer=0;
@@ -5900,13 +5978,39 @@ function skinRow(id,cv){                                       // the chips + ac
   if(pv!=null){
     const own=skinHas(id,pv), nm=SKINS[id][pv][0], p=skinPrice(id,pv);
     if(own)box.append(el('button','btn','✓ البس «'+nm+'»',()=>{ if(skinWear(id,pv)){ SKP[id]=null; Snd.coin&&Snd.coin(); shopMsg('لبس '+HEROES[id].name+' مظهر «'+nm+'»'); shopRender() } }));
-    else{ const poor=(S.wallet|0)<p;
-      box.append(el('button','btn'+(poor?' poor':''),'اشترِ «'+nm+'» 🪙 '+p+(poor?'  (ناقصك '+(p-(S.wallet|0))+')':''),()=>{
-        const r=skinBuy(id,pv); if(r==='ok'){ SKP[id]=null; Snd.coin(); Snd.win(); shopMsg('اشتريت مظهر «'+nm+'» 🎉 — لابسه هلأ، وبتبدّل بحرّية'); shopRender() }
-        else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg('ناقصك '+(p-(S.wallet|0))+' 🪙') } })) }
+    else{ const poor=(S.wallet|0)<p, buy=cur=>{
+        const r=skinBuy(id,pv,cur); if(r==='ok'){ SKP[id]=null; Snd.coin(); Snd.win(); shopMsg('اشتريت مظهر «'+nm+'» 🎉 — لابسه هلأ، وبتبدّل بحرّية'); shopRender() }
+        else if(r==='poor'){ Snd.bonk&&Snd.bonk(); shopMsg(cur==='gem'?'ناقصك '+(skinGemPrice(id,pv)-(S.gems|0))+' 💎':'ناقصك '+(p-(S.wallet|0))+' 🪙') } };
+      box.append(el('button','btn'+(poor?' poor':''),'اشترِ «'+nm+'» 🪙 '+p+(poor?'  (ناقصك '+(p-(S.wallet|0))+')':''),()=>buy('coin')));
+      if(plOn()){ const gp=skinGemPrice(id,pv), gpoor=(S.gems|0)<gp; const gb=el('button','btn gem'+(gpoor?' poor':''),'أو بالجواهر 💎 '+gp+(gpoor?'  (ناقصك '+(gp-(S.gems|0))+')':''),()=>buy('gem')); gb.dataset.cur='gem'; box.append(gb) } }
     skinPvStart(cv,id,pv);
   }
   return box;
+}
+
+/* =============== SHOP TAB 💎: buy gems, exchange them for coins / xp ===============
+   The rates live in GEMX (w_gems.js). Three blocks: the packs ("buy gems": a free test button in the private build, 'soon' in the public one), gems -> coins, gems -> player xp.
+   The tab only exists while plOn() (so in the public build only once somebody holds gems or xp). Skins can also be paid with gems: see w_skins.js. */
+function gemCard(big,nm,sub,btnTxt,poor,fn){
+  const c=el('div','shc'); c.append(el('div','shbig',big),el('div','nm',nm),el('div','sub',sub||' '),el('button','btn'+(poor?' poor':''),btnTxt,fn)); return c;
+}
+function gemSec(title,hint,cards){
+  const w=el('div','gxs'); w.append(el('div','gxt',title)); if(hint)w.append(el('div','gxh',hint)); const r=el('div','gxr'); for(const c of cards)r.append(c); w.append(r); return w;
+}
+function gemRender(g){
+  const gems=S.gems|0, q=plProg(), top=el('div','gxtop'), bar=el('span','pfxb'), f=el('i');
+  f.style.width=Math.round(q.pct*100)+'%'; bar.append(f);
+  top.append(el('b',null,'💎 '+gems),el('span',null,'🔰 مستوى '+q.n),bar,el('small',null,q.need?'\u2066'+q.cur+' / '+q.need+' XP\u2069':'MAX')); g.append(top);
+  const msg=m=>{ shopMsg(m); shopRender() };
+  g.append(gemSec('➕ اشحن جواهر'+(GEM_TEST?'  (تجريبي — مجاني بالنسخة الخاصة)':''),GEM_TEST?'':'الدفع بمصاري حقيقية لسا مش شغّال — قريباً',
+    GEMX.packs.map((o,i)=>gemCard('💎',o[0]+' 💎','$'+o[1].toFixed(2),GEM_TEST?'جرّب':'🔒 قريباً',!GEM_TEST,()=>{
+      const r=gemPack(i); if(r==='ok'){ Snd.coin(); msg('زادت '+o[0]+' 💎 (تجريبي)') } else { Snd.bonk&&Snd.bonk(); msg('شراء الجواهر بالمصاري قريباً') } }))));
+  g.append(gemSec('🪙 بدّل جواهر بكوينز','',GEMX.coins.map((o,i)=>{ const poor=gems<o[0], b=gemBonus(GEMX.coins,i);
+    return gemCard('🪙',o[1]+' 🪙',b>0?'بونص +'+b+'%':'',poor?'ناقصك '+(o[0]-gems)+' 💎':'بدّل '+o[0]+' 💎',poor,()=>{
+      const r=gemBuyCoins(i); if(r==='ok'){ Snd.coin(); Snd.win&&Snd.win(); msg('اشتريت '+o[1]+' 🪙 بـ '+o[0]+' 💎') } else { Snd.bonk&&Snd.bonk(); msg('ناقصك '+(o[0]-(S.gems|0))+' 💎') } }) })));
+  g.append(gemSec('🔰 بدّل جواهر بخبرة','الخبرة بتزيد مستواك (مستوى اللاعب، مش خبرة البطل)',GEMX.xp.map((o,i)=>{ const poor=gems<o[0], b=gemBonus(GEMX.xp,i), lv=plLevel((S.pxp|0)+o[1]);
+    return gemCard('🔰','+'+o[1]+' XP',(b>0?'بونص +'+b+'% · ':'')+'بتوصل مستوى '+lv,poor?'ناقصك '+(o[0]-gems)+' 💎':'بدّل '+o[0]+' 💎',poor,()=>{
+      const l0=plLevel(), r=gemBuyXp(i); if(r==='ok'){ Snd.coin(); Snd.win&&Snd.win(); msg('زادت خبرتك '+o[1]+' XP'+(plLevel()>l0?' — مستوى '+plLevel()+' 🎉':'')) } else { Snd.bonk&&Snd.bonk(); msg('ناقصك '+(o[0]-(S.gems|0))+' 💎') } }) })));
 }
 
 /* =============== SHOP TABS: hero upgrades + accessories =============== */
@@ -6135,6 +6239,7 @@ function heatRender(L2){
    It is locked: the first time you choose a passphrase (setpass <word>), after that every session needs  auth <word>.  Only a hash of the word is kept (S.admh).
    It does nothing online: no co-op, no race. Any command that changes the save marks it with S.adm=1 (so a future leaderboard / coupons can ignore such saves).
    Honest limit: a single-file game that keeps its save in the browser cannot stop a determined cheater; this console is a convenience for the owner, not security. */
+GEMS_SHOW=1; GEM_TEST=1;                                        // private build: always show 💎/🔰, and the gem packs are free test buttons (see w_gems.js)
 {                                                  // ADMG itself ({on,god,speed}) lives in index.src.html so the public build keeps a harmless copy
   const box=document.createElement('div'); box.id='adm';
   box.style.cssText='position:absolute;left:0;right:0;top:0;height:60%;z-index:70;display:none;flex-direction:column;background:rgba(4,10,6,.94);color:#7cfc8a;border-bottom:calc(var(--u)*2) solid #7cfc8a;direction:ltr;text-align:left;font-weight:600;font-size:calc(var(--u)*12);line-height:1.35;font-family:ui-monospace,Menlo,Consolas,monospace';
@@ -6334,10 +6439,10 @@ if(A.img.card_fakedoor_1)$('decoL').src=A.img.card_fakedoor_1; if(A.img.card_spi
 if(A.img.title_1){const t=$('title').style;t.backgroundImage='radial-gradient(circle at 50% 35%,#2a185088,#07030dcc),url("'+A.img.title_1+'")';t.backgroundSize='cover';t.backgroundPosition='center'}
 if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّل من المرحلة '+S.best}
 [...$('selDia').options].forEach(o=>{ if(isSparse(o.value))o.textContent+=' · نص + صوت مختلط' });
-initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
+initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); try{ titleCard() }catch(e){} $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={goTitle,pfChanged,titleCard,gemSpend,gemBuyCoins,gemBuyXp,gemPack,GEMX,gemBonus,skinGemPrice,titleMenu,SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 <script>

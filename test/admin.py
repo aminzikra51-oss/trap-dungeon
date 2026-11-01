@@ -70,7 +70,7 @@ with sync_playwright() as p:
     cmd(pg, 'coins -9999'); ok('coins never go below 0', S_('TD.S.wallet') == 0)
     cmd(pg, 'coins abc'); ok('coins with a non-number is refused', S_('TD.S.wallet') == 0)
     cmd(pg, 'coins 500')
-    ok('no gems and no xp: the HUD shows neither chip, the profile no extra tiles', S_("document.getElementById('hGem').classList.contains('hide') && document.getElementById('hPl').classList.contains('hide') && !TD.plOn()"))
+    ok('private build, no gems and no xp: the HUD still shows 💎 and 🔰 (the public build hides them: see gemshop.py)', S_("!document.getElementById('hGem').classList.contains('hide') && !document.getElementById('hPl').classList.contains('hide') && TD.plOn()"))
     cmd(pg, 'gems 40'); cmd(pg, 'gems +10'); ok('gems set and relative', S_('TD.S.gems') == 50)
     cmd(pg, 'gems -70'); ok('gems clamp at 0', S_('TD.S.gems') == 0)
     cmd(pg, 'gems zzz'); ok('gems with a non-number is refused', S_('TD.S.gems') == 0)

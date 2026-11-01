@@ -5,6 +5,7 @@
    It is locked: the first time you choose a passphrase (setpass <word>), after that every session needs  auth <word>.  Only a hash of the word is kept (S.admh).
    It does nothing online: no co-op, no race. Any command that changes the save marks it with S.adm=1 (so a future leaderboard / coupons can ignore such saves).
    Honest limit: a single-file game that keeps its save in the browser cannot stop a determined cheater; this console is a convenience for the owner, not security. */
+GEMS_SHOW=1; GEM_TEST=1;                                        // private build: always show 💎/🔰, and the gem packs are free test buttons (see w_gems.js)
 {                                                  // ADMG itself ({on,god,speed}) lives in index.src.html so the public build keeps a harmless copy
   const box=document.createElement('div'); box.id='adm';
   box.style.cssText='position:absolute;left:0;right:0;top:0;height:60%;z-index:70;display:none;flex-direction:column;background:rgba(4,10,6,.94);color:#7cfc8a;border-bottom:calc(var(--u)*2) solid #7cfc8a;direction:ltr;text-align:left;font-weight:600;font-size:calc(var(--u)*12);line-height:1.35;font-family:ui-monospace,Menlo,Consolas,monospace';
