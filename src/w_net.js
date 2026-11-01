@@ -118,9 +118,9 @@ function netToLobby(msg){                                  // back to the online
 }
 
 /* ---- lobby sync (host chooses) ---- */
-function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
+function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,df:coDf(),cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
 function netLobbyRecv(m){
-  NET.mode=m.mode==='race'?'race':'co'; CO.sel.n=m.n|0||1;
+  NET.mode=m.mode==='race'?'race':'co'; CO.sel.n=m.n|0||1; CO.sel.df=CO_DFS.includes(m.df)?m.df:null;
   if(m.cu){ const r=decodeCustom(m.cu); CO.sel.custom=r.err?null:r.c } else CO.sel.custom=null;
   if(G.state==='co')coRender();
 }
@@ -131,7 +131,7 @@ function netStartHost(){                                       // host presses s
   const N=NET; if(N.role!=='h'||N.link!=='conn'||!N.peer)return;
   const s=CO.sel;
   if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة'; coRender(); return }
-  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:S.diff||'crazy',D:netD(),hero:netHeroes(),stage:netStages(),rtt:N.rtt|0};
+  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),D:netD(),hero:netHeroes(),stage:netStages(),rtt:N.rtt|0};
   N.tr.send(o); netBegin(o);
 }
 function netBegin(o){
@@ -240,34 +240,51 @@ function netEsc(){                                          // Esc while online:
   N.escAt=now; say('اضغط Esc مرة تانية لترجعوا للغرفة','any',2.4);
 }
 
-/* ---- race: two single-player engines, positions exchanged ---- */
-const RACE_CD=3.2;
+/* ---- race: two single-player engines, positions exchanged ----
+   Fairness: both machines time themselves from "go" with the WALL clock (not the level timer, which restarts at every respawn). The host's countdown is
+   half a ping longer, so the two "go" moments are about the same real moment. Whoever's own finish time is lower wins; the host is only the clerk:
+   - both times known -> compare (closer than RACE_TIE = a draw)
+   - only the guest finished -> the host must not have finished before him: once the host's own clock passed his time + RACE_TIE he wins at once
+   - only the host finished -> wait a moment (RACE_TIE + one way delay + 0.1 s) in case the guest's message is still on its way
+   The opponent's ghost is drawn where he should be NOW: his last report advanced by its age (our clock - his clock at the moment he sent it). */
+const RACE_CD=3.2, RACE_TIE=.08;
+const raceT=r=>(netNow()-r.goAt)/1000;                       // seconds since "go" on this machine (negative while counting down)
+function raceJudge(tm0,tm1,now,rtt){                          // the host's view, all in seconds since go; null = has not finished; returns 0 host / 1 guest / -1 draw / undefined = not decided yet
+  if(tm0!=null&&tm1!=null)return Math.abs(tm0-tm1)<=RACE_TIE?-1:(tm0<tm1?0:1);
+  if(tm1!=null)return now>=tm1+RACE_TIE?1:undefined;
+  if(tm0!=null)return now>=tm0+clamp((rtt||0)/2000+.18,.18,1)?0:undefined;
+}
 function raceBegin(o,cu){
   const N=NET;
-  G.race={df:o.df,hold:RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0),opp:newPlayer(0),tx:null,over:false,done:false,res:null,t0:0,seen:false};
+  G.race={df:o.df,hold:0,goAt:0,opp:newPlayer(0),tx:null,over:false,done:false,res:null,seen:false,fn:null,tm1:null,fnAt:0};
   const op=G.race.opp; op.hid=N.peer.hero; op.hst=N.peer.stage; op.run=0;
-  G.race.fn=null;
   if(cu)startCustom(cu,'race'); else startGame(o.lv);
-  G.race.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0);
+  const r=G.race; r.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0); r.goAt=netNow()+r.hold*1000;
   $('raceBar').classList.remove('hide'); $('raceRes').classList.add('hide'); raceCdUi();
-  N.gtimer=setInterval(raceSend,100);
+  N.gtimer=setInterval(raceSend,50);
 }
 function raceStop(){ if(NET.gtimer){ clearInterval(NET.gtimer); NET.gtimer=0 } if(G.race){ G.race=null } const e=$('raceBar'); if(e)e.classList.add('hide'); const c=$('raceCd'); if(c)c.classList.add('hide') }
 function raceSend(){
-  const r=G.race; if(!r||!NET.tr||r.hold>0&&false)return;
-  NET.tr.send({t:'g',x:Math.round(P.x*10)/10,y:Math.round(P.y*10)/10,vx:Math.round(P.vx),vy:Math.round(P.vy),fc:P.face,og:P.onGround?1:0,dd:P.dead?1:0,ex:L.exitTx*TS});
+  const r=G.race; if(!r||!NET.tr||!P)return;
+  NET.tr.send({t:'g',x:Math.round(P.x*10)/10,y:Math.round(P.y*10)/10,vx:Math.round(P.vx),vy:Math.round(P.vy),fc:P.face,og:P.onGround?1:0,dd:P.dead?1:0,ex:L.exitTx*TS,rt:+raceT(r).toFixed(3)});
 }
 function raceGot(m){
-  const r=G.race; if(!r)return; r.tx={x:m.x,y:m.y,vx:m.vx,vy:m.vy,fc:m.fc,og:m.og,dd:m.dd,ex:m.ex}; r.seen=true;
+  const r=G.race; if(!r)return; r.tx={x:m.x,y:m.y,vx:m.vx,vy:m.vy,fc:m.fc,og:m.og,dd:m.dd,ex:m.ex,rt:m.rt}; r.seen=true;
 }
-function raceTick(dt){                                       // every animation frame: ease the ghost toward the last report, keep the HUD bar
+function raceTick(dt){                                       // every animation frame: ease the ghost toward where he should be now, keep the HUD bar, judge (host)
   const r=G.race; if(!r)return;
-  if(r.hold>0){ r.hold-=dt; raceCdUi(); if(r.hold<=0){ r.t0=G.t; $('raceCd').classList.add('hide') } }
+  if(r.hold>0){ r.hold=Math.max(0,(r.goAt-netNow())/1000); raceCdUi() }
   const o=r.opp, t=r.tx;
-  if(t){ const k=Math.min(1,dt*10); t.x+=t.vx*dt*(t.dd?0:1); o.x+=(t.x-o.x)*k; o.y+=(t.y-o.y)*k; o.vx=t.vx; o.vy=t.vy; o.face=t.fc; o.onGround=!!t.og; o.dead=!!t.dd }
+  if(t){ const now=raceT(r), age=t.rt!=null?clamp(now-t.rt,0,.4):.1, live=!t.dd, k=Math.min(1,dt*14);
+    const tx=t.x+(live?t.vx*age:0), ty=t.og||!live?t.y:Math.min(t.y+120,t.y+t.vy*age+GRAV*.5*age*age);
+    o.x+=(tx-o.x)*k; o.y+=(ty-o.y)*k; o.vx=t.vx; o.vy=t.vy; o.face=t.fc; o.onGround=!!t.og; o.dead=!!t.dd }
   o.run=(o.run||0)+Math.abs(o.vx)*dt*.03; o.blink=(o.blink||0);
   const ex=Math.max(1,L.exitTx*TS), me=clamp(P.x/ex,0,1), op=t?clamp(o.x/ex,0,1):0;
   $('rbMe').style.left=(me*92)+'%'; $('rbOp').style.left=(op*92)+'%'; $('rbOp').style.opacity=t?1:.25;
+  if(!r.res){
+    if(NET.role==='h'){ if(r.fn!=null||r.tm1!=null)raceJudgeNow() }
+    else if(r.done&&netNow()-r.fnAt>1500){ r.fnAt=netNow(); NET.tr.send({t:'fn',tm:r.fn}) }       // the guest repeats his time until the verdict arrives
+  }
 }
 function raceCdUi(){
   const r=G.race, e=$('raceCd'); if(!r||r.hold<=0){ e.classList.add('hide'); return }
@@ -283,19 +300,23 @@ function raceDraw(c){
   c.beginPath(); c.moveTo(x-6,y-8); c.lineTo(x+6,y-8); c.lineTo(x,y); c.closePath(); c.fill(); c.stroke(); c.restore();
 }
 function raceFinish(){                                       // I reached the door
-  const r=G.race; if(!r||r.done)return; r.done=true; r.fn=+G.t.toFixed(2);
-  if(NET.role==='h')raceDecide(0); else NET.tr.send({t:'fn',tm:r.fn});
+  const r=G.race; if(!r||r.done)return; r.done=true; r.fn=+raceT(r).toFixed(3);
+  if(NET.role==='g'){ r.fnAt=netNow(); NET.tr.send({t:'fn',tm:r.fn}) } else raceJudgeNow();
+  if(!r.res){ $('raceCd').classList.add('hide'); $('raceRes').innerHTML='<div class="rr2">🚪 وصلت! بستنى النتيجة...</div>'; $('raceRes').classList.remove('hide') }
 }
-function raceFin(m){ if(NET.role==='h'&&G.race&&!G.race.res){ G.race.tm1=m.tm; raceDecide(1) } }
+function raceFin(m){ if(NET.role==='h'&&G.race&&!G.race.res&&typeof m.tm==='number'){ G.race.tm1=m.tm; raceJudgeNow() } }
+function raceJudgeNow(){ const r=G.race; if(!r||r.res||NET.role!=='h')return; const w=raceJudge(r.fn,r.tm1,raceT(r),NET.rtt); if(w!==undefined)raceDecide(w) }
 function raceDecide(w){
-  const r=G.race; if(!r||r.res)return; const t0=w===0?r.fn:null, t1=w===1?r.tm1:null;
-  const m={t:'rr',w,tm:[t0,t1]}; NET.tr.send(m); raceResult(m);
+  const r=G.race; if(!r||r.res)return;
+  const m={t:'rr',w,tm:[r.fn,r.tm1]}; NET.tr.send(m); raceResult(m);
 }
 function raceResult(m){
   const r=G.race; if(!r||r.res)return; r.res=m; r.over=true;
-  const mine=NET.role==='h'?0:1, won=m.w===mine, tm=m.tm[m.w];
+  const mine=NET.role==='h'?0:1, tie=m.w<0, won=m.w===mine, my=m.tm[mine], th=m.tm[1-mine], parts=[];
+  if(my!=null)parts.push('وقتك '+my.toFixed(2)+' ث'); if(th!=null)parts.push('وقت صاحبك '+th.toFixed(2)+' ث');
+  if(my!=null&&th!=null)parts.push('الفرق '+Math.abs(my-th).toFixed(2)+' ث');
   $('raceCd').classList.add('hide');
-  $('raceRes').innerHTML='<div class="rr1">'+(won?'🏆 كسبت!':'😭 خسرت')+'</div><div class="rr2">'+(tm!=null?((won?'وقتك ':'صاحبك وصل بـ ')+tm.toFixed(1)+' ث'):'')+'</div><button class="btn" id="rrBack">↩ ارجعوا للغرفة</button>';
+  $('raceRes').innerHTML='<div class="rr1">'+(tie?'🤝 تعادل!':won?'🏆 كسبت!':'😭 خسرت')+'</div><div class="rr2">'+parts.join(' · ')+'</div><button class="btn" id="rrBack">↩ ارجعوا للغرفة</button>';
   $('raceRes').classList.remove('hide');
   $('rrBack').onclick=()=>{ try{ NET.tr.send({t:'ab'}) }catch(e){} netToLobby('') };
   Snd.stopMusic&&Snd.stopMusic();
@@ -321,6 +342,7 @@ function netRender(){
   $('nGo').classList.toggle('hide',!(N.role==='h'&&N.link==='conn'));
   $('nGuestWait').classList.toggle('hide',!(N.role==='g'&&conn));
   $('coPrev').disabled=!(N.role==='h'&&conn)||!!CO.sel.custom; $('coNext').disabled=$('coPrev').disabled; $('coCodeBtn').disabled=!(N.role==='h'&&conn);
+  for(const id of ['coPrev10','coNext10','coLvIn'])$(id).disabled=$('coPrev').disabled; for(const b of document.querySelectorAll('#co [data-cdf]'))b.disabled=!(N.role==='h'&&conn)||!!CO.sel.custom;
   $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · بلا مكافآت';
 }
 function netTab(on){

@@ -5,17 +5,19 @@
    Stage = S.hs[id]; it is bought with coins AND earned with XP (levels cleared with that hero + lessons learned from dying).
    Deterministic: nothing here uses Math.random in anything that moves the world; effects (particles, sound) are visual only. */
 S.hs=S.hs||{}; S.hx=S.hx||{}; S.hc=S.hc||{}; S.hq=S.hq||{};
-const STAGE_NM=['مبتدئ','متمرّس','خبير','أسطورة'], XP_NEED=[8,24,60], UP_COST=[40,100,220];
-const heroStage=id=>Math.min(3,S.hs[id]|0);
+const HERO_MAXST=4;                                          // stages I..V (index 0..4)
+const STAGE_NM=['مبتدئ','متمرّس','خبير','أسطورة','خالد'], XP_NEED=[8,24,60,120], UP_COST=[40,100,220,420];
+const heroStage=id=>Math.min(HERO_MAXST,S.hs[id]|0);
+const heroForm=st=>st>=4?3:st>=2?2:1;                       // looks: stages I-II = form 1, III-IV = form 2, V = form 3
 const HAB={
- falafel:{ic:'🧲',nm:'المغناطيس',act:0,ds:'بيسحب العملات القريبة منّك',                          v:{mag:[34,50,68,90]},            tx:['مدى 34','مدى 50','مدى 68','مدى 90 — كل العملات إلك']},
- uncle:  {ic:'🛡',nm:'الدرع',     act:0,ds:'بيبلع ضربة بدل ما تموت (إلا الحفر والأرض اللي بتتفتّت)', v:{ch:[1,1,2,2],rg:[0,1,1,1]},     tx:['ضربة وحدة بالمرحلة','بيتجدّد عند علم الحفظ','ضربتين','ضربتين وبيتجدّد']},
- chicken:{ic:'🪶',nm:'التحويم',   act:0,ds:'امسك زر القفز وإنت نازل لتحوم',                      v:{st:[.55,.8,1.1,1.5]},           tx:['تحويم .55 ث','.8 ث','1.1 ث','1.5 ث']},
- cat:    {ic:'🐾',nm:'نطّة القطة',act:0,ds:'القفزة التانية أعلى بكتير',                           v:{j2:[1.15,1.25,1.35,1.5]},       tx:['+15%','+25%','+35%','+50%']},
- grandma:{ic:'🥄',nm:'الملعقة',   act:1,ds:'ضربة قدّامك: بتكسر السهام، بتقتل الماشيين، وبتكشف الفخاخ المخفية', v:{cd:[1.3,1.05,.85,.65],rg:[44,54,66,80],rv:[2.2,3,4,5.5]}, tx:['انتظار 1.3 ث','1.05 ث','.85 ث','.65 ث — مدى أكبر']},
- donkey: {ic:'🫏',nm:'الركلة',    act:1,ds:'اندفاعة بتكسر البلوكات وبتقتل الماشيين وبتكسر السهام',    v:{cd:[1.7,1.4,1.1,.85],len:[.2,.24,.28,.34]},  tx:['اندفاعة قصيرة','أطول','أطول وأسرع انتظار','أسطورية']},
- robot:  {ic:'🚀',nm:'الجيت',     act:0,ds:'امسك القفز بعد القفزة التانية لتعلّي، ومناعة كاملة من الكهربا', v:{st:[.5,.7,.95,1.3]},            tx:['وقود .5 ث','.7 ث','.95 ث','1.3 ث']},
- mushroom:{ic:'🍄',nm:'لحظة وعي', act:1,ds:'بطء زمن (كل شي بيتباطأ إلا إنت)، وبترى الفخاخ المخفية القريبة',    v:{en:[1.1,1.5,2,2.6],see:[120,150,180,220]}, tx:['1.1 ث','1.5 ث','2 ث','2.6 ث']},
+ falafel:{ic:'🧲',nm:'المغناطيس',act:0,ds:'بيسحب العملات القريبة منّك',                          v:{mag:[34,50,68,90,125]},         tx:['مدى 34','مدى 50','مدى 68','مدى 90 — كل العملات إلك','مدى 125 — شفط شبه كامل']},
+ uncle:  {ic:'🛡',nm:'الدرع',     act:0,ds:'بيبلع ضربة بدل ما تموت (إلا الحفر والأرض اللي بتتفتّت)', v:{ch:[1,1,2,2,3],rg:[0,1,1,1,1]}, tx:['ضربة وحدة بالمرحلة','بيتجدّد عند علم الحفظ','ضربتين','ضربتين وبيتجدّد','3 ضربات وبيتجدّد']},
+ chicken:{ic:'🪶',nm:'التحويم',   act:0,ds:'امسك زر القفز وإنت نازل لتحوم',                      v:{st:[.55,.8,1.1,1.5,2]},         tx:['تحويم .55 ث','.8 ث','1.1 ث','1.5 ث','2 ث — شبه طيران']},
+ cat:    {ic:'🐾',nm:'نطّة القطة',act:0,ds:'القفزة التانية أعلى بكتير',                           v:{j2:[1.15,1.25,1.35,1.5,1.7]},   tx:['+15%','+25%','+35%','+50%','+70%']},
+ grandma:{ic:'🥄',nm:'الملعقة',   act:1,ds:'ضربة قدّامك: بتكسر السهام، بتقتل الماشيين، وبتكشف الفخاخ المخفية', v:{cd:[1.3,1.05,.85,.65,.5],rg:[44,54,66,80,96],rv:[2.2,3,4,5.5,7]}, tx:['انتظار 1.3 ث','1.05 ث','.85 ث','.65 ث — مدى أكبر','.5 ث — مدى ضخم']},
+ donkey: {ic:'🫏',nm:'الركلة',    act:1,ds:'اندفاعة بتكسر البلوكات وبتقتل الماشيين وبتكسر السهام',    v:{cd:[1.7,1.4,1.1,.85,.7],len:[.2,.24,.28,.34,.4]},  tx:['اندفاعة قصيرة','أطول','أطول وأسرع انتظار','أسطورية','اندفاعة الخالدين']},
+ robot:  {ic:'🚀',nm:'الجيت',     act:0,ds:'امسك القفز بعد القفزة التانية لتعلّي، ومناعة كاملة من الكهربا', v:{st:[.5,.7,.95,1.3,1.7]},          tx:['وقود .5 ث','.7 ث','.95 ث','1.3 ث','1.7 ث']},
+ mushroom:{ic:'🍄',nm:'لحظة وعي', act:1,ds:'بطء زمن (كل شي بيتباطأ إلا إنت)، وبترى الفخاخ المخفية القريبة',    v:{en:[1.1,1.5,2,2.6,3.3],see:[120,150,180,220,270]}, tx:['1.1 ث','1.5 ث','2 ث','2.6 ث','3.3 ث']},
 };
 const NOSHIELD=new Set(['pit','crumble']), ROBOT_IMM=new Set(['zap','laser','disco']);
 const hid=()=>(P&&P.hid)||S.hero;                      // the hero of the CURRENT player (co-op: each player has his own; single player: your selected hero)
@@ -90,9 +92,9 @@ function heroXpClear(first,noDeath){                  // called from econClear (
 }
 function heroXpDeath(){ if(SIM||G.custom||!legit()||G.lvDeaths>6)return; const id=S.hero; S.hx[id]=(S.hx[id]||0)+.5 }
 const xpOf=id=>Math.floor(S.hx[id]||0);
-const canUpgrade=id=>heroOwned(id)&&heroStage(id)<3&&xpOf(id)>=XP_NEED[heroStage(id)]&&S.wallet>=UP_COST[heroStage(id)];
+const canUpgrade=id=>heroOwned(id)&&heroStage(id)<HERO_MAXST&&xpOf(id)>=XP_NEED[heroStage(id)]&&S.wallet>=UP_COST[heroStage(id)];
 function upgradeHero(id){
-  const s=heroStage(id); if(!heroOwned(id)||s>=3)return 'max'; if(xpOf(id)<XP_NEED[s])return 'xp'; if(S.wallet<UP_COST[s])return 'poor';
+  const s=heroStage(id); if(!heroOwned(id)||s>=HERO_MAXST)return 'max'; if(xpOf(id)<XP_NEED[s])return 'xp'; if(S.wallet<UP_COST[s])return 'poor';
   S.wallet-=UP_COST[s]; S.hs[id]=s+1; save(); hud(); achCheck(); return 'ok';
 }
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """raw/heroes/<id>.jpg (AI render on plain backdrop) -> assets/hero/<id>.webp (RGBA, cropped, 224px tall) + assets/hero/meta.json"""
-import os, sys, json, cv2, numpy as np
+import os, sys, json, re, cv2, numpy as np
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from cutout import cutout
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,7 +21,8 @@ def main():
     mp = f'{ROOT}/assets/hero/meta.json'
     os.makedirs(f'{ROOT}/assets/hero', exist_ok=True); meta = json.load(open(mp)) if os.path.exists(mp) else {}
     for f in sorted(os.listdir(f'{ROOT}/raw/heroes')):
-        if not f.endswith('.jpg') or '_' in f: continue
+        # <id>.jpg = base look; <id>_f2.jpg / <id>_f3.jpg = evolution forms II (stages III-IV) and III (stage V); any other '_' name is not a hero picture
+        if not f.endswith('.jpg') or ('_' in f and not re.fullmatch(r'[a-z]+_f[23]\.jpg', f)): continue
         hid = f[:-4]
         if args and hid not in args: continue
         r = cutout(f'{ROOT}/raw/heroes/{f}', pockets=pockets)
@@ -34,7 +35,7 @@ def main():
         from PIL import Image
         Image.fromarray(cv2.cvtColor(r, cv2.COLOR_BGRA2RGBA)).save(out, 'WEBP', quality=88, method=6)
         meta[hid] = {'w': r.shape[1], 'h': r.shape[0], 'cx': round(cx, 3), 'kb': os.path.getsize(out) // 1024}
-        if hid in RIM: meta[hid]['rim'] = RIM[hid]
+        if hid.split('_')[0] in RIM: meta[hid]['rim'] = RIM[hid.split('_')[0]]
         print(hid, meta[hid])
     json.dump(meta, open(mp, 'w'))
 main()

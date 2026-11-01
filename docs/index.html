@@ -178,6 +178,7 @@ select.tg{appearance:auto}
 .coscr .copl{flex-wrap:wrap}.coscr .coslot{min-width:calc(var(--u)*150);padding:calc(var(--u)*6) calc(var(--u)*12)}.coscr .coslot canvas{width:calc(var(--u)*46);height:calc(var(--u)*54)}
 .cotabs{display:flex;gap:calc(var(--u)*8);justify-content:center}.cotabs .tg.on,.edset .tg.on{background:#ffd23f;color:#000}
 .conet{display:flex;gap:calc(var(--u)*8);align-items:center;justify-content:center;flex-wrap:wrap;font-weight:800}
+#coLvIn{font:900 calc(var(--u)*14) Tahoma,Arial;text-align:center;width:calc(var(--u)*62);padding:calc(var(--u)*4);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;background:#fff;color:#000}
 .conet input,.nset input{font:900 calc(var(--u)*15) Tahoma,Arial;letter-spacing:.18em;text-transform:uppercase;text-align:center;width:calc(var(--u)*110);padding:calc(var(--u)*5);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;background:#fff;color:#000}
 .nset{font-size:calc(var(--u)*12);font-weight:700;text-align:center}.nset input{width:90%;letter-spacing:0;text-transform:none;font-size:calc(var(--u)*11);direction:ltr;margin-top:calc(var(--u)*4)}
 #nCodeBig{font-size:calc(var(--u)*30);letter-spacing:.2em;background:#000a;padding:calc(var(--u)*2) calc(var(--u)*12);border-radius:calc(var(--u)*8);color:#ffd23f;direction:ltr}
@@ -292,7 +293,8 @@ select.tg{appearance:auto}
       <details class="nset"><summary>⚙ إعدادات الأونلاين</summary><div class="sub">رابط قاعدة بيانات Firebase (Realtime Database) — بدونه بيشتغل بين تابّين بنفس المتصفح بس</div><input id="nDb" placeholder="https://اسم-مشروعك-default-rtdb.firebaseio.com" spellcheck="false"></details>
     </div>
     <div class="coblurb" id="coBlurb">الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · ما بتقدروا تبعدوا عن بعض أكتر من شاشة</div>
-    <div class="edset"><span>المرحلة</span><button class="tg" id="coPrev">−</button><b id="coLv">المرحلة 1</b><button class="tg" id="coNext">+</button><button class="tg" id="coCodeBtn">📥 خريطة بكود</button></div>
+    <div class="edset"><span>المرحلة</span><button class="tg" id="coPrev10">−10</button><button class="tg" id="coPrev">−</button><b id="coLv">المرحلة 1</b><button class="tg" id="coNext">+</button><button class="tg" id="coNext10">+10</button><input id="coLvIn" type="number" inputmode="numeric" min="1" max="999" placeholder="رقم" autocomplete="off"><button class="tg" id="coCodeBtn">📥 خريطة بكود</button></div>
+    <div class="edset"><span>الصعوبة</span><button class="tg" data-cdf="normal">عادي 🙂</button><button class="tg" data-cdf="crazy">مجنون 😈</button><button class="tg" data-cdf="hell">مستحيل 💀</button><button class="tg" data-cdf="nightmare">كابوس ☠️</button></div>
     <div class="edimp hide" id="coCodeBox"><textarea id="coCode" placeholder="الصق كود الخريطة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="coCodeGo">✔ حمّل</button></div></div>
     <div class="copl">
       <div class="coslot"><div class="cotag" style="background:#ffd23f">1</div><canvas id="coH1c"></canvas><div class="nm" id="coH1n"></div><div class="sub">A D للحركة · W أو مسافة للقفز</div></div>
@@ -1159,7 +1161,7 @@ B.exitrun={
  upd(e,dt){
   if(e.s===0){ if(L.exitX==null)L.exitX=L.exitTx*TS;
    if(pcx()>L.exitTx*TS-165&&P.onGround){ e.s=1; const old=L.exitTx;
-    const step=(L.dk==='hell'?4:3); L.exitTx=Math.min(L.w-2,old+step);
+    const step=(hellish(L.dk)?4:3); L.exitTx=Math.min(L.w-2,old+step);
     const sp=mkSpk('hidden',old-1,2,{dl:.25}); sp.arm=.25; addE(sp);
     Snd.whoosh(); Snd.rumble(); if(!SIM){ G.exitSay=1.4; say(rnd(['الباب هرب منك! 🏃💨','هههه استنّى... لا تروح! (راح)','الباب قال: ما بدي أشوف وجهك','الخروج؟ مو هون... تعال لهناك 😈']),'any',2.4) } } }
   if(!SIM&&L.exitX!=null)L.exitX+=(L.exitTx*TS-L.exitX)*Math.min(1,dt*5);
@@ -1175,7 +1177,9 @@ const pv=(r,n,list,room,D)=>{                 // pick a variant: [name,weight,un
 const BADCH=new Set(['thwomp','drop','mover','stones','fish','charger','sniper','roll','sneak','pulse','slide','spring','double','rainspk','bait','rev','stair']);
 /* difficulty presets: sh = how many levels ahead the content already is (tutorial levels 1-2 stay gentle), combo = extra overlay chance,
    gap = tighter spacing between traps, cp = tiles between checkpoints, lie = chance that a sign lies, troll = provocation pranks per level */
-const DIFFS={normal:{sh:0,combo:0,gap:0,cp:36,lie:.5,troll:0},crazy:{sh:3,combo:.1,gap:.4,cp:48,lie:.62,troll:1},hell:{sh:6,combo:.2,gap:.9,cp:66,lie:.78,troll:2}};
+const DIFFS={normal:{sh:0,combo:0,gap:0,cp:36,lie:.5,troll:0,cx:0},crazy:{sh:3,combo:.1,gap:.4,cp:48,lie:.62,troll:1,cx:0},hell:{sh:6,combo:.2,gap:.9,cp:66,lie:.78,troll:2,cx:1},
+  nightmare:{sh:10,combo:.3,gap:1.2,cp:90,lie:.85,troll:3,cx:2}};           // nightmare exists for the online co-op / race lobby only (never offered in single player); cx = extra co-op puzzles per level
+const hellish=k=>k==='hell'||k==='nightmare';
 function mkD(n){
   const h=clamp((n-2)/5.5,0,1), x=Math.max(0,n-9), f=h+Math.min(.65,x/45);       // h: 0 (tutorial) -> 1 (level 9); f keeps growing slowly after that
   return {n,h,x,f,tut:n<=2,mg:n<3?2:(n<5?3:4),gap:Math.max(1.3,5.4-3.6*h-x*.035),combo:n<3?0:clamp(.3+(n-3)*.05,0,.9),
@@ -1305,16 +1309,16 @@ const EXTRA_NAMES=['قسم الطوارئ','كل شي مسموح... للفخاخ
 function buildLevel(n,opt){
   opt=opt||{}; if(isBossLevel(n)&&!FLAGS.noBoss&&!(opt.script||opt.W||opt.D||opt.noBoss))return buildBoss(n,opt);
   const dk=DIFFS[opt.diff]?opt.diff:(DIFFS[S.diff]?S.diff:'crazy'), DF=DIFFS[dk], ne=n<=2?n:n+DF.sh;     // ne = the level number the CONTENT behaves like
-  const salt=opt.salt!=null?opt.salt:(BADSALT[dk+':'+n]||0), r=mulberry32(n*7919+1337+salt*104729+(dk==='normal'?0:dk==='crazy'?9091:18181)), D=mkD(ne); if(opt.D)Object.assign(D,opt.D);
+  const salt=opt.salt!=null?opt.salt:(BADSALT[dk+':'+n]||0), r=mulberry32(n*7919+1337+salt*104729+(dk==='normal'?0:dk==='crazy'?9091:dk==='hell'?18181:27271)), D=mkD(ne); if(opt.D)Object.assign(D,opt.D);
   if(ne>=3){D.combo=clamp(D.combo+DF.combo,0,.95);D.gap=Math.max(1.2,D.gap-DF.gap)}
-  const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138));
+  const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138)+(opt.co&&!opt.script?DF.cx*14:0));       // co-op on impossible / nightmare: longer levels, room for more puzzles
   const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:themeOf(n),crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
   if(opt.theme!=null)L.theme=opt.theme;
   const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
   let script2=script; if(opt.co&&!opt.script&&script){ script2=script.slice(); script2.splice(Math.max(1,script2.length>>1),0,['co',n===1?'gate':'ladder']) }
-  const nCo=opt.co&&!opt.script&&!script?(W>=120?3:W>=96?2:1):0; let coDone=0;           // co-op levels carry puzzles that need both players
+  const nCo=opt.co&&!opt.script&&!script?Math.min(5,(W>=120?3:W>=96?2:1)+DF.cx):0; let coDone=0;           // co-op levels carry puzzles that need both players
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
   const PITT={pit:1};
   const maxIter=script&&script.length>40?script.length*2+30:90;      // long editor recipes need more passes than a generated level
@@ -1322,7 +1326,7 @@ function buildLevel(n,opt){
     let fam=null,force=null;
     if(script2&&si<script2.length){fam=script2[si][0];force=script2[si][1];si++}
     else if(opt.script&&opt.script.length)break;
-    else if(coDone<nCo&&x>=Math.round(W*(.2+.6*coDone/nCo))&&x+NEEDF.co<=W-14){ fam='co' }
+    else if(coDone<nCo&&x>=Math.round(W*(DF.cx?.1+.5*coDone/nCo:.2+.6*coDone/nCo))&&x+NEEDF.co<=W-14){ fam='co' }
     else{ for(let k=0;k<10;k++){let t=pickW(pool.map(p=>[p[0],p[1]*(hist.slice(-2).includes(p[0])?.35:1)]),r); if(x+NEEDF[t]<=W-14){fam=t;break}} }
     if(!fam||x+8>W-12)break;
     if(fam==='cp'){                         // map editor: a real checkpoint flag placed on solid ground
@@ -1340,17 +1344,17 @@ function buildLevel(n,opt){
     let g=Math.round(D.gap)+ri(r,0,2);
     sinceCp+=used+g;
     if(ne>=5&&sinceCp>=DF.cp&&endX+14<W-12&&!opt.script){g=Math.max(g,10);const cx=endX+3;if(L.ground[cx]>=0&&!L.cr[cx]){L.ents.push(mkCp(cx));lastCpTx=cx;sinceCp=0}}
-    if(DF.troll&&!opt.script&&!L.fakeCp&&ne>=(dk==='hell'?4:6)&&sinceCp>=14&&sinceCp<DF.cp-6&&endX+16<W-12&&r()<.4){      // flag that looks exactly like a checkpoint but saves nothing
+    if(DF.troll&&!opt.script&&!L.fakeCp&&ne>=(hellish(dk)?4:6)&&sinceCp>=14&&sinceCp<DF.cp-6&&endX+16<W-12&&r()<.4){      // flag that looks exactly like a checkpoint but saves nothing
       const cx=endX+3; if(L.ground[cx]>=0&&!L.cr[cx]&&L.ground[cx+1]>=0&&!(L.pits.some(p=>cx>=p[0]-1&&cx<=p[0]+p[1]))){const e=mkCp(cx);e.fake=1;L.ents.push(e);L.fakeCp=1;g=Math.max(g,7)} }
     x=endX+Math.max(2,g);
   }
   if(ne>=4&&r()<.8&&!opt.script){L.ents.push(mkFake(W-12,ne>=10&&(ne%2===0||ne>=16)))}
   if(DF.troll&&!opt.script){
     // the exit door runs away when you get close, and pops spikes where it stood
-    if(ne>=(dk==='hell'?4:6)&&r()<(dk==='hell'?.8:.5))L.ents.push({t:'exitrun',x:0,s:0,always:1});
+    if(ne>=(hellish(dk)?4:6)&&r()<(hellish(dk)?.8:.5))L.ents.push({t:'exitrun',x:0,s:0,always:1});
     // lights go out for a moment before a trap segment
-    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[0]!=='co'&&q[1]>24), nb=ne>=(dk==='hell'?4:7)?DF.troll:0;
-    L.dark=[]; for(let i=0;i<nb&&sg.length;i++){const q=sg.splice(ri(r,0,sg.length-1),1)[0]; L.dark.push({x0:(q[1]-9)*TS,x1:(q[1]+q[2])*TS,dur:dk==='hell'?2.7:1.9,fired:0})}
+    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[0]!=='co'&&q[1]>24), nb=ne>=(hellish(dk)?4:7)?DF.troll:0;
+    L.dark=[]; for(let i=0;i<nb&&sg.length;i++){const q=sg.splice(ri(r,0,sg.length-1),1)[0]; L.dark.push({x0:(q[1]-9)*TS,x1:(q[1]+q[2])*TS,dur:hellish(dk)?2.7:1.9,fired:0})}
   }
   if(chaseKind){const sp=Math.min(176,D.v(112,160)+(n>30?8:0));L.chase=chaseKind;const e=mkChase(chaseKind,sp,chaseKind==='wall'?-60:-140);e.go=6*TS;L.ents.push(e)}
   for(let t=4;t<W;t+=10)L.torches.push(t);
@@ -1572,13 +1576,13 @@ function buildBoss(n,opt){
 /* what the boss throws right now (depends on how many hits it already took, the difficulty and how deep the run is).
    ONE scheduler: a single timer spaces every attack, so two telegraphs never pop at the same instant (that is what made some seeds unwinnable). */
 function bossPlan(e){
-  const k=Math.min(e.hits,4), f=e.f, s=lerp(1,.82,f)*(e.dk==='hell'?.86:e.dk==='crazy'?.94:1), calm=e.dk==='normal'?1.12:1;
+  const k=Math.min(e.hits,4), f=e.f, s=lerp(1,.82,f)*(hellish(e.dk)?.86:e.dk==='crazy'?.94:1), calm=e.dk==='normal'?1.12:1;
   const W=[[1,0,0],[.55,.45,0],[.38,.34,.28],[.34,.33,.33],[.3,.34,.36]][k];         // weights: rain, lane, erupt
   return {
     gap:[1.45,1.25,1.1,1.0,.9][k]*s, w:W,
     rain:{n:[1,1,2,2,3][k], tele:clamp(.66-.05*k-f*.12,.44,.7)*calm},
     lane:k>=1?{spd:[0,245,270,290,310][k]+f*40, tele:clamp(.95-.06*k-f*.15,.6,.95)*calm}:null,
-    chg:e.dk==='hell'?2.5:(e.dk==='crazy'?2.2:1.9),                     // seconds you must stand on the button (it drains at 60 % speed when you step off)
+    chg:hellish(e.dk)?2.5:(e.dk==='crazy'?2.2:1.9),                     // seconds you must stand on the button (it drains at 60 % speed when you step off)
     erupt:k>=2?{tele:clamp(.9-.05*k-f*.1,.6,.9)*calm, up:.85, n:k>=3?2:1}:null
   };
 }
@@ -2046,6 +2050,7 @@ function announceLevel(n){
   const m=pick('milestone',{lv:n,pAudio:.98}); if(m){later(1000,()=>sayVoice(m,3.6,{pri:3,ttl:1}));return}
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
+const ADMG={on:0,god:0,speed:1};      // admin console switches (the console itself, w_admin.js, is left out of the public build)
 function loadLevel(n,announce,opt){
   K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0;G.help=null;G.helped=false} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):(isTrialN(n)?buildTrial(n):buildLevel(n,coOpt(opt))); G.pend=[]; G.ck=[]; G.ts=1; if(!G.custom&&!L.trial&&!G.co&&!G.race){ seedCoins(); G.ck=L.ents.filter(e=>e.t==='coin'&&!e.bait).map(coinKey); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17; if(announce&&!SIM&&!G.custom&&!L.trial)helpApply();
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); if(G.co)coSpawn(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
@@ -2066,7 +2071,7 @@ function startGame(n,co){
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deathAt=G.t; P.dvx=P.vx; P.dvy=P.vy;
+  if(P.dead||G.state!=='play')return; if(ADMG.god&&P.y<VH-10)return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deathAt=G.t; P.dvx=P.vx; P.dvy=P.vy;
   if(G.co&&!G.co.local){ netFx({k:'d',c:cause,e:e,pi:P.idx}); return }          // online: sounds and cards wait until the frame is confirmed (it may still be rolled back)
   dieFx(cause,e);
 }
@@ -2880,24 +2885,46 @@ for(const k in (A.hero||{})){ const im=new Image(),o={im,ok:false}; HSPR[k]=o; i
 const RIM_D=[[-1,0],[1,0],[0,-1],[0,1]];
 function sprRim(c,o,x,y,w,h,px){ if(!o.rim)return; c.save();c.globalAlpha=.85;for(const [dx,dy] of RIM_D)c.drawImage(o.rim,x+dx*px,y+dy*px,w,h);c.restore() }
 const look3=()=>!!S.look3d&&Q.q>0;
-const sprOf=id=>{const o=HSPR[id||hid()];return o&&o.ok?o:null};
+/* evolution forms: stage -> form (heroForm: I-II 1, III-IV 2, V 3). A picture assets/hero/<id>_f2.webp / <id>_f3.webp is used when it exists; otherwise the base picture is drawn with code-made effects (formFx) */
+const stageOf=id=>(P&&P.hid===id&&P.hst!=null)?P.hst:heroStage(id);
+const sprKeyOf=(id,st)=>{ for(let f=heroForm(st);f>1;f--){ const k=id+'_f'+f, o=HSPR[k]; if(o&&o.ok)return k } return id };       // the best picture for this stage: form III, else form II, else the base one
+const keyForm=k=>{ const m=/_f([23])$/.exec(k); return m?+m[1]:1 };
+const sprOf=(id,st)=>{ id=id||hid(); const o=HSPR[sprKeyOf(id,st!=null?st:stageOf(id))]; return o&&o.ok?o:null };
+function rimTint(o,col){ const tc=o.tc||(o.tc={}); if(tc[col])return tc[col]; const cv=document.createElement('canvas'); cv.width=o.im.width; cv.height=o.im.height; const x=cv.getContext('2d'); x.drawImage(o.im,0,0); x.globalCompositeOperation='source-in'; x.fillStyle=col; x.fillRect(0,0,cv.width,cv.height); return tc[col]=cv }
+function haloDraw(c,w,y,t){ const rw=Math.max(9,w*.3), bob=Math.sin(t*2.4)*1.4; c.save(); c.translate(0,y+bob); c.lineWidth=2.6; c.strokeStyle='#fff3b0'; c.shadowColor='#ffd23f'; c.shadowBlur=6;
+  c.beginPath(); c.ellipse(0,0,rw,rw*.28,0,0,7); c.stroke(); c.lineWidth=1.1; c.strokeStyle='#ffb81f'; c.beginPath(); c.ellipse(0,0,rw,rw*.28,0,0,7); c.stroke(); c.restore() }
+function formFx(c,id,form,w,h,pass,t,gs){                 // code-made evolution look: 'under' = behind the sprite, 'over' = in front of it
+  const col=(typeof ACC_AURA!=='undefined'&&ACC_AURA[id])||'#ffd23f';
+  if(pass==='under'){ const g=c.createRadialGradient(0,-h*.5,h*.08,0,-h*.5,h*(form===3?1.05:.8)*(gs||1)); g.addColorStop(0,col+(form===3?'aa':'66')); g.addColorStop(1,col+'00');
+    c.save(); c.fillStyle=g; c.fillRect(-h*1.1,-h*1.7,h*2.2,h*2.3); if(form===3){ c.globalAlpha=.35+Math.sin(t*3)*.12; c.fillStyle='#ffe27a'; c.beginPath(); c.ellipse(0,-1,w*.55,h*.08,0,0,7); c.fill() } c.restore() }
+  else { c.save(); c.fillStyle='#fff'; const n=form===3?5:2; for(let i=0;i<n;i++){ const k=((t*.5+i/n)%1), x=Math.sin(t*1.6+i*2.3)*w*.42, y=-k*h*1.05; c.globalAlpha=(1-k)*.9; c.beginPath(); c.arc(x,y,.6+(1-k)*(form===3?1.1:.8),0,7); c.fill() } c.restore();
+    if(form===3)haloDraw(c,w,-h-4,t) }
+}
+const formFilter=f=>f===3?'saturate(1.5) brightness(1.1) contrast(1.05)':f===2?'saturate(1.28) brightness(1.04)':'none';
 const hexRGB=h=>{h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]};
 const mixc=(a,b,t,al)=>{const A1=hexRGB(a),B1=hexRGB(b);return 'rgba('+A1.map((v,i)=>Math.round(v+(B1[i]-v)*t)).join(',')+','+(al==null?1:al)+')'};
 
 /* ---------- hero sprite ---------- */
 function drawHeroSprite(c,st,id){
-  const o=sprOf(id); if(!o)return false; id=id||hid(); const m=HMETA[id]||{w:o.im.width,h:o.im.height,cx:.5};
+  id=id||hid(); const stg=stageOf(id), key=sprKeyOf(id,stg), o=sprOf(id,stg); if(!o)return false; const m=HMETA[key]||{w:o.im.width,h:o.im.height,cx:.5};
+  const form=heroForm(stg), kf=keyForm(key), fx=form>kf, t=G.t;                         // fx: no picture for this form -> effects made in code
   const h=SPR_H,w=h*m.w/m.h; let bob=0,lean=0,sx=1,sy=1;
   if(!st.dead){
     if(st.moving){bob=-Math.abs(st.rs)*2.8;lean=.11+st.rs*.07}
     else if(st.onGround){const b=Math.sin(G.t*3.2);sy=1+b*.02;sx=1-b*.014}
     else lean=clamp(-st.ey*.06,-.14,.14)-.04;
   }
+  if(fx){ const k=form===3?1.1:1.05; sx*=k; sy*=k }
   c.save();c.translate(0,bob);c.rotate(lean);c.scale(sx,sy);
+  if(fx&&!st.dead)formFx(c,id,form,w,h,'under',t);
   accDraw(c,id,w,h,m.cx,'back');
-  sprRim(c,o,-w*m.cx,-h,w,h,.8);
+  if(fx){ const col=form===3?'#ffe27a':((typeof ACC_AURA!=='undefined'&&ACC_AURA[id])||'#ffd23f'); c.save(); c.globalAlpha=form===3?.95:.75; const px=form===3?1.5:1.1; for(const [dx,dy] of RIM_D)c.drawImage(rimTint(o,col),-w*m.cx+dx*px,-h+dy*px,w,h); c.restore() }
+  else sprRim(c,o,-w*m.cx,-h,w,h,.8);
+  if(fx&&kf===1&&c.filter!==undefined)c.filter=formFilter(form);
   c.drawImage(o.im,-w*m.cx,-h,w,h);
+  if(fx&&kf===1&&c.filter!==undefined)c.filter='none';
   accDraw(c,id,w,h,m.cx,'front');
+  if(fx&&!st.dead)formFx(c,id,form,w,h,'over',t);
   c.restore();
   if(st.dead){ // dizzy stars
     c.save();c.fillStyle='#ffd23f';c.strokeStyle='#000';c.lineWidth=1.2;
@@ -2907,16 +2934,22 @@ function drawHeroSprite(c,st,id){
 }
 function drawHero(c,H,st){ if(look3()&&drawHeroSprite(c,st))return; H.draw(c,st) }
 function heroSlices(c,tt,piece){ // sprite broken in 4 bands (hat / face / belly / feet) for the saw & fake-door deaths
-  const o=sprOf(); if(!o||!look3())return false; const m=HMETA[hid()]||{w:o.im.width,h:o.im.height,cx:.5},h=SPR_H,w=h*m.w/m.h,iw=o.im.width,ih=o.im.height;
+  const o=sprOf(); if(!o||!look3())return false; const m=HMETA[sprKeyOf(hid(),stageOf(hid()))]||{w:o.im.width,h:o.im.height,cx:.5},h=SPR_H,w=h*m.w/m.h,iw=o.im.width,ih=o.im.height;
   const cuts=[[0,.32,40,-210],[.32,.66,-70,-260],[.66,.88,25,-130],[.88,1,-35,-160]];
   for(const [f0,f1,vx,vy] of cuts){ const yc=-h*(1-(f0+f1)/2); piece(0,yc,vx,vy,()=>c.drawImage(o.im,0,ih*f0,iw,ih*(f1-f0),-w*m.cx,-h*(f1-f0)/2,w,h*(f1-f0))) }
   return true;
 }
 function heroThumb(cx,id,ao){                                  // ao = {only,force}: shop preview of a single accessory slot
-  const o=sprOf(id); if(!o||!look3())return false; const m=HMETA[id]||{w:o.im.width,h:o.im.height,cx:.5},h=62,w=h*m.w/m.h;
+  const stg=ao&&ao.stage!=null?ao.stage:heroStage(id), key=sprKeyOf(id,stg), o=sprOf(id,stg); if(!o||!look3())return false; const m=HMETA[key]||{w:o.im.width,h:o.im.height,cx:.5},h=62,w=h*m.w/m.h;
+  const form=heroForm(stg), kf=keyForm(key), fx=form>kf&&!(ao&&ao.only), t=performance.now()/1000;
+  if(fx){ cx.save(); cx.translate(0,-1); formFx(cx,id,form,w,h,'under',t,.62); cx.restore() }
   cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'back',ao); cx.restore();
-  sprRim(cx,o,-w*m.cx,-h-1,w,h,.9); cx.drawImage(o.im,-w*m.cx,-h-1,w,h);
-  cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'front',ao); cx.restore(); return true;
+  if(fx){ const col=form===3?'#ffe27a':((typeof ACC_AURA!=='undefined'&&ACC_AURA[id])||'#ffd23f'); cx.save(); cx.globalAlpha=.9; for(const [dx,dy] of RIM_D)cx.drawImage(rimTint(o,col),-w*m.cx+dx*1.3,-h-1+dy*1.3,w,h); cx.restore() } else sprRim(cx,o,-w*m.cx,-h-1,w,h,.9);
+  if(fx&&kf===1&&cx.filter!==undefined)cx.filter=formFilter(form);
+  cx.drawImage(o.im,-w*m.cx,-h-1,w,h);
+  if(fx&&kf===1&&cx.filter!==undefined)cx.filter='none';
+  cx.save(); cx.translate(0,-1); accDraw(cx,id,w,h,m.cx,'front',ao); cx.restore();
+  if(fx){ cx.save(); cx.translate(0,-1); formFx(cx,id,form,w,h,'over',t); cx.restore() } return true;
 }
 
 /* ---------- palette cache ---------- */
@@ -3656,7 +3689,7 @@ function frame(ts){
   const dt=Math.min(.1,(ts-last)/1000||0); last=ts;
   try{
     const w0=performance.now(); AT+=dt;
-    if(G.state==='play'||G.state==='dead'||G.state==='win'){acc+=dt*(G.ts||1);let n=0;if(G.race){ raceTick(dt); if(G.race&&(G.race.hold>0||G.race.over))acc=0 }
+    if(ADMG.on){ acc=0 } else if(G.state==='play'||G.state==='dead'||G.state==='win'){acc+=dt*(G.ts||1)*ADMG.speed;let n=0;if(G.race){ raceTick(dt); if(G.race&&(G.race.hold>0||G.race.over))acc=0 }
       while(acc>=1/60&&n++<3){ if(G.co&&!G.co.local){ if(!netPre()){ acc=Math.min(acc,1/60); break } update(1/60); netPost() } else update(1/60); acc-=1/60 } if(acc>1/20)acc=0}
     if(L&&ts-lastR>=14.5){const gap=Math.min(.5,(ts-lastR)/1000);lastR=ts;render();qTick(gap,performance.now()-w0)}       // 120 Hz phones render at 60: half the work, same feel
   }catch(e){console.error(e)}
@@ -4084,40 +4117,42 @@ Snd.gate=function(open){ this.noise({dur:.28,v:.14,ft:'lowpass',f:open?500:300})
 /* ---------------- level pieces: each returns the number of tiles it needs ---------------- */
 const coSign=(L,tx,text)=>L.signs.push({tx,text,tag:'any',lie:false,seen:false});
 const coCp=(L,tx)=>{ if(L.ground[tx]>=0&&!L.cr[tx])L.ents.push(mkCp(tx)) };
+const coCpEnd=(L,tx)=>{ if(L.dk!=='nightmare')coCp(L,tx) };      // nightmare: no save flag after a puzzle, dying right behind it means doing it again
 const COV={
  gate(L,x){ const g=newId(L);
   coCp(L,x); coSign(L,x+3,'واحد يوقف على الزر 🔘\nوالتاني يعبر ويشدّ الرافعة 🎚');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8), mkGate(g,x+11,1,0,GR-1,'door'), mkLever(g,(x+15)*TS+16,GY));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  ladder(L,x){ const g=newId(L), wx=x+9;
   coCp(L,x); coSign(L,x+4,'الحيط عالي! 😅\nواحد يوقف... والتاني يطلع على راسه 🧍');
   for(let k=1;k<=3;k++){ blk(L,wx,GR-k); blk(L,wx+1,GR-k) }
   L.ents.push(mkPlat(newId(L),'static',wx*TS,GY-104,2*TS,{}));
   L.ents.push(mkGate(g,wx-2,1,GR-1,GR-1,'steps',1), mkGate(g,wx-1,1,GR-2,GR-1,'steps',1), mkLever(g,(wx+5)*TS+16,GY));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  bridge(L,x){ const g=newId(L), gap=11;
   coCp(L,x); coSign(L,x+3,'الجسر ما بيطلع لحاله 😈\nواحد يكبس الزر ويضل واقف عليه');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8)); cutPit(L,x+8,gap); L.ents.push(mkGate(g,x+8,gap,GR,GR,'bridge',1), mkLever(g,(x+8+gap+2)*TS+16,GY));
-  coCp(L,x+8+gap+5); return gap+14 },
+  coCpEnd(L,x+8+gap+5); return gap+14 },
  sync(L,x){ const g=newId(L);
   coCp(L,x); coSign(L,x+3,'كبسوا الزرّين مع بعض! 👯\nواحد تحت وواحد فوق');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8,{all:1,lat:1}));
   L.ents.push(mkPlat(newId(L),'static',(x+8)*TS,GY-72,3*TS,{})); L.ents.push(mkPlate(g,(x+9)*TS-4,GY-72,TS*1.8,{all:1,lat:1}));
   L.ents.push(mkGate(g,x+15,1,0,GR-1,'door'));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  lift(L,x){ const g=newId(L), H=6, top=GY-H*TS;
   coCp(L,x); coSign(L,x+3,'المصعد بدّو واحد يوقف على الزر 🛗\nوالتاني يطلع ويشدّ الرافعة');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8));
   L.ents.push(mkPlat(newId(L),'colift',(x+8)*TS,GY-30,2*TS,{gid:g,y0:GY-30,y1:top,sp:84,lm:0}));
   for(let k=1;k<=H;k++)for(let c2=0;c2<5;c2++)blk(L,x+10+c2,GR-k);
   L.ents.push(mkGate(g,x+8,0,0,0,'none',0), mkLever(g,(x+12)*TS+16,top));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  relay(L,x){ const a=COV.gate(L,x); const b=COV.gate(L,x+a-2); return a+b-2 },
 };
 const COV_LIST=[['gate',10,1,22],['ladder',10,1,22],['bridge',8,2,26],['sync',8,2,22],['lift',8,3,22],['relay',6,4,44]];
 FAM.co=function(L,r,x,n,D,room){
   const forced=D.force&&COV[D.force]?D.force:null, last=L.coLast;
-  const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2);
+  const HW={relay:3,lift:1.8,sync:1.8,bridge:1.4};                 // impossible / nightmare lean on the puzzles that need the most teamwork
+  const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2).map(v=>hellish(L.dk)?[v[0],v[1]*(HW[v[0]]||.5),v[2],v[3]]:v);
   const v=forced||pv(r,n,list,room,D); if(!v)return 0;
   const used=COV[v](L,x); L.coLast=v; (L.coList=L.coList||[]).push([v,x,used]); return used;
 };
@@ -4189,14 +4224,19 @@ function coStart(o){
 }
 function coWon(){ CO.msg='🎉 خلّصتوها بـ '+(G.winTime!=null?G.winTime:G.t).toFixed(1)+' ث'+(G.lvDeaths?' وبـ '+G.lvDeaths+' موتة':' بدون ولا موتة! 😎') }
 function coNext(){                                 // after a win: back to the lobby with the next playable level selected
-  const was=G.co; if(was&&!was.local){ G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=coMax())n++; CO.sel.n=clamp(n,1,Math.max(1,coMax())) } netToLobby(CO.msg); netLobbySend(); return } G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=S.best)n++; CO.sel.n=clamp(n,1,Math.max(1,S.best)) }
+  const was=G.co; if(was&&!was.local){ G.co=null; if(!CO.sel.custom)CO.sel.n=coGoto(G.level+1,1); netToLobby(CO.msg); netLobbySend(); return } G.co=null; if(!CO.sel.custom)CO.sel.n=coGoto(G.level+1,1);
   coOpen(CO.msg,was);
 }
 
 /* ---- lobby ---- */
-const coMax=()=>NET.link!=='off'&&NET.peer?Math.min(Math.max(1,S.best),NET.peer.best):Math.max(1,S.best);       // online: only levels BOTH have reached
-function coPlayable(n){ return n>=1&&n<=coMax()&&!isBossLevel(n) }
-function coStep(d){ let n=CO.sel.n; for(let k=0;k<200;k++){ n+=d; if(n<1||n>coMax())return; if(coPlayable(n)){ CO.sel.n=n; return } } }
+/* The level is a FREE choice in co-op and race (nothing is earned there, so progress does not matter): any level up to CO_TOP except boss levels.
+   CO_TOP stays below 1001, the hero trial pseudo levels. */
+const CO_TOP=999, CO_DFS=['normal','crazy','hell','nightmare'];
+const coMax=()=>CO_TOP;
+function coPlayable(n){ return n>=1&&n<=CO_TOP&&!isBossLevel(n) }
+function coGoto(n,dir){ n=clamp(Math.round(+n)||1,1,CO_TOP); if(isBossLevel(n))n+=dir<0?-1:1; return clamp(n,1,CO_TOP) }      // returns a playable level near n (a boss level moves one step in the direction of travel)
+function coStep(d){ CO.sel.n=coGoto(CO.sel.n+d,d) }
+const coDf=()=>CO.sel.df||(NET.mode==='race'?'crazy':'hell');                  // co-op defaults to impossible, a race to crazy; the host's choice travels with the start message
 function coPreview(){ try{ const th=CO.sel.custom?CO.sel.custom.th:themeOf(CO.sel.n); L=buildLevel(1,{script:[['pit','plain']],theme:th,diff:'normal',salt:0}); P=newPlayer(L.spawnTx); themeBg=makeBg(THEMES[th],th*31+7); G.camX=0 }catch(e){} }
 function coOpen(msg,was){
   if(CO.sel.h2==null||!heroOwned(CO.sel.h2))CO.sel.h2=coOwnedHeroes().find(h=>h!==S.hero)||S.hero;
@@ -4208,7 +4248,9 @@ function coClose(){ if(NET.link!=='off')netLeave('',false); $('co').classList.ad
 function coRender(){
   const s=CO.sel, cu=s.custom;
   $('coLv').textContent=cu?'🛠 خريطة مخصّصة ('+cTraps(cu)+' فخ)':'المرحلة '+s.n;
-  $('coPrev').disabled=!!cu; $('coNext').disabled=!!cu;
+  $('coPrev').disabled=!!cu; $('coNext').disabled=!!cu; $('coPrev10').disabled=!!cu; $('coNext10').disabled=!!cu; $('coLvIn').disabled=!!cu;
+  if(document.activeElement!==$('coLvIn'))$('coLvIn').value=cu?'':s.n;
+  for(const b of document.querySelectorAll('#co [data-cdf]')){ b.classList.toggle('on',!cu&&b.dataset.cdf===coDf()); b.disabled=!!cu }
   const online=NET.tab&&NET.link!=='off'&&NET.peer, mine=online?S.hero:S.hero, theirs=online?NET.peer.hero:s.h2;
   for(const [id,h] of [['coH1',mine],['coH2',theirs]]){ const cv2=$(id+'c'); cv2.width=64; cv2.height=74; paintHero(cv2,h); $(id+'n').textContent=HEROES[h].name }
   $('coMsg').textContent=CO.msg||''; $('coCodeBtn').textContent=cu?'✖ شيل الخريطة المخصّصة':'📥 خريطة بكود';
@@ -4217,12 +4259,16 @@ function coRender(){
 }
 function coStartFromLobby(){
   if(NET.tab)return; const s=CO.sel; if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة للتعاون'; coRender(); return }
-  coStart({hero:[S.hero,s.h2],level:s.n,custom:s.custom?cClone(s.custom):null,local:true,me:0});
+  coStart({hero:[S.hero,s.h2],level:s.n,custom:s.custom?cClone(s.custom):null,local:true,me:0,df:s.custom?null:coDf()});
 }
 function coCycle2(d){ const o=coOwnedHeroes(); const i=o.indexOf(CO.sel.h2); CO.sel.h2=o[(i+d+o.length)%o.length]; Snd.ui&&Snd.ui(); coRender() }
 $('bCoT').onclick=()=>{ Snd.init(); coOpen('') };
 $('coX').onclick=coClose; $('coGo').onclick=coStartFromLobby;
-$('coPrev').onclick=()=>{ coStep(-1); coPreview(); coRender() }; $('coNext').onclick=()=>{ coStep(1); coPreview(); coRender() };
+const coMove=d=>{ coStep(d); coPreview(); coRender() };
+$('coPrev').onclick=()=>coMove(-1); $('coNext').onclick=()=>coMove(1); $('coPrev10').onclick=()=>coMove(-10); $('coNext10').onclick=()=>coMove(10);
+$('coLvIn').addEventListener('keydown',e=>{ e.stopPropagation(); if(e.key==='Enter')$('coLvIn').blur() });
+$('coLvIn').addEventListener('change',()=>{ const v=parseInt($('coLvIn').value,10); if(v>0){ CO.sel.n=coGoto(v,1); coPreview() } coRender() });
+for(const b of document.querySelectorAll('#co [data-cdf]'))b.onclick=()=>{ CO.sel.df=b.dataset.cdf; Snd.ui&&Snd.ui(); coRender() };
 $('coH2L').onclick=()=>coCycle2(-1); $('coH2R').onclick=()=>coCycle2(1);
 $('coCodeBtn').onclick=()=>{ const s=CO.sel; if(s.custom){ s.custom=null; CO.msg=''; coPreview() } else { s.codeOpen=!s.codeOpen } coRender() };
 $('coCodeGo').onclick=()=>{ const r=decodeCustom($('coCode').value); if(r.err){ CO.msg='❌ '+r.err; coRender(); return } CO.sel.custom=r.c; CO.sel.codeOpen=false; CO.msg='✅ انحمّلت الخريطة'; coPreview(); coRender() };
@@ -4241,7 +4287,7 @@ const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.cu
      rounding in another browser, a lost packet...) it asks the host for a snapshot of that frame, restores it and re-simulates up to now.
    RACE = both run their own ordinary single-player engine on the same level; only positions (10 Hz) and the finish are exchanged; the host arbitrates.
    Nothing here touches the simulation: with G.co null and G.race null every function below is idle. */
-const NET_V='e991f745';
+const NET_V='3fcf5c9f';
 const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app'};      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
 const NET={link:'off',role:null,code:'',kind:'',tr:null,peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
 const KR={l:false,r:false,j:false,jp:false,a:false,ap:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
@@ -4350,9 +4396,9 @@ function netToLobby(msg){                                  // back to the online
 }
 
 /* ---- lobby sync (host chooses) ---- */
-function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
+function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,df:coDf(),cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
 function netLobbyRecv(m){
-  NET.mode=m.mode==='race'?'race':'co'; CO.sel.n=m.n|0||1;
+  NET.mode=m.mode==='race'?'race':'co'; CO.sel.n=m.n|0||1; CO.sel.df=CO_DFS.includes(m.df)?m.df:null;
   if(m.cu){ const r=decodeCustom(m.cu); CO.sel.custom=r.err?null:r.c } else CO.sel.custom=null;
   if(G.state==='co')coRender();
 }
@@ -4363,7 +4409,7 @@ function netStartHost(){                                       // host presses s
   const N=NET; if(N.role!=='h'||N.link!=='conn'||!N.peer)return;
   const s=CO.sel;
   if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة'; coRender(); return }
-  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:S.diff||'crazy',D:netD(),hero:netHeroes(),stage:netStages(),rtt:N.rtt|0};
+  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),D:netD(),hero:netHeroes(),stage:netStages(),rtt:N.rtt|0};
   N.tr.send(o); netBegin(o);
 }
 function netBegin(o){
@@ -4472,34 +4518,51 @@ function netEsc(){                                          // Esc while online:
   N.escAt=now; say('اضغط Esc مرة تانية لترجعوا للغرفة','any',2.4);
 }
 
-/* ---- race: two single-player engines, positions exchanged ---- */
-const RACE_CD=3.2;
+/* ---- race: two single-player engines, positions exchanged ----
+   Fairness: both machines time themselves from "go" with the WALL clock (not the level timer, which restarts at every respawn). The host's countdown is
+   half a ping longer, so the two "go" moments are about the same real moment. Whoever's own finish time is lower wins; the host is only the clerk:
+   - both times known -> compare (closer than RACE_TIE = a draw)
+   - only the guest finished -> the host must not have finished before him: once the host's own clock passed his time + RACE_TIE he wins at once
+   - only the host finished -> wait a moment (RACE_TIE + one way delay + 0.1 s) in case the guest's message is still on its way
+   The opponent's ghost is drawn where he should be NOW: his last report advanced by its age (our clock - his clock at the moment he sent it). */
+const RACE_CD=3.2, RACE_TIE=.08;
+const raceT=r=>(netNow()-r.goAt)/1000;                       // seconds since "go" on this machine (negative while counting down)
+function raceJudge(tm0,tm1,now,rtt){                          // the host's view, all in seconds since go; null = has not finished; returns 0 host / 1 guest / -1 draw / undefined = not decided yet
+  if(tm0!=null&&tm1!=null)return Math.abs(tm0-tm1)<=RACE_TIE?-1:(tm0<tm1?0:1);
+  if(tm1!=null)return now>=tm1+RACE_TIE?1:undefined;
+  if(tm0!=null)return now>=tm0+clamp((rtt||0)/2000+.18,.18,1)?0:undefined;
+}
 function raceBegin(o,cu){
   const N=NET;
-  G.race={df:o.df,hold:RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0),opp:newPlayer(0),tx:null,over:false,done:false,res:null,t0:0,seen:false};
+  G.race={df:o.df,hold:0,goAt:0,opp:newPlayer(0),tx:null,over:false,done:false,res:null,seen:false,fn:null,tm1:null,fnAt:0};
   const op=G.race.opp; op.hid=N.peer.hero; op.hst=N.peer.stage; op.run=0;
-  G.race.fn=null;
   if(cu)startCustom(cu,'race'); else startGame(o.lv);
-  G.race.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0);
+  const r=G.race; r.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0); r.goAt=netNow()+r.hold*1000;
   $('raceBar').classList.remove('hide'); $('raceRes').classList.add('hide'); raceCdUi();
-  N.gtimer=setInterval(raceSend,100);
+  N.gtimer=setInterval(raceSend,50);
 }
 function raceStop(){ if(NET.gtimer){ clearInterval(NET.gtimer); NET.gtimer=0 } if(G.race){ G.race=null } const e=$('raceBar'); if(e)e.classList.add('hide'); const c=$('raceCd'); if(c)c.classList.add('hide') }
 function raceSend(){
-  const r=G.race; if(!r||!NET.tr||r.hold>0&&false)return;
-  NET.tr.send({t:'g',x:Math.round(P.x*10)/10,y:Math.round(P.y*10)/10,vx:Math.round(P.vx),vy:Math.round(P.vy),fc:P.face,og:P.onGround?1:0,dd:P.dead?1:0,ex:L.exitTx*TS});
+  const r=G.race; if(!r||!NET.tr||!P)return;
+  NET.tr.send({t:'g',x:Math.round(P.x*10)/10,y:Math.round(P.y*10)/10,vx:Math.round(P.vx),vy:Math.round(P.vy),fc:P.face,og:P.onGround?1:0,dd:P.dead?1:0,ex:L.exitTx*TS,rt:+raceT(r).toFixed(3)});
 }
 function raceGot(m){
-  const r=G.race; if(!r)return; r.tx={x:m.x,y:m.y,vx:m.vx,vy:m.vy,fc:m.fc,og:m.og,dd:m.dd,ex:m.ex}; r.seen=true;
+  const r=G.race; if(!r)return; r.tx={x:m.x,y:m.y,vx:m.vx,vy:m.vy,fc:m.fc,og:m.og,dd:m.dd,ex:m.ex,rt:m.rt}; r.seen=true;
 }
-function raceTick(dt){                                       // every animation frame: ease the ghost toward the last report, keep the HUD bar
+function raceTick(dt){                                       // every animation frame: ease the ghost toward where he should be now, keep the HUD bar, judge (host)
   const r=G.race; if(!r)return;
-  if(r.hold>0){ r.hold-=dt; raceCdUi(); if(r.hold<=0){ r.t0=G.t; $('raceCd').classList.add('hide') } }
+  if(r.hold>0){ r.hold=Math.max(0,(r.goAt-netNow())/1000); raceCdUi() }
   const o=r.opp, t=r.tx;
-  if(t){ const k=Math.min(1,dt*10); t.x+=t.vx*dt*(t.dd?0:1); o.x+=(t.x-o.x)*k; o.y+=(t.y-o.y)*k; o.vx=t.vx; o.vy=t.vy; o.face=t.fc; o.onGround=!!t.og; o.dead=!!t.dd }
+  if(t){ const now=raceT(r), age=t.rt!=null?clamp(now-t.rt,0,.4):.1, live=!t.dd, k=Math.min(1,dt*14);
+    const tx=t.x+(live?t.vx*age:0), ty=t.og||!live?t.y:Math.min(t.y+120,t.y+t.vy*age+GRAV*.5*age*age);
+    o.x+=(tx-o.x)*k; o.y+=(ty-o.y)*k; o.vx=t.vx; o.vy=t.vy; o.face=t.fc; o.onGround=!!t.og; o.dead=!!t.dd }
   o.run=(o.run||0)+Math.abs(o.vx)*dt*.03; o.blink=(o.blink||0);
   const ex=Math.max(1,L.exitTx*TS), me=clamp(P.x/ex,0,1), op=t?clamp(o.x/ex,0,1):0;
   $('rbMe').style.left=(me*92)+'%'; $('rbOp').style.left=(op*92)+'%'; $('rbOp').style.opacity=t?1:.25;
+  if(!r.res){
+    if(NET.role==='h'){ if(r.fn!=null||r.tm1!=null)raceJudgeNow() }
+    else if(r.done&&netNow()-r.fnAt>1500){ r.fnAt=netNow(); NET.tr.send({t:'fn',tm:r.fn}) }       // the guest repeats his time until the verdict arrives
+  }
 }
 function raceCdUi(){
   const r=G.race, e=$('raceCd'); if(!r||r.hold<=0){ e.classList.add('hide'); return }
@@ -4515,19 +4578,23 @@ function raceDraw(c){
   c.beginPath(); c.moveTo(x-6,y-8); c.lineTo(x+6,y-8); c.lineTo(x,y); c.closePath(); c.fill(); c.stroke(); c.restore();
 }
 function raceFinish(){                                       // I reached the door
-  const r=G.race; if(!r||r.done)return; r.done=true; r.fn=+G.t.toFixed(2);
-  if(NET.role==='h')raceDecide(0); else NET.tr.send({t:'fn',tm:r.fn});
+  const r=G.race; if(!r||r.done)return; r.done=true; r.fn=+raceT(r).toFixed(3);
+  if(NET.role==='g'){ r.fnAt=netNow(); NET.tr.send({t:'fn',tm:r.fn}) } else raceJudgeNow();
+  if(!r.res){ $('raceCd').classList.add('hide'); $('raceRes').innerHTML='<div class="rr2">🚪 وصلت! بستنى النتيجة...</div>'; $('raceRes').classList.remove('hide') }
 }
-function raceFin(m){ if(NET.role==='h'&&G.race&&!G.race.res){ G.race.tm1=m.tm; raceDecide(1) } }
+function raceFin(m){ if(NET.role==='h'&&G.race&&!G.race.res&&typeof m.tm==='number'){ G.race.tm1=m.tm; raceJudgeNow() } }
+function raceJudgeNow(){ const r=G.race; if(!r||r.res||NET.role!=='h')return; const w=raceJudge(r.fn,r.tm1,raceT(r),NET.rtt); if(w!==undefined)raceDecide(w) }
 function raceDecide(w){
-  const r=G.race; if(!r||r.res)return; const t0=w===0?r.fn:null, t1=w===1?r.tm1:null;
-  const m={t:'rr',w,tm:[t0,t1]}; NET.tr.send(m); raceResult(m);
+  const r=G.race; if(!r||r.res)return;
+  const m={t:'rr',w,tm:[r.fn,r.tm1]}; NET.tr.send(m); raceResult(m);
 }
 function raceResult(m){
   const r=G.race; if(!r||r.res)return; r.res=m; r.over=true;
-  const mine=NET.role==='h'?0:1, won=m.w===mine, tm=m.tm[m.w];
+  const mine=NET.role==='h'?0:1, tie=m.w<0, won=m.w===mine, my=m.tm[mine], th=m.tm[1-mine], parts=[];
+  if(my!=null)parts.push('وقتك '+my.toFixed(2)+' ث'); if(th!=null)parts.push('وقت صاحبك '+th.toFixed(2)+' ث');
+  if(my!=null&&th!=null)parts.push('الفرق '+Math.abs(my-th).toFixed(2)+' ث');
   $('raceCd').classList.add('hide');
-  $('raceRes').innerHTML='<div class="rr1">'+(won?'🏆 كسبت!':'😭 خسرت')+'</div><div class="rr2">'+(tm!=null?((won?'وقتك ':'صاحبك وصل بـ ')+tm.toFixed(1)+' ث'):'')+'</div><button class="btn" id="rrBack">↩ ارجعوا للغرفة</button>';
+  $('raceRes').innerHTML='<div class="rr1">'+(tie?'🤝 تعادل!':won?'🏆 كسبت!':'😭 خسرت')+'</div><div class="rr2">'+parts.join(' · ')+'</div><button class="btn" id="rrBack">↩ ارجعوا للغرفة</button>';
   $('raceRes').classList.remove('hide');
   $('rrBack').onclick=()=>{ try{ NET.tr.send({t:'ab'}) }catch(e){} netToLobby('') };
   Snd.stopMusic&&Snd.stopMusic();
@@ -4553,6 +4620,7 @@ function netRender(){
   $('nGo').classList.toggle('hide',!(N.role==='h'&&N.link==='conn'));
   $('nGuestWait').classList.toggle('hide',!(N.role==='g'&&conn));
   $('coPrev').disabled=!(N.role==='h'&&conn)||!!CO.sel.custom; $('coNext').disabled=$('coPrev').disabled; $('coCodeBtn').disabled=!(N.role==='h'&&conn);
+  for(const id of ['coPrev10','coNext10','coLvIn'])$(id).disabled=$('coPrev').disabled; for(const b of document.querySelectorAll('#co [data-cdf]'))b.disabled=!(N.role==='h'&&conn)||!!CO.sel.custom;
   $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · بلا مكافآت';
 }
 function netTab(on){
@@ -4610,7 +4678,7 @@ const ACH=[
  {id:'pit',  ic:'🕳',nm:'حبيب الحفر',        T:[5,25,80,250],     ti:['زائر الحفر','ساكن الحفر','أخ الحفر','ملك الحفر'],         v:()=>(S.st.dc.pit||0)+(S.st.dc.crumble||0), ds:n=>'وقع بالحفر أو مع الأرض اللي بتتفتت '+n+' مرة'},
  {id:'hero', ic:'🦸',nm:'جامع الأبطال',      T:[2,4,6,8],         ti:['ثنائي','فرقة','جيش','كل الشلّة'],                        v:()=>Object.keys(S.own).length,      ds:n=>'امتلك '+n+' أبطال'},
  {id:'trl', ic:'🎯',nm:'سيّد التحدّيات',   T:[1,3,5,8],         ti:['جرّبت حظّك','متمرّس','نخبة التحدّيات','بطل الأبطال'],      v:()=>Object.keys(S.tr||{}).length,   ds:n=>'خلّص '+n+' تحدّي أبطال'},
- {id:'hup', ic:'⬆',nm:'المطوّر',           T:[1,5,12,24],       ti:['مطوّر','معلّم','خبير تطوير','أسطورة التطوير'],            v:()=>Object.values(S.hs||{}).reduce((a,b)=>a+b,0), ds:n=>'ارفع أبطالك '+n+' مرحلة تطوير'},
+ {id:'hup', ic:'⬆',nm:'المطوّر',           T:[1,6,16,32],       ti:['مطوّر','معلّم','خبير تطوير','أسطورة التطوير'],            v:()=>Object.values(S.hs||{}).reduce((a,b)=>a+b,0), ds:n=>'ارفع أبطالك '+n+' مرحلة تطوير'},
  {id:'jump', ic:'🦘',nm:'نطّاط',             T:[100,1000,5000,20000],ti:['نطّاط','كنغر','ما بيحطّ','بيمشي على الهوا'],          v:()=>S.st.j,                         ds:n=>'اقفز '+n+' مرة'},
  {id:'time', ic:'⏱',nm:'ساكن الزنزانة',     T:[10,60,180,600],   ti:['ضيف','زبون','مدمن','ساكن دائم'],                         v:()=>Math.floor(S.st.pt/60),         ds:n=>'العب '+n+' دقيقة'},
  {id:'edit', ic:'🛠',nm:'مهندس الفخاخ',      T:[1,3,8,20],        ti:['مهندس مبتدئ','مصمّم','مبدع','أستاذ الفخاخ'],             v:()=>Object.keys(S.st.mk).length,    ds:n=>'خلّص '+n+' خريطة من المحرّر'},
@@ -4783,17 +4851,19 @@ for(const id of ['bMapT','bMap'])$(id).onclick=openMap;
    Stage = S.hs[id]; it is bought with coins AND earned with XP (levels cleared with that hero + lessons learned from dying).
    Deterministic: nothing here uses Math.random in anything that moves the world; effects (particles, sound) are visual only. */
 S.hs=S.hs||{}; S.hx=S.hx||{}; S.hc=S.hc||{}; S.hq=S.hq||{};
-const STAGE_NM=['مبتدئ','متمرّس','خبير','أسطورة'], XP_NEED=[8,24,60], UP_COST=[40,100,220];
-const heroStage=id=>Math.min(3,S.hs[id]|0);
+const HERO_MAXST=4;                                          // stages I..V (index 0..4)
+const STAGE_NM=['مبتدئ','متمرّس','خبير','أسطورة','خالد'], XP_NEED=[8,24,60,120], UP_COST=[40,100,220,420];
+const heroStage=id=>Math.min(HERO_MAXST,S.hs[id]|0);
+const heroForm=st=>st>=4?3:st>=2?2:1;                       // looks: stages I-II = form 1, III-IV = form 2, V = form 3
 const HAB={
- falafel:{ic:'🧲',nm:'المغناطيس',act:0,ds:'بيسحب العملات القريبة منّك',                          v:{mag:[34,50,68,90]},            tx:['مدى 34','مدى 50','مدى 68','مدى 90 — كل العملات إلك']},
- uncle:  {ic:'🛡',nm:'الدرع',     act:0,ds:'بيبلع ضربة بدل ما تموت (إلا الحفر والأرض اللي بتتفتّت)', v:{ch:[1,1,2,2],rg:[0,1,1,1]},     tx:['ضربة وحدة بالمرحلة','بيتجدّد عند علم الحفظ','ضربتين','ضربتين وبيتجدّد']},
- chicken:{ic:'🪶',nm:'التحويم',   act:0,ds:'امسك زر القفز وإنت نازل لتحوم',                      v:{st:[.55,.8,1.1,1.5]},           tx:['تحويم .55 ث','.8 ث','1.1 ث','1.5 ث']},
- cat:    {ic:'🐾',nm:'نطّة القطة',act:0,ds:'القفزة التانية أعلى بكتير',                           v:{j2:[1.15,1.25,1.35,1.5]},       tx:['+15%','+25%','+35%','+50%']},
- grandma:{ic:'🥄',nm:'الملعقة',   act:1,ds:'ضربة قدّامك: بتكسر السهام، بتقتل الماشيين، وبتكشف الفخاخ المخفية', v:{cd:[1.3,1.05,.85,.65],rg:[44,54,66,80],rv:[2.2,3,4,5.5]}, tx:['انتظار 1.3 ث','1.05 ث','.85 ث','.65 ث — مدى أكبر']},
- donkey: {ic:'🫏',nm:'الركلة',    act:1,ds:'اندفاعة بتكسر البلوكات وبتقتل الماشيين وبتكسر السهام',    v:{cd:[1.7,1.4,1.1,.85],len:[.2,.24,.28,.34]},  tx:['اندفاعة قصيرة','أطول','أطول وأسرع انتظار','أسطورية']},
- robot:  {ic:'🚀',nm:'الجيت',     act:0,ds:'امسك القفز بعد القفزة التانية لتعلّي، ومناعة كاملة من الكهربا', v:{st:[.5,.7,.95,1.3]},            tx:['وقود .5 ث','.7 ث','.95 ث','1.3 ث']},
- mushroom:{ic:'🍄',nm:'لحظة وعي', act:1,ds:'بطء زمن (كل شي بيتباطأ إلا إنت)، وبترى الفخاخ المخفية القريبة',    v:{en:[1.1,1.5,2,2.6],see:[120,150,180,220]}, tx:['1.1 ث','1.5 ث','2 ث','2.6 ث']},
+ falafel:{ic:'🧲',nm:'المغناطيس',act:0,ds:'بيسحب العملات القريبة منّك',                          v:{mag:[34,50,68,90,125]},         tx:['مدى 34','مدى 50','مدى 68','مدى 90 — كل العملات إلك','مدى 125 — شفط شبه كامل']},
+ uncle:  {ic:'🛡',nm:'الدرع',     act:0,ds:'بيبلع ضربة بدل ما تموت (إلا الحفر والأرض اللي بتتفتّت)', v:{ch:[1,1,2,2,3],rg:[0,1,1,1,1]}, tx:['ضربة وحدة بالمرحلة','بيتجدّد عند علم الحفظ','ضربتين','ضربتين وبيتجدّد','3 ضربات وبيتجدّد']},
+ chicken:{ic:'🪶',nm:'التحويم',   act:0,ds:'امسك زر القفز وإنت نازل لتحوم',                      v:{st:[.55,.8,1.1,1.5,2]},         tx:['تحويم .55 ث','.8 ث','1.1 ث','1.5 ث','2 ث — شبه طيران']},
+ cat:    {ic:'🐾',nm:'نطّة القطة',act:0,ds:'القفزة التانية أعلى بكتير',                           v:{j2:[1.15,1.25,1.35,1.5,1.7]},   tx:['+15%','+25%','+35%','+50%','+70%']},
+ grandma:{ic:'🥄',nm:'الملعقة',   act:1,ds:'ضربة قدّامك: بتكسر السهام، بتقتل الماشيين، وبتكشف الفخاخ المخفية', v:{cd:[1.3,1.05,.85,.65,.5],rg:[44,54,66,80,96],rv:[2.2,3,4,5.5,7]}, tx:['انتظار 1.3 ث','1.05 ث','.85 ث','.65 ث — مدى أكبر','.5 ث — مدى ضخم']},
+ donkey: {ic:'🫏',nm:'الركلة',    act:1,ds:'اندفاعة بتكسر البلوكات وبتقتل الماشيين وبتكسر السهام',    v:{cd:[1.7,1.4,1.1,.85,.7],len:[.2,.24,.28,.34,.4]},  tx:['اندفاعة قصيرة','أطول','أطول وأسرع انتظار','أسطورية','اندفاعة الخالدين']},
+ robot:  {ic:'🚀',nm:'الجيت',     act:0,ds:'امسك القفز بعد القفزة التانية لتعلّي، ومناعة كاملة من الكهربا', v:{st:[.5,.7,.95,1.3,1.7]},          tx:['وقود .5 ث','.7 ث','.95 ث','1.3 ث','1.7 ث']},
+ mushroom:{ic:'🍄',nm:'لحظة وعي', act:1,ds:'بطء زمن (كل شي بيتباطأ إلا إنت)، وبترى الفخاخ المخفية القريبة',    v:{en:[1.1,1.5,2,2.6,3.3],see:[120,150,180,220,270]}, tx:['1.1 ث','1.5 ث','2 ث','2.6 ث','3.3 ث']},
 };
 const NOSHIELD=new Set(['pit','crumble']), ROBOT_IMM=new Set(['zap','laser','disco']);
 const hid=()=>(P&&P.hid)||S.hero;                      // the hero of the CURRENT player (co-op: each player has his own; single player: your selected hero)
@@ -4868,9 +4938,9 @@ function heroXpClear(first,noDeath){                  // called from econClear (
 }
 function heroXpDeath(){ if(SIM||G.custom||!legit()||G.lvDeaths>6)return; const id=S.hero; S.hx[id]=(S.hx[id]||0)+.5 }
 const xpOf=id=>Math.floor(S.hx[id]||0);
-const canUpgrade=id=>heroOwned(id)&&heroStage(id)<3&&xpOf(id)>=XP_NEED[heroStage(id)]&&S.wallet>=UP_COST[heroStage(id)];
+const canUpgrade=id=>heroOwned(id)&&heroStage(id)<HERO_MAXST&&xpOf(id)>=XP_NEED[heroStage(id)]&&S.wallet>=UP_COST[heroStage(id)];
 function upgradeHero(id){
-  const s=heroStage(id); if(!heroOwned(id)||s>=3)return 'max'; if(xpOf(id)<XP_NEED[s])return 'xp'; if(S.wallet<UP_COST[s])return 'poor';
+  const s=heroStage(id); if(!heroOwned(id)||s>=HERO_MAXST)return 'max'; if(xpOf(id)<XP_NEED[s])return 'xp'; if(S.wallet<UP_COST[s])return 'poor';
   S.wallet-=UP_COST[s]; S.hs[id]=s+1; save(); hud(); achCheck(); return 'ok';
 }
 
@@ -5259,20 +5329,20 @@ function accHelpMode(g){
 
 /* =============== SHOP TABS: hero upgrades + accessories =============== */
 SHOP.hero=null;
-const ROMAN=['I','II','III','IV'];
+const ROMAN=['I','II','III','IV','V'];
 function heroUpRender(g){
   for(const id of HERO_IDS){
     if(!heroOwned(id))continue;
-    const st=heroStage(id), A=HAB[id], need=st<3?XP_NEED[st]:0, xp=xpOf(id), card=el('div','shc up'+(S.hero===id?' sel':'')), cv2=document.createElement('canvas'); cv2.width=64; cv2.height=84; paintHero(cv2,id);
+    const st=heroStage(id), A=HAB[id], need=st<HERO_MAXST?XP_NEED[st]:0, xp=xpOf(id), card=el('div','shc up'+(S.hero===id?' sel':'')), cv2=document.createElement('canvas'); cv2.width=64; cv2.height=84; paintHero(cv2,id);
     const info=el('div','upi');
     const top=el('div','upt'); top.append(el('b','nm',HEROES[id].name),el('span','stg',ROMAN[st]+' · '+STAGE_NM[st]));
-    const pips=el('div','pips2'); for(let k=0;k<4;k++)pips.appendChild(el('i',k<=st?'on':'',ROMAN[k]));
+    const pips=el('div','pips2'); for(let k=0;k<=HERO_MAXST;k++)pips.appendChild(el('i',k<=st?'on':'',ROMAN[k]));
     const abl=el('div','abl'); abl.append(el('span','ic',A.ic),el('b',null,A.nm),el('span','ds',A.ds));
-    const nxt=el('div','nxt',st<3?'التالي: '+A.tx[st+1]:'✓ '+A.tx[3]);
-    const bar=el('div','bar'), fill=el('div','fill'); fill.style.width=(st<3?clamp(xp/need,0,1)*100:100)+'%'; fill.style.background=st<3&&xp<need?'#7c4dff':'#ffd23f'; bar.appendChild(fill);
-    const xt=el('div','xpt',st<3?'الخبرة '+'⁦'+xp+' / '+need+'⁩  ·  بتجيبها من مراحل تخلّصها فيه ومن موتاته':'مستوى أسطوري 👑');
+    const nxt=el('div','nxt',st<HERO_MAXST?'التالي: '+A.tx[st+1]+(heroForm(st+1)>heroForm(st)?'  ·  🔥 بيتغيّر شكله!':''):'✓ '+A.tx[HERO_MAXST]);
+    const bar=el('div','bar'), fill=el('div','fill'); fill.style.width=(st<HERO_MAXST?clamp(xp/need,0,1)*100:100)+'%'; fill.style.background=st<HERO_MAXST&&xp<need?'#7c4dff':'#ffd23f'; bar.appendChild(fill);
+    const xt=el('div','xpt',st<HERO_MAXST?'الخبرة '+'⁦'+xp+' / '+need+'⁩  ·  بتجيبها من مراحل تخلّصها فيه ومن موتاته':'مستوى أسطوري 👑');
     let btn;
-    if(st>=3)btn=el('button','btn poor','أقصى مرحلة');
+    if(st>=HERO_MAXST)btn=el('button','btn poor','أقصى مرحلة');
     else{ const c=UP_COST[st], poorXp=xp<need, poorC=S.wallet<c;
       btn=el('button','btn'+((poorXp||poorC)?' poor':''),poorXp?'ناقصك '+(need-xp)+' خبرة':'⬆ ترقية 🪙 '+c+(poorC?'  (ناقصك '+(c-S.wallet)+')':''),()=>{
         const r=upgradeHero(id); if(r==='ok'){ Snd.coin(); Snd.win(); shopMsg('ترقّى '+HEROES[id].name+' للمرحلة '+ROMAN[heroStage(id)]+' 🎉'+(ACCS[id][heroStage(id)-1]?' — اكسسوار جديد: '+ACCS[id][heroStage(id)-1][4]:'')) } else if(r==='xp')shopMsg('بدك خبرة أكتر بهالبطل — العب فيه'); else if(r==='poor')shopMsg('ناقصك عملات 🪙'); shopRender() }) }
@@ -5473,6 +5543,136 @@ function heatRender(L2){
   L2.appendChild(box);
 }
 
+/*@admin*/
+/* =============== ADMIN CONSOLE (private / dev builds only) ===============
+   build.py cuts everything between the two marker comments out of the PUBLIC site (and the artifact variant): the public game has no console at all.
+   Open it with the ` key (the one under Esc), or by tapping the game title 5 times quickly on a phone. The game pauses while it is open.
+   It is locked: the first time you choose a passphrase (setpass <word>), after that every session needs  auth <word>.  Only a hash of the word is kept (S.admh).
+   It does nothing online: no co-op, no race. Any command that changes the save marks it with S.adm=1 (so a future leaderboard / coupons can ignore such saves).
+   Honest limit: a single-file game that keeps its save in the browser cannot stop a determined cheater; this console is a convenience for the owner, not security. */
+{                                                  // ADMG itself ({on,god,speed}) lives in index.src.html so the public build keeps a harmless copy
+  const box=document.createElement('div'); box.id='adm';
+  box.style.cssText='position:absolute;left:0;right:0;top:0;height:60%;z-index:70;display:none;flex-direction:column;background:rgba(4,10,6,.94);color:#7cfc8a;border-bottom:calc(var(--u)*2) solid #7cfc8a;direction:ltr;text-align:left;font-weight:600;font-size:calc(var(--u)*12);line-height:1.35;font-family:ui-monospace,Menlo,Consolas,monospace';
+  const out=document.createElement('div'); out.style.cssText='flex:1;overflow-y:auto;padding:calc(var(--u)*8) calc(var(--u)*10);white-space:pre-wrap;word-break:break-word;user-select:text';
+  const row=document.createElement('div'); row.style.cssText='display:flex;gap:calc(var(--u)*6);align-items:center;border-top:1px solid #7cfc8a55;padding:calc(var(--u)*5) calc(var(--u)*10)';
+  const pr=document.createElement('span'); pr.textContent='>';
+  const inp=document.createElement('input'); inp.autocomplete='off'; inp.spellcheck=false; inp.autocapitalize='off'; inp.setAttribute('autocorrect','off'); inp.placeholder='help';
+  inp.style.cssText='flex:1;min-width:0;background:transparent;border:0;outline:0;color:#c9ffd0;font:inherit;direction:ltr;text-align:left';
+  row.append(pr,inp); box.append(out,row); $('stage').appendChild(box);
+
+  const A={auth:false,hist:[],hi:0};
+  const say2=(t,c)=>{ const d=document.createElement('div'); d.textContent=t; if(c)d.style.color=c; out.appendChild(d); while(out.childNodes.length>400)out.removeChild(out.firstChild); out.scrollTop=out.scrollHeight };
+  const ok=t=>say2('✓ '+t,'#9dffb0'), bad=t=>say2('✗ '+t,'#ff8a8a'), info=t=>say2(t,'#8fd6ff');
+  const online=()=>NET.link!=='off'||!!G.co||!!G.race;
+  const isOpen=()=>box.style.display!=='none';
+  const hasPass=()=>typeof S.admh==='number';
+  const hashOf=w=>fnv('adm\u0001'+w);
+  function setOpen(on){
+    if(on===isOpen())return;
+    box.style.display=on?'flex':'none'; ADMG.on=on?1:0;
+    if(on){ for(const f of ['l','r','j','jp','a','ap'])K[f]=false; inp.value=''; if(!out.childNodes.length)banner(); setTimeout(()=>inp.focus(),30) } else inp.blur();
+  }
+  function banner(){
+    say2("DON'T DIE, HABIBI  —  admin console",'#ffd23f');
+    if(online())bad('أونلاين/تعاون/سباق: الكونسول مقفول (help فقط)');
+    else if(!hasPass())info('أول مرة: اختار كلمة سر →  setpass <كلمة>'); else if(!A.auth)info('مقفول →  auth <كلمة السر>');
+    else ok('جاهز. اكتب help');
+  }
+  const num=(v,d)=>{ const x=parseFloat(v); return isFinite(x)?x:d };
+  const needGame=()=>{ if(G.state==='title'||G.state==='co'||G.state==='editor'||!L){ bad('لازم تكون داخل مرحلة'); return false } return true };
+  const touch=()=>{ S.adm=1; save(); try{ hud() }catch(e){} try{ syncHeroes&&syncHeroes() }catch(e){} };
+  const heroId=a=>{ const id=a&&HEROES[a]?a:(a==='.'||!a?(S.hero||'falafel'):null); return id };
+  const maxSt=()=>(typeof HERO_MAXST==='number'?HERO_MAXST:3);
+
+  const CMD={
+    help(){ info([
+      'status                        save summary',
+      'coins <n> | give <n>          set / add coins',
+      'best <n>                      progress (earlier levels get 1 star)',
+      'stars <1-3|max> [from] [to]   stars of cleared levels',
+      'goto <n>                      start level n',
+      'win | kill                    finish / die',
+      'god [on|off]                  no deaths (except falling out of the world)',
+      'speed <0.1-4>                 game speed',
+      'tp <tile>                     teleport to tile x',
+      'diff <normal|crazy|hell>      single-player difficulty',
+      'hero <id>                     select + own a hero',
+      'stage <id|all> <1-'+(maxSt()+1)+'>        hero evolution stage',
+      'xp <id> <n>                   hero xp',
+      'unlock heroes|worlds|acc|all  open everything',
+      'save export | save import <b64>',
+      'reset yes                     wipe the save',
+      'setpass <word> | lock | clear | reload | echo <text>'].join('\n')) },
+    clear(){ out.textContent='' },
+    echo(a){ info(a.join(' ')) },
+    lock(){ A.auth=false; ok('اتقفل'); },
+    reload(){ location.reload() },
+    setpass(a){ if(hasPass()&&!A.auth)return bad('اعمل auth أول'); if(!a[0]||a[0].length<3)return bad('3 حروف على الأقل'); S.admh=hashOf(a.join(' ')); A.auth=true; save(); ok('انحفظت كلمة السر (hash بس)') },
+    auth(a){ if(!hasPass())return bad('ما في كلمة سر بعد → setpass <كلمة>'); if(hashOf(a.join(' '))===S.admh){ A.auth=true; ok('أهلاً أمين 👋') } else bad('غلط') },
+    status(){
+      const own=Object.keys(S.own||{}).length, ow=Object.keys(S.ow||{}).length, st=HERO_IDS.map(h=>h+':'+((S.hs&&S.hs[h])|0)).join(' ');
+      info(['best='+S.best+'  coins='+(S.wallet|0)+'  diff='+S.diff+'  hero='+S.hero,'stars='+starsTotal()+'  heroes='+own+'/'+HERO_IDS.length+'  worlds opened='+ow,'stages(0-based) '+st,'adm='+(S.adm?1:0)+'  god='+ADMG.god+'  speed='+ADMG.speed+'  state='+G.state+'  level='+G.level].join('\n')) },
+    coins(a){ const n=num(a[0]); if(n==null||n<0)return bad('coins <n>'); S.wallet=Math.round(n); touch(); ok('الكوينز = '+S.wallet) },
+    give(a){ const n=num(a[0]); if(n==null)return bad('give <n>'); S.wallet=Math.max(0,(S.wallet|0)+Math.round(n)); touch(); ok('الكوينز = '+S.wallet) },
+    best(a){ const n=clamp(Math.round(num(a[0],0)),1,999); if(!a[0])return bad('best <n>'); S.best=n; for(let i=1;i<n;i++)if(!S.cl[i])S.cl[i]=1; touch(); ok('التقدّم = '+n) },
+    stars(a){
+      const v=a[0]==='max'?3:Math.round(num(a[0],0)); if(!(v>=1&&v<=3))return bad('stars <1-3|max> [من] [لـ]');
+      const lo=clamp(Math.round(num(a[1],1)),1,999), hi=clamp(Math.round(num(a[2],S.best-1)),lo,999); let c=0;
+      for(let i=lo;i<=hi;i++){ S.cl[i]=v; c++ } touch(); ok('ضبطت '+c+' مرحلة على '+v+' نجوم') },
+    goto(a){ const n=clamp(Math.round(num(a[0],0)),1,999); if(!a[0])return bad('goto <n>'); $('menu').classList.add('hide'); G.state='play'; setOpen(false); startGame(n); ok('المرحلة '+n+(n>S.best?' (تجريبية: ما بتتحسب)':'')) },
+    win(){ if(!needGame())return; if(G.state!=='play')return bad('مو بوضع اللعب'); setOpen(false); winLevel(); },
+    kill(){ if(!needGame())return; setOpen(false); const g=ADMG.god; ADMG.god=0; die('spike',null); ADMG.god=g },
+    god(a){ ADMG.god=a[0]==='off'?0:a[0]==='on'?1:(ADMG.god?0:1); ok('god = '+(ADMG.god?'ON':'OFF')) },
+    speed(a){ const v=clamp(num(a[0],1),.1,4); ADMG.speed=v; ok('السرعة = '+v) },
+    tp(a){ if(!needGame())return; const t=num(a[0]); if(t==null)return bad('tp <tile>'); P.x=clamp(t,1,L.w-2)*TS; P.vx=P.vy=0; G.camX=Math.max(0,P.x-VW/2); ok('على الخانة '+t) },
+    diff(a){ if(!DIFFS[a[0]]||a[0]==='nightmare')return bad('normal | crazy | hell'); setDiff(a[0]); ok('الصعوبة = '+a[0]) },
+    hero(a){ const id=heroId(a[0]); if(!id)return bad('بطل غير موجود: '+HERO_IDS.join(' ')); S.own[id]=1; S.hero=id; touch(); ok('البطل = '+id) },
+    stage(a){
+      const n=Math.round(num(a[1],0)); if(!(n>=1&&n<=maxSt()+1))return bad('stage <id|all> <1-'+(maxSt()+1)+'>');
+      const ids=a[0]==='all'?HERO_IDS:[heroId(a[0])]; if(!ids[0])return bad('بطل غير موجود');
+      for(const id of ids)S.hs[id]=n-1; touch(); ok('المرحلة '+n+' لـ '+ids.length+' بطل') },
+    xp(a){ const id=heroId(a[0]), n=Math.round(num(a[1],-1)); if(!id||n<0)return bad('xp <id> <n>'); S.hx[id]=n; touch(); ok('xp '+id+' = '+n) },
+    unlock(a){
+      const w=a[0]||'all', all=w==='all';
+      if(all||w==='heroes'){ for(const id of HERO_IDS)S.own[id]=1 }
+      if(all||w==='worlds'){ for(let i=0;i<THEMES.length;i++)S.ow[i]=1 }
+      if(all||w==='acc'){ for(const id in ACCS)for(const q of ACCS[id])S.aq[id+':'+q[0]+':2']=1; S.trn=S.trn||{}; for(const id of HERO_IDS)S.trn[id]=1; for(const f of FACE)S.aq['f:'+f.k]=1; for(const t of TRAILS)S.aq['t:'+t.k]=1 }
+      if(!(all||w==='heroes'||w==='worlds'||w==='acc'))return bad('unlock heroes|worlds|acc|all');
+      touch(); ok('فتحت: '+w) },
+    save(a){
+      if(a[0]==='export'){ const t=btoa(unescape(encodeURIComponent(JSON.stringify(S)))); info(t); try{ navigator.clipboard.writeText(t).then(()=>ok('انسخ للحافظة'),()=>{}) }catch(e){} return }
+      if(a[0]==='import'&&a[1]){ try{ const o=JSON.parse(decodeURIComponent(escape(atob(a.slice(1).join(''))))); if(typeof o!=='object'||!o)throw 0; localStorage.setItem('td_s',JSON.stringify(Object.assign(o,{adm:1,admh:S.admh}))); ok('استوردت، عم أعيد التحميل...'); setTimeout(()=>location.reload(),600) }catch(e){ bad('نص غير صالح') } return }
+      bad('save export | save import <نص>') },
+    reset(a){ if(a[0]!=='yes')return bad('هيدا بيمسح كل شي! اكتب:  reset yes'); const h=S.admh; try{ localStorage.removeItem('td_s') }catch(e){} S.admh=h; ok('انمسح، عم أعيد التحميل...'); setTimeout(()=>location.reload(),600) },
+  };
+  const FREE=new Set(['help','clear','echo','lock','auth','setpass','reload']);          // work without the lock (auth / setpass check themselves)
+  function run(line){
+    line=line.trim(); if(!line)return; say2('> '+(/^(auth|setpass)\b/i.test(line)?line.split(/\s+/)[0]+' ****':line),'#c9ffd0');
+    const parts=line.split(/\s+/), name=parts[0].toLowerCase(), args=parts.slice(1), fn=CMD[name];
+    if(!fn)return bad('أمر غير معروف: '+name+' (help)');
+    if(online()&&name!=='help'&&name!=='clear'&&name!=='lock')return bad('مقفول أونلاين');
+    if(!FREE.has(name)&&!A.auth)return bad(hasPass()?'مقفول → auth <كلمة السر>':'اختار كلمة سر → setpass <كلمة>');
+    try{ fn(args) }catch(e){ bad('خطأ: '+(e&&e.message||e)) }
+  }
+  inp.addEventListener('keydown',e=>{
+    e.stopPropagation();
+    if(e.key==='Enter'){ const v=inp.value; inp.value=''; if(v.trim()&&!/^(auth|setpass)\b/i.test(v.trim())){ A.hist.push(v); A.hi=A.hist.length } run(v) }
+    else if(e.key==='ArrowUp'){ if(A.hi>0)A.hi--; inp.value=A.hist[A.hi]||''; e.preventDefault() }
+    else if(e.key==='ArrowDown'){ if(A.hi<A.hist.length)A.hi++; inp.value=A.hist[A.hi]||''; e.preventDefault() }
+    else if(e.key==='Tab'){ e.preventDefault(); const p=inp.value.trim().toLowerCase(); if(p&&!p.includes(' ')){ const m=Object.keys(CMD).filter(k=>k.startsWith(p)); if(m.length===1)inp.value=m[0]+' '; else if(m.length>1)info(m.join('  ')) } }
+  });
+  inp.addEventListener('keyup',e=>e.stopPropagation());
+  addEventListener('keydown',e=>{
+    if((e.code==='Backquote'||e.key==='`'||e.key==='~')&&(document.activeElement===inp||!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||''))){ e.preventDefault(); e.stopPropagation(); setOpen(!isOpen()); return }
+    if(e.code==='Escape'&&isOpen()){ e.preventDefault(); e.stopPropagation(); setOpen(false) }
+  },true);
+  box.addEventListener('pointerdown',e=>e.stopPropagation());
+  { let taps=[]; const h1=document.querySelector('#title h1');
+    if(h1)h1.addEventListener('click',()=>{ const n=performance.now(); taps=taps.filter(t=>n-t<2200); taps.push(n); if(taps.length>=5){ taps=[]; setOpen(true) } }) }
+  window.ADM_OPEN=setOpen;
+}
+/*@end*/
+
 
 /* =============== BOOT =============== */
 if(A.img.card_fakedoor_1)$('decoL').src=A.img.card_fakedoor_1; if(A.img.card_spike_1)$('decoR').src=A.img.card_spike_2||A.img.card_spike_1;
@@ -5482,7 +5682,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,tpLoop,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 <script>

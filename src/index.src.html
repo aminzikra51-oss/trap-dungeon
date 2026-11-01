@@ -178,6 +178,7 @@ select.tg{appearance:auto}
 .coscr .copl{flex-wrap:wrap}.coscr .coslot{min-width:calc(var(--u)*150);padding:calc(var(--u)*6) calc(var(--u)*12)}.coscr .coslot canvas{width:calc(var(--u)*46);height:calc(var(--u)*54)}
 .cotabs{display:flex;gap:calc(var(--u)*8);justify-content:center}.cotabs .tg.on,.edset .tg.on{background:#ffd23f;color:#000}
 .conet{display:flex;gap:calc(var(--u)*8);align-items:center;justify-content:center;flex-wrap:wrap;font-weight:800}
+#coLvIn{font:900 calc(var(--u)*14) Tahoma,Arial;text-align:center;width:calc(var(--u)*62);padding:calc(var(--u)*4);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;background:#fff;color:#000}
 .conet input,.nset input{font:900 calc(var(--u)*15) Tahoma,Arial;letter-spacing:.18em;text-transform:uppercase;text-align:center;width:calc(var(--u)*110);padding:calc(var(--u)*5);border-radius:calc(var(--u)*8);border:calc(var(--u)*2) solid #000;background:#fff;color:#000}
 .nset{font-size:calc(var(--u)*12);font-weight:700;text-align:center}.nset input{width:90%;letter-spacing:0;text-transform:none;font-size:calc(var(--u)*11);direction:ltr;margin-top:calc(var(--u)*4)}
 #nCodeBig{font-size:calc(var(--u)*30);letter-spacing:.2em;background:#000a;padding:calc(var(--u)*2) calc(var(--u)*12);border-radius:calc(var(--u)*8);color:#ffd23f;direction:ltr}
@@ -280,7 +281,8 @@ select.tg{appearance:auto}
       <details class="nset"><summary>⚙ إعدادات الأونلاين</summary><div class="sub">رابط قاعدة بيانات Firebase (Realtime Database) — بدونه بيشتغل بين تابّين بنفس المتصفح بس</div><input id="nDb" placeholder="https://اسم-مشروعك-default-rtdb.firebaseio.com" spellcheck="false"></details>
     </div>
     <div class="coblurb" id="coBlurb">الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · ما بتقدروا تبعدوا عن بعض أكتر من شاشة</div>
-    <div class="edset"><span>المرحلة</span><button class="tg" id="coPrev">−</button><b id="coLv">المرحلة 1</b><button class="tg" id="coNext">+</button><button class="tg" id="coCodeBtn">📥 خريطة بكود</button></div>
+    <div class="edset"><span>المرحلة</span><button class="tg" id="coPrev10">−10</button><button class="tg" id="coPrev">−</button><b id="coLv">المرحلة 1</b><button class="tg" id="coNext">+</button><button class="tg" id="coNext10">+10</button><input id="coLvIn" type="number" inputmode="numeric" min="1" max="999" placeholder="رقم" autocomplete="off"><button class="tg" id="coCodeBtn">📥 خريطة بكود</button></div>
+    <div class="edset"><span>الصعوبة</span><button class="tg" data-cdf="normal">عادي 🙂</button><button class="tg" data-cdf="crazy">مجنون 😈</button><button class="tg" data-cdf="hell">مستحيل 💀</button><button class="tg" data-cdf="nightmare">كابوس ☠️</button></div>
     <div class="edimp hide" id="coCodeBox"><textarea id="coCode" placeholder="الصق كود الخريطة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="coCodeGo">✔ حمّل</button></div></div>
     <div class="copl">
       <div class="coslot"><div class="cotag" style="background:#ffd23f">1</div><canvas id="coH1c"></canvas><div class="nm" id="coH1n"></div><div class="sub">A D للحركة · W أو مسافة للقفز</div></div>
@@ -647,6 +649,7 @@ function announceLevel(n){
   const m=pick('milestone',{lv:n,pAudio:.98}); if(m){later(1000,()=>sayVoice(m,3.6,{pri:3,ttl:1}));return}
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
+const ADMG={on:0,god:0,speed:1};      // admin console switches (the console itself, w_admin.js, is left out of the public build)
 function loadLevel(n,announce,opt){
   K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0;G.help=null;G.helped=false} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):(isTrialN(n)?buildTrial(n):buildLevel(n,coOpt(opt))); G.pend=[]; G.ck=[]; G.ts=1; if(!G.custom&&!L.trial&&!G.co&&!G.race){ seedCoins(); G.ck=L.ents.filter(e=>e.t==='coin'&&!e.bait).map(coinKey); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17; if(announce&&!SIM&&!G.custom&&!L.trial)helpApply();
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); if(G.co)coSpawn(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
@@ -667,7 +670,7 @@ function startGame(n,co){
   if(touchMode){$('touch').classList.remove('hide');$('stage').classList.add('touch')}
 }
 function die(cause,e){
-  if(P.dead||G.state!=='play')return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deathAt=G.t; P.dvx=P.vx; P.dvy=P.vy;
+  if(P.dead||G.state!=='play')return; if(ADMG.god&&P.y<VH-10)return; P.dead=true; G.state='dead'; G.cause=cause; G.killer=e||null; G.deadT=0; G.deathAt=G.t; P.dvx=P.vx; P.dvy=P.vy;
   if(G.co&&!G.co.local){ netFx({k:'d',c:cause,e:e,pi:P.idx}); return }          // online: sounds and cards wait until the frame is confirmed (it may still be rolled back)
   dieFx(cause,e);
 }
@@ -845,7 +848,7 @@ function frame(ts){
   const dt=Math.min(.1,(ts-last)/1000||0); last=ts;
   try{
     const w0=performance.now(); AT+=dt;
-    if(G.state==='play'||G.state==='dead'||G.state==='win'){acc+=dt*(G.ts||1);let n=0;if(G.race){ raceTick(dt); if(G.race&&(G.race.hold>0||G.race.over))acc=0 }
+    if(ADMG.on){ acc=0 } else if(G.state==='play'||G.state==='dead'||G.state==='win'){acc+=dt*(G.ts||1)*ADMG.speed;let n=0;if(G.race){ raceTick(dt); if(G.race&&(G.race.hold>0||G.race.over))acc=0 }
       while(acc>=1/60&&n++<3){ if(G.co&&!G.co.local){ if(!netPre()){ acc=Math.min(acc,1/60); break } update(1/60); netPost() } else update(1/60); acc-=1/60 } if(acc>1/20)acc=0}
     if(L&&ts-lastR>=14.5){const gap=Math.min(.5,(ts-lastR)/1000);lastR=ts;render();qTick(gap,performance.now()-w0)}       // 120 Hz phones render at 60: half the work, same feel
   }catch(e){console.error(e)}
@@ -948,6 +951,7 @@ addEventListener('resize',resize);
 /*@include w_trial.js*/
 /*@include w_daily.js*/
 /*@include w_heat.js*/
+/*@include w_admin.js*/
 
 /* =============== BOOT =============== */
 if(A.img.card_fakedoor_1)$('decoL').src=A.img.card_fakedoor_1; if(A.img.card_spike_1)$('decoR').src=A.img.card_spike_2||A.img.card_spike_1;
@@ -957,7 +961,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,tpLoop,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 </body>

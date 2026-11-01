@@ -58,7 +58,7 @@ def run():
         ok('transport in use is the expected one', A.evaluate("() => window.TD.NET.kind") == ('rtdb' if RTDB else 'loop'), A.evaluate("() => window.TD.NET.kind"))
         ok('both connected', sa['link'] == 'conn' and sb['link'] == 'conn', (sa['link'], sb['link']))
         ok('each knows the other hero', sa['peer'] and sa['peer']['hero'] == 'cat' and sb['peer'] and sb['peer']['hero'] == 'falafel')
-        ok('playable levels limited to what BOTH reached', A.evaluate("() => window.TD.coMax()") == 9 and B.evaluate("() => window.TD.coMax()") == 9)
+        ok('level choice is free online: progress of either player does not limit it', A.evaluate("() => window.TD.coMax()") == 999 and B.evaluate("() => window.TD.coMax()") == 999)
         B.wait_for_timeout(int(1500 * SLOW))
         ok('ping measured', A.evaluate(STATE)['rtt'] >= 0 and len(A.evaluate("() => window.TD.NET.pings")) >= 1)
         ok('guest sees host-only controls hidden', B.evaluate("() => [document.getElementById('nGo').classList.contains('hide'), !document.getElementById('nGuestWait').classList.contains('hide')]") == [True, True])
@@ -72,6 +72,12 @@ def run():
         print('lockstep co-op')
         A.evaluate("() => { window.TD.CO.sel.n = 3; window.TD.coRender() }"); A.wait_for_timeout(int(300 * SLOW))
         ok('guest follows the host level choice', B.evaluate("() => window.TD.CO.sel.n") == 3)
+        A.evaluate("() => { window.TD.CO.sel.n = 140; window.TD.coRender() }"); A.wait_for_timeout(int(300 * SLOW))
+        ok('a level far beyond both players\' progress (best 14 / 9) is accepted', B.evaluate("() => window.TD.CO.sel.n") == 140)
+        ok('co-op default difficulty is impossible on both lobbies', A.evaluate("() => window.TD.coDf()") == 'hell' and B.evaluate("() => window.TD.coDf()") == 'hell')
+        A.evaluate("() => { window.TD.CO.sel.df = 'nightmare'; window.TD.CO.sel.n = 3; window.TD.coRender() }"); A.wait_for_timeout(int(300 * SLOW))
+        ok('the guest follows the host difficulty choice (nightmare)', B.evaluate("() => window.TD.coDf()") == 'nightmare' and B.evaluate("() => window.TD.CO.sel.n") == 3)
+        ok('guest cannot change the level or the difficulty himself', B.evaluate("() => [document.getElementById('coNext10').disabled, document.getElementById('coLvIn').disabled, document.querySelector('#co [data-cdf=hell]').disabled]") == [True, True, True])
         A.evaluate("() => document.getElementById('nGo').click()"); A.wait_for_timeout(int(700 * SLOW))
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
         ok('both in a lockstep game', sa['co'] and sb['co'] and sa['link'] == 'play' and sb['link'] == 'play', (sa, sb))
@@ -90,7 +96,7 @@ def run():
         common = [k for k in ha if k in hb]
         ok('state hashes were compared', len(common) >= 5, len(common))
         ok('hashes identical on both machines despite different local profiles', all(ha[k] == hb[k] for k in common) and sb['bad'] == 0 and sa['bad'] == 0, (len(common), sa['bad'], sb['bad']))
-        ok('a different local difficulty did not leak into the match', A.evaluate("() => window.TD.G.co.df") == 'crazy' and B.evaluate("() => window.TD.G.co.df") == 'crazy' and B.evaluate("() => window.TD.S.diff") == 'hell')
+        ok('a different local difficulty did not leak into the match', A.evaluate("() => window.TD.G.co.df") == 'nightmare' and B.evaluate("() => window.TD.G.co.df") == 'nightmare' and A.evaluate("() => window.TD.L.dk") == 'nightmare' and B.evaluate("() => window.TD.S.diff") == 'hell' and A.evaluate("() => window.TD.S.diff") == 'crazy')
         if SHOTS:
             os.makedirs(SHOTS, exist_ok=True); A.locator('#stage').screenshot(path=f'{SHOTS}/net_co_A.png'); B.locator('#stage').screenshot(path=f'{SHOTS}/net_co_B.png')
 
@@ -140,8 +146,11 @@ def run():
             A.wait_for_timeout(500)
             if A.evaluate("() => window.TD.G.state") == 'win': won = True; break
         ok('both players reached the door and the level was won', won, A.evaluate(STATE))
-        B.wait_for_timeout(300)
-        ok('guest sees the win too', B.evaluate("() => window.TD.G.state") in ('win', 'co'), B.evaluate("() => window.TD.G.state"))
+        seen = False
+        for _ in range(16):   # the guest trails the confirmed frame by about a round trip (more on the slow relay)
+            B.wait_for_timeout(250)
+            if B.evaluate("() => window.TD.G.state") in ('win', 'co'): seen = True; break
+        ok('guest sees the win too', seen, B.evaluate("() => window.TD.G.state"))
         for _ in range(20):
             A.wait_for_timeout(500)
             if A.evaluate("() => window.TD.G.state") == 'co': break
@@ -173,7 +182,7 @@ def run():
         for pg in (A, B): pg.evaluate("() => { window.TD.FLAGS.coScript = null }")
 
         print('race')
-        A.evaluate("() => document.getElementById('nModeRace').click()"); A.wait_for_timeout(400)
+        A.evaluate("() => { window.TD.CO.sel.df = 'crazy'; document.getElementById('nModeRace').click() }"); A.wait_for_timeout(400)
         ok('guest follows the mode switch', B.evaluate("() => window.TD.NET.mode") == 'race')
         A.evaluate("() => document.getElementById('nGo').click()"); A.wait_for_timeout(600)
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
@@ -203,6 +212,26 @@ def run():
         ok('no rewards in a race', A.evaluate("() => window.TD.S.coins") == 5 and B.evaluate("() => window.TD.S.coins") == 777)
         B.evaluate("() => document.getElementById('rrBack').click()"); A.wait_for_timeout(600)
         ok('race over -> both back in the lobby', A.evaluate("() => window.TD.G.state") == 'co' and B.evaluate("() => window.TD.G.state") == 'co' and not A.evaluate("() => !!window.TD.G.race"))
+        ok('verdict carries the finish time of the winner, measured from go (not from the last respawn)', rb['tm'][1] is not None and 1.0 < rb['tm'][1] < 12 and rb['tm'][0] is None, rb)
+        # round 2: the HOST finishes first, the guest never does -> the host waits only a moment (for a possible earlier guest time), then wins
+        A.evaluate("() => { window.TD.CO.sel.n = 3; window.TD.coRender() }"); A.wait_for_timeout(int(400 * SLOW))
+        A.evaluate("() => document.getElementById('nGo').click()"); A.wait_for_timeout(int(4600 * SLOW))
+        A.evaluate(STOP); B.evaluate(STOP); A.wait_for_timeout(1200)
+        t0 = A.evaluate("() => { const T = window.TD; T.G.state = 'play'; T.winLevel(); return performance.now() }")
+        fin = False
+        for _ in range(80):
+            A.wait_for_timeout(100)
+            if A.evaluate("() => !!(window.TD.G.race && window.TD.G.race.res)") and B.evaluate("() => !!(window.TD.G.race && window.TD.G.race.res)"): fin = True; break
+        ra, rb = A.evaluate("() => window.TD.G.race.res"), B.evaluate("() => window.TD.G.race.res")
+        ok('host finishes first: verdict reaches both', fin and ra and rb and ra['w'] == 0 and rb['w'] == 0, (ra, rb))
+        ok('...with his time measured from go, and the guest has none', ra and ra['tm'][0] is not None and 0.5 < ra['tm'][0] < 12 and ra['tm'][1] is None, ra)
+        ok('the host waited a grace moment, not forever', A.evaluate("() => window.TD.G.race.res !== null") and (A.evaluate("() => performance.now()") - t0) < 3000)
+        ok('the finished player saw a waiting message / the result overlay', A.evaluate("() => !document.getElementById('raceRes').classList.contains('hide')"))
+        B.evaluate("() => document.getElementById('rrBack').click()"); A.wait_for_timeout(700)
+        ok('back in the lobby after round 2', A.evaluate("() => window.TD.G.state") == 'co' and B.evaluate("() => window.TD.G.state") == 'co')
+        # the clerk's maths (host side): draw within 80 ms, earlier time wins, waits for a late message but not forever
+        J = A.evaluate("""() => { const j = window.TD.raceJudge; return [j(10, 10.05, 12, 100), j(10, 10.5, 12, 100), j(10.5, 10, 12, 100), j(null, 12, 12.0, 100), j(null, 12, 12.1, 100), j(12, null, 12.05, 100), j(12, null, 12.5, 100), j(12, null, 12.5, 2000), j(12, null, 13.1, 2000), j(10, 10.07, 12, 0), j(10, 10.09, 12, 0)] }""")
+        ok('raceJudge: draw / earlier wins / waits for the guest message / grace is bounded', J == [-1, 0, 1, None, 1, None, 0, None, 0, -1, 0], J)
 
         print('leaving')
         B.evaluate("() => window.TD.netLeave('')"); A.wait_for_timeout(500)

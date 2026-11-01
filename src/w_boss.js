@@ -33,13 +33,13 @@ function buildBoss(n,opt){
 /* what the boss throws right now (depends on how many hits it already took, the difficulty and how deep the run is).
    ONE scheduler: a single timer spaces every attack, so two telegraphs never pop at the same instant (that is what made some seeds unwinnable). */
 function bossPlan(e){
-  const k=Math.min(e.hits,4), f=e.f, s=lerp(1,.82,f)*(e.dk==='hell'?.86:e.dk==='crazy'?.94:1), calm=e.dk==='normal'?1.12:1;
+  const k=Math.min(e.hits,4), f=e.f, s=lerp(1,.82,f)*(hellish(e.dk)?.86:e.dk==='crazy'?.94:1), calm=e.dk==='normal'?1.12:1;
   const W=[[1,0,0],[.55,.45,0],[.38,.34,.28],[.34,.33,.33],[.3,.34,.36]][k];         // weights: rain, lane, erupt
   return {
     gap:[1.45,1.25,1.1,1.0,.9][k]*s, w:W,
     rain:{n:[1,1,2,2,3][k], tele:clamp(.66-.05*k-f*.12,.44,.7)*calm},
     lane:k>=1?{spd:[0,245,270,290,310][k]+f*40, tele:clamp(.95-.06*k-f*.15,.6,.95)*calm}:null,
-    chg:e.dk==='hell'?2.5:(e.dk==='crazy'?2.2:1.9),                     // seconds you must stand on the button (it drains at 60 % speed when you step off)
+    chg:hellish(e.dk)?2.5:(e.dk==='crazy'?2.2:1.9),                     // seconds you must stand on the button (it drains at 60 % speed when you step off)
     erupt:k>=2?{tele:clamp(.9-.05*k-f*.1,.6,.9)*calm, up:.85, n:k>=3?2:1}:null
   };
 }

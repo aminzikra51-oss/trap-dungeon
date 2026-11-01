@@ -95,40 +95,42 @@ Snd.gate=function(open){ this.noise({dur:.28,v:.14,ft:'lowpass',f:open?500:300})
 /* ---------------- level pieces: each returns the number of tiles it needs ---------------- */
 const coSign=(L,tx,text)=>L.signs.push({tx,text,tag:'any',lie:false,seen:false});
 const coCp=(L,tx)=>{ if(L.ground[tx]>=0&&!L.cr[tx])L.ents.push(mkCp(tx)) };
+const coCpEnd=(L,tx)=>{ if(L.dk!=='nightmare')coCp(L,tx) };      // nightmare: no save flag after a puzzle, dying right behind it means doing it again
 const COV={
  gate(L,x){ const g=newId(L);
   coCp(L,x); coSign(L,x+3,'واحد يوقف على الزر 🔘\nوالتاني يعبر ويشدّ الرافعة 🎚');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8), mkGate(g,x+11,1,0,GR-1,'door'), mkLever(g,(x+15)*TS+16,GY));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  ladder(L,x){ const g=newId(L), wx=x+9;
   coCp(L,x); coSign(L,x+4,'الحيط عالي! 😅\nواحد يوقف... والتاني يطلع على راسه 🧍');
   for(let k=1;k<=3;k++){ blk(L,wx,GR-k); blk(L,wx+1,GR-k) }
   L.ents.push(mkPlat(newId(L),'static',wx*TS,GY-104,2*TS,{}));
   L.ents.push(mkGate(g,wx-2,1,GR-1,GR-1,'steps',1), mkGate(g,wx-1,1,GR-2,GR-1,'steps',1), mkLever(g,(wx+5)*TS+16,GY));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  bridge(L,x){ const g=newId(L), gap=11;
   coCp(L,x); coSign(L,x+3,'الجسر ما بيطلع لحاله 😈\nواحد يكبس الزر ويضل واقف عليه');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8)); cutPit(L,x+8,gap); L.ents.push(mkGate(g,x+8,gap,GR,GR,'bridge',1), mkLever(g,(x+8+gap+2)*TS+16,GY));
-  coCp(L,x+8+gap+5); return gap+14 },
+  coCpEnd(L,x+8+gap+5); return gap+14 },
  sync(L,x){ const g=newId(L);
   coCp(L,x); coSign(L,x+3,'كبسوا الزرّين مع بعض! 👯\nواحد تحت وواحد فوق');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8,{all:1,lat:1}));
   L.ents.push(mkPlat(newId(L),'static',(x+8)*TS,GY-72,3*TS,{})); L.ents.push(mkPlate(g,(x+9)*TS-4,GY-72,TS*1.8,{all:1,lat:1}));
   L.ents.push(mkGate(g,x+15,1,0,GR-1,'door'));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  lift(L,x){ const g=newId(L), H=6, top=GY-H*TS;
   coCp(L,x); coSign(L,x+3,'المصعد بدّو واحد يوقف على الزر 🛗\nوالتاني يطلع ويشدّ الرافعة');
   L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8));
   L.ents.push(mkPlat(newId(L),'colift',(x+8)*TS,GY-30,2*TS,{gid:g,y0:GY-30,y1:top,sp:84,lm:0}));
   for(let k=1;k<=H;k++)for(let c2=0;c2<5;c2++)blk(L,x+10+c2,GR-k);
   L.ents.push(mkGate(g,x+8,0,0,0,'none',0), mkLever(g,(x+12)*TS+16,top));
-  coCp(L,x+19); return 21 },
+  coCpEnd(L,x+19); return 21 },
  relay(L,x){ const a=COV.gate(L,x); const b=COV.gate(L,x+a-2); return a+b-2 },
 };
 const COV_LIST=[['gate',10,1,22],['ladder',10,1,22],['bridge',8,2,26],['sync',8,2,22],['lift',8,3,22],['relay',6,4,44]];
 FAM.co=function(L,r,x,n,D,room){
   const forced=D.force&&COV[D.force]?D.force:null, last=L.coLast;
-  const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2);
+  const HW={relay:3,lift:1.8,sync:1.8,bridge:1.4};                 // impossible / nightmare lean on the puzzles that need the most teamwork
+  const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2).map(v=>hellish(L.dk)?[v[0],v[1]*(HW[v[0]]||.5),v[2],v[3]]:v);
   const v=forced||pv(r,n,list,room,D); if(!v)return 0;
   const used=COV[v](L,x); L.coLast=v; (L.coList=L.coList||[]).push([v,x,used]); return used;
 };

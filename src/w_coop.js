@@ -57,14 +57,19 @@ function coStart(o){
 }
 function coWon(){ CO.msg='🎉 خلّصتوها بـ '+(G.winTime!=null?G.winTime:G.t).toFixed(1)+' ث'+(G.lvDeaths?' وبـ '+G.lvDeaths+' موتة':' بدون ولا موتة! 😎') }
 function coNext(){                                 // after a win: back to the lobby with the next playable level selected
-  const was=G.co; if(was&&!was.local){ G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=coMax())n++; CO.sel.n=clamp(n,1,Math.max(1,coMax())) } netToLobby(CO.msg); netLobbySend(); return } G.co=null; if(!CO.sel.custom){ let n=G.level+1; while(isBossLevel(n)&&n<=S.best)n++; CO.sel.n=clamp(n,1,Math.max(1,S.best)) }
+  const was=G.co; if(was&&!was.local){ G.co=null; if(!CO.sel.custom)CO.sel.n=coGoto(G.level+1,1); netToLobby(CO.msg); netLobbySend(); return } G.co=null; if(!CO.sel.custom)CO.sel.n=coGoto(G.level+1,1);
   coOpen(CO.msg,was);
 }
 
 /* ---- lobby ---- */
-const coMax=()=>NET.link!=='off'&&NET.peer?Math.min(Math.max(1,S.best),NET.peer.best):Math.max(1,S.best);       // online: only levels BOTH have reached
-function coPlayable(n){ return n>=1&&n<=coMax()&&!isBossLevel(n) }
-function coStep(d){ let n=CO.sel.n; for(let k=0;k<200;k++){ n+=d; if(n<1||n>coMax())return; if(coPlayable(n)){ CO.sel.n=n; return } } }
+/* The level is a FREE choice in co-op and race (nothing is earned there, so progress does not matter): any level up to CO_TOP except boss levels.
+   CO_TOP stays below 1001, the hero trial pseudo levels. */
+const CO_TOP=999, CO_DFS=['normal','crazy','hell','nightmare'];
+const coMax=()=>CO_TOP;
+function coPlayable(n){ return n>=1&&n<=CO_TOP&&!isBossLevel(n) }
+function coGoto(n,dir){ n=clamp(Math.round(+n)||1,1,CO_TOP); if(isBossLevel(n))n+=dir<0?-1:1; return clamp(n,1,CO_TOP) }      // returns a playable level near n (a boss level moves one step in the direction of travel)
+function coStep(d){ CO.sel.n=coGoto(CO.sel.n+d,d) }
+const coDf=()=>CO.sel.df||(NET.mode==='race'?'crazy':'hell');                  // co-op defaults to impossible, a race to crazy; the host's choice travels with the start message
 function coPreview(){ try{ const th=CO.sel.custom?CO.sel.custom.th:themeOf(CO.sel.n); L=buildLevel(1,{script:[['pit','plain']],theme:th,diff:'normal',salt:0}); P=newPlayer(L.spawnTx); themeBg=makeBg(THEMES[th],th*31+7); G.camX=0 }catch(e){} }
 function coOpen(msg,was){
   if(CO.sel.h2==null||!heroOwned(CO.sel.h2))CO.sel.h2=coOwnedHeroes().find(h=>h!==S.hero)||S.hero;
@@ -76,7 +81,9 @@ function coClose(){ if(NET.link!=='off')netLeave('',false); $('co').classList.ad
 function coRender(){
   const s=CO.sel, cu=s.custom;
   $('coLv').textContent=cu?'🛠 خريطة مخصّصة ('+cTraps(cu)+' فخ)':'المرحلة '+s.n;
-  $('coPrev').disabled=!!cu; $('coNext').disabled=!!cu;
+  $('coPrev').disabled=!!cu; $('coNext').disabled=!!cu; $('coPrev10').disabled=!!cu; $('coNext10').disabled=!!cu; $('coLvIn').disabled=!!cu;
+  if(document.activeElement!==$('coLvIn'))$('coLvIn').value=cu?'':s.n;
+  for(const b of document.querySelectorAll('#co [data-cdf]')){ b.classList.toggle('on',!cu&&b.dataset.cdf===coDf()); b.disabled=!!cu }
   const online=NET.tab&&NET.link!=='off'&&NET.peer, mine=online?S.hero:S.hero, theirs=online?NET.peer.hero:s.h2;
   for(const [id,h] of [['coH1',mine],['coH2',theirs]]){ const cv2=$(id+'c'); cv2.width=64; cv2.height=74; paintHero(cv2,h); $(id+'n').textContent=HEROES[h].name }
   $('coMsg').textContent=CO.msg||''; $('coCodeBtn').textContent=cu?'✖ شيل الخريطة المخصّصة':'📥 خريطة بكود';
@@ -85,12 +92,16 @@ function coRender(){
 }
 function coStartFromLobby(){
   if(NET.tab)return; const s=CO.sel; if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة للتعاون'; coRender(); return }
-  coStart({hero:[S.hero,s.h2],level:s.n,custom:s.custom?cClone(s.custom):null,local:true,me:0});
+  coStart({hero:[S.hero,s.h2],level:s.n,custom:s.custom?cClone(s.custom):null,local:true,me:0,df:s.custom?null:coDf()});
 }
 function coCycle2(d){ const o=coOwnedHeroes(); const i=o.indexOf(CO.sel.h2); CO.sel.h2=o[(i+d+o.length)%o.length]; Snd.ui&&Snd.ui(); coRender() }
 $('bCoT').onclick=()=>{ Snd.init(); coOpen('') };
 $('coX').onclick=coClose; $('coGo').onclick=coStartFromLobby;
-$('coPrev').onclick=()=>{ coStep(-1); coPreview(); coRender() }; $('coNext').onclick=()=>{ coStep(1); coPreview(); coRender() };
+const coMove=d=>{ coStep(d); coPreview(); coRender() };
+$('coPrev').onclick=()=>coMove(-1); $('coNext').onclick=()=>coMove(1); $('coPrev10').onclick=()=>coMove(-10); $('coNext10').onclick=()=>coMove(10);
+$('coLvIn').addEventListener('keydown',e=>{ e.stopPropagation(); if(e.key==='Enter')$('coLvIn').blur() });
+$('coLvIn').addEventListener('change',()=>{ const v=parseInt($('coLvIn').value,10); if(v>0){ CO.sel.n=coGoto(v,1); coPreview() } coRender() });
+for(const b of document.querySelectorAll('#co [data-cdf]'))b.onclick=()=>{ CO.sel.df=b.dataset.cdf; Snd.ui&&Snd.ui(); coRender() };
 $('coH2L').onclick=()=>coCycle2(-1); $('coH2R').onclick=()=>coCycle2(1);
 $('coCodeBtn').onclick=()=>{ const s=CO.sel; if(s.custom){ s.custom=null; CO.msg=''; coPreview() } else { s.codeOpen=!s.codeOpen } coRender() };
 $('coCodeGo').onclick=()=>{ const r=decodeCustom($('coCode').value); if(r.err){ CO.msg='❌ '+r.err; coRender(); return } CO.sel.custom=r.c; CO.sel.codeOpen=false; CO.msg='✅ انحمّلت الخريطة'; coPreview(); coRender() };

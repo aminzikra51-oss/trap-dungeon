@@ -6,7 +6,9 @@ const pv=(r,n,list,room,D)=>{                 // pick a variant: [name,weight,un
 const BADCH=new Set(['thwomp','drop','mover','stones','fish','charger','sniper','roll','sneak','pulse','slide','spring','double','rainspk','bait','rev','stair']);
 /* difficulty presets: sh = how many levels ahead the content already is (tutorial levels 1-2 stay gentle), combo = extra overlay chance,
    gap = tighter spacing between traps, cp = tiles between checkpoints, lie = chance that a sign lies, troll = provocation pranks per level */
-const DIFFS={normal:{sh:0,combo:0,gap:0,cp:36,lie:.5,troll:0},crazy:{sh:3,combo:.1,gap:.4,cp:48,lie:.62,troll:1},hell:{sh:6,combo:.2,gap:.9,cp:66,lie:.78,troll:2}};
+const DIFFS={normal:{sh:0,combo:0,gap:0,cp:36,lie:.5,troll:0,cx:0},crazy:{sh:3,combo:.1,gap:.4,cp:48,lie:.62,troll:1,cx:0},hell:{sh:6,combo:.2,gap:.9,cp:66,lie:.78,troll:2,cx:1},
+  nightmare:{sh:10,combo:.3,gap:1.2,cp:90,lie:.85,troll:3,cx:2}};           // nightmare exists for the online co-op / race lobby only (never offered in single player); cx = extra co-op puzzles per level
+const hellish=k=>k==='hell'||k==='nightmare';
 function mkD(n){
   const h=clamp((n-2)/5.5,0,1), x=Math.max(0,n-9), f=h+Math.min(.65,x/45);       // h: 0 (tutorial) -> 1 (level 9); f keeps growing slowly after that
   return {n,h,x,f,tut:n<=2,mg:n<3?2:(n<5?3:4),gap:Math.max(1.3,5.4-3.6*h-x*.035),combo:n<3?0:clamp(.3+(n-3)*.05,0,.9),
@@ -136,16 +138,16 @@ const EXTRA_NAMES=['قسم الطوارئ','كل شي مسموح... للفخاخ
 function buildLevel(n,opt){
   opt=opt||{}; if(isBossLevel(n)&&!FLAGS.noBoss&&!(opt.script||opt.W||opt.D||opt.noBoss))return buildBoss(n,opt);
   const dk=DIFFS[opt.diff]?opt.diff:(DIFFS[S.diff]?S.diff:'crazy'), DF=DIFFS[dk], ne=n<=2?n:n+DF.sh;     // ne = the level number the CONTENT behaves like
-  const salt=opt.salt!=null?opt.salt:(BADSALT[dk+':'+n]||0), r=mulberry32(n*7919+1337+salt*104729+(dk==='normal'?0:dk==='crazy'?9091:18181)), D=mkD(ne); if(opt.D)Object.assign(D,opt.D);
+  const salt=opt.salt!=null?opt.salt:(BADSALT[dk+':'+n]||0), r=mulberry32(n*7919+1337+salt*104729+(dk==='normal'?0:dk==='crazy'?9091:dk==='hell'?18181:27271)), D=mkD(ne); if(opt.D)Object.assign(D,opt.D);
   if(ne>=3){D.combo=clamp(D.combo+DF.combo,0,.95);D.gap=Math.max(1.2,D.gap-DF.gap)}
-  const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138));
+  const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138)+(opt.co&&!opt.script?DF.cx*14:0));       // co-op on impossible / nightmare: longer levels, room for more puzzles
   const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:themeOf(n),crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
   if(opt.theme!=null)L.theme=opt.theme;
   const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
   const script=opt.script||(n===1?[['pit','plain'],['spike','static'],['pit','wide'],['spike','static'],['pit','plain']]:n===2?[['crumble','plain'],['spike','static'],['walk','walker'],['arrow','lane'],['pit','wide'],['spike','hidden']]:null);
   let script2=script; if(opt.co&&!opt.script&&script){ script2=script.slice(); script2.splice(Math.max(1,script2.length>>1),0,['co',n===1?'gate':'ladder']) }
-  const nCo=opt.co&&!opt.script&&!script?(W>=120?3:W>=96?2:1):0; let coDone=0;           // co-op levels carry puzzles that need both players
+  const nCo=opt.co&&!opt.script&&!script?Math.min(5,(W>=120?3:W>=96?2:1)+DF.cx):0; let coDone=0;           // co-op levels carry puzzles that need both players
   let x=8,guard=0,endX=8,trail=0,prev='',sinceCp=0,sinceOv=9,si=0,lastCpTx=-99,hist=[];
   const PITT={pit:1};
   const maxIter=script&&script.length>40?script.length*2+30:90;      // long editor recipes need more passes than a generated level
@@ -153,7 +155,7 @@ function buildLevel(n,opt){
     let fam=null,force=null;
     if(script2&&si<script2.length){fam=script2[si][0];force=script2[si][1];si++}
     else if(opt.script&&opt.script.length)break;
-    else if(coDone<nCo&&x>=Math.round(W*(.2+.6*coDone/nCo))&&x+NEEDF.co<=W-14){ fam='co' }
+    else if(coDone<nCo&&x>=Math.round(W*(DF.cx?.1+.5*coDone/nCo:.2+.6*coDone/nCo))&&x+NEEDF.co<=W-14){ fam='co' }
     else{ for(let k=0;k<10;k++){let t=pickW(pool.map(p=>[p[0],p[1]*(hist.slice(-2).includes(p[0])?.35:1)]),r); if(x+NEEDF[t]<=W-14){fam=t;break}} }
     if(!fam||x+8>W-12)break;
     if(fam==='cp'){                         // map editor: a real checkpoint flag placed on solid ground
@@ -171,17 +173,17 @@ function buildLevel(n,opt){
     let g=Math.round(D.gap)+ri(r,0,2);
     sinceCp+=used+g;
     if(ne>=5&&sinceCp>=DF.cp&&endX+14<W-12&&!opt.script){g=Math.max(g,10);const cx=endX+3;if(L.ground[cx]>=0&&!L.cr[cx]){L.ents.push(mkCp(cx));lastCpTx=cx;sinceCp=0}}
-    if(DF.troll&&!opt.script&&!L.fakeCp&&ne>=(dk==='hell'?4:6)&&sinceCp>=14&&sinceCp<DF.cp-6&&endX+16<W-12&&r()<.4){      // flag that looks exactly like a checkpoint but saves nothing
+    if(DF.troll&&!opt.script&&!L.fakeCp&&ne>=(hellish(dk)?4:6)&&sinceCp>=14&&sinceCp<DF.cp-6&&endX+16<W-12&&r()<.4){      // flag that looks exactly like a checkpoint but saves nothing
       const cx=endX+3; if(L.ground[cx]>=0&&!L.cr[cx]&&L.ground[cx+1]>=0&&!(L.pits.some(p=>cx>=p[0]-1&&cx<=p[0]+p[1]))){const e=mkCp(cx);e.fake=1;L.ents.push(e);L.fakeCp=1;g=Math.max(g,7)} }
     x=endX+Math.max(2,g);
   }
   if(ne>=4&&r()<.8&&!opt.script){L.ents.push(mkFake(W-12,ne>=10&&(ne%2===0||ne>=16)))}
   if(DF.troll&&!opt.script){
     // the exit door runs away when you get close, and pops spikes where it stood
-    if(ne>=(dk==='hell'?4:6)&&r()<(dk==='hell'?.8:.5))L.ents.push({t:'exitrun',x:0,s:0,always:1});
+    if(ne>=(hellish(dk)?4:6)&&r()<(hellish(dk)?.8:.5))L.ents.push({t:'exitrun',x:0,s:0,always:1});
     // lights go out for a moment before a trap segment
-    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[0]!=='co'&&q[1]>24), nb=ne>=(dk==='hell'?4:7)?DF.troll:0;
-    L.dark=[]; for(let i=0;i<nb&&sg.length;i++){const q=sg.splice(ri(r,0,sg.length-1),1)[0]; L.dark.push({x0:(q[1]-9)*TS,x1:(q[1]+q[2])*TS,dur:dk==='hell'?2.7:1.9,fired:0})}
+    const sg=(L.segs||[]).filter((q,i)=>i>=2&&q[0]!=='coin'&&q[0]!=='bait'&&q[0]!=='co'&&q[1]>24), nb=ne>=(hellish(dk)?4:7)?DF.troll:0;
+    L.dark=[]; for(let i=0;i<nb&&sg.length;i++){const q=sg.splice(ri(r,0,sg.length-1),1)[0]; L.dark.push({x0:(q[1]-9)*TS,x1:(q[1]+q[2])*TS,dur:hellish(dk)?2.7:1.9,fired:0})}
   }
   if(chaseKind){const sp=Math.min(176,D.v(112,160)+(n>30?8:0));L.chase=chaseKind;const e=mkChase(chaseKind,sp,chaseKind==='wall'?-60:-140);e.go=6*TS;L.ents.push(e)}
   for(let t=4;t<W;t+=10)L.torches.push(t);

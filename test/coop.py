@@ -102,11 +102,24 @@ async () => {
   ok('lobby opens (state co, overlay visible, title hidden)', G.state === 'co' && !$('co').classList.contains('hide') && $('title').classList.contains('hide'));
   ok('lobby shows level 1 and both heroes', /المرحلة 1/.test($('coLv').textContent) && $('coH1n').textContent.length > 0 && $('coH2n').textContent.length > 0, $('coLv').textContent + ' | ' + $('coH1n').textContent + ' | ' + $('coH2n').textContent);
   $('coNext').click(); $('coNext').click(); ok('+ goes to level 3', /المرحلة 3/.test($('coLv').textContent), $('coLv').textContent);
-  for (let i = 0; i < 8; i++) $('coNext').click(); ok('level picker skips the boss at 10 and stops at progress (12)', /المرحلة 12/.test($('coLv').textContent) && T.CO.sel.n === 12, T.CO.sel.n);
+  for (let i = 0; i < 8; i++) $('coNext').click(); ok('level picker skips the boss at 10 (3 + 8 clicks = 12)', /المرحلة 12/.test($('coLv').textContent) && T.CO.sel.n === 12, T.CO.sel.n);
   $('coPrev').click(); ok('− goes back', T.CO.sel.n === 11);
+  // ---- free level choice: progress does not limit co-op / race levels ----
+  $('coNext').click(); $('coNext').click(); ok('level choice is free: past progress (best 12) works', T.CO.sel.n === 13 && S.best === 12, T.CO.sel.n);
+  $('coNext10').click(); ok('+10 jumps ten levels', T.CO.sel.n === 23, T.CO.sel.n);
+  $('coPrev10').click(); $('coPrev10').click(); ok('-10 twice (23 -> 3)', T.CO.sel.n === 3, T.CO.sel.n);
+  $('coLvIn').value = '257'; $('coLvIn').dispatchEvent(new Event('change')); ok('typing a level number jumps there', T.CO.sel.n === 257 && /المرحلة 257/.test($('coLv').textContent), T.CO.sel.n);
+  $('coLvIn').value = '20'; $('coLvIn').dispatchEvent(new Event('change')); ok('a boss level typed in moves to the next playable one', T.CO.sel.n === 21, T.CO.sel.n);
+  $('coLvIn').value = '5000'; $('coLvIn').dispatchEvent(new Event('change')); ok('the top is 999 (hero trials start at 1001)', T.CO.sel.n === 999, T.CO.sel.n);
+  $('coLvIn').value = '0'; $('coLvIn').dispatchEvent(new Event('change')); ok('0 is ignored', T.CO.sel.n === 999, T.CO.sel.n);
+  ok('co-op default difficulty is impossible', T.coDf() === 'hell' && $('coH2n').parentNode.parentNode.parentNode.querySelector('[data-cdf="hell"]').classList.contains('on'));
+  document.querySelector('#co [data-cdf="nightmare"]').click(); ok('difficulty chooser picks nightmare', T.CO.sel.df === 'nightmare' && T.coDf() === 'nightmare' && document.querySelector('#co [data-cdf="nightmare"]').classList.contains('on'));
+  ok('the player\'s own single-player difficulty is untouched', S.diff !== 'nightmare');
+  T.CO.sel.n = 11;
   const h2 = $('coH2n').textContent; $('coH2L').click(); ok('player 2 hero can be cycled among owned heroes', $('coH2n').textContent !== h2, h2 + ' -> ' + $('coH2n').textContent);
-  while (T.CO.sel.n > 3) $('coPrev').click();
+  $('coLvIn').value = '3'; $('coLvIn').dispatchEvent(new Event('change'));
   $('coGo').click(); await wait(80);
+  ok('the chosen difficulty reaches the level (nightmare)', G.co && G.co.df === 'nightmare' && T.L.dk === 'nightmare', G.co && G.co.df + ' ' + T.L.dk);
   ok('start button launches co-op on the chosen level', G.state === 'play' && G.co && G.level === 3 && T.PLY.length === 2 && T.PLY[0].hid === 'falafel' && T.PLY[1].hid === T.CO.sel.h2, G.state + ' L' + G.level + ' ' + T.PLY.map(p => p.hid));
   ok('hud and overlay state are right', !$('hud').classList.contains('hide') && $('co').classList.contains('hide'));
   // keyboard: WASD for player 1, arrows for player 2

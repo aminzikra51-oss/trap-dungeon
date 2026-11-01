@@ -22,9 +22,15 @@ out = src.replace('__BUILD__', BUILD).replace('__ASSETS_JSON__', json.dumps(asse
 open(f'{root}/trap-dungeon.html', 'w', encoding='utf-8').write(out)
 print('built', round(len(out)/1024), 'KB; audio:', len(assets['audio']), 'img:', len(assets['img']))
 
-# --- artifact variant: the host adds doctype/html/head/body, so strip ours ---
+# --- public variant: the admin console (src/w_admin.js, between the /*@admin*/ and /*@end*/ markers) is cut out of everything that is shared with players:
+#     the artifact variant and the independent public site/.  Only trap-dungeon.html (local) and docs/ (the private dev site) keep it. ---
 import re
-a = out
+ADM_RE = re.compile(r'/\*@admin\*/.*?/\*@end\*/', re.S)
+assert len(ADM_RE.findall(out)) == 1, 'admin markers must appear exactly once'
+pub = ADM_RE.sub('/* (no admin console in the public build) */', out)
+assert 'setpass' not in pub and 'ADM_OPEN' not in pub and "box.id='adm'" not in pub
+# --- artifact variant: the host adds doctype/html/head/body, so strip ours ---
+a = pub
 a = re.sub(r'<!DOCTYPE html>\s*<html[^>]*>\s*<head>\s*', '', a, count=1)
 a = re.sub(r'<meta charset[^>]*>\s*', '', a, count=1)
 a = re.sub(r'<meta name="viewport"[^>]*>\s*', '', a, count=1)
@@ -63,7 +69,7 @@ for d, url in SITES:
             f'<meta property="og:title" content="{TITLE}"><meta property="og:description" content="{ogd}">\n'
             f'<meta property="og:url" content="{url}"><meta property="og:image" content="{url}og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">\n'
             f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{TITLE}"><meta name="twitter:description" content="{ogd}"><meta name="twitter:image" content="{url}og.jpg">\n')
-    page = out.replace('</head>', head + '</head>', 1).replace('</body>', reg + '</body>', 1)
+    page = (pub if d == 'site' else out).replace('</head>', head + '</head>', 1).replace('</body>', reg + '</body>', 1)
     assert 'rel="manifest"' in page and 'serviceWorker' in page and 'og:image' in page
     h = hashlib.sha1(page.encode('utf-8')).hexdigest()[:10]
     open(f'{site}/index.html', 'w', encoding='utf-8').write(page)

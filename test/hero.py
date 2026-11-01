@@ -42,7 +42,7 @@ FLOW = r"""() => { const T=window.TD, S=T.S, G=T.G, K=T.K, R={}; T.FLAGS.noBoss=
   lvl('uncle',0); G.custom={}; R.offCustom=T.hOn(); G.custom=null; T.sim(true); R.offSim=T.hOn(); T.sim(false); R.on=T.hOn();
   // xp + upgrade
   S.hero='cat'; S.hs.cat=0; S.hx.cat=0; S.wallet=500; R.up0=T.upgradeHero('cat'); S.hx.cat=8; S.wallet=10; R.up1=T.upgradeHero('cat'); S.wallet=500; R.up2=T.upgradeHero('cat'); R.stage=S.hs.cat; R.walletAfter=S.wallet; R.up3=T.upgradeHero('cat');
-  S.hx.cat=24; S.wallet=500; T.upgradeHero('cat'); S.hx.cat=60; T.upgradeHero('cat'); R.upMax=T.upgradeHero('cat'); R.stageMax=S.hs.cat;
+  S.hx.cat=24; S.wallet=500; T.upgradeHero('cat'); S.hx.cat=60; T.upgradeHero('cat'); R.st3=S.hs.cat; S.hx.cat=120; S.wallet=500; R.up4=T.upgradeHero('cat'); R.walletV=S.wallet; R.upMax=T.upgradeHero('cat'); R.stageMax=S.hs.cat;
   // xp from a first clear with this hero (once per level), and from deaths (capped)
   S.hero='falafel'; S.hx={}; S.hc={}; S.cl={}; S.nd={}; S.best=99; lvl('falafel',0); G.lvDeaths=0; T.econClear(); R.xpClear=S.hx.falafel; G.state='play'; T.econClear(); R.xpTwice=S.hx.falafel;
   lvl('falafel',0); S.hx.falafel=0; for(let i=0;i<10;i++){ G.state='play'; T.P.dead=false; T.die('spike',null); G.lvDeaths=i+1 } R.xpDeaths=S.hx.falafel;
@@ -67,7 +67,7 @@ with sync_playwright() as p:
     ok('mushroom: slow motion starts, drains, and ends by itself', abs(R['slowTs'] - .45) < .01 and R['slowDrain'] and R['slowEnds'], [R['slowTs'], R['slowDrain'], R['slowEnds']])
     ok('falafel: magnet radius grows with the stage', R['mag']['s0_40'] and not R['mag']['s0_90'] and R['mag']['s3_80'], R['mag'])
     ok('abilities are off in custom maps and in the solver, on in real levels', (not R['offCustom']) and (not R['offSim']) and R['on'], [R['offCustom'], R['offSim'], R['on']])
-    ok('upgrade needs XP and coins, then costs coins, stops at stage IV', R['up0'] == 'xp' and R['up1'] == 'poor' and R['up2'] == 'ok' and R['stage'] == 1 and R['walletAfter'] == 460 and R['upMax'] == 'max' and R['stageMax'] == 3, [R['up0'], R['up1'], R['up2'], R['walletAfter'], R['upMax']])
+    ok('upgrade needs XP and coins, then costs coins, stops at stage V (5 stages)', R['up0'] == 'xp' and R['up1'] == 'poor' and R['up2'] == 'ok' and R['stage'] == 1 and R['walletAfter'] == 460 and R['st3'] == 3 and R['up4'] == 'ok' and R['walletV'] == 80 and R['upMax'] == 'max' and R['stageMax'] == 4, [R['up0'], R['up1'], R['up2'], R['walletAfter'], R['upMax'], R['st3'], R['up4'], R['walletV']])
     ok('XP: first clear with a hero pays once; deaths teach a little (capped)', R['xpClear'] >= 2 and R['xpTwice'] == R['xpClear'] and 2.5 <= R['xpDeaths'] <= 3.5, [R['xpClear'], R['xpTwice'], R['xpDeaths']])
     ok('no page errors', not errs, errs[:3])
     b.close()

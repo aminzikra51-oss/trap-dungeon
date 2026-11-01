@@ -443,7 +443,7 @@ B.exitrun={
  upd(e,dt){
   if(e.s===0){ if(L.exitX==null)L.exitX=L.exitTx*TS;
    if(pcx()>L.exitTx*TS-165&&P.onGround){ e.s=1; const old=L.exitTx;
-    const step=(L.dk==='hell'?4:3); L.exitTx=Math.min(L.w-2,old+step);
+    const step=(hellish(L.dk)?4:3); L.exitTx=Math.min(L.w-2,old+step);
     const sp=mkSpk('hidden',old-1,2,{dl:.25}); sp.arm=.25; addE(sp);
     Snd.whoosh(); Snd.rumble(); if(!SIM){ G.exitSay=1.4; say(rnd(['الباب هرب منك! 🏃💨','هههه استنّى... لا تروح! (راح)','الباب قال: ما بدي أشوف وجهك','الخروج؟ مو هون... تعال لهناك 😈']),'any',2.4) } } }
   if(!SIM&&L.exitX!=null)L.exitX+=(L.exitTx*TS-L.exitX)*Math.min(1,dt*5);
