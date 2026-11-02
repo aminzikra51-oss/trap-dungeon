@@ -51,6 +51,7 @@ function moveY(dy){
   }
   P.stand=0;
 }
+const standOn=id=>G.co?PLY.some(q=>!q.dead&&q.stand===id):P.stand===id;       // co-op: ANY player standing on it counts (never just the local one: the two machines would disagree)
 function platsMove(dt){ for(const e of L.ents){ if(e.t!==('plat'))continue; B.plat.move(e,dt) } }
 function platRide(){ if(P.stand>0){ const s=L.ents.find(e=>e.t==='plat'&&e.id===P.stand&&e.on); if(s&&P.onGround){P.x+=s.dx;P.y+=s.dy}else P.stand=0 } }
 function stepPlats(dt){ platsMove(dt); platRide() }
@@ -60,18 +61,20 @@ function updatePlayer(dt){
   let acc=p.onGround?ACC:AIRACC, fr=p.onGround?FRIC:260, g=GRAV, jv=JUMP, ice=false, drift=0, mx=RUN;
   const hx=hOn()?heroPre(p,dt):(K.ap=false,null), dashing=!!(hx&&hx.dash); if(dashing)g=0;
   if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
+  const wt=L.wt?waterAt(p):null; if(wt){ g=WT_G; mx=Math.min(mx,WT_MX); acc=WT_ACC; fr=WT_FR }             // swimming (co-op water puzzles, w_copuz2.js)
   if(dashing){} else if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-mx,mx); p.face=dir; }
   else{ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }
   if(mx<RUN)p.vx=clamp(p.vx,-mx,mx);
   if(K.jp){p.buf=.12;K.jp=false}
   p.buf-=dt; p.coy-=dt; if(p.onGround){p.coy=.1;p.dj=false;p.air=0}else p.air+=dt;
-  if(p.buf>0){
+  if(wt)waterSwim(p,wt,dt); else if(p.buf>0){
     if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();if(!SIM){S.st.j++;dayEv('jump',1)}puff(p.x+PW/2,p.y+PH,3)}
     else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1)*heroJump2();p.dj=true;p.buf=0;p.spin=.32;Snd.dj();if(!SIM){S.st.j++;dayEv('jump',1);if(heroJump2()>1)dayEv('ab',1)}ring(p.x+PW/2,p.y+PH)}
   }
   if(!K.j&&p.vy<-240)p.vy=-240;
-  p.vy=Math.min(p.vy+g*dt,900); if(!dashing&&hOn())heroVert(p,dt);
+  p.vy=Math.min(p.vy+g*dt,wt?WT_SINK:900); if(!dashing&&hOn())heroVert(p,dt); if(L.fn)fanLift(p,dt);
   moveX((p.vx+drift)*dt); moveY(p.vy*dt);
+  if(!!wt!==!!p.wet){ p.wet=!!wt; waterSplash(p,!!wt) }
   p.land=Math.max(0,p.land-dt*5); p.spin=Math.max(0,p.spin-dt); p.run+=Math.abs(p.vx)*dt*.09; p.blink-=dt; if(p.blink<-2.5)p.blink=.12;
   // crumble trigger
   if(p.onGround&&!p.stand){ const a=Math.floor(p.x/TS),b=Math.floor((p.x+PW-.01)/TS); for(let tx=a;tx<=b;tx++){const cr=L.cr[tx]; if(cr&&cr.s===0){trigCrumble(tx);p.lastCr=G.t} } }

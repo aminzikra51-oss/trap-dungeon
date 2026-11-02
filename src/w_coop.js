@@ -38,10 +38,13 @@ function coPlayers(dt){
   coHome();
 }
 function coDraw(c){
-  for(const q of PLY){ P=q; if(q.dead)drawDeath(c); else { drawPlayer(c); heroFxWorld(c) } }
+  const vo=G.co&&!G.co.local?(netVis(),NET.vo):null;                     // online: what a rollback corrected is not shown as a jump, it glides (netVis)
+  for(const q of PLY){ P=q; const o=vo&&vo[q.idx], sh=o&&(o.x||o.y); if(sh){ c.save(); c.translate(o.x,o.y) }
+    if(q.dead)drawDeath(c); else { drawPlayer(c); heroFxWorld(c) }
+    if(sh)c.restore() }
   coHome();
   c.save(); c.textAlign='center'; c.lineJoin='round';
-  PLY.forEach((q,i)=>{ if(q.dead)return; const x=q.x+PW/2, y=q.y+PH-(typeof SPR_H==='number'&&look3()?SPR_H:44)-4;
+  PLY.forEach((q,i)=>{ if(q.dead)return; const o=vo&&vo[i], x=q.x+PW/2+(o?o.x:0), y=q.y+PH-(typeof SPR_H==='number'&&look3()?SPR_H:44)-4+(o?o.y:0);
     c.fillStyle=CO_COL[i]; c.strokeStyle='#000'; c.lineWidth=2; c.beginPath(); c.moveTo(x-6,y-8); c.lineTo(x+6,y-8); c.lineTo(x,y); c.closePath(); c.fill(); c.stroke();
     c.font='900 11px Tahoma,Arial'; c.lineWidth=3; c.strokeText(String(i+1),x,y-11); c.fillStyle='#fff'; c.fillText(String(i+1),x,y-11) });
   c.restore();

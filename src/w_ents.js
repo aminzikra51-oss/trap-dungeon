@@ -334,11 +334,11 @@ B.plat={
     if(st&1){ if(!e.lm){ e.lm=1; e.ph=Math.acos(clamp(1-2*(e.y0-e.y)/rng,-1,1)) } e.ph+=dt*e.sp/rng*Math.PI; e.y=e.y0-rng*(.5-.5*Math.cos(e.ph)) }
     else { e.lm=0; const tg=(st&2)?e.y1:e.y0; e.y+=clamp(tg-e.y,-e.sp*dt,e.sp*dt) } }
   else if(e.v==='elev'){
-    if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.6;Snd.rumble();snick(e,'طابق واحد بس!')} }
+    if(e.st===0){ if(standOn(e.id)){e.st=1;e.tm=.6;Snd.rumble();snick(e,'طابق واحد بس!')} }
     else if(e.st===1){ e.tm-=dt; if(e.tm<=0)e.st=2 }
     else if(e.st===2){ e.y=Math.max(e.y1,e.y-e.sp*dt); if(e.y<=e.y1)e.st=3 } }
   else if(e.v==='vanish'){
-    if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.5;Snd.crumble()} }
+    if(e.st===0){ if(standOn(e.id)){e.st=1;e.tm=.5;Snd.crumble()} }
     else if(e.st===1){e.tm-=dt;if(e.tm<=0){e.st=2;e.tm=2.2;e.on=0}}
     else if(e.st===2){e.tm-=dt;if(e.tm<=0){e.st=0;e.on=1}} }
   e.dx=e.x-ox;e.dy=e.y-oy },

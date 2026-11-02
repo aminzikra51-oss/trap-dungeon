@@ -1,8 +1,10 @@
 """Online play: handshake, lockstep co-op with different local profiles, hash agreement, forced drift -> host snapshot resync, win -> lobby,
 race (ghost, countdown, arbitration), leaving.
-usage: python3 test/net.py [--shots DIR] [--rtdb [--lat MS]]
+usage: python3 test/net.py [--shots DIR] [--rtdb [--lat MS]] [--relay]
   default : same-browser BroadcastChannel transport
-  --rtdb  : the Firebase REST/SSE transport against test/fake_rtdb.py (cross-origin, CORS, optional one-way latency)"""
+  --rtdb  : the Firebase REST/SSE transport against test/fake_rtdb.py (cross-origin, CORS, optional one-way latency)
+  --relay : never open the WebRTC channel (S.nt = 'relay'): the plain transport only, which is also the fallback path in real life
+  (without --relay the direct WebRTC channel opens by itself on top of either transport and carries the fast traffic)"""
 import sys, os, threading, http.server, socketserver, functools, json, random
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fake_rtdb import FakeRtdb
@@ -11,6 +13,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SHOTS = sys.argv[sys.argv.index('--shots') + 1] if '--shots' in sys.argv else None
 RTDB = '--rtdb' in sys.argv
+RELAY = '--relay' in sys.argv
 LAT = float(sys.argv[sys.argv.index('--lat') + 1]) / 1000 if '--lat' in sys.argv else 0.0
 
 class Q(http.server.SimpleHTTPRequestHandler):
@@ -26,12 +29,12 @@ def ok(name, cond, extra=''):
     if not cond: bad += 1
 
 SETUP = """(cfg) => { const T = window.TD, S = T.S; T.sim(false); S.best = cfg.best; S.diff = cfg.diff; S.hero = cfg.hero; S.nu = cfg.nu || '';
-  for (const h of cfg.own) S.own[h] = 1; S.coins = cfg.coins; S.hi = cfg.hi || S.hi; S.q = cfg.q; return true }"""
+  for (const h of cfg.own) S.own[h] = 1; S.coins = cfg.coins; S.hi = cfg.hi || S.hi; S.q = cfg.q; if (cfg.nt) S.nt = cfg.nt; return true }"""
 # random keyboard on the raw store, like a person mashing keys
 MASH = """([seed, which]) => { let s = seed; const r = () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; const KR = window.TD[which || 'KR'];
   window.__mash = setInterval(() => { KR.r = r() < .7; KR.l = r() < .08; const j = r() < .35; if (j && !KR.j) KR.jp = true; KR.j = j; const a = r() < .1; if (a && !KR.a) KR.ap = true; KR.a = a }, 90) }"""
 STOP = "() => { clearInterval(window.__mash); for (const o of [window.TD.KR, window.TD.K]) o.l = o.r = o.j = o.a = false }"
-STATE = "() => { const T = window.TD, N = T.NET; return {link: N.link, f: N.f, bad: N.bad, fixes: N.fixes, st: T.G.state, co: !!T.G.co, race: !!T.G.race, mode: N.mode, peer: N.peer, rtt: Math.round(N.rtt), D: N.dl, c: N.c, nrb: N.nrb, rbFr: N.rbFr, maxRb: N.maxRb, lvl: T.G.level, msg: N.msg, code: N.code} }"
+STATE = "() => { const T = window.TD, N = T.NET; return {link: N.link, f: N.f, bad: N.bad, fixes: N.fixes, st: T.G.state, co: !!T.G.co, race: !!T.G.race, mode: N.mode, peer: N.peer, rtt: Math.round(N.rtt), D: N.dl, c: N.c, nrb: N.nrb, rbFr: N.rbFr, maxRb: N.maxRb, spec: N.spec || 24, tpk: N.tpk, lvl: T.G.level, msg: N.msg, code: N.code} }"
 
 def run():
     srv, port = serve(); db = FakeRtdb(LAT) if RTDB else None; nu = db.url if db else '-'
@@ -45,8 +48,8 @@ def run():
             pg.on('pageerror', lambda e, nm=nm: errs.append(nm + ':' + str(e)))
             pg.on('console', lambda m, nm=nm: errs.append(nm + ' C:' + m.text) if m.type == 'error' else None)
             pg.goto(url); pg.wait_for_timeout(500)
-        A.evaluate(SETUP, {'best': 14, 'diff': 'crazy', 'hero': 'falafel', 'own': ['falafel'], 'coins': 5, 'q': 1, 'nu': nu})
-        B.evaluate(SETUP, {'best': 9, 'diff': 'hell', 'hero': 'cat', 'own': ['cat', 'robot'], 'coins': 777, 'q': 2, 'nu': nu})
+        A.evaluate(SETUP, {'best': 14, 'diff': 'crazy', 'hero': 'falafel', 'own': ['falafel'], 'coins': 5, 'q': 1, 'nu': nu, 'nt': 'relay' if RELAY else ''})
+        B.evaluate(SETUP, {'best': 9, 'diff': 'hell', 'hero': 'cat', 'own': ['cat', 'robot'], 'coins': 777, 'q': 2, 'nu': nu, 'nt': 'relay' if RELAY else ''})
 
         A.evaluate("() => { const S = window.TD.S; S.hso = {'falafel:1': 1}; S.hsk = {falafel: 1}; S.hcl = {} }")     # both wear a skin: it must reach the other machine
         B.evaluate("() => { const S = window.TD.S; S.hso = {'cat:1': 1}; S.hsk = {cat: 1}; S.hcl = {} }")
@@ -57,6 +60,11 @@ def run():
         B.evaluate("(c) => { document.getElementById('nCode').value = c; document.getElementById('nJoin').click() }", sa['code'])
         B.wait_for_timeout(int(900 * SLOW))
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
+        if not RELAY:
+            for _ in range(60):                                       # the direct channel opens in the lobby; give it a moment
+                if A.evaluate("() => window.TD.NET.tpk") == 'rtc' and B.evaluate("() => window.TD.NET.tpk") == 'rtc': break
+                B.wait_for_timeout(250)
+            ok('the direct WebRTC channel is up on both machines', A.evaluate("() => window.TD.NET.tpk") == 'rtc' and B.evaluate("() => window.TD.NET.tpk") == 'rtc', (A.evaluate("() => window.TD.NET.tpk"), B.evaluate("() => window.TD.NET.tpk")))
         ok('transport in use is the expected one', A.evaluate("() => window.TD.NET.kind") == ('rtdb' if RTDB else 'loop'), A.evaluate("() => window.TD.NET.kind"))
         ok('both connected', sa['link'] == 'conn' and sb['link'] == 'conn', (sa['link'], sb['link']))
         ok('each knows the other hero', sa['peer'] and sa['peer']['hero'] == 'cat' and sb['peer'] and sb['peer']['hero'] == 'falafel')
@@ -92,10 +100,10 @@ def run():
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
         st = A.evaluate("() => Math.round(window.TD.NET.stallTot || 0)"), B.evaluate("() => Math.round(window.TD.NET.stallTot || 0)")
         ok('waiting for the other player is (almost) never needed', max(st) < 1200, ('stalled ms', st, 'dl', sa['D'], 'rtt', sa['rtt']))
-        ok('wrong guesses were repaired by rollbacks, and they stay short', (sa['nrb'] + sb['nrb'] >= 1 or not RTDB) and max(sa['maxRb'], sb['maxRb']) <= 24 + 10, (sa['nrb'], sb['nrb'], 'frames', sa['rbFr'], sb['rbFr'], 'max', sa['maxRb'], sb['maxRb']))
+        ok('wrong guesses were repaired by rollbacks, and they stay short', (sa['nrb'] + sb['nrb'] >= 1 or not RTDB) and max(sa['maxRb'], sb['maxRb']) <= max(sa['spec'], sb['spec']) + 10, (sa['nrb'], sb['nrb'], 'frames', sa['rbFr'], sb['rbFr'], 'max', sa['maxRb'], sb['maxRb']))
         ok('frames advance on both', sa['f'] > 200 and sb['f'] > 200, (sa['f'], sb['f']))
-        ok('the machines run side by side (within the allowed lead)', abs(sa['f'] - sb['f']) <= 24 + 8 + int(sa['rtt'] / 16.7), (sa['f'], sb['f'], 'rtt', sa['rtt']))
-        ok('confirmed frames trail the head only a little', sa['f'] - sa['c'] <= 24 and sb['f'] - sb['c'] <= 24, (sa['f'] - sa['c'], sb['f'] - sb['c']))
+        ok('the machines run side by side (within the allowed lead)', abs(sa['f'] - sb['f']) <= max(sa['spec'], sb['spec']) + 8 + int(sa['rtt'] / 16.7), (sa['f'], sb['f'], 'rtt', sa['rtt']))
+        ok('confirmed frames trail the head only a little', sa['f'] - sa['c'] <= sa['spec'] and sb['f'] - sb['c'] <= sb['spec'], (sa['f'] - sa['c'], sb['f'] - sb['c']))
         ha, hb = A.evaluate("() => window.TD.NET.hh"), B.evaluate("() => window.TD.NET.hh")
         common = [k for k in ha if k in hb]
         ok('state hashes were compared', len(common) >= 5, len(common))
@@ -164,7 +172,7 @@ def run():
 
         print('online puzzles: one bot per machine, each controls only his own player')
         BOT = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'puzbot.js'), encoding='utf-8').read()
-        for v in ([x for x in os.environ['PUZ'].split(',')] if os.environ.get('PUZ') else (['gate', 'ladder', 'lift'] if RTDB else ['gate', 'ladder', 'bridge', 'sync', 'lift'])):
+        for v in ([x for x in os.environ['PUZ'].split(',')] if os.environ.get('PUZ') else (['gate', 'ladder', 'lift', 'fan'] if RTDB else ['gate', 'ladder', 'bridge', 'sync', 'lift', 'flood', 'fan', 'chain', 'keyshelf', 'floors'])):
             for pg in (A, B): pg.evaluate("(v) => { window.TD.FLAGS.coScript = [['co', v]] }", v)
             A.evaluate("() => { window.TD.CO.sel.custom = null; window.TD.CO.sel.n = 1; window.TD.coRender() }"); A.wait_for_timeout(int(500 * SLOW))
             A.evaluate("() => document.getElementById('nGo').click()"); A.wait_for_timeout(int(900 * SLOW))
@@ -176,6 +184,9 @@ def run():
                 fa, fb = A.evaluate("() => window.TD.NET.fxN"), B.evaluate("() => window.TD.NET.fxN")
                 if fa.get('w') and fb.get('w'): done = True; break
             sa, sb = A.evaluate(STATE), B.evaluate(STATE)
+            if not done:      # say where the bots are stuck
+                DBG = "() => { const T = window.TD; return {bot: window.__bst, ply: T.PLY.map(p => [Math.round(p.x), Math.round(p.y), Math.round(p.vx), p.onGround ? 'G' : '-', p.stand]), cgS: T.L.cgS, cgE: T.L.cgE, f: T.NET.f, c: T.NET.c} }"
+                print('   stuck A:', A.evaluate(DBG)); print('   stuck B:', B.evaluate(DBG))
             ok(f'puzzle {v}: both bots solved it together and the level was won on both machines', done, (fa, fb, 'f', sa['f'], 'deaths', A.evaluate("() => window.TD.G.deaths"), B.evaluate("() => window.TD.G.deaths")))
             ok(f'puzzle {v}: no desync (hash mismatches) on either machine', sa['bad'] == 0 and sb['bad'] == 0, (sa['bad'], sb['bad'], 'fixes', sa['fixes'], sb['fixes'], 'rollbacks', sa['nrb'], sb['nrb']))
             for pg in (A, B): pg.evaluate("() => { clearInterval(window.__bot); for (const o of [window.TD.KR, window.TD.K]) o.l = o.r = o.j = o.a = false }")

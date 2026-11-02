@@ -246,6 +246,8 @@ select.tg{appearance:auto}
 .frr{display:flex;align-items:center;gap:calc(var(--u)*6);padding:calc(var(--u)*4);border-bottom:calc(var(--u)*1) solid #fff2;font-size:calc(var(--u)*13)}.frr b{flex:1;text-align:right}.frr i{opacity:.7;font-style:normal;font-size:calc(var(--u)*11)}.frr .tg:disabled{opacity:.35;cursor:default}
 #frCard .fok{background:var(--gold);color:#1b1230;white-space:nowrap}#frCard span{flex:1}#frMsg{min-height:calc(var(--u)*16);margin-top:calc(var(--u)*4);color:#ffe9a8}
 #frCard{position:absolute;top:calc(var(--u)*8);left:50%;transform:translateX(-50%);z-index:70;display:flex;gap:calc(var(--u)*10);align-items:center;max-width:94%;background:#1b1230f2;color:#fff;font-weight:900;font-size:calc(var(--u)*15);border:calc(var(--u)*3) solid var(--gold);border-radius:calc(var(--u)*14);padding:calc(var(--u)*8) calc(var(--u)*14);box-shadow:0 calc(var(--u)*6) calc(var(--u)*20) #000a}
+#netDg{position:absolute;left:calc(var(--u)*8);bottom:calc(var(--u)*6);z-index:9;font:900 calc(var(--u)*11)/1 Tahoma,Arial,sans-serif;background:#000a;padding:calc(var(--u)*3) calc(var(--u)*8);border-radius:calc(var(--u)*12);pointer-events:none;color:#7dffb0;opacity:.8}
+#netDg.mid{color:#ffe06a}#netDg.bad{color:#ff7a7a}
 #netSt{position:absolute;top:calc(var(--u)*54);left:50%;transform:translateX(-50%);z-index:9;background:#000c;color:#ffe9a8;font-weight:900;font-size:calc(var(--u)*15);padding:calc(var(--u)*5) calc(var(--u)*16);border-radius:calc(var(--u)*20);pointer-events:none}
 #raceBar{position:absolute;top:calc(var(--u)*34);left:50%;transform:translateX(-50%);width:calc(var(--u)*360);z-index:8;pointer-events:none}.rbt{position:relative;height:calc(var(--u)*20);background:#0008;border-radius:calc(var(--u)*10);border:calc(var(--u)*2) solid #000}.rbt i{position:absolute;top:calc(var(--u)*1);font-style:normal;font-size:calc(var(--u)*13);transition:left .12s linear}.rbt b{position:absolute;right:calc(var(--u)*4);top:calc(var(--u)*1);font-size:calc(var(--u)*13)}
 #raceCd{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:calc(var(--u)*120);font-weight:900;color:#ffd23f;-webkit-text-stroke:calc(var(--u)*5) #000;paint-order:stroke fill;z-index:9;pointer-events:none}
@@ -348,7 +350,7 @@ select.tg{appearance:auto}
     <div class="row ing"><button class="btn alt hide" id="bEdit">🛠 رجوع للمحرر</button></div>
     <div class="row"><button class="btn alt" id="bResume">كمّل اللعب</button><button class="btn alt ing" id="bHome">الشاشة الرئيسية</button></div>
   </div></div>
-  <div id="frCard" class="hide"></div><div id="netSt" class="hide"></div><div id="raceBar" class="hide"><div class="rbt"><i id="rbMe">🟡</i><i id="rbOp">🔵</i><b>🏁</b></div></div><button id="rxBtn" class="hide" title="إيموجي وجمل (T)">💬</button><div id="rxBar" class="hide"></div><div id="raceCd" class="hide"></div><div id="raceRes" class="hide"></div>
+  <div id="frCard" class="hide"></div><div id="netSt" class="hide"></div><div id="netDg" class="hide"></div><div id="raceBar" class="hide"><div class="rbt"><i id="rbMe">🟡</i><i id="rbOp">🔵</i><b>🏁</b></div></div><button id="rxBtn" class="hide" title="إيموجي وجمل (T)">💬</button><div id="rxBar" class="hide"></div><div id="raceCd" class="hide"></div><div id="raceRes" class="hide"></div>
   <div id="co" class="ov hide"><div class="edbox cobox">
     <div class="edtop"><b>👥 لاعبين اتنين</b><span class="edst" id="coSt"></span><button class="tg" id="coX">✖ رجوع</button></div>
     <div class="cotabs"><button class="tg on" id="coTabL">🏠 على نفس الجهاز</button><button class="tg" id="coTabN">🌐 أونلاين</button></div>
@@ -745,6 +747,7 @@ function moveY(dy){
   }
   P.stand=0;
 }
+const standOn=id=>G.co?PLY.some(q=>!q.dead&&q.stand===id):P.stand===id;       // co-op: ANY player standing on it counts (never just the local one: the two machines would disagree)
 function platsMove(dt){ for(const e of L.ents){ if(e.t!==('plat'))continue; B.plat.move(e,dt) } }
 function platRide(){ if(P.stand>0){ const s=L.ents.find(e=>e.t==='plat'&&e.id===P.stand&&e.on); if(s&&P.onGround){P.x+=s.dx;P.y+=s.dy}else P.stand=0 } }
 function stepPlats(dt){ platsMove(dt); platRide() }
@@ -754,18 +757,20 @@ function updatePlayer(dt){
   let acc=p.onGround?ACC:AIRACC, fr=p.onGround?FRIC:260, g=GRAV, jv=JUMP, ice=false, drift=0, mx=RUN;
   const hx=hOn()?heroPre(p,dt):(K.ap=false,null), dashing=!!(hx&&hx.dash); if(dashing)g=0;
   if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
+  const wt=L.wt?waterAt(p):null; if(wt){ g=WT_G; mx=Math.min(mx,WT_MX); acc=WT_ACC; fr=WT_FR }             // swimming (co-op water puzzles, w_copuz2.js)
   if(dashing){} else if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-mx,mx); p.face=dir; }
   else{ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }
   if(mx<RUN)p.vx=clamp(p.vx,-mx,mx);
   if(K.jp){p.buf=.12;K.jp=false}
   p.buf-=dt; p.coy-=dt; if(p.onGround){p.coy=.1;p.dj=false;p.air=0}else p.air+=dt;
-  if(p.buf>0){
+  if(wt)waterSwim(p,wt,dt); else if(p.buf>0){
     if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();if(!SIM){S.st.j++;dayEv('jump',1)}puff(p.x+PW/2,p.y+PH,3)}
     else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1)*heroJump2();p.dj=true;p.buf=0;p.spin=.32;Snd.dj();if(!SIM){S.st.j++;dayEv('jump',1);if(heroJump2()>1)dayEv('ab',1)}ring(p.x+PW/2,p.y+PH)}
   }
   if(!K.j&&p.vy<-240)p.vy=-240;
-  p.vy=Math.min(p.vy+g*dt,900); if(!dashing&&hOn())heroVert(p,dt);
+  p.vy=Math.min(p.vy+g*dt,wt?WT_SINK:900); if(!dashing&&hOn())heroVert(p,dt); if(L.fn)fanLift(p,dt);
   moveX((p.vx+drift)*dt); moveY(p.vy*dt);
+  if(!!wt!==!!p.wet){ p.wet=!!wt; waterSplash(p,!!wt) }
   p.land=Math.max(0,p.land-dt*5); p.spin=Math.max(0,p.spin-dt); p.run+=Math.abs(p.vx)*dt*.09; p.blink-=dt; if(p.blink<-2.5)p.blink=.12;
   // crumble trigger
   if(p.onGround&&!p.stand){ const a=Math.floor(p.x/TS),b=Math.floor((p.x+PW-.01)/TS); for(let tx=a;tx<=b;tx++){const cr=L.cr[tx]; if(cr&&cr.s===0){trigCrumble(tx);p.lastCr=G.t} } }
@@ -1130,11 +1135,11 @@ B.plat={
     if(st&1){ if(!e.lm){ e.lm=1; e.ph=Math.acos(clamp(1-2*(e.y0-e.y)/rng,-1,1)) } e.ph+=dt*e.sp/rng*Math.PI; e.y=e.y0-rng*(.5-.5*Math.cos(e.ph)) }
     else { e.lm=0; const tg=(st&2)?e.y1:e.y0; e.y+=clamp(tg-e.y,-e.sp*dt,e.sp*dt) } }
   else if(e.v==='elev'){
-    if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.6;Snd.rumble();snick(e,'طابق واحد بس!')} }
+    if(e.st===0){ if(standOn(e.id)){e.st=1;e.tm=.6;Snd.rumble();snick(e,'طابق واحد بس!')} }
     else if(e.st===1){ e.tm-=dt; if(e.tm<=0)e.st=2 }
     else if(e.st===2){ e.y=Math.max(e.y1,e.y-e.sp*dt); if(e.y<=e.y1)e.st=3 } }
   else if(e.v==='vanish'){
-    if(e.st===0){ if(P.stand===e.id){e.st=1;e.tm=.5;Snd.crumble()} }
+    if(e.st===0){ if(standOn(e.id)){e.st=1;e.tm=.5;Snd.crumble()} }
     else if(e.st===1){e.tm-=dt;if(e.tm<=0){e.st=2;e.tm=2.2;e.on=0}}
     else if(e.st===2){e.tm-=dt;if(e.tm<=0){e.st=0;e.on=1}} }
   e.dx=e.x-ox;e.dy=e.y-oy },
@@ -2331,7 +2336,7 @@ function update(dt){
           for(const e of L.ents){ if(e.mocked||e.rm||!MOCKT[e.t])continue; const d=px3-entX(e); if(d>46&&d<150){ e.mocked=1; if(Math.random()<.55){ snick(e,rnd(MOCK_LINES)); G.mockCd=7+Math.random()*5; break } } } } }
       }
       if(G.state==='play'&&!SIM){ // signs
-        for(const s of L.signs){ if(!s.seen&&(G.co?PLY:[P]).some(q=>Math.abs((q.x+PW/2)-(s.tx*TS+16))<30)){s.seen=true;say(s.text.replace(/\n/g,' '),s.tag,2.1)} } }
+        for(const s of L.signs){ if(!s.seen&&(G.co?PLY:[P]).some(q=>Math.abs((q.x+PW/2)-(s.tx*TS+16))<30)){s.seen=true;say(s.text.replace(/\n/g,' '),s.tag,s.dur||2.1)} } }
       if(G.state==='play'&&(G.co?coAtExit():(P.x+PW/2>L.exitTx*TS+4&&P.onGround)))winLevel();
       if(!SIM){G.idleT-=dt; if(G.idleT<=0&&G.state==='play'){G.idleT=9+Math.random()*7;if((!subT||subT<=0)&&!Snd.voiceBusy()){sayVoice(pick('idle',{legacy:IDLE_LINES,pAudio:.7}),2.8,{pri:1,ttl:.4,wait:0})}}}
     }
@@ -2606,6 +2611,7 @@ function render(){
   // player
   if(G.co)coDraw(c); else if(G.state==='dead')drawDeath(c);else{drawPlayer(c);heroFxWorld(c)}
   if(G.race)raceDraw(c);
+  if(L.wt)waterOver(c);
   for(const e of L.ents){ if(e.t==='chase'||e.t==='ghost')B[e.t].draw(e,c,th) }
   // particles
   for(const p of parts){const a=clamp(p.life/(p.max*.6),0,1);c.globalAlpha=a;c.fillStyle=p.col;
@@ -4185,6 +4191,7 @@ const mkGate=(gid,tx,w,y0,y1,kind,inv)=>({t:'cgate',gid,x:tx*TS,tx,w,y0,y1,kind,
 
 function cgBuild(L){                                          // static lookups from the entities (the entities themselves are the snapshot)
   const gs=L.ents.filter(e=>e.t==='cgate'); L.cg=null; L.cgS=undefined; L.cgE=undefined; L.cgd=null; L.cgG=null; L.cgc=null; cgV={};
+  L.wt=L.ents.some(e=>e.t==='cwater'); L.fn=L.ents.some(e=>e.t==='cfan');            // the physics only looks for water / fans on levels that have them (w_copuz2.js)
   if(!gs.length)return;
   L.cg={}; L.cgS={}; L.cgE={}; L.cgd={}; L.cgG={}; L.cgc={}; let k=0;
   for(const e of gs){ if(L.cgc[e.gid]==null)L.cgc[e.gid]=k++; (L.cgG[e.gid]||(L.cgG[e.gid]=[])).push(e); L.cgS[e.gid]=0; L.cgE[e.gid]=0;
@@ -4206,6 +4213,8 @@ function cgTick(){
     if(e.t==='cplate'){ let on=0;
       for(const q of PLY){ if(!q.dead&&Math.abs(q.y+PH-e.y)<=4&&q.x+PW>e.x+2&&q.x<e.x+e.w-2){ on=1; break } }
       if(on!==e.on){ e.on=on; Snd.plate(on) } if(on)cnt[e.gid]=(cnt[e.gid]|0)+1 }
+    else if(e.t==='ckey')cgKey(e,S1);
+    else if(e.t==='cwater'){ const tg=E[e.gid]===1?e.yHi:e.yLo; if(e.y!==tg)e.y+=clamp(tg-e.y,-CW_SP/60,CW_SP/60) }
     else if(e.t==='clever'&&!e.on){
       for(const q of PLY){ if(!q.dead&&q.x+PW>e.x-12&&q.x<e.x+12&&q.y+PH>e.y-36&&q.y<e.y+2){ e.on=1; S1[e.gid]=(S1[e.gid]|0)|1; Snd.lever(); break } } }
   }
@@ -4239,14 +4248,21 @@ B.cgate={ hit(){return null},
   c.save(); c.lineJoin='round'; c.lineCap='round'; c.strokeStyle='#000'; c.lineWidth=2.4;
   if(e.kind==='bridge'){
     const n=Math.round(w/TS), shown=vo*n;
-    for(let i=0;i<n;i++){ const a=clamp(shown-i,0,1); if(a<=0)continue; c.globalAlpha=a; c.fillStyle='#9a6b3a'; c.fillRect(x+i*TS+1,GY,TS-2,9); c.strokeRect(x+i*TS+1,GY,TS-2,9); c.fillStyle='#0003'; c.fillRect(x+i*TS+4,GY+2,TS-8,2) }
-    c.globalAlpha=1; if(vo<1){ c.globalAlpha=.4*(1-vo); c.setLineDash([6,6]); c.strokeStyle=col; c.beginPath(); c.moveTo(x,GY+4); c.lineTo(x+w,GY+4); c.stroke(); c.setLineDash([]) }
-    c.globalAlpha=1; c.strokeStyle='#000'; c.fillStyle=col; for(const px of [x-4,x+w-2]){ c.fillRect(px,GY-18,6,22); c.strokeRect(px,GY-18,6,22) } }
+    for(let i=0;i<n;i++){ const a=clamp(shown-i,0,1); if(a<=0)continue; c.globalAlpha=a; c.fillStyle='#9a6b3a'; c.fillRect(x+i*TS+1,top,TS-2,9); c.strokeRect(x+i*TS+1,top,TS-2,9); c.fillStyle='#0003'; c.fillRect(x+i*TS+4,top+2,TS-8,2) }
+    c.globalAlpha=1; if(vo<1){ c.globalAlpha=.4*(1-vo); c.setLineDash([6,6]); c.strokeStyle=col; c.beginPath(); c.moveTo(x,top+4); c.lineTo(x+w,top+4); c.stroke(); c.setLineDash([]) }
+    c.globalAlpha=1; c.strokeStyle='#000'; c.fillStyle=col; for(const px of [x-4,x+w-2]){ c.fillRect(px,top-18,6,22); c.strokeRect(px,top-18,6,22) } }
   else if(e.kind==='steps'){
     for(let tx=0;tx<e.w;tx++)for(let ty=e.y0;ty<=e.y1;ty++){ const bx=x+tx*TS, by=ty*TS+(1-vo)*12;
       if(vo>.02){ c.globalAlpha=vo; c.fillStyle=th.floor; c.fillRect(bx,by,TS,TS); c.strokeStyle='#000'; c.strokeRect(bx+1,by+1,TS-2,TS-2); c.fillStyle='#ffffff14'; c.fillRect(bx+3,by+3,TS-6,4); if(ty===e.y0){ c.fillStyle=th.top; c.fillRect(bx,by-3,TS,6); c.strokeRect(bx,by-3,TS,6) } }
       if(vo<.98){ c.globalAlpha=.45*(1-vo); c.strokeStyle=col; c.lineWidth=2; c.setLineDash([5,5]); c.strokeRect(bx+2,ty*TS+2,TS-4,TS-4); c.setLineDash([]); c.lineWidth=2.4 } }
     c.globalAlpha=1 }
+  else if(e.kind==='lock'){
+    const bh=h*(1-vo);                                          // a wooden door with an iron lock: it slides up when the key is used
+    if(bh>2){ c.fillStyle='#7a4a24'; c.fillRect(x+1,top,w-2,bh); c.strokeRect(x+1,top,w-2,bh); c.fillStyle='#0003'; for(let yy=top+16;yy<top+bh;yy+=32)c.fillRect(x+3,yy,w-6,3);
+      c.fillStyle='#5b6178'; c.fillRect(x+1,top+bh*.3,w-2,6); c.strokeRect(x+1,top+bh*.3,w-2,6); c.fillRect(x+1,top+bh*.7,w-2,6); c.strokeRect(x+1,top+bh*.7,w-2,6);
+      const ky=top+Math.min(bh-18,h*.55); c.fillStyle=col; c.beginPath(); c.arc(x+w/2,ky,9,0,7); c.fill(); c.stroke(); c.fillStyle='#000'; c.beginPath(); c.arc(x+w/2,ky-2,3,0,7); c.fill(); c.fillRect(x+w/2-1.5,ky,3,7);
+      c.globalAlpha=.6+.4*Math.sin(G.t*5); c.fillStyle='#fff'; c.font='900 15px Arial'; c.textAlign='center'; c.fillText('🔑',x+w/2,ky-18); c.globalAlpha=1 }
+    c.fillStyle=col; c.fillRect(x-3,top,w+6,8); c.strokeRect(x-3,top,w+6,8) }
   else {
     const bh=h*(1-vo);                                          // a portcullis: it slides up out of the way
     if(bh>2){ c.fillStyle='#4a5069'; for(let i=0;i<4;i++){ c.fillRect(x+3+i*8,top,4,bh); c.strokeRect(x+3+i*8,top,4,bh) }
@@ -4262,7 +4278,7 @@ Snd.lever=function(){ this.tone({t:'square',f0:170,f1:110,dur:.09,v:.16}); this.
 Snd.gate=function(open){ this.noise({dur:.28,v:.14,ft:'lowpass',f:open?500:300}); this.tone({t:'sawtooth',f0:open?90:150,f1:open?150:70,dur:.3,v:.1}) };
 
 /* ---------------- level pieces: each returns the number of tiles it needs ---------------- */
-const coSign=(L,tx,text)=>L.signs.push({tx,text,tag:'any',lie:false,seen:false});
+const coSign=(L,tx,text,dur)=>L.signs.push({tx,text,tag:'any',lie:false,seen:false,dur:dur||0});      // dur = how long the bubble stays when a player walks up (long texts need longer)
 const coCp=(L,tx)=>{ if(L.ground[tx]>=0&&!L.cr[tx])L.ents.push(mkCp(tx)) };
 const coCpEnd=(L,tx)=>{ if(L.dk!=='nightmare')coCp(L,tx) };      // nightmare: no save flag after a puzzle, dying right behind it means doing it again
 const COV={
@@ -4295,11 +4311,11 @@ const COV={
   coCpEnd(L,x+19); return 21 },
  relay(L,x){ const a=COV.gate(L,x); const b=COV.gate(L,x+a-2); return a+b-2 },
 };
+const CO_HW={relay:3,lift:1.8,sync:1.8,bridge:1.4};                 // impossible / nightmare lean on the puzzles that need the most teamwork (w_copuz2.js adds its own)
 const COV_LIST=[['gate',10,1,22],['ladder',10,1,22],['bridge',8,2,26],['sync',8,2,22],['lift',8,3,22],['relay',6,4,44]];
 FAM.co=function(L,r,x,n,D,room){
   const forced=D.force&&COV[D.force]?D.force:null, last=L.coLast;
-  const HW={relay:3,lift:1.8,sync:1.8,bridge:1.4};                 // impossible / nightmare lean on the puzzles that need the most teamwork
-  const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2).map(v=>hellish(L.dk)?[v[0],v[1]*(HW[v[0]]||.5),v[2],v[3]]:v);
+  const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2).map(v=>hellish(L.dk)?[v[0],v[1]*(CO_HW[v[0]]||.5),v[2],v[3]]:v);
   const v=forced||pv(r,n,list,room,D); if(!v)return 0;
   const used=COV[v](L,x); L.coLast=v; (L.coList=L.coList||[]).push([v,x,used]); return used;
 };
@@ -4311,6 +4327,114 @@ function coPuzTest(v,heroes){
   L=buildLevel(3,{script:[['co',v]],co:1,diff:'normal'}); G.cpX=null; G.deaths=0; G.lvDeaths=0; coSpawn(L.spawnTx); G.state='play'; G.camX=0; G.t=0;
   return L.coList;
 }
+
+/* =============== CO-OP PUZZLES 2: keys, locked doors, water + swimming, fans, shelves, two floors, chained bridges ===============
+   Everything hangs on the gate system of w_copuz.js: a puzzle has a colour / group id `gid`, plates and levers decide L.cgE[gid] (1 = open) and every new piece just
+   READS that: a lock door is a cgate of kind 'lock' (a key latches it), the water level rises while its gid is open, a fan blows while its gid is open.
+   Entities (all plain data, so a rollback snapshot stays plain JSON):
+     ckey   {gid,x,y,h}                h = -1 lying there, 0|1 = carried by that player, 2 = used up.  Touch it to pick it up; walk into the lock of the same gid to use it.
+     cwater {gid,x,w,y,yLo,yHi}        a pool over a pit. y = surface now (moves towards yHi while open, yLo while closed). Inside: slow, light, you swim.
+     cfan   {gid,x,w,y0,y1}            an updraft column from y0 up to y1 while open.
+   Swimming (only on levels with water, L.wt): jump = a stroke up, hold jump = rise slowly, nothing = sink slowly; a stroke near the surface leaps out onto the bank. No drowning. */
+const CW_SP=80, WT_G=420, WT_SINK=70, WT_MX=125, WT_ACC=900, WT_FR=700, WT_STROKE=-235, WT_LEAP=-410, WT_HOLD=1100, WT_RISE=-150;
+function waterAt(p){ const cx=p.x+PW/2, cy=p.y+PH*.55; for(const e of L.ents){ if(e.t==='cwater'&&cx>e.x&&cx<e.x+e.w&&cy>e.y)return e } return null }
+function waterSwim(p,wt,dt){
+  p.dj=false; p.air=0; p.coy=0;
+  if(p.buf>0){ p.buf=0; const out=p.y+PH*.55<wt.y+16; p.vy=out?WT_LEAP:WT_STROKE; p.stand=0; p.onGround=false; Snd.stroke(); if(!SIM)for(let i=0;i<(out?5:2);i++)parts.push({x:p.x+PW/2+(Math.random()-.5)*12,y:p.y+PH*.6,vx:(Math.random()-.5)*50,vy:-30-Math.random()*40,g:-40,life:.7,max:.7,s:2+Math.random()*2.5,col:'#bfeaff',sh:'b'}) }
+  else if(K.j&&p.vy>WT_RISE)p.vy=Math.max(WT_RISE,p.vy-WT_HOLD*dt);
+}
+function waterSplash(p,into){
+  if(SIM||HUSH)return; Snd.splash();
+  const wt=into?waterAt(p):null, y=wt?wt.y:p.y+PH*.55;
+  for(let i=0;i<10;i++)parts.push({x:p.x+PW/2+(Math.random()-.5)*16,y,vx:(Math.random()-.5)*150,vy:-90-Math.random()*130,g:620,life:.55+Math.random()*.3,max:.8,s:2.5+Math.random()*3,col:'#9fdcff',sh:'c'});
+}
+function fanLift(p,dt){
+  const cx=p.x+PW/2;
+  for(const e of L.ents){ if(e.t!=='cfan'||L.cgE[e.gid]!==1||cx<=e.x||cx>=e.x+e.w||p.y+PH<=e.y1||p.y>=e.y0)continue;
+    p.vy=Math.max(p.vy-2900*dt,-215); p.onGround=false; p.stand=0; p.dj=false; return }
+}
+function cgKey(e,S1){
+  if(e.h===2)return;
+  if(e.h<0){ for(const q of PLY){ if(!q.dead&&Math.abs(q.x+PW/2-e.x)<20&&Math.abs(q.y+PH*.5-e.y)<30){ e.h=q.idx; Snd.key(); break } } return }
+  const q=PLY[e.h]; if(!q||q.dead)return;
+  e.x=q.x+PW/2; e.y=q.y-12;                                                                    // floats above his head
+  for(const g of (L.cgG&&L.cgG[e.gid])||[]){ if(g.kind!=='lock')continue;
+    if(q.x+PW>g.x-14&&q.x<g.x+g.w*TS+14&&q.y+PH>g.y0*TS&&q.y<(g.y1+1)*TS){ e.h=2; S1[e.gid]=(S1[e.gid]|0)|1; Snd.unlock(); break } }
+}
+
+/* ---------------- drawing ---------------- */
+B.ckey={ hit(){return null},
+ draw(e,c){ if(e.h===2)return; const col=cgCol(e.gid), bob=e.h<0?Math.sin(G.t*4)*2.5:Math.sin(G.t*6)*1.2;
+  c.save(); c.translate(e.x,e.y+bob); c.lineJoin='round'; c.lineCap='round';
+  if(e.h<0){ c.globalAlpha=.35+.2*Math.sin(G.t*5); c.fillStyle=col; c.beginPath(); c.arc(0,0,17,0,7); c.fill(); c.globalAlpha=1 }
+  c.scale(e.h<0?1.15:.95,e.h<0?1.15:.95); c.rotate(-.6); c.strokeStyle='#000'; c.lineWidth=2.4; c.fillStyle='#ffd23f';
+  c.beginPath(); c.arc(-8,0,6.5,0,7); c.fill(); c.stroke(); c.fillStyle=col; c.beginPath(); c.arc(-8,0,2.6,0,7); c.fill();
+  c.fillStyle='#ffd23f'; c.fillRect(-2,-2,16,4); c.strokeRect(-2,-2,16,4); c.fillRect(8,2,3,6); c.strokeRect(8,2,3,6); c.fillRect(12,2,3,5); c.strokeRect(12,2,3,5);
+  c.restore() }};
+function waterBody(c,e,a1,a2){
+  if(e.y>=VH+20)return; const x=e.x, y=e.y, w=e.w, t=G.t;
+  const g=c.createLinearGradient(0,y,0,VH); g.addColorStop(0,'rgba(60,190,240,'+a1+')'); g.addColorStop(1,'rgba(10,80,130,'+a2+')');
+  c.fillStyle=g; c.beginPath(); c.moveTo(x,VH+4); c.lineTo(x,y);
+  for(let px=0;px<=w;px+=8)c.lineTo(x+px,y+Math.sin(t*3+(x+px)*.045)*2.2+Math.sin(t*1.7+(x+px)*.11)*1.2);
+  c.lineTo(x+w,VH+4); c.closePath(); c.fill();
+}
+B.cwater={ hit(){return null},
+ draw(e,c){ if(e.y>=VH+20)return; waterBody(c,e,.55,.8); c.save(); c.strokeStyle='#ffffffaa'; c.lineWidth=2; c.beginPath();
+  for(let px=0;px<=e.w;px+=8){ const yy=e.y+Math.sin(G.t*3+(e.x+px)*.045)*2.2+Math.sin(G.t*1.7+(e.x+px)*.11)*1.2; px?c.lineTo(e.x+px,yy):c.moveTo(e.x,yy) } c.stroke();
+  c.fillStyle='#ffffff40'; for(let i=0;i<6;i++){ const k=((G.t*.25+i/6)%1), bx=e.x+((i*37+13)%100)/100*e.w; c.beginPath(); c.arc(bx+Math.sin(G.t*2+i)*4,VH-k*(VH-e.y),1.6+(i%3),0,7); c.fill() }
+  c.restore() }};
+function waterOver(c){ for(const e of L.ents)if(e.t==='cwater'&&e.y<VH+20)waterBody(c,e,.22,.3) }
+B.cfan={ hit(){return null},
+ draw(e,c){ const on=L.cgE&&L.cgE[e.gid]===1, col=cgCol(e.gid), x=e.x, w=e.w, y=e.y0;
+  c.save(); c.lineJoin='round'; c.strokeStyle='#000'; c.lineWidth=2.4;
+  if(on){ c.strokeStyle=col; c.lineWidth=2; c.globalAlpha=.55; for(let i=0;i<5;i++){ const k=((G.t*1.4+i*.21)%1), xx=x+(i+.5)/5*w, h=(y-e.y1)*(1-k); c.beginPath(); c.moveTo(xx,y-6-k*(y-e.y1)); c.lineTo(xx,y-6-k*(y-e.y1)-18); c.stroke() } c.globalAlpha=1; c.strokeStyle='#000'; c.lineWidth=2.4 }
+  c.fillStyle='#4a5069'; c.fillRect(x,y-10,w,10); c.strokeRect(x,y-10,w,10);
+  c.fillStyle=on?'#9fe0ff':'#7d84a0'; const n=4, ang=on?G.t*14:0;
+  for(let i=0;i<n;i++){ const a=ang+i*Math.PI/2, bx=x+w/2+Math.cos(a)*w*.36; c.beginPath(); c.ellipse(bx,y-14,w*.14+2,3,0,0,7); c.fill(); c.stroke() }
+  c.fillStyle=on?'#35d07f':col; c.beginPath(); c.arc(x+w/2,y-5,3.5,0,7); c.fill(); c.stroke();
+  c.restore() }};
+Snd.key=function(){ this.tone({t:'square',f0:700,f1:1100,dur:.09,v:.14}); this.tone({t:'triangle',f0:1400,f1:1800,dur:.12,v:.1,d:.07}) };
+Snd.unlock=function(){ this.tone({t:'square',f0:300,f1:200,dur:.08,v:.16}); this.tone({t:'triangle',f0:600,f1:900,dur:.2,v:.12,d:.08}); this.noise({dur:.25,v:.1,ft:'lowpass',f:420,d:.1}) };
+Snd.splash=function(){ this.noise({dur:.22,v:.16,ft:'bandpass',f:900}) };
+Snd.stroke=function(){ this.noise({dur:.09,v:.07,ft:'bandpass',f:1200}) };
+
+/* ---------------- level pieces (same contract as COV in w_copuz.js: build into L at tile x, return the tiles used) ---------------- */
+const coKey=(L,g,tx,y)=>L.ents.push({t:'ckey',gid:g,x:tx*TS,y,h:-1});
+Object.assign(COV,{
+ keyshelf(L,x){ const g=newId(L), s1=GY-104, s2=s1-84;                       // the key is on a shelf too high to reach alone: one lifts the other
+  coCp(L,x); coSign(L,x+3,'المفتاح فوق الرف! 🔑\nواحد يرفع التاني... والباب بيستنى المفتاح',3.6);
+  L.ents.push(mkPlat(newId(L),'static',(x+8)*TS,s1,3*TS,{}), mkPlat(newId(L),'static',(x+11)*TS,s2,3*TS,{}));
+  coKey(L,g,x+12.5,s2-18); L.ents.push(mkGate(g,x+19,1,0,GR-1,'lock',0));
+  coCpEnd(L,x+22); return 24 },
+ flood(L,x){ const g=newId(L), gap=12;                                      // a deep pit: one opens the water gates, the other swims over
+  coCp(L,x); coSign(L,x+3,'حفرة عميقة 💀\nواحد يكبس الزر وتنفتح المياه\nوالتاني يسبح (اضغط قفز)',4);
+  L.ents.push(mkPlate(g,(x+6)*TS,GY,TS*1.8)); cutPit(L,x+8,gap);
+  L.ents.push({t:'cwater',gid:g,x:(x+8)*TS,w:gap*TS,y:VH+40,yLo:VH+40,yHi:GY+8});
+  L.ents.push(mkGate(g,x+8,0,0,0,'none',0), mkLever(g,(x+8+gap+2)*TS+16,GY));
+  coCpEnd(L,x+8+gap+5); return gap+14 },
+ fan(L,x){ const g=newId(L), H=6, wx=x+11;                                   // a wall too high to jump: one powers the fan, the other flies over
+  coCp(L,x); coSign(L,x+3,'الحيط عالي! 🧱\nواحد يكبس الزر يشغّل المروحة\nوالتاني بيطير فوق الحيط 🌬',3.8);
+  L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8));
+  for(let k=1;k<=H;k++){ blk(L,wx,GR-k); blk(L,wx+1,GR-k) }
+  L.ents.push({t:'cfan',gid:g,x:(wx-3)*TS,w:2.6*TS,y0:GY,y1:(GR-H-1)*TS-6});
+  L.ents.push(mkGate(g,x+8,0,0,0,'none',0), mkLever(g,(wx+6)*TS+16,GY));
+  coCpEnd(L,x+20); return 22 },
+ chain(L,x){ const g1=newId(L), g2=newId(L), gap=8;                           // two gaps with an island between: each bridge needs its own helper, each lever latches one
+  coCp(L,x); coSign(L,x+3,'جسرين ورا بعض 🌉🌉\nكل جسر بدّه حدا يكبس زرّه',3.2);
+  L.ents.push(mkPlate(g1,(x+4)*TS,GY,TS*1.8)); cutPit(L,x+8,gap); L.ents.push(mkGate(g1,x+8,gap,GR,GR,'bridge',1), mkLever(g1,(x+8+gap+1)*TS+16,GY));
+  L.ents.push(mkPlate(g2,(x+8+gap+3)*TS,GY,TS*1.8)); cutPit(L,x+8+gap+6,gap); L.ents.push(mkGate(g2,x+8+gap+6,gap,GR,GR,'bridge',1), mkLever(g2,(x+8+2*gap+7)*TS+16,GY));
+  coCpEnd(L,x+8+2*gap+10); return 2*gap+16+8 },
+ floors(L,x){ const g0=newId(L), g1=newId(L), g2=newId(L), UR=7, UY=UR*TS;     // two storeys: lift up, a bridge on the top floor held from the floor below, a door below held from above
+  coCp(L,x); coSign(L,x+3,'طابقين! 🏢\nواحد فوق وواحد تحت...\nكل واحد بيفتح الطريق للتاني',3.8);
+  L.ents.push(mkPlate(g0,(x+4)*TS,GY,TS*1.8));
+  L.ents.push(mkPlat(newId(L),'colift',(x+8)*TS,GY-30,2*TS,{gid:g0,y0:GY-30,y1:UY,sp:84,lm:0}), mkGate(g0,x+8,0,0,0,'none',0), mkLever(g0,(x+12.5)*TS,UY));
+  for(let tx=x+11;tx<=x+28;tx++){ if(tx>=x+16&&tx<=x+19)continue; blk(L,tx,UR) }          // the slab = the upper floor, with a hole in it
+  L.ents.push(mkPlate(g1,(x+17)*TS,GY,TS*1.8), mkGate(g1,x+16,4,UR,UR,'bridge',1));         // lower plate -> bridge over the hole
+  L.ents.push(mkPlate(g2,(x+22)*TS,UY,TS*1.8), mkGate(g2,x+20,1,UR+1,GR-1,'door',0), mkLever(g2,(x+25)*TS+16,GY));       // upper plate -> door below, its lever latches it
+  coCpEnd(L,x+31); return 33 },
+});
+for(const v of [['keyshelf',8,2,26],['flood',7,3,28],['fan',7,3,24],['chain',6,4,42],['floors',6,5,36]])COV_LIST.push(v);
+Object.assign(CO_HW,{keyshelf:1.2,flood:1.6,fan:1.4,chain:3,floors:3});
 
 /* =============== CO-OP: two players, one level (foundation) ===============
    Rules (kept deliberately simple so two screens can run the SAME simulation later):
@@ -4352,10 +4476,13 @@ function coPlayers(dt){
   coHome();
 }
 function coDraw(c){
-  for(const q of PLY){ P=q; if(q.dead)drawDeath(c); else { drawPlayer(c); heroFxWorld(c) } }
+  const vo=G.co&&!G.co.local?(netVis(),NET.vo):null;                     // online: what a rollback corrected is not shown as a jump, it glides (netVis)
+  for(const q of PLY){ P=q; const o=vo&&vo[q.idx], sh=o&&(o.x||o.y); if(sh){ c.save(); c.translate(o.x,o.y) }
+    if(q.dead)drawDeath(c); else { drawPlayer(c); heroFxWorld(c) }
+    if(sh)c.restore() }
   coHome();
   c.save(); c.textAlign='center'; c.lineJoin='round';
-  PLY.forEach((q,i)=>{ if(q.dead)return; const x=q.x+PW/2, y=q.y+PH-(typeof SPR_H==='number'&&look3()?SPR_H:44)-4;
+  PLY.forEach((q,i)=>{ if(q.dead)return; const o=vo&&vo[i], x=q.x+PW/2+(o?o.x:0), y=q.y+PH-(typeof SPR_H==='number'&&look3()?SPR_H:44)-4+(o?o.y:0);
     c.fillStyle=CO_COL[i]; c.strokeStyle='#000'; c.lineWidth=2; c.beginPath(); c.moveTo(x-6,y-8); c.lineTo(x+6,y-8); c.lineTo(x,y); c.closePath(); c.fill(); c.stroke();
     c.font='900 11px Tahoma,Arial'; c.lineWidth=3; c.strokeText(String(i+1),x,y-11); c.fillStyle='#fff'; c.fillText(String(i+1),x,y-11) });
   c.restore();
@@ -4432,11 +4559,15 @@ const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.cu
      frame f is simulated only when both players' input for f is known; our own input is sampled D frames ahead (D from the measured ping), so the
      local player never waits unless the network is slower than D. Every 30 frames both sides hash the state; if the guest's differs (different float
      rounding in another browser, a lost packet...) it asks the host for a snapshot of that frame, restores it and re-simulates up to now.
+   WEBRTC: once both sides are in the room, the host offers a direct data channel (signalling travels through whichever transport is in use). Same Wi-Fi = a few ms
+     instead of a 150-400 ms round trip through the database. Inputs/positions go unreliable+unordered (every input message repeats the last frames anyway), control
+     messages go on a reliable channel AND on the relay (the first copy wins, 'u' ids drop the second). If the channel never opens or dies, the relay simply carries on.
    RACE = both run their own ordinary single-player engine on the same level; only positions (10 Hz) and the finish are exchanged; the host arbitrates.
    Nothing here touches the simulation: with G.co null and G.race null every function below is idle. */
-const NET_V='a76f2bb5';
-const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app'};      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
-const NET={link:'off',role:null,code:'',kind:'',tr:null,peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
+const NET_V='f8a0f22b';
+const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app',
+  ice:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:'stun:stun.cloudflare.com:3478'}]};      // free STUN only; a TURN relay can be added through S.turn = 'turn:host:3478|user|password'      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
+const NET={link:'off',role:null,code:'',kind:'',tr:null,sig:null,rtc:null,tpk:'',peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
 const KR={l:false,r:false,j:false,jp:false,a:false,ap:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
 const netLock=()=>!!(G.co&&!G.co.local);
 const NET_AL='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -4452,7 +4583,7 @@ function tpLoop(code,role,onmsg){
 }
 function tpRtdb(code,role,onmsg,onstate){
   const base=netDb()+'/dhr/'+code, other=role==='h'?'g':'h', seen=new Set(); let seq=Date.now()*1000, es=null, closed=false;
-  const take=(q,m)=>{ if(seen.has(q))return; seen.add(q); if(seen.size>800)seen.delete(seen.values().next().value); let o=null; try{ o=JSON.parse(m) }catch(e){} if(o)onmsg(o) };
+  const take=(q,m)=>{ if(seen.has(q))return; seen.add(q); if(seen.size>800)seen.delete(seen.values().next().value); let o=null; try{ o=JSON.parse(m) }catch(e){} if(o){ if(Array.isArray(o))o.forEach(onmsg); else onmsg(o) } };
   const ev=e=>{ let d=null; try{ d=JSON.parse(e.data) }catch(_){} if(!d||d.data==null)return;
     const segs=String(d.path||'/').split('/').filter(Boolean), v=d.data;
     const slots=segs.length===0?Object.values(v):(segs.length===1?[v]:[]);
@@ -4461,10 +4592,69 @@ function tpRtdb(code,role,onmsg,onstate){
     es.addEventListener('put',ev); es.addEventListener('patch',ev);
     es.onopen=()=>onstate&&onstate('open'); es.onerror=()=>onstate&&onstate('err') };
   if(role==='h')fetch(base+'.json',{method:'DELETE'}).catch(()=>{}).then(start); else start();
+  /* Every message used to be its own HTTP request (30-60 a second per phone). Now at most one request per RELAY_GAP: what piled up in between travels together, and of the
+     cumulative kinds ('i' inputs, 'g' positions) only the newest copy is kept because it repeats everything the older ones said. */
+  const RELAY_GAP=45; let out=[], last=0, timer=0;
+  const flush=()=>{ timer=0; if(closed||!out.length)return; const arr=out; out=[]; last=Date.now(); const q=++seq;
+    fetch(base+'/'+role+'/s'+(q%128)+'.json?print=silent',{method:'PUT',body:JSON.stringify({q,m:JSON.stringify(arr.length===1?arr[0]:arr)})}).catch(()=>{}) };
   return {
-    send(m){ const q=++seq; fetch(base+'/'+role+'/s'+(q%128)+'.json?print=silent',{method:'PUT',body:JSON.stringify({q,m:JSON.stringify(m)})}).catch(()=>{}) },
-    close(){ closed=true; if(es)es.close(); fetch(base+(role==='h'?'':'/g')+'.json',{method:'DELETE'}).catch(()=>{}) }       // the host removes the whole room, a guest only its own folder
+    send(m){ if(m.t==='i'||m.t==='g'){ const k=out.findIndex(x=>x.t===m.t); if(k>=0)out.splice(k,1) } out.push(m);
+      if(!timer)timer=setTimeout(flush,Math.max(0,RELAY_GAP-(Date.now()-last))) },
+    close(){ const late=!!timer||Date.now()-last<400; if(timer){ clearTimeout(timer); flush() } closed=true; if(es)es.close();
+      const del=()=>fetch(base+(role==='h'?'':'/g')+'.json',{method:'DELETE'}).catch(()=>{}); if(late)setTimeout(del,500); else del() }          // a last PUT still on its way must not land AFTER the delete and bring the room back       // the host removes the whole room, a guest only its own folder
   };
+}
+
+/* ---- WebRTC: direct data channels (the relay stays the signalling path and the automatic fallback) ---- */
+const rtcOk=()=>typeof RTCPeerConnection!=='undefined'&&S.nt!=='relay';
+function rtcIce(){ const ice=NET_CFG.ice.slice(), t=String(S.turn||'').split('|'); if(t[0])ice.push({urls:t[0],username:t[1]||'',credential:t[2]||''}); return ice }
+function rtcSend(ch,m){ if(!ch||ch.readyState!=='open')return false; try{ ch.send(JSON.stringify(m)); NET.dcTx=(NET.dcTx|0)+1; return true }catch(e){ return false } }
+function rtcMake(id){
+  const N=NET, pc=new RTCPeerConnection({iceServers:rtcIce()});
+  const r={pc,id,ok:false,fast:null,rel:null,t0:netNow(),pend:[],lastRx:netNow(),rd:false,sil:false};
+  r.fast=pc.createDataChannel('f',{ordered:false,maxRetransmits:0,negotiated:true,id:0});
+  r.rel=pc.createDataChannel('r',{negotiated:true,id:1});
+  for(const ch of [r.fast,r.rel]){ ch.onopen=()=>rtcCheck(r); ch.onclose=()=>rtcCheck(r);
+    ch.onmessage=e=>{ if(NET.rtc!==r)return; r.lastRx=netNow(); NET.dcRx=(NET.dcRx|0)+1; let m=null; try{ m=JSON.parse(e.data) }catch(_){} if(m){ if(r.sil){ r.sil=false; rtcCheck(r) } netRecv(m) } } }
+  pc.onicecandidate=e=>{ if(e.candidate&&N.sig&&N.rtc===r)N.sig.send({t:'rtc',k:'c',id,c:e.candidate.toJSON()}) };
+  pc.onconnectionstatechange=()=>rtcCheck(r);
+  N.rtc=r; return r;
+}
+function rtcCheck(r){                                          // the path in use follows the state of the channels
+  const N=NET; if(N.rtc!==r)return;
+  const st=r.pc.connectionState, up=r.fast.readyState==='open'&&r.rel.readyState==='open'&&st!=='failed'&&st!=='closed'&&st!=='disconnected'&&!r.sil;
+  if(up&&!r.ok){ r.ok=true; r.up=(r.up||0)+1; if(!r.t1)r.t1=netNow(); N.tpk='rtc'; rtcPath(); netRender() }
+  else if(!up&&r.ok){ r.ok=false; N.tpk=N.kind==='rtdb'?'relay':'loop'; rtcPath(); netRender() }
+  if(st==='failed'||st==='closed')rtcRetry(r);
+}
+function rtcPath(){ const N=NET; N.rtt=0; N.pings=[]; N.pgAt=0; N.pgFast=netNow()+4000 }          // another road = another ping time: measure again, quickly
+function rtcDrop(){ const N=NET, r=N.rtc; if(!r)return; const was=r.ok; N.rtc=null; r.ok=false; try{ r.fast.onclose=r.rel.onclose=null; r.pc.close() }catch(e){} N.tpk=N.kind==='rtdb'?'relay':'loop'; if(was)rtcPath() }
+function rtcRetry(r){ const N=NET; if(N.rtc!==r)return; rtcDrop(); if(N.role==='h'&&N.rtcN<3&&N.tr&&N.link!=='off')setTimeout(()=>{ if(NET.tr===N.tr&&!NET.rtc)rtcStart() },2000) }
+function rtcStart(){                                           // host: offer a direct channel
+  const N=NET; if(N.role!=='h'||N.rtc||N.rtcN>=3||!rtcOk()||!N.sig)return;
+  N.rtcN++; let r; try{ r=rtcMake(N.rtcN) }catch(e){ N.rtc=null; return }
+  r.pc.createOffer().then(o=>r.pc.setLocalDescription(o)).then(()=>{ if(N.rtc===r&&N.sig)N.sig.send({t:'rtc',k:'o',id:r.id,sdp:r.pc.localDescription.sdp}) }).catch(()=>{ if(N.rtc===r)rtcRetry(r) });
+}
+function rtcSignal(m){
+  const N=NET; if(!rtcOk())return;
+  if(m.k==='o'&&N.role==='g'){
+    if(N.rtc&&N.rtc.id===m.id)return;                          // already answered
+    rtcDrop(); let r; try{ r=rtcMake(m.id) }catch(e){ N.rtc=null; return }
+    r.pc.setRemoteDescription({type:'offer',sdp:m.sdp}).then(()=>{ r.rd=true; for(const c of (N.early||[]).filter(x=>x.id===r.id))r.pc.addIceCandidate(c.c).catch(()=>{}); N.early=[]; return r.pc.createAnswer() })
+      .then(a=>r.pc.setLocalDescription(a)).then(()=>{ if(N.rtc===r&&N.sig)N.sig.send({t:'rtc',k:'a',id:r.id,sdp:r.pc.localDescription.sdp}) }).catch(()=>{ if(N.rtc===r)rtcDrop() });
+  } else if(m.k==='a'&&N.role==='h'){
+    const r=N.rtc; if(!r||r.id!==m.id||r.rd)return; r.rd=true;
+    r.pc.setRemoteDescription({type:'answer',sdp:m.sdp}).then(()=>{ for(const c of r.pend.splice(0))r.pc.addIceCandidate(c).catch(()=>{}) }).catch(()=>{ if(N.rtc===r)rtcRetry(r) });
+  } else if(m.k==='c'){
+    const r=N.rtc;
+    if(!r||r.id!==m.id){ if(N.role==='g'){ (N.early||(N.early=[])).push(m); if(N.early.length>60)N.early.shift() } return }          // a candidate can overtake its offer on the relay
+    if(r.rd)r.pc.addIceCandidate(m.c).catch(()=>{}); else r.pend.push(m.c);
+  }
+}
+function rtcWatch(now){                                        // called by the 250 ms timer: a channel that went silent is left for the relay, one that never opened is retried
+  const N=NET, r=N.rtc; if(!r)return;
+  if(r.ok&&now-r.lastRx>(N.link==='play'?1500:7000)){ r.sil=true; rtcCheck(r) }
+  else if(!r.ok&&!r.up&&now-r.t0>12000)rtcRetry(r);
 }
 
 /* ---- session: rooms, handshake, ping ---- */
@@ -4472,14 +4662,16 @@ const netNow=()=>performance.now();
 function netOpen(role,code){
   netClose();
   const kind=netKind();
-  Object.assign(NET,{role,code,kind,link:role==='h'?'wait':'join',peer:null,rtt:0,pings:[],lastRx:netNow(),joinAt:netNow(),msg:'',st:'',me:role==='h'?0:1,bye:false});
-  NET.tr=(kind==='rtdb'?tpRtdb:tpLoop)(code,role,netRecv,s=>{ NET.st=s; netRender() });
+  Object.assign(NET,{role,code,kind,link:role==='h'?'wait':'join',peer:null,rtt:0,pings:[],lastRx:netNow(),joinAt:netNow(),msg:'',st:'',me:role==='h'?0:1,bye:false,rtc:null,rtcN:0,txu:0,seenU:new Set(),tpk:kind==='rtdb'?'relay':'loop'});
+  NET.sig=(kind==='rtdb'?tpRtdb:tpLoop)(code,role,netRecv,s=>{ NET.st=s; netRender() });
+  NET.tr={send:netTx,close:()=>{ rtcDrop(); NET.sig.close() }};
   NET.timer=setInterval(netTimer,250);
   netRender();
 }
 function netClose(){
   const N=NET; if(N.timer){ clearInterval(N.timer); N.timer=0 } if(N.gtimer){ clearInterval(N.gtimer); N.gtimer=0 }
   if(N.tr){ const t=N.tr; N.tr=null; setTimeout(()=>t.close(),700) }                                    // keep the folder a moment so the 'bye' can still be read
+  N.tpk=''; N.sig2=null; const dg=$('netDg'); if(dg)dg.classList.add('hide');
 }
 function netHost(){
   const code=Array.from({length:5},()=>NET_AL[Math.random()*NET_AL.length|0]).join('');
@@ -4491,26 +4683,42 @@ function netJoin(code){
   netOpen('g',code); netSendJoin();
 }
 const netHello=()=>({v:NET_V,h:S.hero,s:heroStage(S.hero),k:skinSaved(S.hero),b:Math.max(1,S.best)});
-function netSendJoin(){ if(NET.tr)NET.tr.send(Object.assign({t:'jn'},netHello())) }
+function netSendJoin(){ if(NET.sig)NET.sig.send(Object.assign({t:'jn'},netHello())) }
+const RTC_FAST=new Set(['i','g','pg','pn','h','em']);           // loss or reordering is harmless for these: they go on the unreliable channel only
+function netTx(m){
+  const N=NET, r=N.rtc, live=r&&r.ok;
+  if(live&&RTC_FAST.has(m.t)){ if(rtcSend(r.fast,m))return }                    // fast kinds: the direct channel when it is up, the relay otherwise
+  else if(live&&m.t!=='jn'&&m.t!=='wl'&&m.t!=='no'&&m.t!=='rtc'){ m.u=N.role+(++N.txu); rtcSend(r.rel,m) }          // everything else: both ways, the first copy wins
+  if(N.sig)N.sig.send(m);
+}
 function netTimer(){
   const N=NET, now=netNow(); if(!N.tr)return;
   if(N.link==='join'){ if(now-N.joinAt>15000){ netLeave('ما لقيت الغرفة 🤷 تأكد من الكود'); return } if(!N.jr||now-N.jr>1500){ N.jr=now; netSendJoin() } return }
   if(N.link==='wait')return;
   if(now-N.lastRx>20000){ netLeave('انقطع الاتصال 📡'); return }
-  if(!N.pgAt||now-N.pgAt>2000){ N.pgAt=now; N.tr.send({t:'pg',ts:now}) }
+  rtcWatch(now); netDiag();
+  if(!N.pgAt||now-N.pgAt>(now<N.pgFast?400:2000)){ N.pgAt=now; N.tr.send({t:'pg',ts:now}) }
   if(N.link==='play'&&N.lock){ netSend(); netStallUi() }
+}
+function netDiag(){                                          // the little connection chip in the corner while playing online
+  const N=NET, el=$('netDg'); if(!el)return;
+  if(N.link!=='play'||!N.lock&&N.mode!=='race'){ el.classList.add('hide'); return }
+  const ms=N.pings.length?N.pings.slice().sort((a,b)=>a-b)[N.pings.length>>1]:N.rtt, direct=N.tpk==='rtc'||N.tpk==='loop';
+  el.textContent=(direct?'🔗 ':'☁️ ')+Math.round(ms)+' ms'; el.className=ms<90?'ok':ms<220?'mid':'bad'; el.title=direct?'اتصال مباشر':'عبر السيرفر';
 }
 function netRecv(m){
   const N=NET; if(!m||!N.tr&&m.t!=='bye')return; N.lastRx=netNow();
+  if(m.u!==undefined){ if(N.seenU.has(m.u))return; N.seenU.add(m.u); if(N.seenU.size>400)N.seenU.delete(N.seenU.values().next().value) }
   switch(m.t){
     case 'jn':
       if(N.role!=='h')return;
       if(m.v!==NET_V){ N.tr.send({t:'no',w:'v'}); return }
       N.peer={hero:m.h,stage:m.s,skin:skinSan(m.h,m.k),best:m.b}; if(N.link==='wait')N.link='conn';
-      N.tr.send(Object.assign({t:'wl'},netHello())); netLobbySend(); netRender(); break;
+      N.tr.send(Object.assign({t:'wl'},netHello())); netLobbySend(); netRender(); rtcStart(); break;
     case 'wl':
       if(N.role!=='g')return; N.peer={hero:m.h,stage:m.s,skin:skinSan(m.h,m.k),best:m.b}; if(N.link==='join'){ N.link='conn'; N.msg='' } netRender(); break;
     case 'no': netLeave(m.w==='v'?'نسخة اللعبة مختلفة عن صاحبك — حدّثوا الصفحة الاتنين 🔄':'ما قدرت أدخل الغرفة'); break;
+    case 'rtc': rtcSignal(m); break;
     case 'pg': N.tr.send({t:'pn',ts:m.ts}); break;
     case 'pn': { const r=netNow()-m.ts; N.rtt=N.rtt?N.rtt*.7+r*.3:r; N.pings.push(r); if(N.pings.length>7)N.pings.shift(); netRender() } break;
     case 'lb': if(N.role==='g'&&N.link!=='play')netLobbyRecv(m); break;
@@ -4567,7 +4775,7 @@ function netBegin(o){
   for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide');
   const cu=o.cu?(()=>{ const r=decodeCustom(o.cu); return r.err?null:r.c })():null;
   if(o.mode==='race'){ raceBegin(o,cu); return }
-  N.lock=true; N.dl=NET_DL; N.D=N.dl; N.f=0; N.c=0; N.smp=-1; N.loc={}; N.rem={}; N.used={}; N.snp={}; N.pl={}; N.snaps={}; N.fx=[]; N.rb=null; N.hh={}; N.rh={}; N.ackR=N.dl-1; N.remHi=N.dl-1; N.remLast=0; N.lm=-1; N.stallT=0; N.stallTot=0; N.bad=0; N.rsAt=0; N.fixes=0; N.nrb=0; N.rbFr=0; N.fxN={}; N.maxRb=0; N.adv=0; N.adj=-1;
+  N.lock=true; N.dl=NET_DL; N.D=N.dl; N.f=0; N.c=0; N.smp=-1; N.loc={}; N.rem={}; N.used={}; N.snp={}; N.pl={}; N.snaps={}; N.fx=[]; N.rb=null; N.hh={}; N.rh={}; N.ackR=N.dl-1; N.remHi=N.dl-1; N.remLast=0; N.lm=-1; N.stallT=0; N.stallTot=0; N.bad=0; N.rsAt=0; N.fixes=0; N.nrb=0; N.rbFr=0; N.fxN={}; N.maxRb=0; N.adv=0; N.adj=-1; N.stallN=0; N.stallMax=0; N.popN=0; N.popMax=0; N.popTot=0; N.vo=[{x:0,y:0},{x:0,y:0}]; N.txN=0; N.rxN=0; N.rbT=0; N.rbTmax=0; N.visT=0; N.spec=0; N.locLo=0;
   N.startAt=netNow()+(N.role==='h'?clamp((N.rtt||0)/2,0,400):0);       // the host waits half a ping so both machines start the same frame at about the same moment
   for(let i=0;i<N.dl;i++){ N.loc[i]=0; N.rem[i]=0 }
   for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
@@ -4580,7 +4788,9 @@ function netBegin(o){
    Snapshots are ~2 KB and a step costs ~0.04 ms, so even a 20 frame rollback is invisible. 'Confirmed' = every frame before N.c was simulated with the other
    side's real input: only those are hashed (cross-checked with the other machine) and only then do deaths/wins make their sounds and cards (a rolled back
    death must never be heard). During a re-simulation the audio is hushed (HUSH). */
-const NET_DL=2, NET_MAXSPEC=24;
+const NET_DL=2, NET_MAXSPEC=24, NET_SPEC_HI=60;
+const netQ=j=>j.replace(/-?\d+\.\d{3,}/g,m=>(+m).toFixed(2));          // hash only what two phones must agree on: positions to 1/100 px (Math.sin/cos may differ in the last digits between a V8 and a JavaScriptCore phone)
+const netSpec=()=>{ const r=NET.pings.length>=2?NET.pings.slice().sort((a,b)=>a-b)[NET.pings.length>>1]:(NET.rtt||120); return clamp(Math.ceil(r/16.7)+14,NET_MAXSPEC,NET_SPEC_HI) };      // how far we may run on guesses: a slow link gets a longer leash instead of a freeze
 const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32};
 function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; return m }
 function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32) }
@@ -4614,8 +4824,8 @@ function netPre(){                                          // true = the next f
   if(N.rb!=null)netRollback();
   netConfirm();
   if(!N.lock||N.link!=='play')return false;
-  if(N.f-N.c>=NET_MAXSPEC){ if(!N.stallT)N.stallT=netNow(); netStallUi(); return false }      // too far ahead of what we know: wait
-  if(N.stallT){ N.stallTot+=netNow()-N.stallT; N.stallT=0; netStallUi() }
+  if(N.f%30===0)N.spec=netSpec(); if(N.f-N.c>=(N.spec||NET_MAXSPEC)||N.f+N.dl-N.ackR>=84){ if(!N.stallT){ N.stallT=netNow(); N.stallN++ } netStallUi(); return false }      // too far ahead of what we know: wait
+  if(N.stallT){ const w=netNow()-N.stallT; N.stallTot+=w; if(w>N.stallMax)N.stallMax=w; N.stallT=0; netStallUi() }
   if(N.adv>3&&N.f%30===0&&N.adj!==N.f){ N.adj=N.f; N.adv-=1; return false }                  // we run ahead of the other machine: give up a step now and then
   if(N.smp!==N.f){ N.smp=N.f; const m=netSample(); N.loc[N.f+N.dl]=m; if(m!==N.lm||N.f%4===0){ N.lm=m; netSend() } }
   netFrame(N.f); N.snp[N.f]=snap(true); N.pl[N.f]=G.state==='play';
@@ -4625,24 +4835,35 @@ function netPost(){ NET.f++ }
 function netRollback(){
   const N=NET, r=N.rb, head=N.f; N.rb=null;
   const s=N.snp[r]; if(s===undefined){ N.bad++; return }
+  const pre=PLY.map(q=>({x:q.x,y:q.y})), t0=performance.now();
   restore(s); N.fx=N.fx.filter(x=>x.f<r); N.nrb++; N.rbFr+=head-r; if(head-r>N.maxRb)N.maxRb=head-r;
   HUSH=true;
   try{ for(N.f=r;N.f<head;N.f++){ if(!N.lock||G.state==='co')break; if(N.f>r){ N.snp[N.f]=snap(true); N.pl[N.f]=G.state==='play' } netFrame(N.f); update(1/60) } }
   finally{ HUSH=false }
   if(N.lock)N.f=head;
+  PLY.forEach((q,i)=>{ const p=pre[i]; if(!p)return; const dx=p.x-q.x, dy=p.y-q.y, d=Math.hypot(dx,dy), o=N.vo[i]; if(d<.5)return;        // how far this correction moved him
+    N.popTot+=d; if(d>N.popMax)N.popMax=d; if(d>6)N.popN++;
+    if(d<240){ o.x+=dx; o.y+=dy } else { o.x=0; o.y=0 } });                               // the screen keeps showing him where he WAS and glides to the corrected place (netVis)
+  const dt=performance.now()-t0; N.rbT+=dt; if(dt>N.rbTmax)N.rbTmax=dt;
+}
+function netVis(){                                          // once per drawn frame: let the drawing offsets of both players melt away (~70 ms)
+  const N=NET; if(!N.vo)return; const now=netNow(), dt=N.visT?Math.min(.1,(now-N.visT)/1000):.016; N.visT=now; const k=Math.exp(-dt*14);
+  for(const o of N.vo){ o.x*=k; o.y*=k; if(Math.abs(o.x)<.2)o.x=0; if(Math.abs(o.y)<.2)o.y=0 }
 }
 function netConfirm(){
   const N=NET;
   while(N.c<N.f&&N.rem[N.c]!==undefined){
     const f=N.c;
     if(f%30===0&&N.pl[f]&&N.snp[f]!==undefined){                 // hash of the now final state at the start of frame f
-      const h=fnv(N.snp[f]); N.hh[f]=h; delete N.hh[f-900];
+      const h=fnv(netQ(N.snp[f])); N.hh[f]=h; delete N.hh[f-900];
       if(N.role==='h'||N.keep){ N.snaps[f]=N.snp[f]; delete N.snaps[f-(N.keep?3000:300)] }
       N.tr.send({t:'h',f,h});
       if(N.rh[f]!==undefined){ netCmp(f,N.rh[f]); delete N.rh[f] }
     }
-    N.c++; const o=f-1; delete N.snp[o]; delete N.used[o]; delete N.loc[o]; delete N.rem[o]; delete N.pl[o];
+    if(N.keep&&N.snp[f]!==undefined){ (N.trs||(N.trs={}))[f]=N.snp[f]; (N.tru||(N.tru={}))[f]=N.used[f]; (N.trl||(N.trl={}))[f]=N.loc[f] }          // debugging aid: every confirmed frame, to find where two machines part
+    N.c++; const o=f-1; delete N.snp[o]; delete N.used[o]; delete N.rem[o]; delete N.pl[o];
   }
+  const lim=Math.min(N.c-1,N.ackR); while(N.locLo<lim)delete N.loc[N.locLo++];          // our own keys stay until HE has them too (they are re-sent until acknowledged: a deleted one would go out as 'nothing pressed')
   while(N.fx.length&&N.fx[0].f<N.c)netRunFx(N.fx.shift());
 }
 function netGotHash(m){ const N=NET; if(!N.lock)return; if(N.hh[m.f]!==undefined)netCmp(m.f,m.h); else N.rh[m.f]=m.h }
@@ -4761,7 +4982,7 @@ function netRender(){
   const off=N.link==='off';
   $('nHostBox').classList.toggle('hide',!off); $('nRoom').classList.toggle('hide',off);
   $('nCodeBig').textContent=N.code||'';
-  const st=N.link==='wait'?'⏳ بستنى صاحبك يدخل بالكود':N.link==='join'?'🔌 عم أتصل...':conn?('✅ متصلين'+(N.rtt?' · '+Math.round(N.rtt)+' ms':'')):'';
+  const st=N.link==='wait'?'⏳ بستنى صاحبك يدخل بالكود':N.link==='join'?'🔌 عم أتصل...':conn?('✅ متصلين'+(N.tpk==='rtc'?' · 🔗 مباشر':N.tpk==='relay'?' · ☁️ عبر السيرفر':'')+(N.rtt?' · '+Math.round(N.rtt)+' ms':'')):'';
   $('nStat').textContent=st+(N.kind==='loop'&&N.link!=='off'?' (نفس المتصفح فقط — حط رابط القاعدة للعب عن بعد)':'');
   $('nModeCo').classList.toggle('on',N.mode==='co'); $('nModeRace').classList.toggle('on',N.mode==='race');
   for(const id of ['nModeCo','nModeRace'])$(id).disabled=!(N.role==='h'||off);
@@ -6442,7 +6663,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); try{ titleCard() }catch(e){} $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={goTitle,pfChanged,titleCard,gemSpend,gemBuyCoins,gemBuyXp,gemPack,GEMX,gemBonus,skinGemPrice,titleMenu,SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={waterAt,fanLift,waterOver,coPlayable,rtcDrop,rtcStart,netSpec,goTitle,pfChanged,titleCard,gemSpend,gemBuyCoins,gemBuyXp,gemPack,GEMX,gemBonus,skinGemPrice,titleMenu,SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 <script>

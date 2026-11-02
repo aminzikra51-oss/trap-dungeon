@@ -256,6 +256,7 @@ function render(){
   // player
   if(G.co)coDraw(c); else if(G.state==='dead')drawDeath(c);else{drawPlayer(c);heroFxWorld(c)}
   if(G.race)raceDraw(c);
+  if(L.wt)waterOver(c);
   for(const e of L.ents){ if(e.t==='chase'||e.t==='ghost')B[e.t].draw(e,c,th) }
   // particles
   for(const p of parts){const a=clamp(p.life/(p.max*.6),0,1);c.globalAlpha=a;c.fillStyle=p.col;

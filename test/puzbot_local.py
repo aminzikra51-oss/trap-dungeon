@@ -15,7 +15,7 @@ with sync_playwright() as p:
     b = p.chromium.launch(); pg = b.new_page(viewport={'width': 1000, 'height': 600}); errs = []
     pg.on('pageerror', lambda e: errs.append(str(e))); pg.goto(f'http://127.0.0.1:{port}/trap-dungeon.html'); pg.wait_for_timeout(500)
     pg.evaluate("() => { const T = window.TD; T.sim(false); T.S.best = 14; T.S.own.robot = 1; T.S.diff = 'normal' }")
-    for v in (sys.argv[1:] or ['gate', 'ladder', 'bridge', 'sync', 'lift']):
+    for v in (sys.argv[1:] or ['gate', 'ladder', 'bridge', 'sync', 'lift', 'flood', 'fan', 'chain', 'keyshelf', 'floors']):
         r = pg.evaluate(JS, [BOT, v]); print(v, r['state'], 'frames', r['frames'])
         if r['state'] != 'win' or len(sys.argv) > 1:
             for t in r['trace'][:30]: print('   ', t)
