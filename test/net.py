@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fake_rtdb import FakeRtdb
 from playwright.sync_api import sync_playwright
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.environ.get('TD_DIR') or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))      # TD_DIR = a frozen copy of the build, so the source can be rebuilt while this long test runs
 SHOTS = sys.argv[sys.argv.index('--shots') + 1] if '--shots' in sys.argv else None
 RTDB = '--rtdb' in sys.argv
 RELAY = '--relay' in sys.argv
@@ -72,6 +72,12 @@ def run():
         ok('level choice is free online: progress of either player does not limit it', A.evaluate("() => window.TD.coMax()") == 999 and B.evaluate("() => window.TD.coMax()") == 999)
         B.wait_for_timeout(int(1500 * SLOW))
         ok('ping measured', A.evaluate(STATE)['rtt'] >= 0 and len(A.evaluate("() => window.TD.NET.pings")) >= 1)
+        # tools for testing between regions: the connection report (to paste to the developer) and the TURN field
+        for pg, nm in ((A, 'host'), (B, 'guest')):
+            rep = pg.evaluate("() => window.TD.netReport()")
+            ok(f'the connection report of the {nm} has the key facts (role, ping, path, TURN)', all(w in rep for w in ('تقرير اتصال', 'بنغ', 'TURN:', 'WebRTC')) and ('مضيف' if nm == 'host' else 'ضيف') in rep, rep[:300].replace('\n', ' | '))
+        tv = A.evaluate("() => { const T = window.TD, i = document.getElementById('nTurn'), ch = () => i.dispatchEvent(new Event('change')); const o = []; i.value = 'turn:turn.example.org:3478|bob|secret'; ch(); o.push(T.S.turn); i.value = 'http://evil.example/x'; ch(); o.push(T.S.turn); i.value = 'turn:t.example.org:3478'; ch(); o.push(T.S.turn); i.value = ''; ch(); o.push(T.S.turn); return o }")
+        ok('the TURN field keeps only well-formed turn: entries', tv == ['turn:turn.example.org:3478|bob|secret', '', 'turn:t.example.org:3478', ''], tv)
         ok('guest sees host-only controls hidden', B.evaluate("() => [document.getElementById('nGo').classList.contains('hide'), !document.getElementById('nGuestWait').classList.contains('hide')]") == [True, True])
         ok('host sees start button', A.evaluate("() => !document.getElementById('nGo').classList.contains('hide')"))
         # a wrong code never connects
@@ -86,7 +92,9 @@ def run():
         A.evaluate("() => { window.TD.CO.sel.n = 140; window.TD.coRender() }"); A.wait_for_timeout(int(300 * SLOW))
         ok('a level far beyond both players\' progress (best 14 / 9) is accepted', B.evaluate("() => window.TD.CO.sel.n") == 140)
         ok('co-op default difficulty is impossible on both lobbies', A.evaluate("() => window.TD.coDf()") == 'hell' and B.evaluate("() => window.TD.coDf()") == 'hell')
-        A.evaluate("() => { window.TD.CO.sel.df = 'nightmare'; window.TD.CO.sel.n = 3; window.TD.coRender() }"); A.wait_for_timeout(int(300 * SLOW))
+        A.evaluate("() => { window.TD.CO.sel.df = 'nightmare'; window.TD.CO.sel.n = 3; window.TD.CO.sel.mu = 'chaos'; window.TD.coRender() }"); A.wait_for_timeout(int(300 * SLOW))
+        ok('the guest follows the host round mutator (chaos)', B.evaluate("() => window.TD.CO.sel.mu") == 'chaos' and B.evaluate("() => document.querySelector('#co [data-cmu=chaos]').classList.contains('on')"))
+        ok('guest cannot change the mutator himself', B.evaluate("() => document.querySelector('#co [data-cmu=oil]').disabled") is True)
         ok('the guest follows the host difficulty choice (nightmare)', B.evaluate("() => window.TD.coDf()") == 'nightmare' and B.evaluate("() => window.TD.CO.sel.n") == 3)
         ok('guest cannot change the level or the difficulty himself', B.evaluate("() => [document.getElementById('coNext10').disabled, document.getElementById('coLvIn').disabled, document.querySelector('#co [data-cdf=hell]').disabled]") == [True, True, True])
         A.evaluate("() => document.getElementById('nGo').click()"); A.wait_for_timeout(int(700 * SLOW))
@@ -95,6 +103,8 @@ def run():
         ok('same level, heroes in host/guest order', sa['lvl'] == 3 and sb['lvl'] == 3 and A.evaluate("() => window.TD.PLY.map(p => p.hid).join()") == 'falafel,cat' and B.evaluate("() => window.TD.PLY.map(p => p.hid).join()") == 'falafel,cat')
         ok('every player is drawn with his own skin on both machines', A.evaluate("() => window.TD.PLY.map(p => p.hsk).join()") == '1,1' and B.evaluate("() => window.TD.PLY.map(p => p.hsk).join()") == '1,1' and A.evaluate("() => window.TD.sprKeyOf('cat', 2)") != '', A.evaluate("() => window.TD.PLY.map(p => p.hsk).join()"))
         ok('each controls his own player', A.evaluate("() => window.TD.G.co.me") == 0 and B.evaluate("() => window.TD.G.co.me") == 1)
+        ma, mb = A.evaluate("() => [window.TD.L.mut, window.TD.G.co.mu, window.TD.L.zones.length]"), B.evaluate("() => [window.TD.L.mut, window.TD.G.co.mu, window.TD.L.zones.length]")
+        ok('both machines got the same round mutator zone for this level', ma == mb and ma[0] in ('float', 'oil', 'bounce', 'fast') and ma[1] == 'chaos', (ma, mb))
         A.evaluate(MASH, [11, 'KR']); B.evaluate(MASH, [99, 'KR'])
         A.wait_for_timeout(6000)
         sa, sb = A.evaluate(STATE), B.evaluate(STATE)
@@ -172,16 +182,19 @@ def run():
 
         print('online puzzles: one bot per machine, each controls only his own player')
         BOT = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'puzbot.js'), encoding='utf-8').read()
-        for v in ([x for x in os.environ['PUZ'].split(',')] if os.environ.get('PUZ') else (['gate', 'ladder', 'lift', 'fan'] if RTDB else ['gate', 'ladder', 'bridge', 'sync', 'lift', 'flood', 'fan', 'chain', 'keyshelf', 'floors'])):
-            for pg in (A, B): pg.evaluate("(v) => { window.TD.FLAGS.coScript = [['co', v]] }", v)
+        for v in ([x for x in os.environ['PUZ'].split(',')] if os.environ.get('PUZ') else (['gate', 'ladder', 'lift', 'fan'] if RTDB else ['gate', 'ladder', 'bridge', 'sync', 'lift', 'flood', 'fan', 'chain', 'keyshelf', 'floors', 'tossup', 'tossgap'])):
+            v, *vr = v.split(':'); cv = {'sz': int(vr[0]), 'pt': int(vr[1])} if vr else None      # PUZ=tossgap:2:1 forces size 2 / pattern 1
+            for pg in (A, B): pg.evaluate("([v, c]) => { window.TD.FLAGS.coScript = [['co', v]]; window.TD.FLAGS.coVar = c }", [v, cv])
             A.evaluate("() => { window.TD.CO.sel.custom = null; window.TD.CO.sel.n = 1; window.TD.coRender() }"); A.wait_for_timeout(int(500 * SLOW))
             A.evaluate("() => document.getElementById('nGo').click()"); A.wait_for_timeout(int(900 * SLOW))
             for pg, me in ((A, 0), (B, 1)):
-                pg.evaluate("""([src, me, v]) => { const bot = eval(src)(me, v); window.__bot = setInterval(() => { const k = bot(), KR = window.TD.KR; KR.l = k.l; KR.r = k.r; KR.j = k.j; if (k.jp) KR.jp = true }, 16) }""", [BOT, me, v])
+                pg.evaluate("""([src, me, v]) => { const bot = eval(src)(me, v); window.__bot = setInterval(() => { const k = bot(), KR = window.TD.KR; KR.l = k.l; KR.r = k.r; KR.j = k.j; KR.g = !!k.g; if (k.jp) KR.jp = true; if (k.gp) KR.gp = true }, 16) }""", [BOT, me, v])
             done = False
-            for _ in range(int(240 / 0.5)):
+            for it in range(int(240 / 0.5)):
                 A.wait_for_timeout(500)
                 fa, fb = A.evaluate("() => window.TD.NET.fxN"), B.evaluate("() => window.TD.NET.fxN")
+                if os.environ.get('TRACE') and it % int(os.environ['TRACE']) == 0:      # TRACE=2 prints where everybody is once a second
+                    print('   trace', it, A.evaluate("() => { const T = window.TD; return [T.NET.f, T.G.deaths, T.PLY.map(p => [Math.round(p.x), Math.round(p.y), p.onGround ? 'G' : '-', p.stand, p.hold]), JSON.stringify(T.L.cgE), window.__bst && window.__bst.ph] }"))
                 if fa.get('w') and fb.get('w'): done = True; break
             sa, sb = A.evaluate(STATE), B.evaluate(STATE)
             if not done:      # say where the bots are stuck
@@ -194,7 +207,7 @@ def run():
                 A.wait_for_timeout(500)
                 if A.evaluate("() => window.TD.G.state") == 'co' and B.evaluate("() => window.TD.G.state") == 'co': break
             ok(f'puzzle {v}: both are back in the lobby afterwards', A.evaluate("() => window.TD.G.state") == 'co' and B.evaluate("() => window.TD.G.state") == 'co', (A.evaluate("() => window.TD.G.state"), B.evaluate("() => window.TD.G.state")))
-        for pg in (A, B): pg.evaluate("() => { window.TD.FLAGS.coScript = null }")
+        for pg in (A, B): pg.evaluate("() => { window.TD.FLAGS.coScript = null; window.TD.FLAGS.coVar = null }")
 
         print('race')
         A.evaluate("() => { window.TD.CO.sel.df = 'crazy'; document.getElementById('nModeRace').click() }"); A.wait_for_timeout(400)

@@ -246,7 +246,7 @@ select.tg{appearance:auto}
 .frr{display:flex;align-items:center;gap:calc(var(--u)*6);padding:calc(var(--u)*4);border-bottom:calc(var(--u)*1) solid #fff2;font-size:calc(var(--u)*13)}.frr b{flex:1;text-align:right}.frr i{opacity:.7;font-style:normal;font-size:calc(var(--u)*11)}.frr .tg:disabled{opacity:.35;cursor:default}
 #frCard .fok{background:var(--gold);color:#1b1230;white-space:nowrap}#frCard span{flex:1}#frMsg{min-height:calc(var(--u)*16);margin-top:calc(var(--u)*4);color:#ffe9a8}
 #frCard{position:absolute;top:calc(var(--u)*8);left:50%;transform:translateX(-50%);z-index:70;display:flex;gap:calc(var(--u)*10);align-items:center;max-width:94%;background:#1b1230f2;color:#fff;font-weight:900;font-size:calc(var(--u)*15);border:calc(var(--u)*3) solid var(--gold);border-radius:calc(var(--u)*14);padding:calc(var(--u)*8) calc(var(--u)*14);box-shadow:0 calc(var(--u)*6) calc(var(--u)*20) #000a}
-#netDg{position:absolute;left:calc(var(--u)*8);bottom:calc(var(--u)*6);z-index:9;font:900 calc(var(--u)*11)/1 Tahoma,Arial,sans-serif;background:#000a;padding:calc(var(--u)*3) calc(var(--u)*8);border-radius:calc(var(--u)*12);pointer-events:none;color:#7dffb0;opacity:.8}
+#netDg{position:absolute;left:calc(var(--u)*8);bottom:calc(var(--u)*6);z-index:9;font:900 calc(var(--u)*11)/1 Tahoma,Arial,sans-serif;background:#000a;padding:calc(var(--u)*3) calc(var(--u)*8);border-radius:calc(var(--u)*12);cursor:pointer;color:#7dffb0;opacity:.8}
 #netDg.mid{color:#ffe06a}#netDg.bad{color:#ff7a7a}
 #netSt{position:absolute;top:calc(var(--u)*54);left:50%;transform:translateX(-50%);z-index:9;background:#000c;color:#ffe9a8;font-weight:900;font-size:calc(var(--u)*15);padding:calc(var(--u)*5) calc(var(--u)*16);border-radius:calc(var(--u)*20);pointer-events:none}
 #raceBar{position:absolute;top:calc(var(--u)*34);left:50%;transform:translateX(-50%);width:calc(var(--u)*360);z-index:8;pointer-events:none}.rbt{position:relative;height:calc(var(--u)*20);background:#0008;border-radius:calc(var(--u)*10);border:calc(var(--u)*2) solid #000}.rbt i{position:absolute;top:calc(var(--u)*1);font-style:normal;font-size:calc(var(--u)*13);transition:left .12s linear}.rbt b{position:absolute;right:calc(var(--u)*4);top:calc(var(--u)*1);font-size:calc(var(--u)*13)}
@@ -273,7 +273,7 @@ select.tg{appearance:auto}
 #touch{position:absolute;left:0;right:0;bottom:0;height:calc(var(--u)*130);pointer-events:none;z-index:5}
 #touch .tb{position:absolute;bottom:calc(var(--u)*10);width:calc(var(--u)*86);height:calc(var(--u)*86);border-radius:50%;background:#ffffff26;border:calc(var(--u)*4) solid #ffffff66;color:#fff;font-size:calc(var(--u)*40);display:flex;align-items:center;justify-content:center;pointer-events:auto;touch-action:none;font-weight:900}
 #touch .tb.on{background:#ffd23faa}
-#ba{right:calc(var(--u)*134);bottom:calc(var(--u)*22)!important;width:calc(var(--u)*72)!important;height:calc(var(--u)*72)!important;font-size:calc(var(--u)*32)!important;background:#7c4dffaa!important}#bl{left:calc(var(--u)*12)}#br{left:calc(var(--u)*112)}#bj{right:calc(var(--u)*14);width:calc(var(--u)*104)!important;height:calc(var(--u)*104)!important}
+#bg{right:calc(var(--u)*134);bottom:calc(var(--u)*104)!important;width:calc(var(--u)*72)!important;height:calc(var(--u)*72)!important;font-size:calc(var(--u)*32)!important;background:#00b894aa!important}#ba{right:calc(var(--u)*134);bottom:calc(var(--u)*22)!important;width:calc(var(--u)*72)!important;height:calc(var(--u)*72)!important;font-size:calc(var(--u)*32)!important;background:#7c4dffaa!important}#bl{left:calc(var(--u)*12)}#br{left:calc(var(--u)*112)}#bj{right:calc(var(--u)*14);width:calc(var(--u)*104)!important;height:calc(var(--u)*104)!important}
 .hrow{display:flex;gap:calc(var(--u)*5);justify-content:center;margin-top:calc(var(--u)*8)}
 .hb{background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*2);cursor:pointer;line-height:0}
 .hb.on{background:#ffd23f}
@@ -306,7 +306,7 @@ select.tg{appearance:auto}
   </div>
   <div id="sub"></div>
   <div id="touch" class="hide">
-    <div class="tb" id="bl" data-k="l">◀</div><div class="tb" id="br" data-k="r">▶</div><div class="tb" id="bj" data-k="j">⤒</div><div class="tb hide" id="ba" data-k="a">✨</div>
+    <div class="tb" id="bl" data-k="l">◀</div><div class="tb" id="br" data-k="r">▶</div><div class="tb" id="bj" data-k="j">⤒</div><div class="tb hide" id="ba" data-k="a">✨</div><div class="tb hide" id="bg" data-k="g">🤲</div>
   </div>
   <div id="card" class="ov hide"><div class="cardin">
     <div class="cstk" id="cstk"></div><div class="ctop" id="ctop"></div><img id="cimg" alt=""><div class="ccap" id="ccap"></div><div class="chint" id="chint">اضغط أي شي لتعيد المحاولة</div>
@@ -352,13 +352,13 @@ select.tg{appearance:auto}
   </div></div>
   <div id="frCard" class="hide"></div><div id="netSt" class="hide"></div><div id="netDg" class="hide"></div><div id="raceBar" class="hide"><div class="rbt"><i id="rbMe">🟡</i><i id="rbOp">🔵</i><b>🏁</b></div></div><button id="rxBtn" class="hide" title="إيموجي وجمل (T)">💬</button><div id="rxBar" class="hide"></div><div id="raceCd" class="hide"></div><div id="raceRes" class="hide"></div>
   <div id="co" class="ov hide"><div class="edbox cobox">
-    <div class="edtop"><b>👥 لاعبين اتنين</b><span class="edst" id="coSt"></span><button class="tg" id="coX">✖ رجوع</button></div>
-    <div class="cotabs"><button class="tg on" id="coTabL">🏠 على نفس الجهاز</button><button class="tg" id="coTabN">🌐 أونلاين</button></div>
+    <div class="edtop"><b>👥 تعاون أونلاين</b><span class="edst" id="coSt"></span><button class="tg" id="coX">✖ رجوع</button></div>
+    <div class="cotabs hide"><button class="tg on" id="coTabL">🏠 على نفس الجهاز</button><button class="tg" id="coTabN">🌐 أونلاين</button></div>
     <div class="coscr">
     <div id="coNet" class="hide">
       <div class="edset"><span>الوضع</span><button class="tg on" id="nModeCo">🤝 تعاون</button><button class="tg" id="nModeRace">🏁 سباق</button></div>
       <div id="nHostBox" class="conet"><button class="btn" id="nHost">🏠 أنشئ غرفة</button><span>أو</span><input id="nCode" maxlength="5" placeholder="كود الغرفة" autocomplete="off" spellcheck="false"><button class="btn alt" id="nJoin">🚪 ادخل</button></div>
-      <div id="nRoom" class="conet hide"><span>كود الغرفة</span><b id="nCodeBig"></b><button class="tg" id="nCopy">📋 انسخ</button><button class="tg" id="nLeave">🚪 اطلع</button></div>
+      <div id="nRoom" class="conet hide"><span>كود الغرفة</span><b id="nCodeBig"></b><button class="tg" id="nCopy">📋 انسخ</button><button class="tg" id="nRep" title="تقرير اتصال للفحص">📊 تقرير</button><button class="tg" id="nLeave">🚪 اطلع</button></div>
       <div id="nStat"></div>
       <details class="nset frbox" id="frBox"><summary>👥 الأصدقاء <i id="frBadge"></i></summary>
         <div class="conet"><span>كودي</span><b id="frMyId"></b><button class="tg" id="frCopy">📋</button><button class="tg" id="frShare">🔗 شارك</button></div>
@@ -366,15 +366,16 @@ select.tg{appearance:auto}
         <div class="conet"><input id="frAddIn" placeholder="كود صديقك أو رابطه" autocomplete="off" spellcheck="false"><button class="btn alt" id="frAdd">➕ أضِف</button></div>
         <div id="frList"></div><div id="frMsg"></div>
       </details>
-      <details class="nset"><summary>⚙ إعدادات الأونلاين</summary><div class="sub">رابط قاعدة بيانات Firebase (Realtime Database) — بدونه بيشتغل بين تابّين بنفس المتصفح بس</div><input id="nDb" placeholder="https://اسم-مشروعك-default-rtdb.firebaseio.com" spellcheck="false"></details>
+      <details class="nset"><summary>⚙ إعدادات الأونلاين</summary><div class="sub">رابط قاعدة بيانات Firebase (Realtime Database) — بدونه بيشتغل بين تابّين بنفس المتصفح بس</div><input id="nDb" placeholder="https://اسم-مشروعك-default-rtdb.firebaseio.com" spellcheck="false"><div class="sub">اختياري: خادم TURN (للشبكات اللي ما بتسمح بالاتصال المباشر مثل بعض شبكات الموبايل) بالشكل turn:العنوان:3478|المستخدم|كلمة_السر — لازم الاتنين يحطوا نفس الشي</div><input id="nTurn" placeholder="turn:example.com:3478|user|password" spellcheck="false" autocomplete="off"></details>
     </div>
     <div class="coblurb" id="coBlurb">الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · ما بتقدروا تبعدوا عن بعض أكتر من شاشة</div>
     <div class="edset"><span>المرحلة</span><button class="tg" id="coPrev10">−10</button><button class="tg" id="coPrev">−</button><b id="coLv">المرحلة 1</b><button class="tg" id="coNext">+</button><button class="tg" id="coNext10">+10</button><input id="coLvIn" type="number" inputmode="numeric" min="1" max="999" placeholder="رقم" autocomplete="off"><button class="tg" id="coCodeBtn">📥 خريطة بكود</button></div>
     <div class="edset"><span>الصعوبة</span><button class="tg" data-cdf="normal">عادي 🙂</button><button class="tg" data-cdf="crazy">مجنون 😈</button><button class="tg" data-cdf="hell">مستحيل 💀</button><button class="tg" data-cdf="nightmare">كابوس ☠️</button></div>
+    <div class="edset" id="coMu"><span>الطفرة 🌀</span></div>
     <div class="edimp hide" id="coCodeBox"><textarea id="coCode" placeholder="الصق كود الخريطة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="coCodeGo">✔ حمّل</button></div></div>
     <div class="copl">
-      <div class="coslot"><div class="cotag" style="background:#ffd23f">1</div><canvas id="coH1c"></canvas><div class="nm" id="coH1n"></div><div class="sub">A D للحركة · W أو مسافة للقفز</div></div>
-      <div class="coslot"><div class="cotag" style="background:#4dd0ff">2</div><canvas id="coH2c"></canvas><div class="nm" id="coH2n"></div><div class="row" style="margin:0"><button class="tg" id="coH2L">▶</button><button class="tg" id="coH2R">◀</button></div><div class="sub">⬅ ➡ للحركة · ⬆ للقفز</div></div>
+      <div class="coslot"><div class="cotag" style="background:#ffd23f">1</div><canvas id="coH1c"></canvas><div class="nm" id="coH1n"></div><div class="sub">أنت</div></div>
+      <div class="coslot"><div class="cotag" style="background:#4dd0ff">2</div><canvas id="coH2c"></canvas><div class="nm" id="coH2n"></div><div class="row" style="margin:0"><button class="tg" id="coH2L">▶</button><button class="tg" id="coH2R">◀</button></div><div class="sub">صاحبك</div></div>
     </div>
     <div id="coMsg"></div><div id="nMsg"></div>
     </div>
@@ -695,8 +696,8 @@ const Snd={ctx:null,out:null,sfxG:null,musG:null,vocG:null,bufs:{},pend:{},lru:[
 };
 
 /* =============== STATE =============== */
-const K={l:false,r:false,j:false,jp:false,a:false,ap:false};
-const K2={l:false,r:false,j:false,jp:false,a:false,ap:false};        // co-op: the other player's input (the sim reads K for whoever is current, see coEach)
+const K={l:false,r:false,j:false,jp:false,a:false,ap:false,g:false,gp:false};
+const K2={l:false,r:false,j:false,jp:false,a:false,ap:false,g:false,gp:false};        // co-op: the other player's input (the sim reads K for whoever is current, see coEach)
 const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null,pend:[],gain:0,ts:1,ck:[]};
 let L=null, P=null, PLY=[], parts=[], themeBg=null, SIM=false;       // PLY = both players in co-op (G.co set); P is always 'the current player'
 /* adaptive quality: 3 = full 2.5D | 2 = cheaper light + DPR 1.5 | 1 = no dynamic light, no dust, DPR 1 | 0 = flat classic look */
@@ -719,7 +720,7 @@ function zoneAt(x){ if(!L.zones.length)return null; for(const z of L.zones)if(x>
 
 /* =============== PLAYER / PHYSICS =============== */
 const JUMP2=-430, BOUNCE=-400;
-function newPlayer(tx){return{x:(tx||2)*TS,y:GY-PH,vx:0,vy:0,face:1,onGround:true,coy:0,buf:0,land:0,run:0,dead:false,blink:0,lastCr:-9,air:0,dj:false,stand:0,spin:0}}
+function newPlayer(tx){return{x:(tx||2)*TS,y:GY-PH,vx:0,vy:0,face:1,onGround:true,coy:0,buf:0,land:0,run:0,dead:false,blink:0,lastCr:-9,air:0,dj:false,stand:0,spin:0,hold:-1,hb:-1,gcd:0,hbt:0,thr:0}}
 function solidTile(tx,ty){
   if(tx<0||tx>=L.w)return true; if(ty<0)return false;
   if(L.gate!=null&&tx===L.gate&&ty<GR)return true;                  // boss room: sealed gate until the boss falls
@@ -756,10 +757,11 @@ function updatePlayer(dt){
   let dir=(K.r?1:0)-(K.l?1:0); if(z&&z.type==='rev')dir=-dir;
   let acc=p.onGround?ACC:AIRACC, fr=p.onGround?FRIC:260, g=GRAV, jv=JUMP, ice=false, drift=0, mx=RUN;
   const hx=hOn()?heroPre(p,dt):(K.ap=false,null), dashing=!!(hx&&hx.dash); if(dashing)g=0;
-  if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
+  if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='oil'){ice=true;acc=p.onGround?380:650;fr=p.onGround?95:70} else if(z.type==='fast'){mx=RUN*1.3;acc*=1.3} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
+  if(p.hold>=0){ mx=Math.min(mx,RUN*.72); jv*=.92 }                                  // carrying the partner (co-op): slower and a lower jump
   const wt=L.wt?waterAt(p):null; if(wt){ g=WT_G; mx=Math.min(mx,WT_MX); acc=WT_ACC; fr=WT_FR }             // swimming (co-op water puzzles, w_copuz2.js)
   if(dashing){} else if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-mx,mx); p.face=dir; }
-  else{ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }
+  else if(!p.thr){ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }          // (a thrown partner keeps his speed in the air)
   if(mx<RUN)p.vx=clamp(p.vx,-mx,mx);
   if(K.jp){p.buf=.12;K.jp=false}
   p.buf-=dt; p.coy-=dt; if(p.onGround){p.coy=.1;p.dj=false;p.air=0}else p.air+=dt;
@@ -767,9 +769,11 @@ function updatePlayer(dt){
     if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();if(!SIM){S.st.j++;dayEv('jump',1)}puff(p.x+PW/2,p.y+PH,3)}
     else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1)*heroJump2();p.dj=true;p.buf=0;p.spin=.32;Snd.dj();if(!SIM){S.st.j++;dayEv('jump',1);if(heroJump2()>1)dayEv('ab',1)}ring(p.x+PW/2,p.y+PH)}
   }
-  if(!K.j&&p.vy<-240)p.vy=-240;
+  if(p.thr&&(p.vy>=0||p.onGround))p.thr=0;
+  if(!K.j&&p.vy<-240&&!p.thr)p.vy=-240;                                  // letting go of jump cuts the jump (not a throw: p.thr)
   p.vy=Math.min(p.vy+g*dt,wt?WT_SINK:900); if(!dashing&&hOn())heroVert(p,dt); if(L.fn)fanLift(p,dt);
-  moveX((p.vx+drift)*dt); moveY(p.vy*dt);
+  const vy0=p.vy; moveX((p.vx+drift)*dt); moveY(p.vy*dt);
+  if(z&&z.type==='bounce'&&p.onGround&&vy0>300&&p.hold<0&&p.stand>=0&&!wt){ p.vy=-Math.min(vy0*.5,430); p.onGround=false; p.coy=0; p.thr=0; puff(p.x+PW/2,p.y+PH,4) }      // bouncy floor
   if(!!wt!==!!p.wet){ p.wet=!!wt; waterSplash(p,!!wt) }
   p.land=Math.max(0,p.land-dt*5); p.spin=Math.max(0,p.spin-dt); p.run+=Math.abs(p.vx)*dt*.09; p.blink-=dt; if(p.blink<-2.5)p.blink=.12;
   // crumble trigger
@@ -1254,9 +1258,20 @@ B.exitrun={
 
 /* =============== LEVEL GENERATION =============== */
 const BADSALT={};                       // filled by offline fairness sweeps: level -> reroll salt
-const pv=(r,n,list,room,D)=>{                 // pick a variant: [name,weight,unlockLevel,tilesNeeded]
-  if(D.force){const f=list.find(e=>e[0]===D.force); if(f){D.lastV=f[0];return f[0]}}
-  const a=list.filter(e=>n>=e[2]&&(e[3]||0)<=room&&!(D.chase&&BADCH.has(e[0]))); const v=a.length?pickW(a.map(e=>[e[0],e[1]]),r):null; D.lastV=v; return v };
+const pv=(r,n,list,room,D,fam)=>{                 // pick a variant: [name,weight,unlockLevel,tilesNeeded]
+  if(fam&&XV[fam]&&(D.vary||D.force))list=list.concat(XV[fam]);
+  if(D.force){const f=list.find(e=>e[0]===D.force); if(f){D.lastV=f[0];return f[0]}}                      // variety mode (seeded replays, online): the extra patterns are in the pool and a pattern already used in this level is much less likely again
+  const a=list.filter(e=>n>=e[2]&&(e[3]||0)<=room&&!(D.chase&&BADCH.has(e[0]))); const v=a.length?pickW(a.map(e=>[e[0],e[1]*(D.vary?Math.pow(.3,D.useV[e[0]]||0):1)]),r):null; D.lastV=v; if(D.vary&&v)D.useV[v]=(D.useV[v]||0)+1; return v };
+/* extra patterns that only exist in variety mode (D.vary): level 0 (the fixed canonical levels, editor codes, tests) never sees them */
+const XV={
+  pit:[['island',7,4,11],['steps',6,6,19]],
+  spike:[['wide',6,5,8],['hurdles',6,4,13]],
+  saw:[['big',6,6,10],['bigvert',5,8,7]],
+  walk:[['pack',6,7,12]],
+  crush:[['rows',6,6,19]],
+  arrow:[['cross',5,9,15]],
+  terrain:[['zig',6,7,16]]
+};
 const BADCH=new Set(['thwomp','drop','mover','stones','fish','charger','sniper','roll','sneak','pulse','slide','spring','double','rainspk','bait','rev','stair']);
 /* difficulty presets: sh = how many levels ahead the content already is (tutorial levels 1-2 stay gentle), combo = extra overlay chance,
    gap = tighter spacing between traps, cp = tiles between checkpoints, lie = chance that a sign lies, troll = provocation pranks per level */
@@ -1283,7 +1298,7 @@ const blk=(L,tx,ty,st)=>{L.blocks[tx+','+ty]={rev:true,bump:0,st:st||'b'}};
 /* ---- families: each returns the number of tiles used ---- */
 const FAM={
  pit(L,r,x,n,D,room){
-  const v=pv(r,n,[['plain',10,1,6],['wide',6,3,10],['invis',4,5,5],['mover',6,4,14],['stones',6,5,13],['fish',7,5,9],['ceil',5,7,8],['spring',4,8,13]],room,D)||'plain';
+  const v=pv(r,n,[['plain',10,1,6],['wide',6,3,10],['invis',4,5,5],['mover',6,4,14],['stones',6,5,13],['fish',7,5,9],['ceil',5,7,8],['spring',4,8,13]],room,D,'pit')||'plain';
   if(v==='plain'){const len=ri(r,2,D.mg);addSign(L,r,x,n,n<3);cutPit(L,x,len);if(r()<.7)coinArc(L,x,len);return len}
   if(v==='wide'){const len=n<3?6:(r()<.7?6:(n<20?7:ri(r,7,8)));addSign(L,r,x,n,true,n<3?'قفزة مزدوجة!\nاضغط القفز\nمرتين بالهوا':(r()<.5?'قفزة ثانية\nبالهوا ⬆⬆':null));cutPit(L,x,len);coinArc(L,x,len,true);return len}
   if(v==='invis'){const len=ri(r,2,Math.min(4,D.mg));addSign(L,r,x,n,false);cutPit(L,x,len);L.blocks[(x+1)+','+(GR-4)]={rev:false,bump:0};return len}
@@ -1297,9 +1312,11 @@ const FAM={
   if(v==='ceil'){const len=ri(r,3,4);addSign(L,r,x,n,false,r()<.6?'اقفز مرتين!\nسهل جداً':null);cutPit(L,x,len);L.ents.push(mkCeil('static',x-1,len+2,{len:210}));return len}
   if(v==='spring'){const len=ri(r,6,7),troll=r()<.6;addSign(L,r,x,n,false,troll?'زنبرك مجاني!\nجرّبه 😇':'زنبرك قفز');cutPit(L,x,len);
     L.ents.push(mkSpring(x-2,{kind:troll?'troll':'help'}));if(troll)L.ents.push(mkCeil('static',x-2,len+3,{len:148}));return len}
+  if(v==='island'){const len=n<15?ri(r,7,9):ri(r,8,10),a=Math.floor((len-2)/2);addSign(L,r,x,n,false,r()<.5?'جزيرة صغيرة\nبنص الحفرة 🏝':null);cutPit(L,x,len);L.ents.push(mkPlat(newId(L),'static',(x+a)*TS,GY,2*TS,{}));L.ents.push(mkCoin((x+a+1)*TS,GY-54,false));return len}
+  if(v==='steps'){const g=n<10?2:ri(r,2,3),len=4*g+6,hs=[32,64,32];addSign(L,r,x,n,false);cutPit(L,x,len);for(let i=0;i<3;i++)L.ents.push(mkPlat(newId(L),'static',(x+g+i*(g+2))*TS,GY-hs[i],2*TS,{}));L.ents.push(mkCoin((x+2*g+3)*TS,GY-hs[1]-36,false));return len}
  },
  spike(L,r,x,n,D,room){
-  const v=pv(r,n,[['static',10,1,4],['hidden',6,3,5],['pulse',6,3,7],['slide',5,4,10],['hog',6,5,8],['sneak',4,6,11],['check',4,6,13],['rainspk',5,7,10]],room,D)||'static';
+  const v=pv(r,n,[['static',10,1,4],['hidden',6,3,5],['pulse',6,3,7],['slide',5,4,10],['hog',6,5,8],['sneak',4,6,11],['check',4,6,13],['rainspk',5,7,10]],room,D,'spike')||'static';
   if(v==='static'){const len=ri(r,1,n<3?2:3);addSign(L,r,x,n,n<3);L.ents.push(mkSpk('static',x,len));return len}
   if(v==='hidden'){const len=ri(r,2,n>12?4:3);addSign(L,r,x,n,false);L.ents.push(mkSpk('hidden',x,len,{dl:D.v(.3,.1)}));return len}
   if(v==='pulse'){const len=ri(r,2,4),on=D.v(1.05,.8),dn=D.v(1.7,1.2)+len*.1;addSign(L,r,x,n,false);L.ents.push(mkSpk('pulse',x,len,{per:on+dn,on,ph:r()*(on+dn)}));return len}
@@ -1308,9 +1325,11 @@ const FAM={
   if(v==='sneak'){const len=ri(r,2,3);addSign(L,r,x,n,false);L.ents.push(mkSpk('sneak',x+1,len,{rng:[x,x+len+6],sp:Math.min(150,D.v(90,150)),rad:175}));return len+6}
   if(v==='check'){const safe=n<9?3:2,cnt=3;addSign(L,r,x,n,false);let t=x;for(let i=0;i<cnt;i++){L.ents.push(mkSpk('static',t,2));t+=2+safe}return t-x-safe+0}
   if(v==='rainspk'){const c=ri(r,3,4),g=D.v(.3,.2);addSign(L,r,x,n,false);for(let i=0;i<c;i++)L.ents.push(mkCeil('drop',x+1+i*2,1,{trig:112,warn:g,len:44}));return 2+c*2}
+  if(v==='wide'){const len=ri(r,4,5);addSign(L,r,x,n,false);L.ents.push(mkSpk('static',x,len));return len}
+  if(v==='hurdles'){const k=ri(r,2,3),safe=n<12?3:2;addSign(L,r,x,n,false);let t=x;for(let i=0;i<k;i++){L.ents.push(mkSpk('static',t,i%2?2:1));t+=(i%2?2:1)+safe}return t-x-safe}
  },
  crumble(L,r,x,n,D,room){
-  const v=pv(r,n,[['plain',8,2,8],['trap',3,6,8],['wave',5,5,13],['rev',4,7,12]],room,D)||'plain';
+  const v=pv(r,n,[['plain',8,2,8],['trap',3,6,8],['wave',5,5,13],['rev',4,7,12]],room,D,'crumble')||'plain';
   const mkc=(i,o)=>{L.cr[x+i]=Object.assign({marked:true,s:0,t:0},o||{})};
   if(v==='plain'||v==='trap'){const len=ri(r,3,Math.min(7,3+Math.floor(n/2))),mk=v==='plain'&&(n<8||r()<.25);for(let i=0;i<len;i++)mkc(i,{marked:mk});addSign(L,r,x,n,false);return len}
   if(v==='wave'){const len=ri(r,10,13),sp=Math.min(5,D.v(3.9,4.8));addSign(L,r,x,n,false,r()<.5?'الأرض هون\nمو ثابتة ✨':null);for(let i=0;i<len;i++)mkc(i,{wave:sp,lo:x,hi:x+len-1});
@@ -1318,39 +1337,44 @@ const FAM={
   if(v==='rev'){const len=ri(r,9,11),sp=Math.min(5,D.v(3.8,4.8));addSign(L,r,x,n,false);for(let i=0;i<len;i++)mkc(i,{wave:sp,lo:x,hi:x+len-1,rev:1});return len}
  },
  arrow(L,r,x,n,D,room){
-  const v=pv(r,n,[['lane',9,2,13],['volley',6,5,14],['rain',5,6,13],['sniper',4,8,14],['rear',4,9,15]],room,D)||'lane', cl=ri(r,8,11);
+  const v=pv(r,n,[['lane',9,2,13],['volley',6,5,14],['rain',5,6,13],['sniper',4,8,14],['rear',4,9,15]],room,D,'arrow')||'lane', cl=ri(r,8,11);
   if(v==='lane'){addSign(L,r,x,n,false);L.ents.push(mkTur(x+cl+1,{v:'lane',range:(cl+2)*TS,per:D.v(2.3,1.3),spd:D.v(195,300),tele:D.v(.55,.32),hi:n>=6}));return cl+2}
   if(v==='volley'){const cn=ri(r,2,n>12?4:3);addSign(L,r,x,n,false);L.ents.push(mkTur(x+cl+2,{v:'volley',range:(cl+3)*TS,per:D.v(3.6,2.6)+cn*.5,spd:D.v(200,255),tele:D.v(.55,.38),hi:true,n:cn,gapT:D.v(.82,.64)}));return cl+3}
   if(v==='rain'){addSign(L,r,x,n,false);L.ents.push(mkTur(x+cl+1,{v:'rain',range:(cl+2)*TS,per:D.v(2.6,1.7),n:ri(r,3,4),cd0:.5}));return cl+2}
   if(v==='sniper'){addSign(L,r,x,n,false);L.ents.push(mkTur(x+cl+1,{v:'sniper',range:(cl+2)*TS,per:D.v(2.9,2.1),spd:520,tele:D.v(.95,.65),hi:true}));return cl+2}
   if(v==='rear'){addSign(L,r,x,n,false);L.ents.push(mkTur(x-2,{v:'rear',side:1,range:(cl+4)*TS,per:D.v(2.8,1.9),spd:D.v(300,380),tele:D.v(.6,.42),hi:true}));return cl+2}
+  if(v==='cross'){addSign(L,r,x,n,false);L.ents.push(mkTur(x+cl+1,{v:'lane',range:(cl+2)*TS,per:D.v(2.9,2.0),spd:D.v(190,260),tele:D.v(.62,.44),hi:false}),mkTur(x-2,{v:'rear',side:1,range:(cl+4)*TS,per:D.v(3.3,2.5),spd:D.v(290,350),tele:D.v(.66,.5),hi:true}));return cl+2}      // variety only: arrows from both sides
  },
  crush(L,r,x,n,D,room){
-  const v=pv(r,n,[['drop',8,4,16],['thwomp',8,4,12],['double',5,6,17]],room,D)||'drop';
+  const v=pv(r,n,[['drop',8,4,16],['thwomp',8,4,12],['double',5,6,17]],room,D,'crush')||'drop';
   const cargo=()=>n<6?'anvil':['anvil','piano','fridge','safe','cactus'][ri(r,0,4)];
-  if(v==='drop'){const c=ri(r,1,Math.min(3,1+Math.floor(n/6)));addSign(L,r,x,n,false);for(let i=0;i<c;i++)L.ents.push(mkAnv(x+2+i*4,{c:cargo(),warn:D.v(.5,.2),trig:D.v(94,60),v0:D.v(0,450),g:D.v(1800,2300),show:n<9}));return c*4+3}
+  if(v==='drop'){const c=ri(r,1,Math.min(3,1+Math.floor(n/6)));addSign(L,r,x,n,false);const dv=D.vary?Math.floor(r()*3):0;for(let i=0;i<c;i++)L.ents.push(mkAnv(x+2+i*4,{c:cargo(),warn:dv===1?(i%2?.16:.95):D.v(.5,.2),trig:dv===2?D.v(94,60)+(c-1-i)*30:D.v(94,60),v0:D.v(0,450),g:D.v(1800,2300),show:n<9}));return c*4+3}      // online / replays: 1 = fake-out (a long warning, then a sudden one)  2 = a wave (the first ones fall from further away)
   if(v==='double'){addSign(L,r,x,n,false);L.ents.push(mkAnv(x+2,{c:cargo(),warn:D.v(.45,.2),trig:D.v(94,64),v0:D.v(0,450),g:2100}));L.ents.push(mkAnv(x+6,{c:cargo(),warn:D.v(.35,.16),trig:D.v(80,58),v0:D.v(0,450),g:2200}));L.ents.push(mkAnv(x+9,{c:cargo(),warn:.2,trig:D.v(70,56),v0:450,g:2300}));return 13}
   if(v==='thwomp'){const c=n>=8&&room>=14&&r()<.5?2:1;addSign(L,r,x,n,false);const wait=D.v(1.7,1.0);for(let i=0;i<c;i++)L.ents.push(mkThw(x+3+i*6,{t0:.9+i*.6,wait,warn:D.v(.4,.3),rest:D.v(.5,.34)}));return c>1?14:8}
+  if(v==='rows'){const c=ri(r,4,5);addSign(L,r,x,n,false);const dv=D.vary?Math.floor(r()*3):0;for(let i=0;i<c;i++)L.ents.push(mkAnv(x+2+i*4,{c:cargo(),warn:dv===1?(i%2?.18:.9):D.v(.5,.26),trig:dv===2?D.v(94,60)+(c-1-i)*22:D.v(94,60),v0:D.v(0,420),g:D.v(1800,2250),show:n<9}));return c*4+3}
  },
  saw(L,r,x,n,D,room){
-  const v=pv(r,n,[['floor',8,4,9],['vert',6,5,6],['pend',6,6,10],['orbit',4,7,7],['roll',4,8,11],['hi',3,10,8]],room,D)||'floor';
+  const v=pv(r,n,[['floor',8,4,9],['vert',6,5,6],['pend',6,6,10],['orbit',4,7,7],['roll',4,8,11],['hi',3,10,8]],room,D,'saw')||'floor';
   if(v==='floor'){const pw=ri(r,5,7);addSign(L,r,x,n,false);L.ents.push(mkSaw('floor',{x0:x*TS+14,x1:(x+pw)*TS-14,x:x*TS+14,sp:D.v(85,140),y:GY-14}));return pw+1}
   if(v==='vert'){const c=n>=11&&room>=9&&r()<.5?2:1;addSign(L,r,x,n,false);for(let i=0;i<c;i++){L.ents.push(mkSaw('vert',{x:(x+2+i*3)*TS+16,y0:GY-96,y1:GY-14,y:GY-96,sp:D.v(110,215),ph:i*Math.PI*.9,r:14}))}return 4+c*3-3+2}
   if(v==='pend'){const c=n>=10&&room>=15&&r()<.5?2:1;addSign(L,r,x,n,false);for(let i=0;i<c;i++)L.ents.push(mkPend(x+4+i*7,{w:D.v(1.6,2.5),ph:r()*6.28,amp:D.v(.44,.5)}));return 8+(c-1)*7}
   if(v==='orbit'){addSign(L,r,x,n,false);const cx=(x+3)*TS+16,cy=GY-58,R=D.v(40,54),w=D.v(1.7,2.7);for(let i=0;i<2;i++)L.ents.push(mkSaw('orbit',{cx,cy,R,x:cx,y:cy,sp:w,ph:i*Math.PI,r:13}));return 7}
   if(v==='roll'){addSign(L,r,x,n,false);const c=n>=12&&room>=13?2:1;for(let i=0;i<c;i++)L.ents.push(mkSaw('roll',{x:(x+9+i*3)*TS,y:GY-15,sp:D.v(170,255),trig:D.v(330,390),r:15}));return 10+c*3-3}
   if(v==='hi'){const pw=ri(r,5,6);addSign(L,r,x,n,false);L.ents.push(mkSaw('hi',{x0:x*TS+14,x1:(x+pw)*TS-14,x:x*TS+14,sp:D.v(90,140),y:GY-78}));return pw+1}
+  if(v==='big'){const pw=ri(r,6,8);addSign(L,r,x,n,false);L.ents.push(mkSaw('floor',{x0:x*TS+22,x1:(x+pw)*TS-22,x:x*TS+22,sp:D.v(75,120),y:GY-22,r:22}));return pw+1}
+  if(v==='bigvert'){addSign(L,r,x,n,false);L.ents.push(mkSaw('vert',{x:(x+3)*TS+16,y0:GY-104,y1:GY-22,y:GY-104,sp:D.v(100,190),ph:0,r:22}));return 7}
  },
  walk(L,r,x,n,D,room){
-  const v=pv(r,n,[['walker',9,2,9],['spiky',5,4,9],['jumper',5,5,10],['charger',5,6,13],['bat',5,6,10]],room,D)||'walker';
+  const v=pv(r,n,[['walker',9,2,9],['spiky',5,4,9],['jumper',5,5,10],['charger',5,6,13],['bat',5,6,10]],room,D,'walk')||'walker';
   if(v==='walker'){const w=ri(r,5,7),c=n>=8&&r()<.4?2:1;addSign(L,r,x,n,n<3);for(let i=0;i<c;i++)L.ents.push(mkWalk('walker',{x:(x+3+i*2)*TS,x0:(x+1)*TS,x1:(x+w)*TS,sp:D.v(52,95),dir:i%2?1:-1}));return w+1}
   if(v==='spiky'){const w=ri(r,5,6);addSign(L,r,x,n,false);L.ents.push(mkWalk('spiky',{x:(x+3)*TS,x0:(x+1)*TS,x1:(x+w)*TS,sp:D.v(48,88)}));return w+1}
   if(v==='jumper'){const w=ri(r,6,8);addSign(L,r,x,n,false);L.ents.push(mkWalk('jumper',{x:(x+w-1)*TS,x0:(x+1)*TS,x1:(x+w)*TS,jv:D.v(400,470),hv:D.v(70,115),cd:D.v(1.4,.8),tm:.6}));return w+1}
   if(v==='charger'){const w=ri(r,10,12);addSign(L,r,x,n,false);L.ents.push(mkWalk('charger',{x:(x+w)*TS,x0:x*TS,x1:(x+w)*TS,sp:D.v(250,335),trig:D.v(300,360),h:30,w:32}));return w+2}
   if(v==='bat'){addSign(L,r,x,n,false);const cx=(x+4)*TS;L.ents.push(mkWalk('bat',{cx,cy:GY-62,x:cx,y:GY-62,R:D.v(70,115),om:D.v(1.6,2.4),h:20,w:30}));return 9}
+  if(v==='pack'){const w=ri(r,8,10);addSign(L,r,x,n,false);for(let i=0;i<3;i++)L.ents.push(mkWalk('walker',{x:(x+2+i*3)*TS,x0:(x+1)*TS,x1:(x+w)*TS,sp:D.v(48,78)+i*8,dir:i%2?1:-1}));return w+1}
  },
  terrain(L,r,x,n,D,room){
-  const v=pv(r,n,[['wall',7,5,9],['stair',6,5,11],['tunnel',5,7,12],['highroad',5,6,12]],room,D)||'wall';
+  const v=pv(r,n,[['wall',7,5,9],['stair',6,5,11],['tunnel',5,7,12],['highroad',5,6,12]],room,D,'terrain')||'wall';
   if(v==='wall'){const h=ri(r,1,n>=8?3:2),w=ri(r,1,2);addSign(L,r,x,n,false);for(let i=0;i<w;i++)for(let k=1;k<=h;k++)blk(L,x+2+i,GR-k);
     if(n>=8&&r()<.5)L.ents.push(mkSpk('hidden',x+2+w+1,2,{dl:D.v(.3,.1)}));return 5+w+(n>=8?2:0)}
   if(v==='stair'){const h=ri(r,2,3);addSign(L,r,x,n,false);let t=x+1;for(let s=1;s<=h;s++){for(let k=1;k<=s;k++)blk(L,t,GR-k);t+=2}
@@ -1358,6 +1382,7 @@ const FAM={
   if(v==='tunnel'){const len=ri(r,6,9);addSign(L,r,x,n,false);for(let i=0;i<len;i++){blk(L,x+1+i,GR-3)}
     let t=x+3;while(t<x+len-1){L.ents.push(mkSpk(r()<.5&&n>=9?'hidden':'static',t,1,{dl:.12}));t+=ri(r,3,4)}return len+2}
   if(v==='highroad'){addSign(L,r,x,n,false);const len=6;L.ents.push(mkSpk('static',x+1,len));L.ents.push(mkPlat(newId(L),'static',(x+2)*TS,GY-74,4*TS,{}));L.ents.push(mkCoin((x+4)*TS,GY-100,false));return len+3}
+  if(v==='zig'){addSign(L,r,x,n,false);const k=ri(r,3,4);let t=x+2;for(let i=0;i<k;i++){const h=1+(i%2);for(let j=1;j<=h;j++)blk(L,t,GR-j);t+=3}return t-x}
  },
  bait(L,r,x,n,D,room){
   const fx=['anvil','floor','spikes','arrows','ghost','rev','saw'], mins=[5,5,6,7,8,8,9], ok=fx.filter((f,i)=>n>=mins[i]);
@@ -1373,15 +1398,15 @@ const OVER={
  pit:['wind','arrow','bat','belt'],spike:['ice','wind','arrow','bat','rev','ghost','belt','mud'],crumble:['arrow','bat','wind','mud'],arrow:['ice','wind','belt','mud'],crush:['ghost','belt'],saw:['wind','ghost','belt','mud'],walk:['ice','float','belt','mud'],terrain:['wind','bat','mud']
 };
 function overlay(L,r,fam,x,used,n,D,prevEnd){
-  const list=OVER[fam]; if(!list)return; if(fam==='crumble'&&(D.lastV==='wave'||D.lastV==='rev'))return; const o=list[ri(r,0,list.length-1)];
-  if(D.chase&&(o==='ice'||o==='rev'||o==='float'||o==='belt'||o==='mud'))return;
+  const list=OVER[fam]; if(!list)return; if(fam==='crumble'&&(D.lastV==='wave'||D.lastV==='rev'))return; let o=list[ri(r,0,list.length-1)]; if(D.vary&&o==='ice'&&((x+n)&1))o='oil';       // variety mode: every other ice patch is a frying-oil puddle instead (no extra random number, so the fixed levels keep their picks)
+  if(D.chase&&(o==='oil'||o==='ice'||o==='rev'||o==='float'||o==='belt'||o==='mud'))return;
   if((o==='belt'||o==='mud')&&n<6)return;
   if(o==='rev'&&x-prevEnd<7)return;
-  if(n<4&&o!=='ice'&&o!=='arrow')return; if((o==='rev'||o==='float'||o==='ghost')&&n<8)return;
-  const lead=o==='rev'?4:(o==='ice'||o==='float'?3:((o==='belt'||o==='mud')?2:1)),x0=Math.max(prevEnd,x-lead)*TS,x1=(x+used+1)*TS,dir=(D.chase&&o==='wind')?1:(r()<.5?-1:1);
+  if(n<4&&o!=='ice'&&o!=='oil'&&o!=='arrow')return; if((o==='rev'||o==='float'||o==='ghost')&&n<8)return;
+  const lead=o==='rev'?4:(o==='ice'||o==='oil'||o==='float'?3:((o==='belt'||o==='mud')?2:1)),x0=Math.max(prevEnd,x-lead)*TS,x1=(x+used+1)*TS,dir=(D.chase&&o==='wind')?1:(r()<.5?-1:1);
   const tail=(o==='wind'&&((fam==='pit'&&used>=5)||D.lastV==='sneak'));       // a headwind over a wide pit would make it physically impossible -> tailwind only
-  if(o==='ice'||o==='wind'||o==='rev'||o==='float'||o==='belt'||o==='mud'){ L.zones.push({x0,x1,type:o,dir:tail?1:dir}); L.zoneSigns=(L.zoneSigns||0)+1;
-    const txt={ice:'⚠ أرض جليد\nانتبه تزلق',wind:'ريح قوية 💨',rev:'ما في شي غريب\nهون 🙃',float:'جاذبية القمر 🌙',belt:'سير متحرك\nما في مشكلة ✔',mud:'أرض لزجة 🍯\nمريحة للقدم'}[o]; if(r()<.8)L.signs.push({tx:x-3,text:txt,tag:'any',lie:o==='rev',seen:false}) }
+  if(o==='ice'||o==='oil'||o==='wind'||o==='rev'||o==='float'||o==='belt'||o==='mud'){ L.zones.push({x0,x1,type:o,dir:tail?1:dir}); L.zoneSigns=(L.zoneSigns||0)+1;
+    const txt={ice:'⚠ أرض جليد\nانتبه تزلق',oil:'زيت القلي 🛢\nانتبه تزلق',wind:'ريح قوية 💨',rev:'ما في شي غريب\nهون 🙃',float:'جاذبية القمر 🌙',belt:'سير متحرك\nما في مشكلة ✔',mud:'أرض لزجة 🍯\nمريحة للقدم'}[o]; if(r()<.8)L.signs.push({tx:x-3,text:txt,tag:'any',lie:o==='rev',seen:false}) }
   else if(o==='arrow'){ L.ents.push(mkTur(x+used+2,{v:'lane',range:(used+6)*TS,per:D.v(2.8,1.7),spd:D.v(190,270),tele:D.v(.6,.4),hi:false,cd0:1.2})) }
   else if(o==='bat'){ const cx=(x+used/2)*TS; L.ents.push(mkWalk('bat',{cx,cy:GY-66,x:cx,y:GY-66,R:Math.max(60,used*TS*.45),om:D.v(1.5,2.2),h:20,w:30})) }
   else if(o==='ghost'){ L.ents.push(mkGhost(0,{zx0:x0-TS*2,zx1:x1+TS*2,sp:D.v(140,175)})) }
@@ -1392,10 +1417,10 @@ const EXTRA_NAMES=['قسم الطوارئ','كل شي مسموح... للفخاخ
 function buildLevel(n,opt){
   opt=opt||{}; if(isBossLevel(n)&&!FLAGS.noBoss&&!(opt.script||opt.W||opt.D||opt.noBoss))return buildBoss(n,opt);
   const dk=DIFFS[opt.diff]?opt.diff:(DIFFS[S.diff]?S.diff:'crazy'), DF=DIFFS[dk], ne=n<=2?n:n+DF.sh;     // ne = the level number the CONTENT behaves like
-  const salt=opt.salt!=null?opt.salt:(BADSALT[dk+':'+n]||0), r=mulberry32(n*7919+1337+salt*104729+(dk==='normal'?0:dk==='crazy'?9091:dk==='hell'?18181:27271)), D=mkD(ne); if(opt.D)Object.assign(D,opt.D);
+  const vs=opt.vs|0, salt=opt.salt!=null?opt.salt:((BADSALT[dk+':'+n]||0)+vs), r=mulberry32(n*7919+1337+salt*104729+(dk==='normal'?0:dk==='crazy'?9091:dk==='hell'?18181:27271)), D=mkD(ne); if(opt.D)Object.assign(D,opt.D); D.vary=vs>0&&opt.salt==null&&!opt.script; D.useV={};
   if(ne>=3){D.combo=clamp(D.combo+DF.combo,0,.95);D.gap=Math.max(1.2,D.gap-DF.gap)}
   const W=opt.W||(n===1?80:n===2?84:clamp(66+6*n,84,138)+(opt.co&&!opt.script?DF.cx*14:0));       // co-op on impossible / nightmare: longer levels, room for more puzzles
-  const L={n,dk,ne,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:themeOf(n),crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
+  const L={n,dk,ne,vs,lie:DF.lie,w:W,D,df:clamp(D.f,0,1),ground:new Array(W).fill(GR),cr:{},blocks:{},ents:[],zones:[],signs:[],pits:[],torches:[],theme:themeOf(n),crDelay:lerp(.36,.23,clamp(D.f,0,1)),exitTx:W-5,spawnTx:2,eid:0};
   if(opt.theme!=null)L.theme=opt.theme;
   const chaseKind=!opt.noChase&&n>=6&&n%3===0?['boulder','wall','wheel'][(n/3-2)%3|0]:null; D.chase=!!chaseKind;
   const pool=POOL.filter(p=>ne>=p[2]&&!(D.chase&&NOCHASE.has(p[0])));
@@ -1442,6 +1467,7 @@ function buildLevel(n,opt){
   if(chaseKind){const sp=Math.min(176,D.v(112,160)+(n>30?8:0));L.chase=chaseKind;const e=mkChase(chaseKind,sp,chaseKind==='wall'?-60:-140);e.go=6*TS;L.ents.push(e)}
   for(let t=4;t<W;t+=10)L.torches.push(t);
   L.name=n<=LEVEL_NAMES.length?LEVEL_NAMES[n-1]:EXTRA_NAMES[(n*7+3)%EXTRA_NAMES.length];
+  if(opt.mu&&opt.mu!=='none'&&!chaseKind&&!opt.script){ const z=muZone(opt.mu,n,vs,W); if(z){ L.zones.push(z); L.mut=z.type; L.name+=' · '+MUT_NAME[z.type] } }      // online round mutator: one zone over the whole level
   L.cpList=L.ents.filter(e=>e.t==='cp').map(e=>e.x); cgBuild(L);
   return L;
 }
@@ -1603,6 +1629,10 @@ Object.assign(FAM,{
   return w+1 },
  fire(L,r,x,n,D,room){
   const c=n>=13?4:3,per=D.v(2.7,2.1),warn=D.v(.62,.44),on=D.v(.72,.95); sgn(L,r,x,n,n<10,'حرارة لطيفة 🌤','فتحات حرارة\nبإيقاع');
+  if(D.vary){      // variety mode: three patterns (a wave left to right / all at once / a wave against you) and three sizes (a hop-over, the usual, a tall one)
+    const mode=ri(r,0,2), hs=ri(r,0,2), gap=mode===1?4:3, H=[[110,130],[150,170],[200,225]][hs];
+    for(let i=0;i<c;i++)L.ents.push(mkJet(x+2+i*gap,{per,warn,on,h:ri(r,H[0],H[1]),ph:mode===1?0:(mode===2?(c-1-i):i)*per/c+r()*.2}));
+    return 3+c*gap }
   for(let i=0;i<c;i++)L.ents.push(mkJet(x+2+i*3,{per,warn,on,h:ri(r,150,170),ph:i*per/c+r()*.2}));
   return 3+c*3 },
  storm(L,r,x,n,D,room){
@@ -1632,7 +1662,7 @@ const NOCHASE=new Set(['bait','crush','chest','mole','elev','frog','fire','storm
      erupt — floor spikes pop after a glowing warning     (after the 2nd hit)
    Hit the button 3 times (4-5 times for later bosses) -> the boss falls apart -> the gate opens -> the exit door.
    Progress survives a death (G.bossProg), so dying only costs you the current attempt at one button. */
-const FLAGS={noBoss:false};
+const FLAGS={noBoss:false,vary:!(typeof navigator!=='undefined'&&navigator.webdriver)};       // vary: single player replays get a fresh pattern each time (off under test automation so the fixed levels stay fixed)
 const BOSS_NAMES=['الملك فخ','الملكة مصيدة','الكاهن مسمار','التنين الكرتوني','جدّ الفخاخ'];
 const BOSS_COL=['#8d7bc4','#c9799b','#5fae8c','#d19b52','#6f9fd1'];
 const BTN_TX=[11,4,15,8,13];           // where the red button is for hit #1, #2, ...
@@ -2152,7 +2182,7 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;try{ titleCard() }catch(e){}{ const g=S.gems|0, e=$('hGem'), l=$('hPl'), on=plOn(); e.classList.toggle('hide',!on); e.textContent='💎 '+g; l.classList.toggle('hide',!on); l.textContent='🔰 '+plLevel() }}
+function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } { const g=$('bg'); if(g)g.classList.toggle('hide',!G.co) } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;try{ titleCard() }catch(e){}{ const g=S.gems|0, e=$('hGem'), l=$('hPl'), on=plOn(); e.classList.toggle('hide',!on); e.textContent='💎 '+g; l.classList.toggle('hide',!on); l.textContent='🔰 '+plLevel() }}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
     const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); b.classList.toggle('lock',!heroOwned(id)); b.dataset.p=heroOwned(id)?'':HERO_PRICE[id]; const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
@@ -2182,8 +2212,14 @@ function announceLevel(n){
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
 const ADMG={on:0,god:0,speed:1,doff:0};      // admin console switches (the console itself, w_admin.js, is left out of the public build)
+/* a level you have not cleared yet keeps its shape across deaths and reloads (S.vsl); once cleared, the next visit to it is a new arrangement */
+function varySeed(n){
+  if(!FLAGS.vary||G.co||G.race||G.custom||n<=2||isBossLevel(n)||n>=1001)return 0;
+  if(S.vsl&&S.vsl.n===n&&S.vsl.s>0)return S.vsl.s;
+  const s=1+Math.floor(Math.random()*9998); S.vsl={n,s}; save(); return s;
+}
 function loadLevel(n,announce,opt){
-  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0;G.help=null;G.helped=false} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):(isTrialN(n)?buildTrial(n):buildLevel(n,coOpt(opt))); G.pend=[]; G.ck=[]; G.ts=1; if(!G.custom&&!L.trial&&!G.co&&!G.race){ seedCoins(); G.ck=L.ents.filter(e=>e.t==='coin'&&!e.bait).map(coinKey); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17; if(announce&&!SIM&&!G.custom&&!L.trial)helpApply();
+  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.vs=varySeed(n);G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0;G.help=null;G.helped=false} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):(isTrialN(n)?buildTrial(n):buildLevel(n,coOpt(opt))); G.pend=[]; G.ck=[]; G.ts=1; if(!G.custom&&!L.trial&&!G.co&&!G.race){ seedCoins(); G.ck=L.ents.filter(e=>e.t==='coin'&&!e.bait).map(coinKey); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17; if(announce&&!SIM&&!G.custom&&!L.trial)helpApply();
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); if(G.co)coSpawn(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
   if(G.cpX!=null){ for(const e of L.ents){ if(e.t==='cp'&&e.x<=G.cpX)e.on=1; if(e.t==='chase'){e.x=P.x-(e.v==='wall'?330:430);e.go=P.x+4*TS} } }
   G.camX=clamp((G.co?coMid():P.x+PW/2)-VW*(G.co?.5:.4),0,Math.max(0,L.w*TS-VW));
@@ -2307,7 +2343,7 @@ function winFx(){
   if(Math.random()<.5)heroSay('win',{force:1,pri:5,delay:.05,max:1.4,dur:2});
   if(G.co){ if(!SIM)coWon() } else if(G.custom){ if(!SIM)customCleared() } else if(!L.trial&&G.level===S.best){ S.best=G.level+1; save() }       // only clearing the level you are ON opens the next one
 }
-function nextLevel(){ if(G.race)return; if(G.co){coNext();return} if(G.custom){customWon();return} if(L.trial){trialExit();return} loadLevel(G.level+1,true); G.state='play'; }
+function nextLevel(){ if(G.race)return; if(G.co){coNext();return} if(G.custom){customWon();return} if(L.trial){trialExit();return} if(S.vsl&&S.vsl.n===G.level){S.vsl=null;save()} loadLevel(G.level+1,true); G.state='play'; }
 
 /* =============== UPDATE =============== */
 function update(dt){
@@ -2543,6 +2579,11 @@ function drawZones(c,th,cam){
     else if(z.type==='wind'){ c.fillStyle='rgba(255,255,255,.07)';c.fillRect(a,22,b-a,VH);c.strokeStyle='#fffb';c.lineWidth=2;
       for(let i=0;i<16;i++){const y=50+((i*53)%330),x0=a+((i*131+G.t*z.dir*260+4000)%(b-a+160))-80;c.beginPath();c.moveTo(x0,y);c.lineTo(x0+z.dir*34,y);c.stroke()}
       c.fillStyle='#fff';c.font='900 20px Arial';c.textAlign='center';for(let x=Math.floor(a/160)*160+80;x<b;x+=160)c.fillText(z.dir>0?'»':'«',x,GY-100) }
+    else if(z.type==='oil'){ c.fillStyle='rgba(255,196,40,.10)';c.fillRect(a,22,b-a,VH);
+      for(let i=0;i<10;i++){const x=a+((i*113+G.t*10)%(b-a)),y=40+((i*71+G.t*24*(1+i%3))%330);c.fillStyle='rgba(255,224,130,.55)';c.beginPath();c.arc(x,y,2+i%2,0,7);c.fill()} }
+    else if(z.type==='bounce'){ c.fillStyle='rgba(255,110,190,.08)';c.fillRect(a,22,b-a,VH) }
+    else if(z.type==='fast'){ c.fillStyle='rgba(255,230,80,.07)';c.fillRect(a,22,b-a,VH);c.strokeStyle='#fff8';c.lineWidth=2;
+      for(let i=0;i<14;i++){const y=50+((i*47)%320),x0=a+((i*127+G.t*520+4000)%(b-a+200))-100;c.beginPath();c.moveTo(x0,y);c.lineTo(x0-46,y);c.stroke()} }
     else if(z.type==='float'){ c.fillStyle='rgba(120,160,255,.15)';c.fillRect(a,22,b-a,VH);c.fillStyle='#cfe0ff';
       for(let i=0;i<12;i++){const x=a+((i*89)%(b-a)),y=VH-((i*47+G.t*(18+i%4*8))%420);c.beginPath();c.arc(x,y,2+i%3,0,7);c.fill()} }
     c.restore();
@@ -3802,11 +3843,14 @@ B.train.draw3=B.train.draw;
 
 /* ---------- floor zones painted on top of the ground: belt (conveyor) / mud (glue) ---------- */
 function drawZoneFloor(c,cam){
-  for(const z of L.zones){ if(z.type!=='belt'&&z.type!=='mud')continue; if(z.x1<cam-20||z.x0>cam+VW+20)continue;
+  for(const z of L.zones){ if(z.type!=='belt'&&z.type!=='mud'&&z.type!=='oil'&&z.type!=='bounce')continue; if(z.x1<cam-20||z.x0>cam+VW+20)continue;
     const a=Math.max(z.x0,cam-10),b=Math.min(z.x1,cam+VW+10); c.save();c.beginPath();c.rect(a,GY-12,b-a,18);c.clip();
     if(z.type==='belt'){ c.fillStyle='#26232f';c.fillRect(a,GY-8,b-a,9);c.fillStyle='rgba(255,255,255,.12)';c.fillRect(a,GY-8,b-a,2);
       c.strokeStyle='#ffd23f';c.lineWidth=2.2;const off=(G.t*z.dir*80)%24;for(let x=Math.floor(a/24)*24-24+off;x<b+24;x+=24){c.beginPath();c.moveTo(x,GY-7);c.lineTo(x+z.dir*6,GY-3.5);c.lineTo(x,GY-.5);c.stroke()}
       c.fillStyle='#3a3748';c.strokeStyle='#000';c.lineWidth=2;for(const rx of [z.x0+4,z.x1-4]){c.beginPath();c.arc(rx,GY-3.5,6,0,7);c.fill();c.stroke()} }
+    else if(z.type==='oil'){ c.fillStyle='rgba(60,30,0,.55)';c.fillRect(a,GY-3,b-a,5);c.fillStyle='rgba(255,200,70,.6)';c.fillRect(a,GY-4,b-a,2);
+      c.fillStyle='rgba(255,255,255,.6)';for(let x=Math.floor(a/52)*52;x<b;x+=52)c.fillRect(x+10+Math.sin(G.t*2+x)*3,GY-4,14,1.6) }
+    else if(z.type==='bounce'){ c.strokeStyle='#ff4fa8';c.lineWidth=3;c.lineJoin='round';c.beginPath();const x00=Math.floor(a/10)*10;for(let x=x00;x<=b+10;x+=10){const y=GY-4+(((x/10)|0)%2?-3:0);x===x00?c.moveTo(x,y):c.lineTo(x,y)}c.stroke() }
     else { c.fillStyle='#6b4423';c.beginPath();c.moveTo(a,GY+1);for(let x=Math.floor(a/9)*9;x<=b+9;x+=9)c.lineTo(x,GY-4-Math.abs(Math.sin(x*.37))*2.4);c.lineTo(b+9,GY+1);c.closePath();c.fill();
       c.fillStyle='#8a5a30';c.fillRect(a,GY-4,b-a,1.6);
       for(let i=0;i<7;i++){const x=z.x0+((i*47)%Math.max(60,z.x1-z.x0)),k=((G.t*.9+i*.31)%1);if(x<a||x>b)continue;c.strokeStyle='#4a2c14';c.lineWidth=1.4;c.fillStyle='rgba(160,110,60,'+(1-k)+')';c.beginPath();c.arc(x,GY-5-k*2,1.5+k*3.4,0,7);c.fill();c.stroke()} }
@@ -3848,9 +3892,9 @@ function resize(){
   $('rot').classList.toggle('hide',!(h>w&&touchMode));
 }
 let touchMode=matchMedia('(pointer:coarse)').matches||'ontouchstart' in window;
-function setKey(k,v,KK){ KK=KK||(G.co&&!G.co.local?KR:K); if(k==='l')KK.l=v; else if(k==='r')KK.r=v; else if(k==='j'){ if(v&&!KK.j)KK.jp=true; KK.j=v } else if(k==='a'){ if(v&&!KK.a)KK.ap=true; KK.a=v } }
-const KM_A={KeyA:'l',KeyD:'r',KeyW:'j',Space:'j',KeyE:'a',KeyC:'a',ShiftLeft:'a'}, KM_B={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'j',ShiftRight:'a',Period:'a',Slash:'a'};   // two players on one keyboard
-const KM={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j',KeyZ:'j',KeyX:'j',KeyC:'a',KeyK:'a',ShiftLeft:'a',ShiftRight:'a'};
+function setKey(k,v,KK){ KK=KK||(G.co&&!G.co.local?KR:K); if(k==='l')KK.l=v; else if(k==='r')KK.r=v; else if(k==='j'){ if(v&&!KK.j)KK.jp=true; KK.j=v } else if(k==='a'){ if(v&&!KK.a)KK.ap=true; KK.a=v } else if(k==='g'){ if(v&&!KK.g)KK.gp=true; KK.g=v } }
+const KM_A={KeyA:'l',KeyD:'r',KeyW:'j',Space:'j',KeyE:'a',KeyC:'a',ShiftLeft:'a',KeyS:'g'}, KM_B={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'j',ShiftRight:'a',Period:'a',Slash:'a',ArrowDown:'g'};   // two players on one keyboard
+const KM={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j',KeyZ:'j',KeyX:'j',KeyC:'a',KeyK:'a',ShiftLeft:'a',ShiftRight:'a',KeyS:'g',ArrowDown:'g',KeyV:'g'};      // g = grab / throw the partner (co-op)
 function anyKeyContinue(){
   if(G.co&&!G.co.local)return false;                              // online: the retry/next moment is part of the shared simulation
   if(G.state==='dead'&&G.cardShown&&G.deadT>G.cardAt+(Snd.voiceBusy()?2.4:.4)){retry();return true}
@@ -3870,7 +3914,7 @@ addEventListener('keydown',e=>{
   anyKeyContinue();
 });
 addEventListener('keyup',e=>{const loc=!!(G.co&&G.co.local), k=loc?KM_A[e.code]:KM[e.code], k2=loc?KM_B[e.code]:null;if(k){setKey(k,false);e.preventDefault()} if(k2){setKey(k2,false,K2);e.preventDefault()}});
-addEventListener('blur',()=>{KR.l=KR.r=KR.j=KR.a=false;K.l=K.r=K.j=K.a=false;K2.l=K2.r=K2.j=K2.a=false});
+addEventListener('blur',()=>{KR.l=KR.r=KR.j=KR.a=KR.g=false;K.l=K.r=K.j=K.a=K.g=false;K2.l=K2.r=K2.j=K2.a=K2.g=false});
 document.querySelectorAll('#touch .tb').forEach(b=>{
   const k=b.dataset.k;
   b.addEventListener('pointerdown',e=>{e.preventDefault();Snd.init();Snd.resume();b.setPointerCapture(e.pointerId);b.classList.add('on');setKey(k,true);anyKeyContinue()});
@@ -4313,11 +4357,13 @@ const COV={
 };
 const CO_HW={relay:3,lift:1.8,sync:1.8,bridge:1.4};                 // impossible / nightmare lean on the puzzles that need the most teamwork (w_copuz2.js adds its own)
 const COV_LIST=[['gate',10,1,22],['ladder',10,1,22],['bridge',8,2,26],['sync',8,2,22],['lift',8,3,22],['relay',6,4,44]];
+/* size (0 small .. 2 large) and pattern of a puzzle: only in variety mode (seeded replays, online) - the fixed levels and the tests keep the plain version unless FLAGS.coVar is set */
+const coVar=(r,D)=>FLAGS.coVar||(D.vary?{sz:pickW([[0,5],[1,3.5],[2,1.5]],r),pt:ri(r,0,2)}:{sz:0,pt:0});
 FAM.co=function(L,r,x,n,D,room){
   const forced=D.force&&COV[D.force]?D.force:null, last=L.coLast;
   const list=COV_LIST.filter(v=>v[0]!==last||COV_LIST.length<2).map(v=>hellish(L.dk)?[v[0],v[1]*(CO_HW[v[0]]||.5),v[2],v[3]]:v);
   const v=forced||pv(r,n,list,room,D); if(!v)return 0;
-  const used=COV[v](L,x); L.coLast=v; (L.coList=L.coList||[]).push([v,x,used]); return used;
+  const used=COV[v](L,x,coVar(r,D)); L.coLast=v; (L.coList=L.coList||[]).push([v,x,used]); return used;
 };
 NEEDF.co=22;
 
@@ -4436,6 +4482,366 @@ Object.assign(COV,{
 for(const v of [['keyshelf',8,2,26],['flood',7,3,28],['fan',7,3,24],['chain',6,4,42],['floors',6,5,36]])COV_LIST.push(v);
 Object.assign(CO_HW,{keyshelf:1.2,flood:1.6,fan:1.4,chain:3,floors:3});
 
+/* =============== CO-OP PUZZLES 3: carry & throw (the grab key, see carryStep in w_coop.js) ===============
+   Builders take (L,x,o): o={sz,pt} = size 0..2 and pattern 0..2 (see coVar in w_copuz.js). 0/0 is the plain version.
+   tossup  - a wall too high for any jump: carry your partner under the ledge and toss him straight up, he pulls the lever that opens the door
+   tossgap - a pit too wide for any jump: carry your partner to the edge and throw him across, he pulls the lever that raises the bridge */
+Object.assign(COV,{
+ tossup(L,x,o){ const g=newId(L), H=[5,6,7][o.sz]||5, wx=x+13, sw=o.pt===1?3:2, gp=o.pt===2?1:0, sl=wx-sw-gp;      // wx = the door column, sl = first column of the ledge
+  coCp(L,x); coSign(L,x+3,'الحيط عالي كتير! 😱\nاحمل رفيقك: اقف جنبه واضغط S أو ⬇ (🤲 بالموبايل)\nبعدين اضغط كمان مرة ليرميه لفوق',5.2);
+  for(let c2=0;c2<sw;c2++)blk(L,sl+c2,GR-H);                                        // the ledge (one floating row of blocks)
+  L.ents.push(mkGate(g,wx,1,GR-H,GR-1,'door'), mkLever(g,(sl+sw-1)*TS+16,(GR-H)*TS));
+  coCpEnd(L,x+21); return 23 },
+ tossgap(L,x,o){ const g=newId(L), G2=([8,9,10][o.sz]||8)-(o.pt?1:0), bx=x+9, h=o.pt===0?0:o.pt;                                   // h = height of the far bank's step in blocks
+  coCp(L,x); coSign(L,x+3,'حفرة كبيرة! 🕳\nاحمل رفيقك: اقف جنبه واضغط S أو ⬇ (🤲 بالموبايل)\nوارميه للضفة التانية، هو بيطلّع الجسر',5.2);
+  cutPit(L,bx,G2); L.ents.push(mkGate(g,bx,G2,GR,GR,'bridge',1));
+  for(let k=1;k<=h;k++){ blk(L,bx+G2,GR-k); blk(L,bx+G2+1,GR-k) }
+  L.ents.push(mkLever(g,(bx+G2+1)*TS+16,GY-h*TS));
+  coCpEnd(L,bx+G2+6); return G2+16 },
+});
+for(const v of [['tossup',8,3,27],['tossgap',8,4,30]])COV_LIST.push(v);
+Object.assign(CO_HW,{tossup:2,tossgap:2});
+
+/* =============== CO-OP PUZZLES 4: the BIG traps (a hazard that needs both players) ===============
+   Every builder takes (L,x,o): o={sz,pt} = size 0..2 and pattern 0..2 (see coVar in w_copuz.js). 0/0 is the plain version.
+   All hazards here are deterministic (they only look at PLY and at plain arithmetic - no Math.sin, no random), their state lives in the entity itself,
+   and they are driven by the same gate state as the other puzzles (L.cgE[gid], see w_copuz.js): plates, levers, sync plates.
+   boulder - a giant boulder bounces between two walls of a pen; a door at one end lets it out into a pit. Open the door: sync plates / a lever on a high ledge (human ladder) / a lever too high for anything but a toss
+   ceil    - a spiked ceiling comes down over a long hall; it only goes back up while somebody holds a plate (or the lever at the end has been pulled)
+   rsaw    - a huge saw in a low tunnel; a plate lifts it into its housing, the lever at the far end keeps it there
+   catapult- a see-saw: one hops onto one end, the other (standing on the other end) is launched high; a lever / key on a ledge, or over a wall
+   opm     - the operator machine: barriers across the hall, each one switched off only while somebody stands on the plate of ITS colour; one plays the operator, the other runs through */
+const mkBould=(gid,o)=>Object.assign({t:'cbould',gid,x:0,y:GY-40,r:40,sp:95,dir:1,xB:0,xR:0,x1:0,trig:0,st:0,vy:0,rot:0,always:1},o);
+B.cbould={
+ upd(e,dt){
+  if(e.st===0){ for(const q of PLY){ if(!q.dead&&q.x+PW/2>e.trig){ e.st=1; Snd.rumble&&Snd.rumble(); break } } if(e.st===0)return }
+  if(e.st===1){
+   const open=!!(L.cgE&&L.cgE[e.gid]===1); if(open&&e.dir<0)e.dir=1;                // the door opens: out through the pit it goes
+   e.x+=e.dir*e.sp*dt; e.rot+=e.dir*dt*e.sp/e.r;
+   if(e.dir>0){ if(open){ if(e.x>=e.x1){ e.st=2; e.vy=0 } } else if(e.x>=e.xR){ e.x=e.xR; e.dir=-1; Snd.thud&&Snd.thud() } }
+   else if(e.x<=e.xB){ e.x=e.xB; e.dir=1 } }
+  else { e.vy+=1500*dt; e.y+=e.vy*dt; e.x+=e.sp*.5*dt; e.rot+=dt*5; if(e.y>VH+e.r+40)e.rm=1 }
+ },
+ hit(e){ return e.st===1&&circHit(e.x,e.y,e.r-5,prect())?'boulder':null },
+ draw(e,c,th){
+  if(e.st===0)return; const r=e.r, k=r/40;
+  if(e.st===1&&e.x+r<G.camX){ c.save(); c.globalAlpha=.55+.45*Math.sin(G.t*9); c.font='900 26px Arial'; c.textAlign='left'; c.fillStyle='#ff4d5e'; c.strokeStyle='#000'; c.lineWidth=4; c.strokeText('⚠ 🪨',G.camX+8,GY-70); c.fillText('⚠ 🪨',G.camX+8,GY-70); c.restore() }
+  c.save(); c.translate(e.x,e.y); c.save(); c.rotate(e.rot); c.scale(k,k);
+  c.fillStyle='#8c8498'; c.strokeStyle='#000'; c.lineWidth=4/k; c.lineJoin='round'; c.beginPath(); for(let i=0;i<16;i++){ const a=i/16*Math.PI*2, rr=40+(i%3)*2; c.lineTo(Math.cos(a)*rr,Math.sin(a)*rr) } c.closePath(); c.fill(); c.stroke();
+  c.strokeStyle='#5d566a'; c.lineWidth=3/k; c.beginPath(); c.moveTo(-20,-10); c.lineTo(5,0); c.lineTo(-5,22); c.moveTo(15,-25); c.lineTo(22,-5); c.moveTo(-26,16); c.lineTo(-14,26); c.stroke();
+  c.restore(); c.scale(k,k);
+  c.fillStyle='#fff'; c.strokeStyle='#000'; c.lineWidth=3/k; c.beginPath(); c.arc(-12,-6,9,0,7); c.fill(); c.stroke(); c.beginPath(); c.arc(14,-6,9,0,7); c.fill(); c.stroke();
+  c.fillStyle='#000'; c.beginPath(); c.arc(e.dir>0?-8:-16,-5,3.5,0,7); c.fill(); c.beginPath(); c.arc(e.dir>0?18:10,-5,3.5,0,7); c.fill();
+  c.lineWidth=5/k; c.beginPath(); c.moveTo(-24,-20); c.lineTo(-4,-13); c.moveTo(28,-20); c.lineTo(6,-13); c.stroke();
+  c.fillStyle='#fff'; c.lineWidth=3/k; c.beginPath(); c.rect(-14,10,30,12); c.fill(); c.stroke(); c.restore() }};
+
+const mkCeilP=(gid,o)=>Object.assign({t:'cceil',gid,x:0,w:0,trig:0,h:200,HO:200,vd:25,vu:140,st:0,always:1},o);
+B.cceil={
+ upd(e,dt){
+  if(e.st===0){ for(const q of PLY){ if(!q.dead&&q.x+PW/2>e.trig&&q.x<e.x+e.w){ e.st=1; break } } if(e.st===0)return }
+  if(L.cgE&&L.cgE[e.gid]===1)e.h=Math.min(e.HO,e.h+e.vu*dt); else e.h=Math.max(0,e.h-e.vd*dt) },
+ hit(e){ if(e.st!==1)return null; const pr=prect(); return pr.x+pr.w>e.x&&pr.x<e.x+e.w&&pr.y<GY-e.h?'crush':null },
+ draw(e,c,th){
+  const yb=GY-e.h, x=e.x, w=e.w, low=e.st===1&&e.h<90;
+  c.save(); c.lineJoin='round'; c.strokeStyle='#000'; c.lineWidth=3;
+  c.fillStyle=low?'#5a2d3c':'#3a3350'; c.fillRect(x,-30,w,yb+30); c.strokeRect(x,-30,w,yb+30);
+  c.fillStyle='#ffffff10'; for(let yy=-26;yy<yb-8;yy+=26)for(let xx=x+((yy/26|0)%2?0:22);xx<x+w-30;xx+=44)c.fillRect(xx+4,yy,36,18);
+  c.fillStyle='#ffd23f'; for(let xx=x;xx<x+w-1;xx+=32){ c.beginPath(); c.moveTo(xx,yb-10); c.lineTo(Math.min(xx+16,x+w),yb-10); c.lineTo(Math.min(xx+8,x+w)+0,yb); c.lineTo(xx-8<x?x:xx-8,yb); c.closePath(); c.fill() }
+  c.fillStyle='#d9dde8'; for(let xx=x+4;xx<x+w-14;xx+=20){ c.beginPath(); c.moveTo(xx,yb); c.lineTo(xx+14,yb); c.lineTo(xx+7,yb+15); c.closePath(); c.fill(); c.stroke() }
+  c.fillStyle='#2c2540'; for(const px of [x-8,x+w-4]){ c.fillRect(px,-30,12,yb+30+20); c.strokeRect(px,-30,12,yb+30+20) }
+  if(low){ c.globalAlpha=.5+.5*Math.sin(G.t*14); c.fillStyle='#ff4d5e'; c.font='900 22px Arial'; c.textAlign='center'; c.fillText('⚠',x+w/2,Math.max(24,yb-14)) }
+  c.restore() }};
+
+const mkRsaw=(gid,o)=>Object.assign({t:'crsaw',gid,x:0,y:0,r:40,x0:0,x1:0,sp:90,dir:1,ret:0,yd:0,yu:0,rot:0,cy:0,always:1},o);
+B.crsaw={
+ upd(e,dt){
+  const tg=(L.cgE&&L.cgE[e.gid]===1)?1:0; e.ret+=clamp(tg-e.ret,-dt/.5,dt/.5);
+  e.x+=e.dir*e.sp*dt; if(e.x>e.x1){ e.x=e.x1; e.dir=-1 } if(e.x<e.x0){ e.x=e.x0; e.dir=1 }
+  e.y=e.yd+(e.yu-e.yd)*e.ret; e.rot+=dt*11*e.dir },
+ hit(e){ return circHit(e.x,e.y,e.r-2,prect())?'saw':null },
+ draw(e,c,th){
+  const r=e.r;
+  c.save(); c.lineJoin='round'; c.strokeStyle='#000'; c.lineWidth=2.6;
+  c.fillStyle='#14101e'; c.fillRect(e.x0-r-6,e.cy-2*r-8,e.x1-e.x0+2*r+12,2*r+8); c.strokeRect(e.x0-r-6,e.cy-2*r-8,e.x1-e.x0+2*r+12,2*r+8);      // the housing in the ceiling
+  c.translate(e.x,e.y); c.rotate(e.rot); c.fillStyle='#cfd5e0'; c.beginPath(); const R=r+5, r2=r-3;
+  for(let i=0;i<20;i++){ const a=i/20*Math.PI*2, rr=i%2?r2:R; c.lineTo(Math.cos(a)*rr,Math.sin(a)*rr) } c.closePath(); c.fill(); c.stroke();
+  c.fillStyle='#e04b4b'; c.beginPath(); c.arc(0,0,r*.3,0,7); c.fill(); c.stroke(); c.restore();
+  face(c,e.x,e.y+1,r/40,isK(e)?'laugh':'angry');
+  if(e.ret<.05){ c.save(); c.fillStyle='#ff4d5e'; c.font='900 20px Arial'; c.textAlign='center'; c.globalAlpha=.6+.4*Math.sin(G.t*8); c.fillText('⚠',(e.x0+e.x1)/2,e.cy+6); c.restore() }
+  c.restore() }};
+
+const CAT_V=800, CAT_VX=140;
+const mkCat=(x,o)=>Object.assign({t:'ccat',x,y:GY,pw:56,gap:12,pv:[0,0],cd:0,tl:0,always:1},o);
+const catPad=(e,p)=>{ if(p.y+PH<e.y-3||p.y+PH>e.y+3)return -1; const cx=p.x+PW/2; if(cx>=e.x&&cx<=e.x+e.pw)return 0; if(cx>=e.x+e.pw+e.gap&&cx<=e.x+2*e.pw+e.gap)return 1; return -1 };
+B.ccat={
+ upd(e,dt){
+  if(e.cd>0)e.cd-=dt; if(e.tl!==0)e.tl=Math.abs(e.tl)<=dt*3?0:e.tl-Math.sign(e.tl)*dt*3;
+  for(let i=0;i<PLY.length;i++){ const a=PLY[i], v0=e.pv[i]||0; e.pv[i]=a&&!a.dead?a.vy:0;                           // v0 = how fast he was falling a frame ago
+    if(!a||a.dead||e.cd>0||v0<200||!a.onGround||a.stand!==0)continue;                                               // he has just landed hard on the ground
+    const pa=catPad(e,a); if(pa<0)continue;
+    for(let j=0;j<PLY.length;j++){ const b=PLY[j]; if(j===i||!b||b.dead||!b.onGround||b.stand!==0||b.hb>=0||b.hold>=0||b.thr)continue;
+      if(catPad(e,b)===1-pa){ b.vy=-CAT_V; b.vx=(pa===0?1:-1)*CAT_VX; b.onGround=false; b.stand=0; b.dj=false; b.coy=0; b.buf=0; b.air=0; b.thr=1; a.vy=0; e.cd=.7; e.tl=pa?-1:1; Snd.whoosh&&Snd.whoosh(); break } } }
+ },
+ hit(){ return null },
+ draw(e,c,th){
+  const x=e.x, w=2*e.pw+e.gap, y=e.y, cx=x+w/2;
+  c.save(); c.lineJoin='round'; c.lineCap='round'; c.strokeStyle='#000'; c.lineWidth=2.6;
+  c.fillStyle='#6b5a44'; c.beginPath(); c.moveTo(cx-12,y); c.lineTo(cx+12,y); c.lineTo(cx,y-14); c.closePath(); c.fill(); c.stroke();
+  c.save(); c.translate(cx,y-14); c.rotate(e.tl*.16); c.fillStyle='#b9854a'; c.fillRect(-w/2,-6,w,9); c.strokeRect(-w/2,-6,w,9); c.fillStyle='#0003'; for(let i=-w/2+8;i<w/2-8;i+=14)c.fillRect(i,-4,2,5);
+  for(const side of [-1,1]){ const px=side*(e.pw/2+e.gap/2); c.fillStyle='#ffd23f'; c.fillRect(px-e.pw/2+4,-12,e.pw-8,7); c.strokeRect(px-e.pw/2+4,-12,e.pw-8,7); }
+  c.restore();
+  const bob=Math.sin(G.t*5)*2; c.fillStyle='#ffd23f'; for(const px of [x+e.pw/2,x+e.pw*1.5+e.gap]){ c.beginPath(); c.moveTo(px-6,y-44+bob); c.lineTo(px+6,y-44+bob); c.lineTo(px,y-35+bob); c.closePath(); c.fill(); c.stroke() }
+  c.restore() }};
+
+const mkBar=(gid,o)=>Object.assign({t:'cbar',gid,g2:0,x:0,w:22,v:0,off:0,always:1},o);
+B.cbar={
+ upd(e,dt){ const E=L.cgE; if(E&&(E[e.gid]===1||(e.g2&&E[e.g2]===1)))e.off=.5; else if(e.off>0)e.off-=dt },      // after the plate is released the barrier stays off for half a second: a little slack for the lag of a link and for human reflexes
+ hit(e){ if(e.off>0)return null; const pr=prect(); return pr.x+pr.w>e.x&&pr.x<e.x+e.w?['laser','zap','saw'][e.v|0]:null },
+ draw(e,c,th){
+  const on=!(e.off>0), a=cgEase('bar'+e.gid+':'+e.x,on?1:0), x=e.x, w=e.w, cx=x+w/2, col=cgCol(e.gid);
+  c.save(); c.lineJoin='round'; c.lineCap='round'; c.strokeStyle='#000'; c.lineWidth=2.4;
+  if(a>.03){ c.globalAlpha=a;
+    if(e.v===0){ for(let i=0;i<5;i++){ const yy=22+i*((GY-30)/4.2)+Math.sin(G.t*6+i)*2; c.strokeStyle='#ff2d4d'; c.lineWidth=4; c.beginPath(); c.moveTo(cx-w/2-4,yy); c.lineTo(cx+w/2+4,yy); c.stroke(); c.strokeStyle='#ffd0d8'; c.lineWidth=1.4; c.stroke() } }
+    else if(e.v===1){ for(let k=0;k<2;k++){ c.strokeStyle=k?'#d9f4ff':'#4dd0ff'; c.lineWidth=k?1.6:4; c.beginPath(); c.moveTo(cx,22); for(let yy=22;yy<GY-8;yy+=18)c.lineTo(cx+Math.sin(G.t*40+yy*.7+k)*w*.5,yy+9); c.lineTo(cx,GY-8); c.stroke() } }
+    else { for(let yy=GY-24;yy>16;yy-=44){ c.save(); c.translate(cx,yy); c.rotate(G.t*9+yy); c.fillStyle='#cfd5e0'; c.strokeStyle='#000'; c.lineWidth=2.4; c.beginPath(); for(let i=0;i<14;i++){ const aa=i/14*Math.PI*2, rr=i%2?15:22; c.lineTo(Math.cos(aa)*rr,Math.sin(aa)*rr) } c.closePath(); c.fill(); c.stroke(); c.fillStyle='#e04b4b'; c.beginPath(); c.arc(0,0,6,0,7); c.fill(); c.stroke(); c.restore() } }
+    c.globalAlpha=1 }
+  c.fillStyle=col; for(const yy of [0,GY-6]){ c.fillRect(cx-16,yy,32,yy?14:20); c.strokeRect(cx-16,yy,32,yy?14:20) }
+  c.fillStyle=on?'#ff4d5e':'#35d07f'; c.beginPath(); c.arc(cx,10,4.5,0,7); c.fill(); c.stroke();
+  c.restore() }};
+
+const tunnel=(L,tx0,tx1)=>{ for(let tx=tx0;tx<=tx1;tx++)for(let k=4;k<=7;k++)blk(L,tx,GR-k) };          // a low ceiling of four block rows: 96 px of headroom, so nobody can hop over what runs in it
+const ledgeSync=(L,g,x)=>{ L.ents.push(mkPlat(newId(L),'static',(x+11)*TS,GY-72,3*TS,{})); L.ents.push(mkPlate(g,(x+12)*TS-4,GY-72,TS*1.8,{all:1,lat:1})) };     // the upper plate of a sync pair (reached with an ordinary jump)
+
+Object.assign(COV,{
+ catapult(L,x,o){ const g=newId(L), pt=o.pt|0, sz=o.sz|0, px=x+7, ex=px+5, H=([6,7,7][sz]||6), Hw=([5,6,7][sz]||5), wx=ex+3, lw=([3,3,2][sz]||3);
+  coCp(L,x);
+  coSign(L,x+2,[ 'منجنيق! 🎯\nواحد يوقف على طرف اللوح\nوالتاني يقفز على الطرف التاني فيطير رفيقه لفوق\nعلى الرف في رافعة',
+                 'حيط عالي! 🧱 فيه باب من تحت\nواحد يوقف على طرف اللوح والتاني يقفز على الطرف التاني\nمين بيطير فوق الحيط بيشدّ الرافعة',
+                 'المفتاح فوق الرف! 🔑\nواحد يوقف على طرف اللوح والتاني يقفز على الطرف التاني\nوالباب بيستنى المفتاح' ][pt],8);
+  L.ents.push(mkCat(px*TS,{}));
+  if(pt===0){ for(let c2=0;c2<lw;c2++)blk(L,ex+c2,GR-H); L.ents.push(mkLever(g,(ex+lw-1)*TS+16,(GR-H)*TS), mkGate(g,ex+9,1,0,GR-1,'door')) }
+  else if(pt===1){ for(let k=3;k<=Hw;k++){ blk(L,wx,GR-k); blk(L,wx+1,GR-k) } L.ents.push(mkGate(g,wx,2,GR-2,GR-1,'door'), mkLever(g,(wx+4)*TS+16,GY)) }
+  else { for(let c2=0;c2<lw;c2++)blk(L,ex+c2,GR-H); coKey(L,g,ex+lw/2,(GR-H)*TS-18); L.ents.push(mkGate(g,ex+9,1,0,GR-1,'lock',0)) }
+  coCpEnd(L,ex+14); return 22 },
+ boulder(L,x,o){ const g=newId(L), r=[40,52,64][o.sz]||40, sp=[95,115,135][o.sz]||95, pt=o.pt|0, T=[[9,8,7],[11,10,9],[12,11,10]][pt][o.sz|0]||9, gx=x+18, pit=gx+2, first=(x+(pt?9:8))*TS;
+  coCp(L,x);
+  coSign(L,x+2,[ 'صخرة عملاقة جاية! 😱\nكبسوا الزرّين مع بعض قبل ما توصل\nواحد تحت وواحد فوق\nبيفتح الباب وبتطلع الصخرة',
+                 'الصخرة ما بتوقف! 🪨\nطلّع رفيقك على الرف العالي (واحد على راس التاني)\nوهو يشدّ الرافعة',
+                 'الرف عالي كتير! 😱\nاحمل رفيقك (S أو ⬇ - 🤲 بالموبايل) وارميه فوق\nوهو يشدّ الرافعة' ][pt],8);
+  if(pt===0){ L.ents.push(mkPlate(g,(x+8)*TS,GY,TS*1.8,{all:1,lat:1})); ledgeSync(L,g,x) }
+  else if(pt===1){ for(let c2=0;c2<4;c2++)blk(L,x+10+c2,GR-5); L.ents.push(mkLever(g,(x+13)*TS+16,(GR-5)*TS)) }
+  else { for(let c2=0;c2<3;c2++)blk(L,x+10+c2,GR-6); L.ents.push(mkLever(g,(x+12)*TS+16,(GR-6)*TS)) }
+  L.ents.push(mkGate(g,gx,1,0,GR-1,'door'));
+  cutPit(L,pit,3);
+  L.ents.push(mkBould(g,{r,sp,y:GY-r,x:first-r-sp*T,xB:(x+2)*TS,xR:gx*TS-r,x1:(pit+1.5)*TS,trig:(x+4)*TS}));
+  coCpEnd(L,pit+8); return 30 },
+ ceil(L,x,o){ const g=newId(L), pt=o.pt|0, sz=o.sz|0, vd=[[140,125,110],[170,155,150],[45,55,65]][pt][sz]||100, s=[5,6,7][sz]||5, Z=pt===0?[12,14,16][sz]:(pt===1?3*s+2:12), zx=x+5;
+  coCp(L,x);
+  coSign(L,x+2,[ 'السقف رح ينزل! 😰\nواحد يوقف على الزر ويسنده\nوالتاني يمشي ويشدّ الرافعة اللي بآخر الممر',
+                 'السقف بيرجع بينزل إذا ما في حدا واقف على زر!\nتناوبوا من زر لزر 🤝 وما تتركوه لحاله\nوبالآخر الرافعة',
+                 'كبسوا الزرّين بسرعة! ⏱ السقف نازل\nواحد تحت وواحد على الرف' ][pt],8);
+  L.ents.push(pt===2?mkGate(g,zx+Z,1,0,GR-1,'door'):mkGate(g,zx,0,0,0,'none',0));      // pattern 2 has a door at the end of the hall: the sync is the only way through
+  if(pt===0){ L.ents.push(mkPlate(g,(x+6)*TS,GY,TS*1.8), mkLever(g,(zx+Z-1)*TS+16,GY)) }
+  else if(pt===1){ for(let i=0;i<3;i++)L.ents.push(mkPlate(g,(x+6+i*s)*TS,GY,TS*1.8)); L.ents.push(mkLever(g,(x+6+3*s)*TS+16,GY)) }
+  else { L.ents.push(mkPlate(g,(x+7)*TS,GY,TS*1.8,{all:1,lat:1})); ledgeSync(L,g,x) }
+  L.ents.push(mkCeilP(g,{x:zx*TS,w:Z*TS,vd,vu:pt===1?60:140,trig:pt===2?zx*TS:(x+8)*TS}));
+  coCpEnd(L,zx+Z+3); return Z+10 },
+ rsaw(L,x,o){ const pt=o.pt|0, sz=o.sz|0, r=[40,44,48][sz]||40, sp=[80,100,120][sz]||80, ln=[7,8,9][sz]||7, cy=GY-96, yu=cy-r+2, yd=GY-r+2;      // cy = the underside of the ceiling
+  coCp(L,x);
+  coSign(L,x+2,[ 'منشار عملاق بالنفق! 🪚\nواحد يوقف على الزر فيرتفع المنشار\nوالتاني يعبر ويشدّ الرافعة',
+                 'منشارين! 🪚🪚 الأول بيرتفع بمجرد الدعسة\nأما التاني فلازم حدا يضل واقف على زرّه\nوبعدين الرافعة',
+                 'منشارين على نفس الزر! 🪚🪚\nواحد يوقف على الزر الأول وتاني يعبر للزر التاني\nناوبوا بعض لحد الرافعة 🤝' ][pt]||'منشار عملاق بالنفق! 🪚',8);
+  const saw=(g,tx0)=>{ tunnel(L,tx0,tx0+ln-1); if(!L.ents.some(e=>e.t==='cgate'&&e.gid===g))L.ents.push(mkGate(g,tx0,0,0,0,'none',0)); L.ents.push( mkRsaw(g,{r,sp,x0:(tx0+1.6)*TS,x1:(tx0+ln-1.6)*TS,x:(tx0+ln/2)*TS,y:yd,yd,yu,cy})) };
+  if(pt===2){ const g=newId(L), t2=x+7, t3=t2+ln+4;                                    // one gate for both saws: two plates, passed from hand to hand
+    L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8)); saw(g,t2);
+    L.ents.push(mkPlate(g,(t2+ln+1)*TS,GY,TS*1.8)); saw(g,t3);
+    L.ents.push(mkLever(g,(t3+ln+2)*TS+16,GY)); coCpEnd(L,t3+ln+5); return t3+ln+7-x }
+  if(pt===1){ const g1=newId(L), g2=newId(L), t1=x+7, t2=t1+ln+4;
+    L.ents.push(mkPlate(g1,(x+4)*TS,GY,TS*1.8,{lat:1})); saw(g1,t1);
+    L.ents.push(mkPlate(g2,(t1+ln+1)*TS,GY,TS*1.8)); saw(g2,t2);
+    L.ents.push(mkLever(g2,(t2+ln+2)*TS+16,GY)); coCpEnd(L,t2+ln+5); return t2+ln+7-x }
+  const g=newId(L), t1=x+7; L.ents.push(mkPlate(g,(x+4)*TS,GY,TS*1.8)); saw(g,t1);
+  L.ents.push(mkLever(g,(t1+ln+2)*TS+16,GY)); coCpEnd(L,t1+ln+5); return t1+ln+7-x },
+
+ opm(L,x,o){ const n=[2,3,3][o.sz|0]||2, sp=[6,4,3][o.sz|0]||6, pt=o.pt|0, gm=newId(L), gs=[], map=[...Array(n).keys()].map(i=>pt===0?i:(pt===1?n-1-i:(i+1)%n));
+  coCp(L,x);
+  coSign(L,x+2,[ 'آلة المشغّل! 🎛\nواحد يوقف على الزر اللي لونه مثل لون الحاجز\nوالتاني يعدّي... وبعدين غيّروا الأزرار بالدور',
+                 'الأزرار معكوسة هالمرة! 🔀\nشوفوا الألوان: زر كل حاجز مو قدّامه',
+                 'الأزرار مخلوطة! 🌀\nاتفقوا مين بيشغّل ومين بيعدّي' ][pt],8);
+  for(let i=0;i<n;i++)gs.push(newId(L));
+  for(let i=0;i<n;i++){ L.ents.push(mkPlate(gs[map[i]],(x+4+i*2)*TS,GY,TS*1.5)); L.ents.push(mkGate(gs[i],x+10+i*sp,0,0,0,'none',0)) }       // plate i (from the left) switches barrier map[i] off
+  for(let i=0;i<n;i++)L.ents.push(mkBar(gs[i],{x:(x+10+i*sp)*TS+5,w:22,v:pt,g2:gm}));
+  const lx=x+10+(n-1)*sp+3; L.ents.push(mkGate(gm,lx,0,0,0,'none',0), mkLever(gm,lx*TS+16,GY));
+  coCpEnd(L,lx+4); return lx+7-x },
+});
+for(const v of [['ceil',7,3,34],['rsaw',7,4,38],['boulder',6,5,32],['opm',6,5,30],['catapult',7,3,26]])COV_LIST.push(v);
+Object.assign(CO_HW,{ceil:1.8,rsaw:1.8,boulder:2,opm:1.8,catapult:1.6});
+/* =============== CO-OP PUZZLES, part 5: communication ===============
+   seer - a bridge of hidden stepping stones across a pit. Only a player standing on the WATCHTOWER sees where the stones are (they glow); the other one walks blind and has to be
+          told where to jump (quick phrases: T, T, T, then 1-8). Stones he has stood on show up for good. Over the pit nobody may be more than CO_TETHER from the
+          tower, so the whole path fits on one screen. The lever on the far bank raises a bridge so the watcher can cross too.
+          sizes: 3 / 4 / 5 stones.  patterns: 0 two heights   1 three heights   2 two heights and the glow only blinks (remember what you saw)
+   All state is in the entity and in L.blocks (hidden block = rev:false), the glow is draw-only (it depends on who is looking, never on the simulation). */
+/* =============== drum - stomp on the beat ===============
+   A drum in the middle of the hall, a ring shrinks onto the pad of each player; when it closes the drum beats. Everybody has to LAND (not jump: land) within a short window around the beat,
+   once, and not at any other time (a stray landing breaks the streak, so hopping around does not work). N beats in a row open the door. The tempo rises with the streak.
+   sizes: 4 / 5 / 7 beats, window +-0.30 / 0.26 / 0.22 s.   patterns: 0 both land on every beat   1 ping-pong (the ring tells who: one beat you, one beat him, faster)   2 irregular beats (watch the ring)
+   Everything the simulation reads is plain numbers in the entity (time is the sum of dt), the picture only reads them. */
+/* =============== simon - colour memory ===============
+   Coloured pads on the floor, far apart. The pads light up in some order (and a note each); then the order has to be repeated by LANDING on the pads (a jump onto it; walking over a pad does
+   nothing), every step within a time limit that is too short for one person to run from the far left pad to the far right one: so one stands at each end.
+   A wrong pad or a timeout shows the order again. sizes: 4 / 5 / 7 steps.   patterns: 0 three pads   1 four pads, closer together   2 three pads and the order has to be repeated BACKWARDS.
+   State is plain numbers in the entity (st 0 waiting, 1 showing, 2 your turn, 3 pause after a mistake, 4 done). */
+const seerStones=(L,x,n,pt)=>{ const r=mulberry32((L.n|0)*131+x*7+(L.vs|0)*13+pt*5+n), rows=pt===1?[GR-1,GR-2,GR-3]:[GR-1,GR-3], K=rows.length, out=[]; let lane=Math.floor(r()*K);
+  for(let i=0;i<n;i++){ if(pt===1)lane=clamp(lane+Math.floor(r()*3)-1,0,K-1); else lane=r()<.5?0:1; out.push([x+9+3*i,rows[lane],lane]) }
+  if(out.every(s=>s[2]===out[0][2])){ const j=n-1, l2=(out[j][2]+1)%K; out[j][2]=l2; out[j][1]=rows[l2] }                  // never a straight line: there would be nothing to tell
+  return out };
+B.cseer={
+ upd(e,dt){ for(const p of PLY){ if(!p||p.dead||!p.onGround||p.stand<0)continue; const tx=Math.floor((p.x+PW/2)/TS), ty=Math.round((p.y+PH)/TS), b=L.blocks[tx+','+ty]; if(b&&b.sk&&!b.rev){ b.rev=true; b.bump=.3 } } },      // a stone you stood on stays visible
+ hit(){ return null },
+ draw(e,c,th){
+  const lp=G.co&&PLY[G.co.me]; if(!lp)return;
+  const cx=lp.x+PW/2, on=lp.onGround&&lp.stand>=0&&Math.abs(lp.y+PH-e.top)<3&&cx>=e.tw0&&cx<=e.tw1, mid=(e.tw0+e.tw1)/2;
+  c.save(); c.textAlign='center'; c.font='26px serif'; c.globalAlpha=.9; c.fillText('🔭',mid,e.top-30+Math.sin(G.t*3)*2);
+  const vis=on&&(!e.bl||(G.t%2.4)<1.15);
+  if(vis){ c.lineJoin='round'; for(const s of e.st){ const b=L.blocks[s[0]+','+s[1]]; if(b&&b.rev)continue; const x=s[0]*TS, y=s[1]*TS, a=.55+.25*Math.sin(G.t*6+s[0]);
+    c.globalAlpha=a; c.fillStyle='#4dffa0'; c.fillRect(x,y,2*TS,TS); c.globalAlpha=1; c.strokeStyle='#baffd9'; c.lineWidth=2.4; c.strokeRect(x+1,y+1,2*TS-2,TS-2) } }
+  else if(on){ c.globalAlpha=.8; c.fillStyle='#fff'; c.font='900 14px Tahoma'; c.fillText('👁 غمّضت... تذكّر!',mid,e.top-58) }
+  c.restore() }};
+Object.assign(COV,{
+ seer(L,x,o){ const g=newId(L), sz=o.sz|0, pt=o.pt|0, n=[3,4,5][sz]||3, len=3*n, st=seerStones(L,x,n,pt);
+  coCp(L,x);
+  coSign(L,x+2,[ 'جسر الحجارة المخفية! 🔭 واحد على البرج بيشوف الحجارة (بتتوهّج)\nوالتاني يمشي عليها - احكيله وين يقفز (T)',
+                 'ثلاث مستويات! 🔭 اللي على البرج بيشوف الحجارة\nواحكوا لبعض (T)',
+                 'الحجارة بتغمّض! 🔭 التوهّج بيروح ويجي - تذكّروا الطريق\nواحكوا لبعض (T)' ][pt],6);
+  for(let i=0;i<4;i++)for(let k=1;k<=Math.min(i+1,3);k++)blk(L,x+4+i,GR-k);                                           // the stairs up to the tower: heights 1, 2, 3, 3
+  cutPit(L,x+8,len);
+  for(const s of st){ for(let d=0;d<2;d++)L.blocks[(s[0]+d)+','+s[1]]={rev:false,bump:0,sk:1} }                         // hidden (but solid) stones, two blocks wide
+  L.ents.push({t:'cseer',x:(x+6)*TS,tw0:(x+6)*TS,tw1:(x+8)*TS,top:(GR-3)*TS,st:st.map(s=>[s[0],s[1]]),bl:pt===2?1:0,always:1});
+  L.ents.push(mkGate(g,x+8,len,GR,GR,'bridge',1), mkLever(g,(x+8+len+1)*TS+16,GY));
+  coCpEnd(L,x+8+len+4); return len+14 },
+});
+COV_LIST.push(['seer',6,4,32]); CO_HW.seer=1.6;
+
+const DRUM_T=[[1.8,1.7,1.6,1.5,1.4,1.3,1.25],[1.7,1.6,1.5,1.4,1.3,1.2,1.15],[1.5,1.4,1.3,1.2,1.1,1.05,1.0]];
+const drumPer=e=>e.pt===2?e.sq[e.nb%e.sq.length]:DRUM_T[e.sz][Math.min(e.sc,6)]*(e.pt===1?.75:1);
+const drumNeed=(e,i)=>e.pt!==1||(e.nb&1)===i;                                 // who has to land on the current beat
+const drumTone=(f,bad)=>{ try{ Snd.tone&&Snd.tone(bad?{t:'sawtooth',f0:150,f1:70,dur:.2,v:.12}:{t:'triangle',f0:f,f1:f*.8,dur:.09,v:.16}) }catch(_){} };
+B.cdrum={
+ upd(e,dt){
+  if(e.st===2)return;
+  if(e.st===0){ for(const q of PLY){ if(!q.dead&&q.x+PW/2>e.trig){ e.st=1; e.tm=0; e.tb=2.4; e.nb=0; e.sc=0; e.pr=drumPer(e); break } } if(e.st===0)return }
+  e.tm+=dt; if(e.okT>0)e.okT-=dt;
+  if(e.tm>=e.tb&&e.tk!==e.nb){ e.tk=e.nb; drumTone(e.pt===1&&(e.nb&1)?440:330) }
+  for(let i=0;i<2;i++){ const p=PLY[i], g=!!(p&&!p.dead&&p.onGround);
+    if(g&&!e.pg[i]){ if(drumNeed(e,i)&&!e.hit[i]&&Math.abs(e.tm-e.tb)<=e.w)e.hit[i]=1; else if(e.sc>0||e.hit[i]||e.tm>e.tb-e.w){ e.vd=1; if(e.sc>0){ e.sc=0; e.okT=.5; e.okV=-1; drumTone(0,1) } } }      // a landing nobody asked for
+    e.pg[i]=g?1:0 }
+  if(e.tm>=e.tb+e.w){                                                          // the window of this beat is over
+    const ok=!e.vd&&(!drumNeed(e,0)||e.hit[0])&&(!drumNeed(e,1)||e.hit[1]);
+    if(ok){ e.sc++; e.okT=.5; e.okV=1; drumTone(660) } else if(e.sc>0){ e.sc=0; e.okT=.5; e.okV=-1; drumTone(0,1) } else { e.okT=.5; e.okV=-1 }
+    e.hit=[0,0]; e.vd=0; e.nb++; e.tb+=e.pr; e.pr=drumPer(e);
+    if(e.sc>=e.n){ e.st=2; e.okT=1.2; e.okV=1; if(L.cgS)L.cgS[e.gid]=(L.cgS[e.gid]|0)|1 } }
+ },
+ hit(){ return null },
+ draw(e,c,th){
+  const cx=e.cx, gy=GY, col=['#ffd23f','#4dd8ff'], me=G.co?G.co.me:0, run=e.st===1;
+  c.save(); c.globalAlpha=1; c.textAlign='center'; c.lineJoin='round';
+  const flash=run&&e.tm>=e.tb&&e.tm<e.tb+.12;
+  c.font=(flash?'46px':'40px')+' serif'; c.fillText('🥁',cx,gy-86-(flash?4:0));
+  for(let i=0;i<e.n;i++){ const x=cx+(i-(e.n-1)/2)*17; c.beginPath(); c.arc(x,gy-132,6,0,7); c.fillStyle=i<e.sc||e.st===2?'#5dff8a':'rgba(0,0,0,.35)'; c.fill(); c.lineWidth=2; c.strokeStyle='#000'; c.stroke() }
+  for(let i=0;i<2;i++){ const px=cx+(i?70:-70), need=!run||drumNeed(e,i), lead=run?e.tb-e.tm:9;
+    c.save(); c.translate(px,gy-5); c.scale(1,.32); c.globalAlpha=need?1:.35; c.lineWidth=5; c.strokeStyle=col[i]; c.fillStyle=col[i];
+    c.beginPath(); c.arc(0,0,22,0,7); c.globalAlpha=(need?.35:.12); c.fill(); c.globalAlpha=need?1:.35; c.stroke();
+    if(run&&need&&lead>-.12&&lead<1){ const r=22+Math.max(0,lead)*64; c.lineWidth=7; c.beginPath(); c.arc(0,0,r,0,7); c.stroke(); if(lead<=0){ c.globalAlpha=.8; c.beginPath(); c.arc(0,0,26,0,7); c.fill() } }
+    c.restore();
+    if(i===me){ c.font='900 12px Tahoma'; c.fillStyle='#fff'; c.strokeStyle='#000'; c.lineWidth=3; c.strokeText('أنت',px,gy+13); c.fillText('أنت',px,gy+13) } }
+  if(e.st===0){ c.font='900 14px Tahoma'; c.fillStyle='#fff'; c.strokeStyle='#000'; c.lineWidth=4; c.strokeText('تقدّموا للساحة 🥁',cx,gy-150); c.fillText('تقدّموا للساحة 🥁',cx,gy-150) }
+  else if(e.okT>0){ c.font='900 30px Arial'; c.fillStyle=e.okV>0?'#5dff8a':'#ff4d5e'; c.strokeStyle='#000'; c.lineWidth=5; const t=e.okV>0?(e.st===2?'👏':'✔'):'✖'; c.strokeText(t,cx,gy-158); c.fillText(t,cx,gy-158) }
+  c.restore() }};
+Object.assign(COV,{
+ drum(L,x,o){ const g=newId(L), sz=o.sz|0, pt=o.pt|0, n=[4,5,7][sz]||4, w=[.30,.26,.22][sz]||.3, r=mulberry32((L.n|0)*97+x*11+(L.vs|0)*17+pt*3+sz), sq=[]; for(let i=0;i<8;i++)sq.push([1.15,1.4,1.7,2.0][Math.floor(r()*4)]);
+  coCp(L,x);
+  coSign(L,x+2,[ 'الطبّال! 🥁 انزلوا عالأرض (مش بس تقفزوا) مع الدقّة بنفس اللحظة'+'\n'+n+' دقّات ورا بعض بتفتح الباب',
+                 'بينغ بونغ! 🥁 الدايرة بتقلّك مين دوره'+'\nانزل مع الدقّة بس إذا الدايرة إلك - '+n+' دقّات ورا بعض',
+                 'إيقاع مخبّل! 🥁 الدقّات مش منتظمة'+'\nانزلوا مع الدقّة وراقبوا الدايرة - '+n+' دقّات' ][pt],6);
+  L.ents.push({t:'cdrum',gid:g,x:(x+10)*TS,cx:(x+11)*TS,trig:(x+6)*TS,n,w,sz,pt,sq,st:0,tm:0,tb:0,pr:0,nb:0,sc:0,tk:-1,pg:[0,0],hit:[0,0],vd:0,okT:0,okV:0,always:1});
+  L.ents.push(mkGate(g,x+17,1,0,GR-1,'door'));
+  coCpEnd(L,x+20); return 24 },
+});
+COV_LIST.push(['drum',6,4,26]); CO_HW.drum=1.6;
+
+const SIMON_COL=['#ff4d6d','#4dd8ff','#ffd23f','#7dff6b'], SIMON_F=[262,330,392,523];
+const simonNeed=e=>e.rv?e.sq[e.n-1-e.ix]:e.sq[e.ix];
+const simonLim=e=>e.lim+(e.ix===0?1.6:0);
+const simonG=p=>!!(p&&!p.dead&&p.onGround&&p.stand>=0&&Math.abs(p.y+PH-GY)<4);      // standing on the floor itself (not on a partner's head)
+B.csimon={
+ upd(e,dt){
+  if(e.st===4)return;
+  if(e.okT>0)e.okT-=dt;
+  if(e.st===0){ for(const q of PLY){ if(!q.dead&&q.x+PW/2>e.trig){ e.st=1; e.tm=-1.2; break } } if(e.st===0)return }
+  if(e.st===1){                                                                // showing: pad sq[sh] lights for .55 s, then .25 s of dark
+    e.tm+=dt; const k=Math.floor(e.tm/.8);
+    if(e.tm>=0){ const cur=k<e.n?(e.tm-k*.8<.55?e.sq[k]:-1):-1; if(cur!==e.lit){ e.lit=cur; if(cur>=0)simonTone(cur) } }
+    if(k>=e.n){ e.st=2; e.ix=0; e.tl=0; e.lit=-1 }
+    for(let i=0;i<2;i++)e.pg[i]=simonG(PLY[i])?1:0; return }
+  if(e.st===3){ e.tm+=dt; if(e.tm>=1.1){ e.st=1; e.tm=-.6; e.lit=-1 } for(let i=0;i<2;i++)e.pg[i]=simonG(PLY[i])?1:0; return }
+  e.tl+=dt; let bad=0;
+  for(let i=0;i<2;i++){ const p=PLY[i], g=simonG(p);
+    if(g&&!e.pg[i]){ const cx=p.x+PW/2; let k=-1; for(let j=0;j<e.px.length;j++)if(Math.abs(cx-e.px[j])<=e.hw)k=j;
+      if(k>=0){ if(k===simonNeed(e)){ e.ix++; e.tl=0; e.okK=k; e.okT=.35; simonTone(k); if(e.ix>=e.n){ e.st=4; e.okT=1.4; e.okK=-1; if(L.cgS)L.cgS[e.gid]=(L.cgS[e.gid]|0)|1; return } } else bad=1 } }
+    e.pg[i]=g?1:0 }
+  if(bad||e.tl>simonLim(e)){ e.st=3; e.tm=0; e.lit=-1; e.ix=0; e.okK=-2; e.okT=.8; drumTone(0,1) }
+ },
+ hit(){ return null },
+ draw(e,c,th){
+  c.save(); c.globalAlpha=1; c.textAlign='center'; c.lineJoin='round';
+  for(let j=0;j<e.px.length;j++){ const x=e.px[j], on=e.lit===j||(e.okT>0&&e.okK===j);
+    c.fillStyle=SIMON_COL[j]; c.strokeStyle='#000'; c.lineWidth=3; c.globalAlpha=on?1:.42;
+    c.beginPath(); c.rect(x-e.hw,GY-8,e.hw*2,8); c.fill(); c.stroke();
+    if(on){ c.globalAlpha=.45; c.beginPath(); c.moveTo(x-e.hw,GY-8); c.lineTo(x-e.hw-6,GY-70); c.lineTo(x+e.hw+6,GY-70); c.lineTo(x+e.hw,GY-8); c.closePath(); c.fill() }
+    c.globalAlpha=1 }
+  const mx=(e.px[0]+e.px[e.px.length-1])/2, ty=GY-150;
+  for(let i=0;i<e.n;i++){ const x=mx+(i-(e.n-1)/2)*16; c.beginPath(); c.arc(x,ty,5.5,0,7); c.fillStyle=(e.st===4||i<e.ix)?'#5dff8a':'rgba(0,0,0,.35)'; c.fill(); c.lineWidth=2; c.strokeStyle='#000'; c.stroke() }
+  c.font='900 14px Tahoma'; c.fillStyle='#fff'; c.strokeStyle='#000'; c.lineWidth=4;
+  const msg=e.st===0?'تقدّموا 🎹':e.st===1?'👀 تفرّجوا':e.st===2?(e.rv?'⏪ بالعكس! انزلوا على الألواح':'انزلوا على الألواح (قفزة)'):e.st===3?'✖ مرّة تانية':'👏';
+  c.strokeText(msg,mx,ty-16); c.fillText(msg,mx,ty-16);
+  if(e.st===2){ const f=clamp(1-e.tl/simonLim(e),0,1), w=120; c.fillStyle='rgba(0,0,0,.5)'; c.fillRect(mx-w/2,ty+12,w,7); c.fillStyle=f>.35?'#5dff8a':'#ff4d5e'; c.fillRect(mx-w/2,ty+12,w*f,7) }
+  c.restore() }};
+const simonTone=k=>{ try{ Snd.tone&&Snd.tone({t:'triangle',f0:SIMON_F[k%4],f1:SIMON_F[k%4],dur:.16,v:.15}) }catch(_){} };
+Object.assign(COV,{
+ simon(L,x,o){ const g=newId(L), sz=o.sz|0, pt=o.pt|0, n=[4,5,7][sz]||4, m=pt===1?4:3, gap=pt===1?200:300, lim=pt===1?[3.0,2.7,2.4][sz]:[3.1,2.8,2.5][sz], r=mulberry32((L.n|0)*53+x*19+(L.vs|0)*7+pt*29+sz*3), sq=[];
+  let last=-1; for(let i=0;i<n;i++){ let k; do{ k=Math.floor(r()*m) }while(k===last); sq.push(k); last=k }
+  if(m===3&&!(sq.includes(0)&&sq.includes(2))){ sq[1]=0; sq[2]=2; if(sq[3]===2)sq[3]=1 }                              // the far pads must both be used (otherwise one person could do it from the middle)
+  const px=[]; for(let j=0;j<m;j++)px.push((x+8)*TS+j*gap);
+  coCp(L,x);
+  coSign(L,x+2,[ 'ذاكرة الألوان! 🎹 تذكّروا ترتيب التوهّج وكرّروه بقفزة على كل لوح\nالألواح بعيدة: واحد عكل طرف!',
+                 'أربع ألواح! 🎹 كرّروا الترتيب بقفزة على كل لوح\nوزّعوا الألواح بينكم',
+                 'بالعكس! 🎹⏪ كرّروا الترتيب من الآخر للأول\nقفزة على كل لوح' ][pt],6);
+  const span=Math.ceil(((m-1)*gap)/TS);
+  L.ents.push({t:'csimon',gid:g,x:px[0],trig:(x+6)*TS,px,hw:34,n,m,rv:pt===2?1:0,lim,sq,st:0,tm:0,ix:0,tl:0,lit:-1,okT:0,okK:-1,pg:[0,0],always:1});
+  L.ents.push(mkGate(g,x+8+span+4,1,0,GR-1,'door'));
+  coCpEnd(L,x+8+span+7); return span+18 },
+});
+COV_LIST.push(['simon',6,5,40]); CO_HW.simon=1.6;
+
+/* =============== ROUND MUTATORS (online co-op and race) ===============
+   The host picks one in the lobby and it travels with the start message ('mu'). A mutator becomes ONE level-wide floor zone (L.zones), so physics, drawing,
+   snapshots and rollbacks treat it like the zones that already exist (ice, float, mud...). 'chaos' picks another one for every level, from the level number and the
+   match seed, so both machines get the same.
+   Chase levels never get one (they are tuned to the plain running speed). A mutator only lives in G.co / G.race: single player is never touched.
+     low    - the moon: low gravity (the existing 'float' zone)      oil    - everything is slippery, a little less than ice
+     bounce - landing hard bounces you back up                         fast   - everybody runs 30 % faster */
+const MUT_LIST=[['none','بدون طفرة','🚫'],['low','جاذبية القمر','🌙'],['oil','أرض زيت','🛢'],['bounce','أرض مطاطة','🏀'],['fast','سرعة البرق','⚡'],['chaos','فوضى (طفرة جديدة كل مرحلة)','🎲']];
+const MUT_ZONE={low:'float',oil:'oil',bounce:'bounce',fast:'fast'}, MUT_POOL=['float','oil','bounce','fast'];
+const MUT_NAME={float:'🌙 جاذبية القمر',oil:'🛢 أرض زيت',bounce:'🏀 أرض مطاطة',fast:'⚡ سرعة البرق'};
+const MUT_SIGN={float:'جاذبية القمر 🌙\nالقفزة أعلى وأبطأ',oil:'الأرض كلها زيت! 🛢\nبتزلق',bounce:'الأرض مطاطة! 🏀\nكل هبوط بيرجّعك لفوق',fast:'سرعة البرق! ⚡\nانتبه للفرامل'};
+const muSan=k=>MUT_LIST.some(m=>m[0]===k)?k:'none';
+function muType(k,n,vs){ if(k==='chaos')return MUT_POOL[(((n|0)*7+(vs|0)*3)>>>0)%MUT_POOL.length]; return MUT_ZONE[k]||null }
+/* the zone that covers the whole level (last in the list, so a local zone of the level wins where both are) */
+function muZone(k,n,vs,W){ const t=muType(k,n,vs); return t?{x0:0,x1:W*TS,type:t,mut:1}:null }
+const muNow=()=>G.co?G.co.mu:(G.race?G.race.mu:'none');
+{ const box=document.getElementById('coMu'); if(box)for(const m of MUT_LIST){ const b=document.createElement('button'); b.className='tg'; b.dataset.cmu=m[0]; b.textContent=m[2]+' '+m[1]; box.appendChild(b) } }      // the lobby chips
+
 /* =============== CO-OP: two players, one level (foundation) ===============
    Rules (kept deliberately simple so two screens can run the SAME simulation later):
    - shared fate: if either player dies, both go back to the last checkpoint (the death card names who did it)
@@ -4445,7 +4851,7 @@ Object.assign(CO_HW,{keyshelf:1.2,flood:1.6,fan:1.4,chain:3,floors:3});
    Everything single-player is untouched: G.co is null there and none of these functions run.
    Engine trick: the whole game reads the global P (current player) and K (current input). coEach() runs a function once per living player with P/K pointing at that player.
    A player's input lives in K when it is the local one (G.co.me) and in K2 otherwise (second player on the same keyboard, or the remote player over the net). */
-const CO_TETHER=600, CO_COL=['#ffd23f','#4dd0ff'], KF=['l','r','j','jp','a','ap'];
+const CO_TETHER=600, CO_COL=['#ffd23f','#4dd0ff'], KF=['l','r','j','jp','a','ap','g','gp'];
 function coSpawn(tx){
   const co=G.co; PLY=[0,1].map(i=>{ const p=newPlayer(tx+i); p.hid=co.hero[i]; p.hst=co.stage[i]; p.hsk=skinSan(co.hero[i],co.skin&&co.skin[i]); p.idx=i; return p }); P=PLY[co.me];
   for(const f of KF)K2[f]=false;
@@ -4465,11 +4871,37 @@ function coAim(e){                                // an entity talks to the NEAR
 const coHome=()=>{ P=PLY[G.co.me] };
 const coMid=()=>PLY.length?(PLY[0].x+PLY[1].x)/2+PW/2:(P?P.x+PW/2:0);
 const coAtExit=()=>PLY.every(q=>q.x+PW/2>L.exitTx*TS+4&&q.onGround);
+
+/* ---- carrying (co-op) ----
+   G / S / down: stand next to your partner and press it to pick him up (he rides on your head and cannot move; he can wriggle free with jump after a moment).
+   Press it again to throw him: holding left/right throws him forward and up, holding nothing tosses him straight up. He gets his own double jump back.
+   While you carry him you are slower and jump lower. Everything here is part of the shared simulation (inputs only travel over the net). */
+const CARRY_R=34, THROW_VX=320, THROW_VY=-600, TOSS_VY=-720;
+function carryDrop(h,q){ if(h)h.hold=-1; if(q){ q.hb=-1; q.hbt=0; q.vx=h?h.vx:0 } }
+function carryStep(dt){                                   // runs inside coEach for the current player P (K = his input); true = P is carried and does not move on his own
+  const p=P, o=PLY[1-p.idx], gp=K.gp; K.gp=false; if(p.gcd>0)p.gcd-=dt;
+  if(p.hb>=0){                                            // somebody carries me
+    const h=PLY[p.hb]; K.ap=false;
+    if(!h||h.dead||h.hold!==p.idx){ p.hb=-1; p.hbt=0; return false }
+    if(K.jp&&p.hbt>.3){ K.jp=false; carryDrop(h,p); p.vy=-260; p.onGround=false; return false }
+    K.jp=false; p.hbt+=dt; p.x=h.x; p.y=h.y-PH-2; p.vx=0; p.vy=0; p.onGround=true; p.stand=0; p.dj=false; p.coy=.1; return true }
+  if(p.hold>=0){                                          // I carry him
+    const q=PLY[p.hold];
+    if(!q||q.dead||q.hb!==p.idx||(L.wt&&waterAt(p))){ carryDrop(p,q); return false }
+    if(gp&&p.gcd<=0){ const dir=(K.r?1:0)-(K.l?1:0); carryDrop(p,q); q.onGround=false; q.stand=0; q.coy=0; q.dj=false; q.air=0; q.buf=0; q.thr=1;
+      if(dir){ q.vx=dir*THROW_VX+p.vx*.25; q.vy=THROW_VY; q.face=dir } else { q.vx=p.vx*.25; q.vy=TOSS_VY }
+      p.gcd=.35; q.gcd=.35; if(!HUSH_FX())Snd.whoosh&&Snd.whoosh(); if(!SIM)puff(q.x+PW/2,q.y+PH,6) }
+    return false }
+  if(gp&&p.gcd<=0&&o&&!o.dead&&o.hb<0&&o.hold<0&&p.onGround&&o.onGround&&p.stand>=0&&o.stand>=0&&!(L.wt&&waterAt(p))
+     &&Math.abs(p.x-o.x)<=CARRY_R&&Math.abs(p.y-o.y)<=20){ p.hold=o.idx; o.hb=p.idx; o.hbt=0; o.vx=0; o.vy=0; p.gcd=.3; if(!HUSH_FX())Snd.land&&Snd.land() }
+  return false;
+}
+const HUSH_FX=()=>(typeof HUSH!=='undefined'&&HUSH);
 function coPlayers(dt){
   platsMove(dt);
   const x0=PLY.map(q=>q.x), y0=PLY.map(q=>q.y);
-  const ord=PLY.map((_,i)=>i).sort((a,b)=>(PLY[a].stand<0?1:0)-(PLY[b].stand<0?1:0)||a-b);       // whoever stands on somebody's head is moved AFTER him
-  coEach(()=>{ if(P.stand<0){ const o=PLY[-P.stand-1]; if(o&&!o.dead){ P.x+=o.x-x0[o.idx]; P.y+=o.y-y0[o.idx] } else P.stand=0 } platRide(); updatePlayer(dt) },ord);
+  const ord=PLY.map((_,i)=>i).sort((a,b)=>((PLY[a].stand<0||PLY[a].hb>=0)?1:0)-((PLY[b].stand<0||PLY[b].hb>=0)?1:0)||a-b);       // whoever stands on somebody's head is moved AFTER him
+  coEach(()=>{ if(carryStep(dt))return; if(P.stand<0){ const o=PLY[-P.stand-1]; if(o&&!o.dead){ P.x+=o.x-x0[o.idx]; P.y+=o.y-y0[o.idx] } else P.stand=0 } platRide(); updatePlayer(dt) },ord);
   if(G.state==='play'&&PLY.length===2){                 // tether: never let a move widen the gap past CO_TETHER
     for(let i=0;i<2;i++){ const q=PLY[i], o=PLY[1-i], gap=Math.abs(q.x-o.x); if(gap>CO_TETHER&&gap>Math.abs(x0[i]-o.x)){ q.x=x0[i]; q.vx=0 } }
   }
@@ -4489,10 +4921,10 @@ function coDraw(c){
 }
 
 /* ---- start / finish ---- */
-const CO={sel:{n:1,h2:null,code:'',custom:null},msg:''};
+const CO={sel:{n:1,h2:null,code:'',custom:null,mu:'none'},msg:''};
 function coOwnedHeroes(){ return HERO_IDS.filter(heroOwned) }
 function coStart(o){
-  const co={mode:'co',local:o.local!==false,me:o.me|0,hero:o.hero,stage:o.stage||o.hero.map(h=>heroStage(h)),skin:o.skin||o.hero.map(h=>skinSaved(h)),level:o.level||1,custom:o.custom||null,df:o.df||null};
+  const co={mode:'co',local:o.local!==false,me:o.me|0,hero:o.hero,stage:o.stage||o.hero.map(h=>heroStage(h)),skin:o.skin||o.hero.map(h=>skinSaved(h)),level:o.level||1,custom:o.custom||null,df:o.df||null,vs:vsSan(o.vs),mu:muSan(o.mu)};
   Snd.init(); Snd.resume(); for(const id of ['co','title','menu','card','ed'])$(id).classList.add('hide'); $('hud').classList.remove('hide');
   if(co.custom)startCustom(co.custom,'co',co); else startGame(co.level,co);
 }
@@ -4514,7 +4946,8 @@ const coDf=()=>CO.sel.df||(NET.mode==='race'?'crazy':'hell');                  /
 function coPreview(){ try{ const th=CO.sel.custom?CO.sel.custom.th:themeOf(CO.sel.n); L=buildLevel(1,{script:[['pit','plain']],theme:th,diff:'normal',salt:0}); P=newPlayer(L.spawnTx); themeBg=makeBg(THEMES[th],th*31+7); G.camX=0 }catch(e){} }
 function coOpen(msg,was){
   if(CO.sel.h2==null||!heroOwned(CO.sel.h2))CO.sel.h2=coOwnedHeroes().find(h=>h!==S.hero)||S.hero;
-  CO.msg=msg||''; if(NET.link==='off')NET.tab=false; Snd.stopMusic(); K.l=K.r=K.j=K.jp=false; K2.l=K2.r=K2.j=K2.jp=false; G.co=null;
+  CO.msg=msg||''; NET.tab=true; if(!FR.shown){ FR.shown=true; $('frBox').open=frList().length>0 }          // same-device play is gone from the UI: the lobby is always the online one (the local path stays for tests: click #coTabL)
+  Snd.stopMusic(); K.l=K.r=K.j=K.jp=false; K2.l=K2.r=K2.j=K2.jp=false; G.co=null;
   for(const id of ['title','menu','card','hud','touch','ed'])$(id).classList.add('hide'); $('sub').innerHTML='';
   G.state='co'; $('co').classList.remove('hide'); coPreview(); coRender();
 }
@@ -4525,6 +4958,7 @@ function coRender(){
   $('coPrev').disabled=!!cu; $('coNext').disabled=!!cu; $('coPrev10').disabled=!!cu; $('coNext10').disabled=!!cu; $('coLvIn').disabled=!!cu;
   if(document.activeElement!==$('coLvIn'))$('coLvIn').value=cu?'':s.n;
   for(const b of document.querySelectorAll('#co [data-cdf]')){ b.classList.toggle('on',!cu&&b.dataset.cdf===coDf()); b.disabled=!!cu }
+  for(const b of document.querySelectorAll('#co [data-cmu]'))b.classList.toggle('on',!cu&&b.dataset.cmu===muSan(s.mu));
   const online=NET.tab&&NET.link!=='off'&&NET.peer, mine=online?S.hero:S.hero, theirs=online?NET.peer.hero:s.h2;
   for(const [id,h] of [['coH1',mine],['coH2',theirs]]){ const cv2=$(id+'c'); cv2.width=64; cv2.height=74; paintHero(cv2,h); $(id+'n').textContent=HEROES[h].name }
   $('coMsg').textContent=CO.msg||''; $('coCodeBtn').textContent=cu?'✖ شيل الخريطة المخصّصة':'📥 خريطة بكود';
@@ -4543,12 +4977,18 @@ $('coPrev').onclick=()=>coMove(-1); $('coNext').onclick=()=>coMove(1); $('coPrev
 $('coLvIn').addEventListener('keydown',e=>{ e.stopPropagation(); if(e.key==='Enter')$('coLvIn').blur() });
 $('coLvIn').addEventListener('change',()=>{ const v=parseInt($('coLvIn').value,10); if(v>0){ CO.sel.n=coGoto(v,1); coPreview() } coRender() });
 for(const b of document.querySelectorAll('#co [data-cdf]'))b.onclick=()=>{ CO.sel.df=b.dataset.cdf; Snd.ui&&Snd.ui(); coRender() };
+for(const b of document.querySelectorAll('#co [data-cmu]'))b.onclick=()=>{ CO.sel.mu=b.dataset.cmu; Snd.ui&&Snd.ui(); coRender() };
 $('coH2L').onclick=()=>coCycle2(-1); $('coH2R').onclick=()=>coCycle2(1);
 $('coCodeBtn').onclick=()=>{ const s=CO.sel; if(s.custom){ s.custom=null; CO.msg=''; coPreview() } else { s.codeOpen=!s.codeOpen } coRender() };
 $('coCodeGo').onclick=()=>{ const r=decodeCustom($('coCode').value); if(r.err){ CO.msg='❌ '+r.err; coRender(); return } CO.sel.custom=r.c; CO.sel.codeOpen=false; CO.msg='✅ انحمّلت الخريطة'; coPreview(); coRender() };
 
 /* FLAGS.coScript: tests build levels that hold only one puzzle */
-const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.custom)o=Object.assign({},o,{co:1},FLAGS.coScript?{script:FLAGS.coScript}:null); return d&&!(o&&o.diff)?Object.assign({},o,{diff:d}):o };      // the host's difficulty for an online match (never written to the player's own settings)
+const vsSan=v=>{ v=v|0; return v>0&&v<10000?v:0 };
+/* variety seed: online the host picks one per match (both machines build the same level); alone it is G.vs (varySeed) */
+const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.custom)o=Object.assign({},o,{co:1},FLAGS.coScript?{script:FLAGS.coScript}:null);
+  const vs=G.co?G.co.vs:(G.race?G.race.vs:G.vs); if(vs&&!(o&&(o.vs!=null||o.salt!=null)))o=Object.assign({},o,{vs});
+  const mu=muNow(); if(mu&&mu!=='none'&&!(o&&o.mu!=null))o=Object.assign({},o,{mu});
+  return d&&!(o&&o.diff)?Object.assign({},o,{diff:d}):o };      // the host's difficulty for an online match (never written to the player's own settings)
 
 /* =============== NET: two players over the internet ===============
    No server of our own. Two interchangeable transports share one tiny interface  open(code, role, onmsg, onstate) -> {send(msg), close()}:
@@ -4564,11 +5004,11 @@ const coOpt=o=>{ const d=(G.co&&G.co.df)||(G.race&&G.race.df); if(G.co&&!G.co.cu
      messages go on a reliable channel AND on the relay (the first copy wins, 'u' ids drop the second). If the channel never opens or dies, the relay simply carries on.
    RACE = both run their own ordinary single-player engine on the same level; only positions (10 Hz) and the finish are exchanged; the host arbitrates.
    Nothing here touches the simulation: with G.co null and G.race null every function below is idle. */
-const NET_V='f8a0f22b';
+const NET_V='8a21c9dc';
 const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app',
   ice:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:'stun:stun.cloudflare.com:3478'}]};      // free STUN only; a TURN relay can be added through S.turn = 'turn:host:3478|user|password'      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
 const NET={link:'off',role:null,code:'',kind:'',tr:null,sig:null,rtc:null,tpk:'',peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
-const KR={l:false,r:false,j:false,jp:false,a:false,ap:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
+const KR={l:false,r:false,j:false,jp:false,a:false,ap:false,g:false,gp:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
 const netLock=()=>!!(G.co&&!G.co.local);
 const NET_AL='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 function fnv(s){ let h=0x811c9dc5; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,0x01000193) } return h>>>0 }
@@ -4706,6 +5146,34 @@ function netDiag(){                                          // the little conne
   const ms=N.pings.length?N.pings.slice().sort((a,b)=>a-b)[N.pings.length>>1]:N.rtt, direct=N.tpk==='rtc'||N.tpk==='loop';
   el.textContent=(direct?'🔗 ':'☁️ ')+Math.round(ms)+' ms'; el.className=ms<90?'ok':ms<220?'mid':'bad'; el.title=direct?'اتصال مباشر':'عبر السيرفر';
 }
+/* A copyable connection report (tap the little ms chip while playing, or the 📊 button in the room): which road the match runs on, ping spread, WebRTC / ICE state and the kind of the
+   selected candidate pair (host = same network, srflx = through the router (STUN), relay = through a TURN server), stalls and rollbacks. For testing between players in different places. */
+async function netReport(){
+  const N=NET, r=N.rtc, o=[], p=(N.pings||[]).slice().sort((a,b)=>a-b), md=p.length?p[p.length>>1]:0, R=x=>Math.round(x||0);
+  o.push('📊 تقرير اتصال — لا تموت يا حبيبي','وقت: '+new Date().toISOString()+'  نسخة: '+NET_V);
+  o.push('دور: '+(N.role==='h'?'مضيف':N.role==='g'?'ضيف':'-')+'  وضع: '+N.mode+'  حالة: '+N.link+'  وسيط الغرفة: '+(N.kind||'-')+'  الطريق الحالي: '+(N.tpk||'-'));
+  o.push('بنغ (ms): آخر '+R(N.rtt)+'  وسيط '+R(md)+'  أقل '+R(p[0])+'  أعلى '+R(p[p.length-1])+'  عينات '+p.length);
+  if(r&&r.pc){
+    o.push('WebRTC: conn='+r.pc.connectionState+' ice='+r.pc.iceConnectionState+' gather='+r.pc.iceGatheringState+'  قنوات '+r.fast.readyState+'/'+r.rel.readyState+'  فتح '+(r.up||0)+' مرة  محاولات '+N.rtcN+(r.t1?'  فتح بعد '+R(r.t1-r.t0)+' ms':''));
+    try{ const st=await r.pc.getStats(), by={}; st.forEach(x=>{ by[x.id]=x });
+      let sel=null; st.forEach(x=>{ if(x.type==='transport'&&x.selectedCandidatePairId)sel=by[x.selectedCandidatePairId] }); if(!sel)st.forEach(x=>{ if(x.type==='candidate-pair'&&x.state==='succeeded'&&(x.nominated||x.selected))sel=x });
+      if(sel){ const a=by[sel.localCandidateId]||{}, b=by[sel.remoteCandidateId]||{};
+        o.push('المسار المختار: أنا='+(a.candidateType||'?')+' ('+(a.protocol||'?')+')  هو='+(b.candidateType||'?')+'  rtt='+(sel.currentRoundTripTime!=null?R(sel.currentRoundTripTime*1000)+' ms':'?')+'  أُرسل '+(sel.bytesSent|0)+' B / استُلم '+(sel.bytesReceived|0)+' B');
+        o.push((a.candidateType==='relay'||b.candidateType==='relay')?'→ عبر خادم TURN (مرحَّل)':(a.candidateType==='host'&&b.candidateType==='host')?'→ نفس الشبكة':'→ عبر الراوتر مباشرة (STUN)') }
+      else o.push('المسار المختار: لسا ما انختار') }catch(e){ o.push('stats: '+e) }
+  } else o.push('WebRTC: ما في اتصال مباشر ('+(rtcOk()?'ما فتح أو فشل':'مطفي')+') — الرسائل بتمرّ عبر '+(N.kind==='rtdb'?'السيرفر (Realtime Database)':'نفس المتصفح'));
+  o.push('TURN: '+(S.turn?'مفعّل':'غير مفعّل (STUN فقط)')+'  STUN: '+NET_CFG.ice.length+' خوادم');
+  if(N.lock||N.f)o.push('اللعب: فريم '+N.f+'  مؤكد '+N.c+'  تأخير الإدخال '+N.dl+'  rollback '+N.nrb+' (أكبر '+N.maxRb+' فريم)  وقفات '+(N.stallN|0)+' (أطولها '+R(N.stallMax)+' ms)  أخطاء هاش '+(N.bad|0)+'  إصلاحات '+(N.fixes|0));
+  const cn=navigator.connection; o.push('جهاز: '+(/Mobi|Android|iPhone/i.test(navigator.userAgent)?'موبايل':'كمبيوتر')+'  متصفح: '+(navigator.userAgent.match(/(Firefox|Edg|Chrome|Safari)\/[\d.]+/)||['?'])[0]+(cn?'  شبكة: '+(cn.effectiveType||'?')+' '+(cn.downlink!=null?cn.downlink+'Mbps ':'')+(cn.rtt!=null?'rtt~'+cn.rtt+'ms':''):''));
+  return o.join('\n');
+}
+async function netReportCopy(){
+  let t=''; try{ t=await netReport() }catch(e){ t='تقرير فشل: '+e }
+  let ok=false; try{ await navigator.clipboard.writeText(t); ok=true }catch(e){}
+  if(!ok){ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.cssText='position:fixed;left:-999px;top:0'; document.body.appendChild(ta); ta.select(); ok=document.execCommand('copy'); ta.remove() }catch(e){} }
+  NET.report=t; if(G.state==='play'||G.state==='dead')say(ok?'📋 نسخت تقرير الاتصال':'📋 ما قدرت أنسخ — افتح الكونسول',  'any',2.2); else { NET.msg=ok?'📋 انسخ تقرير الاتصال — ابعته لصاحبك أو لإلي':'📋 ما قدرت أنسخ التقرير'; netRender() }
+  return t;
+}
 function netRecv(m){
   const N=NET; if(!m||!N.tr&&m.t!=='bye')return; N.lastRx=netNow();
   if(m.u!==undefined){ if(N.seenU.has(m.u))return; N.seenU.add(m.u); if(N.seenU.size>400)N.seenU.delete(N.seenU.values().next().value) }
@@ -4739,22 +5207,22 @@ function netLeave(msg,quiet){
   const N=NET, was=N.link!=='off'; if(!was&&!N.tr)return;
   if(!quiet&&N.tr)try{ N.tr.send({t:'bye'}) }catch(e){}
   netClose(); raceStop(); N.link='off'; N.peer=null; N.lock=false; N.msg=msg||'';
-  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
+  for(const f of KF)KR[f]=false;
   $('netSt').classList.add('hide');
   if(G.co||G.race||G.state==='play'||G.state==='dead'||G.state==='win'){ const m=msg; goTitle(); if(m){ setTimeout(()=>say(m,'any',3.2),50) } return }
   if(G.state==='co'){ N.tab=true; coRender() }
 }
 function netToLobby(msg){                                  // back to the online lobby, the connection stays
   const N=NET; if(N.link==='off')return; raceStop(); N.lock=false; N.link='conn'; G.co=null;
-  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
+  for(const f of KF)KR[f]=false;
   $('netSt').classList.add('hide'); $('raceBar').classList.add('hide'); $('raceCd').classList.add('hide'); $('raceRes').classList.add('hide');
   N.tab=true; coOpen(msg||'');
 }
 
 /* ---- lobby sync (host chooses) ---- */
-function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,df:coDf(),cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
+function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,df:coDf(),mu:muSan(CO.sel.mu),cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
 function netLobbyRecv(m){
-  NET.mode=m.mode==='race'?'race':'co'; CO.sel.n=m.n|0||1; CO.sel.df=CO_DFS.includes(m.df)?m.df:null;
+  NET.mode=m.mode==='race'?'race':'co'; CO.sel.mu=muSan(m.mu); CO.sel.n=m.n|0||1; CO.sel.df=CO_DFS.includes(m.df)?m.df:null;
   if(m.cu){ const r=decodeCustom(m.cu); CO.sel.custom=r.err?null:r.c } else CO.sel.custom=null;
   if(G.state==='co')coRender();
 }
@@ -4766,7 +5234,7 @@ function netStartHost(){                                       // host presses s
   const N=NET; if(N.role!=='h'||N.link!=='conn'||!N.peer)return;
   const s=CO.sel;
   if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة'; coRender(); return }
-  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),D:netD(),hero:netHeroes(),stage:netStages(),skin:netSkins(),rtt:N.rtt|0};
+  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),mu:muSan(CO.sel.mu),D:netD(),hero:netHeroes(),stage:netStages(),skin:netSkins(),rtt:N.rtt|0,vs:1+Math.floor(Math.random()*9998)};
   N.tr.send(o); netBegin(o);
 }
 function netBegin(o){
@@ -4778,8 +5246,8 @@ function netBegin(o){
   N.lock=true; N.dl=NET_DL; N.D=N.dl; N.f=0; N.c=0; N.smp=-1; N.loc={}; N.rem={}; N.used={}; N.snp={}; N.pl={}; N.snaps={}; N.fx=[]; N.rb=null; N.hh={}; N.rh={}; N.ackR=N.dl-1; N.remHi=N.dl-1; N.remLast=0; N.lm=-1; N.stallT=0; N.stallTot=0; N.bad=0; N.rsAt=0; N.fixes=0; N.nrb=0; N.rbFr=0; N.fxN={}; N.maxRb=0; N.adv=0; N.adj=-1; N.stallN=0; N.stallMax=0; N.popN=0; N.popMax=0; N.popTot=0; N.vo=[{x:0,y:0},{x:0,y:0}]; N.txN=0; N.rxN=0; N.rbT=0; N.rbTmax=0; N.visT=0; N.spec=0; N.locLo=0;
   N.startAt=netNow()+(N.role==='h'?clamp((N.rtt||0)/2,0,400):0);       // the host waits half a ping so both machines start the same frame at about the same moment
   for(let i=0;i<N.dl;i++){ N.loc[i]=0; N.rem[i]=0 }
-  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
-  coStart({hero:o.hero,stage:o.stage,skin:Array.isArray(o.skin)?o.skin.map((k,i)=>skinSan(o.hero[i],k)):null,level:o.lv,custom:cu,local:false,me:N.me,df:o.df});
+  for(const f of KF)KR[f]=false;
+  coStart({hero:o.hero,stage:o.stage,skin:Array.isArray(o.skin)?o.skin.map((k,i)=>skinSan(o.hero[i],k)):null,level:o.lv,custom:cu,local:false,me:N.me,df:o.df,vs:vsSan(o.vs),mu:muSan(o.mu)});
 }
 
 /* ---- co-op netcode: prediction + rollback ----
@@ -4791,9 +5259,9 @@ function netBegin(o){
 const NET_DL=2, NET_MAXSPEC=24, NET_SPEC_HI=60;
 const netQ=j=>j.replace(/-?\d+\.\d{3,}/g,m=>(+m).toFixed(2));          // hash only what two phones must agree on: positions to 1/100 px (Math.sin/cos may differ in the last digits between a V8 and a JavaScriptCore phone)
 const netSpec=()=>{ const r=NET.pings.length>=2?NET.pings.slice().sort((a,b)=>a-b)[NET.pings.length>>1]:(NET.rtt||120); return clamp(Math.ceil(r/16.7)+14,NET_MAXSPEC,NET_SPEC_HI) };      // how far we may run on guesses: a slow link gets a longer leash instead of a freeze
-const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32};
-function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; return m }
-function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32) }
+const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32,g:64,gp:128};
+function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; KR.gp=false; return m }
+function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32); o.g=!!(m&64); o.gp=!!(m&128) }
 function netSend(){
   const N=NET; if(!N.tr||!N.lock)return;
   const hi=N.smp+N.dl, from=Math.max(N.ackR+1,hi-90); if(hi<from)return; let a='';          // only frames we really sampled (smp = the newest sampled frame)
@@ -4904,7 +5372,7 @@ function raceJudge(tm0,tm1,now,rtt){                          // the host's view
 }
 function raceBegin(o,cu){
   const N=NET;
-  G.race={df:o.df,hold:0,goAt:0,opp:newPlayer(0),tx:null,over:false,done:false,res:null,seen:false,fn:null,tm1:null,fnAt:0};
+  G.race={df:o.df,vs:vsSan(o.vs),mu:muSan(o.mu),hold:0,goAt:0,opp:newPlayer(0),tx:null,over:false,done:false,res:null,seen:false,fn:null,tm1:null,fnAt:0};
   const op=G.race.opp; op.hid=N.peer.hero; op.hst=N.peer.stage; op.hsk=skinSan(N.peer.hero,N.peer.skin); op.run=0;
   if(cu)startCustom(cu,'race'); else startGame(o.lv);
   const r=G.race; r.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0); r.goAt=netNow()+r.hold*1000;
@@ -4987,11 +5455,12 @@ function netRender(){
   $('nModeCo').classList.toggle('on',N.mode==='co'); $('nModeRace').classList.toggle('on',N.mode==='race');
   for(const id of ['nModeCo','nModeRace'])$(id).disabled=!(N.role==='h'||off);
   $('nDb').value=document.activeElement===$('nDb')?$('nDb').value:(S.nu&&S.nu!=='-'?S.nu:'');
+  $('nTurn').value=document.activeElement===$('nTurn')?$('nTurn').value:(S.turn||'');
   $('nGo').classList.toggle('hide',!(N.role==='h'&&N.link==='conn'));
   $('nGuestWait').classList.toggle('hide',!(N.role==='g'&&conn));
   $('coPrev').disabled=!(N.role==='h'&&conn)||!!CO.sel.custom; $('coNext').disabled=$('coPrev').disabled; $('coCodeBtn').disabled=!(N.role==='h'&&conn);
-  for(const id of ['coPrev10','coNext10','coLvIn'])$(id).disabled=$('coPrev').disabled; for(const b of document.querySelectorAll('#co [data-cdf]'))b.disabled=!(N.role==='h'&&conn)||!!CO.sel.custom;
-  $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · بلا مكافآت';
+  for(const id of ['coPrev10','coNext10','coLvIn'])$(id).disabled=$('coPrev').disabled; for(const b of document.querySelectorAll('#co [data-cdf],#co [data-cmu]'))b.disabled=!(N.role==='h'&&conn)||!!CO.sel.custom;
+  $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · S أو ⬇ (🤲) تشيل رفيقك وترميه · بلا مكافآت';
   frSync();
 }
 function netTab(on){
@@ -5004,8 +5473,11 @@ $('nCode').addEventListener('keydown',e=>{ e.stopPropagation(); if(e.key==='Ente
 $('nCode').addEventListener('input',e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'') });
 $('nDb').addEventListener('keydown',e=>e.stopPropagation());
 $('nDb').addEventListener('change',()=>{ const v=$('nDb').value.trim(); S.nu=/^https?:\/\//i.test(v)?v.replace(/\/+$/,''):''; save(); NET.msg=S.nu?'✅ انحفظ رابط القاعدة':''; netRender() });
+$('nTurn').addEventListener('keydown',e=>e.stopPropagation());
+$('nTurn').addEventListener('change',()=>{ const v=$('nTurn').value.trim(); S.turn=/^turns?:[^|\s]+(\|[^|]*){0,2}$/i.test(v)?v:''; save(); NET.msg=S.turn?'✅ انحفظ خادم TURN (يُستعمل بالاتصال الجاي)':(v?'⚠ الصيغة غلط':'');  netRender() });
 $('nGo').onclick=netStartHost;
 $('nLeave').onclick=()=>netLeave('');
+$('nRep').onclick=netReportCopy; $('netDg').onclick=netReportCopy;
 $('nCopy').onclick=()=>{ const t=NET.code; try{ navigator.clipboard.writeText(t).then(()=>{ NET.msg='📋 اننسخ الكود'; netRender() },()=>{}) }catch(e){} };
 $('nModeCo').onclick=()=>{ NET.mode='co'; netLobbySend(); netRender() };
 $('nModeRace').onclick=()=>{ NET.mode='race'; netLobbySend(); netRender() };
@@ -5369,7 +5841,7 @@ function pfBak(){
 
 /* ---- backup code ---- */
 const pfB64=s=>btoa(unescape(encodeURIComponent(s)));
-function pfExport(){ const o=Object.assign({},S); delete o.adm; delete o.admh; delete o.nu; const b=pfB64(JSON.stringify(o)); return 'DDH1.'+b+'.'+fnv(b).toString(36) }
+function pfExport(){ const o=Object.assign({},S); delete o.adm; delete o.admh; delete o.nu; delete o.turn; const b=pfB64(JSON.stringify(o)); return 'DDH1.'+b+'.'+fnv(b).toString(36) }
 function pfParse(t){
   const m=/^DDH1\.([A-Za-z0-9+/=]+)\.([a-z0-9]+)$/.exec(String(t||'').replace(/\s+/g,''));
   if(!m||fnv(m[1]).toString(36)!==m[2])return null;
@@ -5378,7 +5850,7 @@ function pfParse(t){
 function pfImport(text){
   const o=pfParse(text); if(!o){ PF.imp=''; PF.msg='❌ الكود مش صحيح أو ناقص'; pfMsg(); return false }
   if(PF.imp!==text.trim()||Date.now()-PF.impT>8000){ PF.imp=text.trim(); PF.impT=Date.now(); PF.msg='⚠ هيدا بيبدّل تقدّمك الحالي كله بالنسخة — اضغط «استرجع» مرة ثانية للتأكيد'; pfMsg(); return false }
-  const keep={}; for(const k of ['adm','admh','nu'])if(S[k]!==undefined)keep[k]=S[k];
+  const keep={}; for(const k of ['adm','admh','nu','turn'])if(S[k]!==undefined)keep[k]=S[k];
   try{ localStorage.setItem('td_s',JSON.stringify(Object.assign({},o,keep))) }catch(e){ PF.msg='❌ ما قدرت أحفظ'; pfMsg(); return false }
   PF.msg='✅ انسترجعت النسخة — عم أعيد التحميل...'; pfMsg(); setTimeout(()=>location.reload(),300); return true;
 }
@@ -5412,32 +5884,34 @@ addEventListener('keydown',e=>{ if(PF.open&&e.code==='Escape'&&!(e.target&&/INPU
 
 
 /* =============== EMOJI + QUICK PHRASES between two online players (co-op and race) ===============
-   A fixed table, no free text (nothing to moderate): 8 emojis and 8 funny phrases, sent as {t:'em',i:0..15} over the SAME channel the game already uses (NET.tr).
-   Keys: T opens the bar (emojis), T again = phrases, T again = closed; 1..8 send. A 💬 button does the same for touch. Rate limit 0.9 s on my side, 0.45 s on the receiving side.
+   A fixed table, no free text (nothing to moderate): 8 emojis, 8 funny phrases and 8 direction words for guiding a partner through a puzzle, sent as {t:'em',i:0..23} over the SAME channel the game already uses (NET.tr).
+   Keys: T opens the bar (emojis), T again = phrases, T again = directions, T again = closed; 1..8 send. A 💬 button does the same for touch. Rate limit 0.9 s on my side, 0.45 s on the receiving side.
    It is drawn above the sender's head for 2.6 s. Nothing here touches the simulation (it is not part of the lockstep state or the snapshots). Not available in local co-op (same keyboard). */
 const RX={mode:0,list:[],last:0,got:0,hideT:0};
 const RX_EMO=['😂','😭','😱','👍','🔥','💀','❤️','🙏'];
 const RX_TXT=['يلّا حبيبي!','استنّاني!','شو هالفخ؟!','ما تموت!','تعا لهون','ارجع ورا','ضربة معلّم 👏','رحمة الله عليك 😂'];
-const rxText=i=>i<8?RX_EMO[i]:RX_TXT[i-8];
+const RX_DIR=['⬆ فوق','⬇ تحت','➡ يمين','⬅ يسار','✋ استنّى','👆 اقفز هلأ!','✔ تمام','❌ لأ'];
+const RX_MAX=24;
+const rxText=i=>i<8?RX_EMO[i]:(i<16?RX_TXT[i-8]:RX_DIR[i-16]);
 const rxOk=()=>NET.link==='play'&&!!NET.tr&&(G.state==='play'||G.state==='dead'||G.state==='win');
 function rxPush(w,i){ RX.list.push({w,i,t0:performance.now()}); if(RX.list.length>6)RX.list.shift() }
 function rxSend(i){
-  i=i|0; if(i<0||i>15||!rxOk())return false;
+  i=i|0; if(i<0||i>=RX_MAX||!rxOk())return false;
   const now=performance.now(); if(now-RX.last<900)return false; RX.last=now;
   rxPush(0,i); try{ NET.tr.send({t:'em',i}) }catch(e){} Snd.ui&&Snd.ui(); rxClose(); return true;
 }
 function rxGot(m){
-  const i=m&&m.i; if(typeof i!=='number'||!Number.isInteger(i)||i<0||i>15)return;
+  const i=m&&m.i; if(typeof i!=='number'||!Number.isInteger(i)||i<0||i>=RX_MAX)return;
   const now=performance.now(); if(now-RX.got<450)return; RX.got=now; rxPush(1,i); Snd.ui&&Snd.ui();
 }
 function rxRender(){
   const bar=$('rxBar'); if(!bar)return; bar.classList.toggle('hide',!RX.mode); bar.textContent='';
-  if(!RX.mode)return; const base=RX.mode===1?0:8;
-  for(let k=0;k<8;k++){ const b=el('button','rxb'+(RX.mode===2?' tx':''),rxText(base+k),()=>rxSend(base+k)); b.append(el('i',null,String(k+1))); bar.append(b) }
+  if(!RX.mode)return; const base=(RX.mode-1)*8;
+  for(let k=0;k<8;k++){ const b=el('button','rxb'+(RX.mode>=2?' tx':''),rxText(base+k),()=>rxSend(base+k)); b.append(el('i',null,String(k+1))); bar.append(b) }
 }
 function rxMode(m){ RX.mode=m; clearTimeout(RX.hideT); if(m)RX.hideT=setTimeout(()=>rxMode(0),8000); rxRender() }
 const rxClose=()=>rxMode(0);
-function rxToggle(){ if(!rxOk())return; rxMode((RX.mode+1)%3) }
+function rxToggle(){ if(!rxOk())return; rxMode((RX.mode+1)%4) }
 function rxDraw(c,cam){                                                                    // called inside the world transform, after the hero speech bubble
   const now=performance.now(); RX.list=RX.list.filter(e=>now-e.t0<2600); if(!RX.list.length)return;
   for(const e of RX.list){
@@ -5452,7 +5926,7 @@ function rxDraw(c,cam){                                                         
 addEventListener('keydown',e=>{
   if(e.repeat||!rxOk()||(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)))return;
   if(e.code==='KeyT'){ rxToggle(); e.preventDefault(); return }
-  if(RX.mode){ const m=/^Digit([1-8])$/.exec(e.code); if(m){ rxSend((+m[1]-1)+(RX.mode===2?8:0)); e.preventDefault() } }
+  if(RX.mode){ const m=/^Digit([1-8])$/.exec(e.code); if(m){ rxSend((+m[1]-1)+(RX.mode-1)*8); e.preventDefault() } }
 });
 $('rxBtn').onclick=()=>{ Snd.init&&Snd.init(); rxToggle() };
 setInterval(()=>{ const ok=rxOk(); $('rxBtn').classList.toggle('hide',!ok); if(!ok&&RX.mode)rxClose(); if(!ok&&RX.list.length&&NET.link!=='play')RX.list.length=0 },300);
@@ -6663,7 +7137,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); try{ titleCard() }catch(e){} $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={waterAt,fanLift,waterOver,coPlayable,rtcDrop,rtcStart,netSpec,goTitle,pfChanged,titleCard,gemSpend,gemBuyCoins,gemBuyXp,gemPack,GEMX,gemBonus,skinGemPrice,titleMenu,SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={netReport,netReportCopy,muSan,muType,muNow,MUT_LIST,varySeed,vsSan,XV,waterAt,fanLift,waterOver,coPlayable,rtcDrop,rtcStart,netSpec,goTitle,pfChanged,titleCard,gemSpend,gemBuyCoins,gemBuyXp,gemPack,GEMX,gemBonus,skinGemPrice,titleMenu,SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 <script>

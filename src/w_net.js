@@ -16,7 +16,7 @@ const NET_V='__BUILD__';
 const NET_CFG={url:'https://don-t-die-habibi-default-rtdb.europe-west1.firebasedatabase.app',
   ice:[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:'stun:stun.cloudflare.com:3478'}]};      // free STUN only; a TURN relay can be added through S.turn = 'turn:host:3478|user|password'      // the project's Realtime Database (Belgium); S.nu overrides it, S.nu='-' forces the same-browser loopback (tests)
 const NET={link:'off',role:null,code:'',kind:'',tr:null,sig:null,rtc:null,tpk:'',peer:null,rtt:0,D:8,mode:'co',tab:false,me:0,f:0,msg:'',st:'',lastRx:0};
-const KR={l:false,r:false,j:false,jp:false,a:false,ap:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
+const KR={l:false,r:false,j:false,jp:false,a:false,ap:false,g:false,gp:false};      // raw keys while a lockstep game runs (the simulation reads K/K2, filled from the agreed per-frame input)
 const netLock=()=>!!(G.co&&!G.co.local);
 const NET_AL='ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 function fnv(s){ let h=0x811c9dc5; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,0x01000193) } return h>>>0 }
@@ -154,6 +154,34 @@ function netDiag(){                                          // the little conne
   const ms=N.pings.length?N.pings.slice().sort((a,b)=>a-b)[N.pings.length>>1]:N.rtt, direct=N.tpk==='rtc'||N.tpk==='loop';
   el.textContent=(direct?'🔗 ':'☁️ ')+Math.round(ms)+' ms'; el.className=ms<90?'ok':ms<220?'mid':'bad'; el.title=direct?'اتصال مباشر':'عبر السيرفر';
 }
+/* A copyable connection report (tap the little ms chip while playing, or the 📊 button in the room): which road the match runs on, ping spread, WebRTC / ICE state and the kind of the
+   selected candidate pair (host = same network, srflx = through the router (STUN), relay = through a TURN server), stalls and rollbacks. For testing between players in different places. */
+async function netReport(){
+  const N=NET, r=N.rtc, o=[], p=(N.pings||[]).slice().sort((a,b)=>a-b), md=p.length?p[p.length>>1]:0, R=x=>Math.round(x||0);
+  o.push('📊 تقرير اتصال — لا تموت يا حبيبي','وقت: '+new Date().toISOString()+'  نسخة: '+NET_V);
+  o.push('دور: '+(N.role==='h'?'مضيف':N.role==='g'?'ضيف':'-')+'  وضع: '+N.mode+'  حالة: '+N.link+'  وسيط الغرفة: '+(N.kind||'-')+'  الطريق الحالي: '+(N.tpk||'-'));
+  o.push('بنغ (ms): آخر '+R(N.rtt)+'  وسيط '+R(md)+'  أقل '+R(p[0])+'  أعلى '+R(p[p.length-1])+'  عينات '+p.length);
+  if(r&&r.pc){
+    o.push('WebRTC: conn='+r.pc.connectionState+' ice='+r.pc.iceConnectionState+' gather='+r.pc.iceGatheringState+'  قنوات '+r.fast.readyState+'/'+r.rel.readyState+'  فتح '+(r.up||0)+' مرة  محاولات '+N.rtcN+(r.t1?'  فتح بعد '+R(r.t1-r.t0)+' ms':''));
+    try{ const st=await r.pc.getStats(), by={}; st.forEach(x=>{ by[x.id]=x });
+      let sel=null; st.forEach(x=>{ if(x.type==='transport'&&x.selectedCandidatePairId)sel=by[x.selectedCandidatePairId] }); if(!sel)st.forEach(x=>{ if(x.type==='candidate-pair'&&x.state==='succeeded'&&(x.nominated||x.selected))sel=x });
+      if(sel){ const a=by[sel.localCandidateId]||{}, b=by[sel.remoteCandidateId]||{};
+        o.push('المسار المختار: أنا='+(a.candidateType||'?')+' ('+(a.protocol||'?')+')  هو='+(b.candidateType||'?')+'  rtt='+(sel.currentRoundTripTime!=null?R(sel.currentRoundTripTime*1000)+' ms':'?')+'  أُرسل '+(sel.bytesSent|0)+' B / استُلم '+(sel.bytesReceived|0)+' B');
+        o.push((a.candidateType==='relay'||b.candidateType==='relay')?'→ عبر خادم TURN (مرحَّل)':(a.candidateType==='host'&&b.candidateType==='host')?'→ نفس الشبكة':'→ عبر الراوتر مباشرة (STUN)') }
+      else o.push('المسار المختار: لسا ما انختار') }catch(e){ o.push('stats: '+e) }
+  } else o.push('WebRTC: ما في اتصال مباشر ('+(rtcOk()?'ما فتح أو فشل':'مطفي')+') — الرسائل بتمرّ عبر '+(N.kind==='rtdb'?'السيرفر (Realtime Database)':'نفس المتصفح'));
+  o.push('TURN: '+(S.turn?'مفعّل':'غير مفعّل (STUN فقط)')+'  STUN: '+NET_CFG.ice.length+' خوادم');
+  if(N.lock||N.f)o.push('اللعب: فريم '+N.f+'  مؤكد '+N.c+'  تأخير الإدخال '+N.dl+'  rollback '+N.nrb+' (أكبر '+N.maxRb+' فريم)  وقفات '+(N.stallN|0)+' (أطولها '+R(N.stallMax)+' ms)  أخطاء هاش '+(N.bad|0)+'  إصلاحات '+(N.fixes|0));
+  const cn=navigator.connection; o.push('جهاز: '+(/Mobi|Android|iPhone/i.test(navigator.userAgent)?'موبايل':'كمبيوتر')+'  متصفح: '+(navigator.userAgent.match(/(Firefox|Edg|Chrome|Safari)\/[\d.]+/)||['?'])[0]+(cn?'  شبكة: '+(cn.effectiveType||'?')+' '+(cn.downlink!=null?cn.downlink+'Mbps ':'')+(cn.rtt!=null?'rtt~'+cn.rtt+'ms':''):''));
+  return o.join('\n');
+}
+async function netReportCopy(){
+  let t=''; try{ t=await netReport() }catch(e){ t='تقرير فشل: '+e }
+  let ok=false; try{ await navigator.clipboard.writeText(t); ok=true }catch(e){}
+  if(!ok){ try{ const ta=document.createElement('textarea'); ta.value=t; ta.style.cssText='position:fixed;left:-999px;top:0'; document.body.appendChild(ta); ta.select(); ok=document.execCommand('copy'); ta.remove() }catch(e){} }
+  NET.report=t; if(G.state==='play'||G.state==='dead')say(ok?'📋 نسخت تقرير الاتصال':'📋 ما قدرت أنسخ — افتح الكونسول',  'any',2.2); else { NET.msg=ok?'📋 انسخ تقرير الاتصال — ابعته لصاحبك أو لإلي':'📋 ما قدرت أنسخ التقرير'; netRender() }
+  return t;
+}
 function netRecv(m){
   const N=NET; if(!m||!N.tr&&m.t!=='bye')return; N.lastRx=netNow();
   if(m.u!==undefined){ if(N.seenU.has(m.u))return; N.seenU.add(m.u); if(N.seenU.size>400)N.seenU.delete(N.seenU.values().next().value) }
@@ -187,22 +215,22 @@ function netLeave(msg,quiet){
   const N=NET, was=N.link!=='off'; if(!was&&!N.tr)return;
   if(!quiet&&N.tr)try{ N.tr.send({t:'bye'}) }catch(e){}
   netClose(); raceStop(); N.link='off'; N.peer=null; N.lock=false; N.msg=msg||'';
-  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
+  for(const f of KF)KR[f]=false;
   $('netSt').classList.add('hide');
   if(G.co||G.race||G.state==='play'||G.state==='dead'||G.state==='win'){ const m=msg; goTitle(); if(m){ setTimeout(()=>say(m,'any',3.2),50) } return }
   if(G.state==='co'){ N.tab=true; coRender() }
 }
 function netToLobby(msg){                                  // back to the online lobby, the connection stays
   const N=NET; if(N.link==='off')return; raceStop(); N.lock=false; N.link='conn'; G.co=null;
-  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
+  for(const f of KF)KR[f]=false;
   $('netSt').classList.add('hide'); $('raceBar').classList.add('hide'); $('raceCd').classList.add('hide'); $('raceRes').classList.add('hide');
   N.tab=true; coOpen(msg||'');
 }
 
 /* ---- lobby sync (host chooses) ---- */
-function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,df:coDf(),cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
+function netLobbySend(){ const N=NET; if(N.role!=='h'||!N.tr||N.link==='off')return; N.tr.send({t:'lb',mode:N.mode,n:CO.sel.n,df:coDf(),mu:muSan(CO.sel.mu),cu:CO.sel.custom?encodeCustom(CO.sel.custom):''}) }
 function netLobbyRecv(m){
-  NET.mode=m.mode==='race'?'race':'co'; CO.sel.n=m.n|0||1; CO.sel.df=CO_DFS.includes(m.df)?m.df:null;
+  NET.mode=m.mode==='race'?'race':'co'; CO.sel.mu=muSan(m.mu); CO.sel.n=m.n|0||1; CO.sel.df=CO_DFS.includes(m.df)?m.df:null;
   if(m.cu){ const r=decodeCustom(m.cu); CO.sel.custom=r.err?null:r.c } else CO.sel.custom=null;
   if(G.state==='co')coRender();
 }
@@ -214,7 +242,7 @@ function netStartHost(){                                       // host presses s
   const N=NET; if(N.role!=='h'||N.link!=='conn'||!N.peer)return;
   const s=CO.sel;
   if(!s.custom&&!coPlayable(s.n)){ CO.msg='هالمرحلة مو متاحة'; coRender(); return }
-  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),D:netD(),hero:netHeroes(),stage:netStages(),skin:netSkins(),rtt:N.rtt|0};
+  const o={t:'st',mode:N.mode,lv:s.n,cu:s.custom?encodeCustom(s.custom):'',df:coDf(),mu:muSan(CO.sel.mu),D:netD(),hero:netHeroes(),stage:netStages(),skin:netSkins(),rtt:N.rtt|0,vs:1+Math.floor(Math.random()*9998)};
   N.tr.send(o); netBegin(o);
 }
 function netBegin(o){
@@ -226,8 +254,8 @@ function netBegin(o){
   N.lock=true; N.dl=NET_DL; N.D=N.dl; N.f=0; N.c=0; N.smp=-1; N.loc={}; N.rem={}; N.used={}; N.snp={}; N.pl={}; N.snaps={}; N.fx=[]; N.rb=null; N.hh={}; N.rh={}; N.ackR=N.dl-1; N.remHi=N.dl-1; N.remLast=0; N.lm=-1; N.stallT=0; N.stallTot=0; N.bad=0; N.rsAt=0; N.fixes=0; N.nrb=0; N.rbFr=0; N.fxN={}; N.maxRb=0; N.adv=0; N.adj=-1; N.stallN=0; N.stallMax=0; N.popN=0; N.popMax=0; N.popTot=0; N.vo=[{x:0,y:0},{x:0,y:0}]; N.txN=0; N.rxN=0; N.rbT=0; N.rbTmax=0; N.visT=0; N.spec=0; N.locLo=0;
   N.startAt=netNow()+(N.role==='h'?clamp((N.rtt||0)/2,0,400):0);       // the host waits half a ping so both machines start the same frame at about the same moment
   for(let i=0;i<N.dl;i++){ N.loc[i]=0; N.rem[i]=0 }
-  for(const f of ['l','r','j','jp','a','ap'])KR[f]=false;
-  coStart({hero:o.hero,stage:o.stage,skin:Array.isArray(o.skin)?o.skin.map((k,i)=>skinSan(o.hero[i],k)):null,level:o.lv,custom:cu,local:false,me:N.me,df:o.df});
+  for(const f of KF)KR[f]=false;
+  coStart({hero:o.hero,stage:o.stage,skin:Array.isArray(o.skin)?o.skin.map((k,i)=>skinSan(o.hero[i],k)):null,level:o.lv,custom:cu,local:false,me:N.me,df:o.df,vs:vsSan(o.vs),mu:muSan(o.mu)});
 }
 
 /* ---- co-op netcode: prediction + rollback ----
@@ -239,9 +267,9 @@ function netBegin(o){
 const NET_DL=2, NET_MAXSPEC=24, NET_SPEC_HI=60;
 const netQ=j=>j.replace(/-?\d+\.\d{3,}/g,m=>(+m).toFixed(2));          // hash only what two phones must agree on: positions to 1/100 px (Math.sin/cos may differ in the last digits between a V8 and a JavaScriptCore phone)
 const netSpec=()=>{ const r=NET.pings.length>=2?NET.pings.slice().sort((a,b)=>a-b)[NET.pings.length>>1]:(NET.rtt||120); return clamp(Math.ceil(r/16.7)+14,NET_MAXSPEC,NET_SPEC_HI) };      // how far we may run on guesses: a slow link gets a longer leash instead of a freeze
-const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32};
-function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; return m }
-function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32) }
+const IN_B={l:1,r:2,j:4,jp:8,a:16,ap:32,g:64,gp:128};
+function netSample(){ let m=0; for(const k in IN_B)if(KR[k])m|=IN_B[k]; KR.jp=false; KR.ap=false; KR.gp=false; return m }
+function setIn(o,m){ o.l=!!(m&1); o.r=!!(m&2); o.j=!!(m&4); o.jp=!!(m&8); o.a=!!(m&16); o.ap=!!(m&32); o.g=!!(m&64); o.gp=!!(m&128) }
 function netSend(){
   const N=NET; if(!N.tr||!N.lock)return;
   const hi=N.smp+N.dl, from=Math.max(N.ackR+1,hi-90); if(hi<from)return; let a='';          // only frames we really sampled (smp = the newest sampled frame)
@@ -352,7 +380,7 @@ function raceJudge(tm0,tm1,now,rtt){                          // the host's view
 }
 function raceBegin(o,cu){
   const N=NET;
-  G.race={df:o.df,hold:0,goAt:0,opp:newPlayer(0),tx:null,over:false,done:false,res:null,seen:false,fn:null,tm1:null,fnAt:0};
+  G.race={df:o.df,vs:vsSan(o.vs),mu:muSan(o.mu),hold:0,goAt:0,opp:newPlayer(0),tx:null,over:false,done:false,res:null,seen:false,fn:null,tm1:null,fnAt:0};
   const op=G.race.opp; op.hid=N.peer.hero; op.hst=N.peer.stage; op.hsk=skinSan(N.peer.hero,N.peer.skin); op.run=0;
   if(cu)startCustom(cu,'race'); else startGame(o.lv);
   const r=G.race; r.hold=RACE_CD+(N.role==='h'?(N.rtt||0)/2000:0); r.goAt=netNow()+r.hold*1000;
@@ -435,11 +463,12 @@ function netRender(){
   $('nModeCo').classList.toggle('on',N.mode==='co'); $('nModeRace').classList.toggle('on',N.mode==='race');
   for(const id of ['nModeCo','nModeRace'])$(id).disabled=!(N.role==='h'||off);
   $('nDb').value=document.activeElement===$('nDb')?$('nDb').value:(S.nu&&S.nu!=='-'?S.nu:'');
+  $('nTurn').value=document.activeElement===$('nTurn')?$('nTurn').value:(S.turn||'');
   $('nGo').classList.toggle('hide',!(N.role==='h'&&N.link==='conn'));
   $('nGuestWait').classList.toggle('hide',!(N.role==='g'&&conn));
   $('coPrev').disabled=!(N.role==='h'&&conn)||!!CO.sel.custom; $('coNext').disabled=$('coPrev').disabled; $('coCodeBtn').disabled=!(N.role==='h'&&conn);
-  for(const id of ['coPrev10','coNext10','coLvIn'])$(id).disabled=$('coPrev').disabled; for(const b of document.querySelectorAll('#co [data-cdf]'))b.disabled=!(N.role==='h'&&conn)||!!CO.sel.custom;
-  $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · بلا مكافآت';
+  for(const id of ['coPrev10','coNext10','coLvIn'])$(id).disabled=$('coPrev').disabled; for(const b of document.querySelectorAll('#co [data-cdf],#co [data-cmu]'))b.disabled=!(N.role==='h'&&conn)||!!CO.sel.custom;
+  $('coBlurb').textContent=N.mode==='race'?'سباق: نفس المرحلة، أول واحد يوصل الباب بيكسب · كل واحد بيشوف شبح التاني · بلا مكافآت':'تعاون: الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · S أو ⬇ (🤲) تشيل رفيقك وترميه · بلا مكافآت';
   frSync();
 }
 function netTab(on){
@@ -452,8 +481,11 @@ $('nCode').addEventListener('keydown',e=>{ e.stopPropagation(); if(e.key==='Ente
 $('nCode').addEventListener('input',e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'') });
 $('nDb').addEventListener('keydown',e=>e.stopPropagation());
 $('nDb').addEventListener('change',()=>{ const v=$('nDb').value.trim(); S.nu=/^https?:\/\//i.test(v)?v.replace(/\/+$/,''):''; save(); NET.msg=S.nu?'✅ انحفظ رابط القاعدة':''; netRender() });
+$('nTurn').addEventListener('keydown',e=>e.stopPropagation());
+$('nTurn').addEventListener('change',()=>{ const v=$('nTurn').value.trim(); S.turn=/^turns?:[^|\s]+(\|[^|]*){0,2}$/i.test(v)?v:''; save(); NET.msg=S.turn?'✅ انحفظ خادم TURN (يُستعمل بالاتصال الجاي)':(v?'⚠ الصيغة غلط':'');  netRender() });
 $('nGo').onclick=netStartHost;
 $('nLeave').onclick=()=>netLeave('');
+$('nRep').onclick=netReportCopy; $('netDg').onclick=netReportCopy;
 $('nCopy').onclick=()=>{ const t=NET.code; try{ navigator.clipboard.writeText(t).then(()=>{ NET.msg='📋 اننسخ الكود'; netRender() },()=>{}) }catch(e){} };
 $('nModeCo').onclick=()=>{ NET.mode='co'; netLobbySend(); netRender() };
 $('nModeRace').onclick=()=>{ NET.mode='race'; netLobbySend(); netRender() };

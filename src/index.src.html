@@ -246,7 +246,7 @@ select.tg{appearance:auto}
 .frr{display:flex;align-items:center;gap:calc(var(--u)*6);padding:calc(var(--u)*4);border-bottom:calc(var(--u)*1) solid #fff2;font-size:calc(var(--u)*13)}.frr b{flex:1;text-align:right}.frr i{opacity:.7;font-style:normal;font-size:calc(var(--u)*11)}.frr .tg:disabled{opacity:.35;cursor:default}
 #frCard .fok{background:var(--gold);color:#1b1230;white-space:nowrap}#frCard span{flex:1}#frMsg{min-height:calc(var(--u)*16);margin-top:calc(var(--u)*4);color:#ffe9a8}
 #frCard{position:absolute;top:calc(var(--u)*8);left:50%;transform:translateX(-50%);z-index:70;display:flex;gap:calc(var(--u)*10);align-items:center;max-width:94%;background:#1b1230f2;color:#fff;font-weight:900;font-size:calc(var(--u)*15);border:calc(var(--u)*3) solid var(--gold);border-radius:calc(var(--u)*14);padding:calc(var(--u)*8) calc(var(--u)*14);box-shadow:0 calc(var(--u)*6) calc(var(--u)*20) #000a}
-#netDg{position:absolute;left:calc(var(--u)*8);bottom:calc(var(--u)*6);z-index:9;font:900 calc(var(--u)*11)/1 Tahoma,Arial,sans-serif;background:#000a;padding:calc(var(--u)*3) calc(var(--u)*8);border-radius:calc(var(--u)*12);pointer-events:none;color:#7dffb0;opacity:.8}
+#netDg{position:absolute;left:calc(var(--u)*8);bottom:calc(var(--u)*6);z-index:9;font:900 calc(var(--u)*11)/1 Tahoma,Arial,sans-serif;background:#000a;padding:calc(var(--u)*3) calc(var(--u)*8);border-radius:calc(var(--u)*12);cursor:pointer;color:#7dffb0;opacity:.8}
 #netDg.mid{color:#ffe06a}#netDg.bad{color:#ff7a7a}
 #netSt{position:absolute;top:calc(var(--u)*54);left:50%;transform:translateX(-50%);z-index:9;background:#000c;color:#ffe9a8;font-weight:900;font-size:calc(var(--u)*15);padding:calc(var(--u)*5) calc(var(--u)*16);border-radius:calc(var(--u)*20);pointer-events:none}
 #raceBar{position:absolute;top:calc(var(--u)*34);left:50%;transform:translateX(-50%);width:calc(var(--u)*360);z-index:8;pointer-events:none}.rbt{position:relative;height:calc(var(--u)*20);background:#0008;border-radius:calc(var(--u)*10);border:calc(var(--u)*2) solid #000}.rbt i{position:absolute;top:calc(var(--u)*1);font-style:normal;font-size:calc(var(--u)*13);transition:left .12s linear}.rbt b{position:absolute;right:calc(var(--u)*4);top:calc(var(--u)*1);font-size:calc(var(--u)*13)}
@@ -273,7 +273,7 @@ select.tg{appearance:auto}
 #touch{position:absolute;left:0;right:0;bottom:0;height:calc(var(--u)*130);pointer-events:none;z-index:5}
 #touch .tb{position:absolute;bottom:calc(var(--u)*10);width:calc(var(--u)*86);height:calc(var(--u)*86);border-radius:50%;background:#ffffff26;border:calc(var(--u)*4) solid #ffffff66;color:#fff;font-size:calc(var(--u)*40);display:flex;align-items:center;justify-content:center;pointer-events:auto;touch-action:none;font-weight:900}
 #touch .tb.on{background:#ffd23faa}
-#ba{right:calc(var(--u)*134);bottom:calc(var(--u)*22)!important;width:calc(var(--u)*72)!important;height:calc(var(--u)*72)!important;font-size:calc(var(--u)*32)!important;background:#7c4dffaa!important}#bl{left:calc(var(--u)*12)}#br{left:calc(var(--u)*112)}#bj{right:calc(var(--u)*14);width:calc(var(--u)*104)!important;height:calc(var(--u)*104)!important}
+#bg{right:calc(var(--u)*134);bottom:calc(var(--u)*104)!important;width:calc(var(--u)*72)!important;height:calc(var(--u)*72)!important;font-size:calc(var(--u)*32)!important;background:#00b894aa!important}#ba{right:calc(var(--u)*134);bottom:calc(var(--u)*22)!important;width:calc(var(--u)*72)!important;height:calc(var(--u)*72)!important;font-size:calc(var(--u)*32)!important;background:#7c4dffaa!important}#bl{left:calc(var(--u)*12)}#br{left:calc(var(--u)*112)}#bj{right:calc(var(--u)*14);width:calc(var(--u)*104)!important;height:calc(var(--u)*104)!important}
 .hrow{display:flex;gap:calc(var(--u)*5);justify-content:center;margin-top:calc(var(--u)*8)}
 .hb{background:#0007;border:calc(var(--u)*2) solid #000;border-radius:calc(var(--u)*10);padding:calc(var(--u)*2);cursor:pointer;line-height:0}
 .hb.on{background:#ffd23f}
@@ -294,7 +294,7 @@ select.tg{appearance:auto}
   </div>
   <div id="sub"></div>
   <div id="touch" class="hide">
-    <div class="tb" id="bl" data-k="l">◀</div><div class="tb" id="br" data-k="r">▶</div><div class="tb" id="bj" data-k="j">⤒</div><div class="tb hide" id="ba" data-k="a">✨</div>
+    <div class="tb" id="bl" data-k="l">◀</div><div class="tb" id="br" data-k="r">▶</div><div class="tb" id="bj" data-k="j">⤒</div><div class="tb hide" id="ba" data-k="a">✨</div><div class="tb hide" id="bg" data-k="g">🤲</div>
   </div>
   <div id="card" class="ov hide"><div class="cardin">
     <div class="cstk" id="cstk"></div><div class="ctop" id="ctop"></div><img id="cimg" alt=""><div class="ccap" id="ccap"></div><div class="chint" id="chint">اضغط أي شي لتعيد المحاولة</div>
@@ -340,13 +340,13 @@ select.tg{appearance:auto}
   </div></div>
   <div id="frCard" class="hide"></div><div id="netSt" class="hide"></div><div id="netDg" class="hide"></div><div id="raceBar" class="hide"><div class="rbt"><i id="rbMe">🟡</i><i id="rbOp">🔵</i><b>🏁</b></div></div><button id="rxBtn" class="hide" title="إيموجي وجمل (T)">💬</button><div id="rxBar" class="hide"></div><div id="raceCd" class="hide"></div><div id="raceRes" class="hide"></div>
   <div id="co" class="ov hide"><div class="edbox cobox">
-    <div class="edtop"><b>👥 لاعبين اتنين</b><span class="edst" id="coSt"></span><button class="tg" id="coX">✖ رجوع</button></div>
-    <div class="cotabs"><button class="tg on" id="coTabL">🏠 على نفس الجهاز</button><button class="tg" id="coTabN">🌐 أونلاين</button></div>
+    <div class="edtop"><b>👥 تعاون أونلاين</b><span class="edst" id="coSt"></span><button class="tg" id="coX">✖ رجوع</button></div>
+    <div class="cotabs hide"><button class="tg on" id="coTabL">🏠 على نفس الجهاز</button><button class="tg" id="coTabN">🌐 أونلاين</button></div>
     <div class="coscr">
     <div id="coNet" class="hide">
       <div class="edset"><span>الوضع</span><button class="tg on" id="nModeCo">🤝 تعاون</button><button class="tg" id="nModeRace">🏁 سباق</button></div>
       <div id="nHostBox" class="conet"><button class="btn" id="nHost">🏠 أنشئ غرفة</button><span>أو</span><input id="nCode" maxlength="5" placeholder="كود الغرفة" autocomplete="off" spellcheck="false"><button class="btn alt" id="nJoin">🚪 ادخل</button></div>
-      <div id="nRoom" class="conet hide"><span>كود الغرفة</span><b id="nCodeBig"></b><button class="tg" id="nCopy">📋 انسخ</button><button class="tg" id="nLeave">🚪 اطلع</button></div>
+      <div id="nRoom" class="conet hide"><span>كود الغرفة</span><b id="nCodeBig"></b><button class="tg" id="nCopy">📋 انسخ</button><button class="tg" id="nRep" title="تقرير اتصال للفحص">📊 تقرير</button><button class="tg" id="nLeave">🚪 اطلع</button></div>
       <div id="nStat"></div>
       <details class="nset frbox" id="frBox"><summary>👥 الأصدقاء <i id="frBadge"></i></summary>
         <div class="conet"><span>كودي</span><b id="frMyId"></b><button class="tg" id="frCopy">📋</button><button class="tg" id="frShare">🔗 شارك</button></div>
@@ -354,15 +354,16 @@ select.tg{appearance:auto}
         <div class="conet"><input id="frAddIn" placeholder="كود صديقك أو رابطه" autocomplete="off" spellcheck="false"><button class="btn alt" id="frAdd">➕ أضِف</button></div>
         <div id="frList"></div><div id="frMsg"></div>
       </details>
-      <details class="nset"><summary>⚙ إعدادات الأونلاين</summary><div class="sub">رابط قاعدة بيانات Firebase (Realtime Database) — بدونه بيشتغل بين تابّين بنفس المتصفح بس</div><input id="nDb" placeholder="https://اسم-مشروعك-default-rtdb.firebaseio.com" spellcheck="false"></details>
+      <details class="nset"><summary>⚙ إعدادات الأونلاين</summary><div class="sub">رابط قاعدة بيانات Firebase (Realtime Database) — بدونه بيشتغل بين تابّين بنفس المتصفح بس</div><input id="nDb" placeholder="https://اسم-مشروعك-default-rtdb.firebaseio.com" spellcheck="false"><div class="sub">اختياري: خادم TURN (للشبكات اللي ما بتسمح بالاتصال المباشر مثل بعض شبكات الموبايل) بالشكل turn:العنوان:3478|المستخدم|كلمة_السر — لازم الاتنين يحطوا نفس الشي</div><input id="nTurn" placeholder="turn:example.com:3478|user|password" spellcheck="false" autocomplete="off"></details>
     </div>
     <div class="coblurb" id="coBlurb">الاتنين لازم يوصلوا الباب مع بعض · إذا واحد مات بيرجعوا الاتنين · ما بتقدروا تبعدوا عن بعض أكتر من شاشة</div>
     <div class="edset"><span>المرحلة</span><button class="tg" id="coPrev10">−10</button><button class="tg" id="coPrev">−</button><b id="coLv">المرحلة 1</b><button class="tg" id="coNext">+</button><button class="tg" id="coNext10">+10</button><input id="coLvIn" type="number" inputmode="numeric" min="1" max="999" placeholder="رقم" autocomplete="off"><button class="tg" id="coCodeBtn">📥 خريطة بكود</button></div>
     <div class="edset"><span>الصعوبة</span><button class="tg" data-cdf="normal">عادي 🙂</button><button class="tg" data-cdf="crazy">مجنون 😈</button><button class="tg" data-cdf="hell">مستحيل 💀</button><button class="tg" data-cdf="nightmare">كابوس ☠️</button></div>
+    <div class="edset" id="coMu"><span>الطفرة 🌀</span></div>
     <div class="edimp hide" id="coCodeBox"><textarea id="coCode" placeholder="الصق كود الخريطة هون (HB1-...)" spellcheck="false"></textarea><div style="display:flex;flex-direction:column;gap:4px"><button class="tg" id="coCodeGo">✔ حمّل</button></div></div>
     <div class="copl">
-      <div class="coslot"><div class="cotag" style="background:#ffd23f">1</div><canvas id="coH1c"></canvas><div class="nm" id="coH1n"></div><div class="sub">A D للحركة · W أو مسافة للقفز</div></div>
-      <div class="coslot"><div class="cotag" style="background:#4dd0ff">2</div><canvas id="coH2c"></canvas><div class="nm" id="coH2n"></div><div class="row" style="margin:0"><button class="tg" id="coH2L">▶</button><button class="tg" id="coH2R">◀</button></div><div class="sub">⬅ ➡ للحركة · ⬆ للقفز</div></div>
+      <div class="coslot"><div class="cotag" style="background:#ffd23f">1</div><canvas id="coH1c"></canvas><div class="nm" id="coH1n"></div><div class="sub">أنت</div></div>
+      <div class="coslot"><div class="cotag" style="background:#4dd0ff">2</div><canvas id="coH2c"></canvas><div class="nm" id="coH2n"></div><div class="row" style="margin:0"><button class="tg" id="coH2L">▶</button><button class="tg" id="coH2R">◀</button></div><div class="sub">صاحبك</div></div>
     </div>
     <div id="coMsg"></div><div id="nMsg"></div>
     </div>
@@ -701,7 +702,7 @@ function say(text,tag,dur){
 }
 function diaOK(tag){return S.dialect==='all'||tag==='any'||tag==='en'||tag===S.dialect||(S.dialect==='mix'&&(tag==='lb'||tag==='eg'||tag==='ps'))}
 function pickLine(arr){const f=arr.filter(a=>diaOK(a[1])),a=f.length?f:arr;let x,g=0;do{x=rnd(a)}while(x[0]===G.lastLine&&a.length>1&&g++<6);G.lastLine=x[0];return x}
-function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;try{ titleCard() }catch(e){}{ const g=S.gems|0, e=$('hGem'), l=$('hPl'), on=plOn(); e.classList.toggle('hide',!on); e.textContent='💎 '+g; l.classList.toggle('hide',!on); l.textContent='🔰 '+plLevel() }}
+function hud(){ if(SIM)return; { const b=$('ba'); if(b){ b.classList.toggle('hide',!actHero()); b.textContent=HAB[S.hero].ic } { const g=$('bg'); if(g)g.classList.toggle('hide',!G.co) } }$('hLvl').textContent=G.custom?'🛠 خريطتي':(L&&L.trial?trialLabel():'المرحلة '+G.level);$('hCoin').textContent='🪙 '+S.wallet+((!G.custom&&G.pend.length)?' +'+G.pend.length:'');$('hDeath').textContent='💀 '+G.deaths;try{ titleCard() }catch(e){}{ const g=S.gems|0, e=$('hGem'), l=$('hPl'), on=plOn(); e.classList.toggle('hide',!on); e.textContent='💎 '+g; l.classList.toggle('hide',!on); l.textContent='🔰 '+plLevel() }}
 function syncHeroes(){
   document.querySelectorAll('.hb').forEach(b=>{
     const id=b.dataset.h; b.classList.toggle('on',id===(S.hero||'falafel')); b.classList.toggle('lock',!heroOwned(id)); b.dataset.p=heroOwned(id)?'':HERO_PRICE[id]; const cx=b.firstChild.getContext('2d'); cx.setTransform(1,0,0,1,0,0); cx.clearRect(0,0,64,74);
@@ -731,8 +732,14 @@ function announceLevel(n){
   if(Math.random()<.3){const x=pick('level',{pAudio:.9}); if(x)later(1300,()=>sayVoice(x,3.2,{pri:3,ttl:1}))}
 }
 const ADMG={on:0,god:0,speed:1,doff:0};      // admin console switches (the console itself, w_admin.js, is left out of the public build)
+/* a level you have not cleared yet keeps its shape across deaths and reloads (S.vsl); once cleared, the next visit to it is a new arrangement */
+function varySeed(n){
+  if(!FLAGS.vary||G.co||G.race||G.custom||n<=2||isBossLevel(n)||n>=1001)return 0;
+  if(S.vsl&&S.vsl.n===n&&S.vsl.s>0)return S.vsl.s;
+  const s=1+Math.floor(Math.random()*9998); S.vsl={n,s}; save(); return s;
+}
 function loadLevel(n,announce,opt){
-  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0;G.help=null;G.helped=false} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):(isTrialN(n)?buildTrial(n):buildLevel(n,coOpt(opt))); G.pend=[]; G.ck=[]; G.ts=1; if(!G.custom&&!L.trial&&!G.co&&!G.race){ seedCoins(); G.ck=L.ents.filter(e=>e.t==='coin'&&!e.bait).map(coinKey); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17; if(announce&&!SIM&&!G.custom&&!L.trial)helpApply();
+  K.jp=false; Snd.stopVoice(); G.tok++; if(n!==G.lastLvl){G.vs=varySeed(n);G.lvDeaths=0;G.lastLvl=n;G.cpX=null;G.bossProg=null;G.bossSeen=0;G.help=null;G.helped=false} G.winCard=null; G.endCard=null; G.bsay=null; G.winLen=2.4; G.level=n; G.custom=(opt&&opt.custom)||null; if(G.custom)INREC=[]; L=G.custom?buildCustom(G.custom):(isTrialN(n)?buildTrial(n):buildLevel(n,coOpt(opt))); G.pend=[]; G.ck=[]; G.ts=1; if(!G.custom&&!L.trial&&!G.co&&!G.race){ seedCoins(); G.ck=L.ents.filter(e=>e.t==='coin'&&!e.bait).map(coinKey); if(!(opt&&opt.theme!=null))L.theme=econTheme(L.theme) } RG.s=n*104729+17; if(announce&&!SIM&&!G.custom&&!L.trial)helpApply();
   P=newPlayer(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); if(G.co)coSpawn(G.cpX!=null?Math.floor(G.cpX/TS):L.spawnTx); parts=[]; G.t=0; G.deadT=0; G.cardShown=false; G.winT=0; G.shake=0; G.idleT=7; G.cause=''; G.killer=null; G.snk=null; G.hsay=null; G.snkCd=0; G.warn=0; G.dark=0; G.darkT=0; G.mockCd=5; G.fakeHit=0;
   if(G.cpX!=null){ for(const e of L.ents){ if(e.t==='cp'&&e.x<=G.cpX)e.on=1; if(e.t==='chase'){e.x=P.x-(e.v==='wall'?330:430);e.go=P.x+4*TS} } }
   G.camX=clamp((G.co?coMid():P.x+PW/2)-VW*(G.co?.5:.4),0,Math.max(0,L.w*TS-VW));
@@ -856,7 +863,7 @@ function winFx(){
   if(Math.random()<.5)heroSay('win',{force:1,pri:5,delay:.05,max:1.4,dur:2});
   if(G.co){ if(!SIM)coWon() } else if(G.custom){ if(!SIM)customCleared() } else if(!L.trial&&G.level===S.best){ S.best=G.level+1; save() }       // only clearing the level you are ON opens the next one
 }
-function nextLevel(){ if(G.race)return; if(G.co){coNext();return} if(G.custom){customWon();return} if(L.trial){trialExit();return} loadLevel(G.level+1,true); G.state='play'; }
+function nextLevel(){ if(G.race)return; if(G.co){coNext();return} if(G.custom){customWon();return} if(L.trial){trialExit();return} if(S.vsl&&S.vsl.n===G.level){S.vsl=null;save()} loadLevel(G.level+1,true); G.state='play'; }
 
 /* =============== UPDATE =============== */
 function update(dt){
@@ -941,9 +948,9 @@ function resize(){
   $('rot').classList.toggle('hide',!(h>w&&touchMode));
 }
 let touchMode=matchMedia('(pointer:coarse)').matches||'ontouchstart' in window;
-function setKey(k,v,KK){ KK=KK||(G.co&&!G.co.local?KR:K); if(k==='l')KK.l=v; else if(k==='r')KK.r=v; else if(k==='j'){ if(v&&!KK.j)KK.jp=true; KK.j=v } else if(k==='a'){ if(v&&!KK.a)KK.ap=true; KK.a=v } }
-const KM_A={KeyA:'l',KeyD:'r',KeyW:'j',Space:'j',KeyE:'a',KeyC:'a',ShiftLeft:'a'}, KM_B={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'j',ShiftRight:'a',Period:'a',Slash:'a'};   // two players on one keyboard
-const KM={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j',KeyZ:'j',KeyX:'j',KeyC:'a',KeyK:'a',ShiftLeft:'a',ShiftRight:'a'};
+function setKey(k,v,KK){ KK=KK||(G.co&&!G.co.local?KR:K); if(k==='l')KK.l=v; else if(k==='r')KK.r=v; else if(k==='j'){ if(v&&!KK.j)KK.jp=true; KK.j=v } else if(k==='a'){ if(v&&!KK.a)KK.ap=true; KK.a=v } else if(k==='g'){ if(v&&!KK.g)KK.gp=true; KK.g=v } }
+const KM_A={KeyA:'l',KeyD:'r',KeyW:'j',Space:'j',KeyE:'a',KeyC:'a',ShiftLeft:'a',KeyS:'g'}, KM_B={ArrowLeft:'l',ArrowRight:'r',ArrowUp:'j',ShiftRight:'a',Period:'a',Slash:'a',ArrowDown:'g'};   // two players on one keyboard
+const KM={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j',KeyZ:'j',KeyX:'j',KeyC:'a',KeyK:'a',ShiftLeft:'a',ShiftRight:'a',KeyS:'g',ArrowDown:'g',KeyV:'g'};      // g = grab / throw the partner (co-op)
 function anyKeyContinue(){
   if(G.co&&!G.co.local)return false;                              // online: the retry/next moment is part of the shared simulation
   if(G.state==='dead'&&G.cardShown&&G.deadT>G.cardAt+(Snd.voiceBusy()?2.4:.4)){retry();return true}
@@ -963,7 +970,7 @@ addEventListener('keydown',e=>{
   anyKeyContinue();
 });
 addEventListener('keyup',e=>{const loc=!!(G.co&&G.co.local), k=loc?KM_A[e.code]:KM[e.code], k2=loc?KM_B[e.code]:null;if(k){setKey(k,false);e.preventDefault()} if(k2){setKey(k2,false,K2);e.preventDefault()}});
-addEventListener('blur',()=>{KR.l=KR.r=KR.j=KR.a=false;K.l=K.r=K.j=K.a=false;K2.l=K2.r=K2.j=K2.a=false});
+addEventListener('blur',()=>{KR.l=KR.r=KR.j=KR.a=KR.g=false;K.l=K.r=K.j=K.a=K.g=false;K2.l=K2.r=K2.j=K2.a=K2.g=false});
 document.querySelectorAll('#touch .tb').forEach(b=>{
   const k=b.dataset.k;
   b.addEventListener('pointerdown',e=>{e.preventDefault();Snd.init();Snd.resume();b.setPointerCapture(e.pointerId);b.classList.add('on');setKey(k,true);anyKeyContinue()});
@@ -1025,6 +1032,10 @@ addEventListener('resize',resize);
 /*@include w_edperk.js*/
 /*@include w_copuz.js*/
 /*@include w_copuz2.js*/
+/*@include w_copuz3.js*/
+/*@include w_copuz4.js*/
+/*@include w_copuz5.js*/
+/*@include w_mut.js*/
 /*@include w_coop.js*/
 /*@include w_net.js*/
 /*@include w_friends.js*/
@@ -1052,7 +1063,7 @@ if(S.best>1){$('bCont').classList.remove('hide');$('bCont').textContent='كمّ�
 initQ(); $('selQ').value=(S.qm||'auto'); buildHeroRows(); syncToggles(); try{ titleCard() }catch(e){} $('selDiff').value=$('selDiffT').value=(S.diff||'crazy'); resize(); L=buildLevel(1); L.theme=Math.floor(Math.random()*THEMES.length); P=newPlayer(); themeBg=makeBg(THEMES[L.theme],38);
 requestAnimationFrame(frame);
 edBootHash();
-window.TD={waterAt,fanLift,waterOver,coPlayable,rtcDrop,rtcStart,netSpec,goTitle,pfChanged,titleCard,gemSpend,gemBuyCoins,gemBuyXp,gemPack,GEMX,gemBonus,skinGemPrice,titleMenu,SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
+window.TD={netReport,netReportCopy,muSan,muType,muNow,MUT_LIST,varySeed,vsSan,XV,waterAt,fanLift,waterOver,coPlayable,rtcDrop,rtcStart,netSpec,goTitle,pfChanged,titleCard,gemSpend,gemBuyCoins,gemBuyXp,gemPack,GEMX,gemBonus,skinGemPrice,titleMenu,SKINS,SKV,skinOf,skinSaved,skinSan,skinHas,skinWear,skinBuy,skinList,SKP,gemAdd,plAdd,plLevel,plNeed,plProg,plOn,dayNum,weekNum,dyTasks,frStatsPut,pfRank,pfAv,pfHead,PF,PF_EMO,PF_FR,pfGet,pfOwn,pfSan,pfRows,pfExport,pfParse,pfImport,openPf,closePf,pfPoll,frGift,frGiftLeft,frGiftClaim,RX,rxSend,rxGot,rxToggle,rxOk,FR,frAdd,frInvite,frStart,frStop,frId,frFmt,frGot,frPoll,frRender,frCardTick,winLevel,clearedAt,perfectWorlds,DRANK,wmPick,coPuzTest,cgBuild,cgTick,COV,mkCp,coRender,NET,NET_CFG,KR,netHost,netJoin,netLeave,netStartHost,netBegin,netToLobby,netRecv,netD,fnv,raceSend,raceGot,raceJudge,raceT,raceFinish,raceTick,CO_DFS,coDf,coGoto,tpLoop,HSPR,sprKeyOf,heroForm,HERO_MAXST,tpRtdb,coMax,A,heroSay,heroSelectSay,bossSay,FLAGS,BTN_TX,bossBtnX,Q,setQ,G,K,S,buildLevel,loadLevel,startGame,update,render,die,get P(){return P},get L(){return L},Snd,FAM,POOL,B,RG,TS,GY,PW,PH,retry,nextLevel,pick,byKind,VO,showCard,chooseTaunt,tauntCtx,cardImage,announceLevel,fillCard,snap,restore,mkD,HEROES,BADSALT,sim(v){SIM=!!v},get SIM(){return SIM},stepPlats,ED,CF,MP,GENV,cNew,cClone,cNeed,cTraps,coStart,coEach,coMid,coAim,coOpen,coStep,CO,K2,get PLY(){return PLY},encodeCustom,decodeCustom,buildCustom,edShareText,coreCode,cosmPlace,cText,signWrap,cReal,cCount,epCap,epTier,epBuy,epWhy,epNext,epCustomText,EPERK,SIGN_I,DECO_I,SIGN_CUSTOM,startCustom,replayCustom,rleEnc,rleDec,edOpen,edRender,get INREC(){return INREC},get DLOG(){return DLOG},THEMES,WORLD_ORDER,themeOf,SCN,setAT(v){AT=v},makeBg,setTheme(i){L.theme=i;themeBg=makeBg(THEMES[i],i*31+7)},layers:id=>sceneLayers(id),econBank,econClear,econDeath,econCheckpoint,econBuyHero,econBuyWorld,seedCoins,openShop,closeShop,SHOP,worldOpen,worldPrice,worldFirstLevel,heroOwned,HERO_PRICE,coinKey,econTheme,hud,ACH,achCheck,achDie,achMapCleared,achMapShared,starsOf,starsTotal,medalsTotal,titleText,rankName,museumCount,museumCauses,openAch,closeAch,ACHUI,legit,WM,openMap,closeMap,wmRender,wmPos,HAB,heroStage,hOn,heroGuard,heroPre,upgradeHero,canUpgrade,xpOf,heroKick,hab,XP_NEED,UP_COST,STAGE_NM,heroThumb,drawHeroSprite,parts:()=>parts,ACCS,ACCX,ACC_PL,ACCIMG,accDraw,accShown,accOn,accSel,accItem,accOwn,accSetFull,accBuy,FACE,FACE_PL,faceItem,faceSel,faceOwn,TRAILS,trailTick,RAR,paintHero,shopRender,TRIALS,TR_BASE,TR_UNLOCK,isTrialN,buildTrial,trialStart,trialClear,trialTick,trialCoins,trialExit,dayEv,dayRoll,dyTasks,dyGen,DY_POOL,DY_REW,DY_BONUS,dayNum,weekNum,dayTick,DFX,dfxItem,dfxOwn,deathFx,HELP,helpN,helpApply,helpShieldHit,heatRender,HEAT};
 })();
 </script>
 </body>

@@ -1,6 +1,6 @@
 /* =============== STATE =============== */
-const K={l:false,r:false,j:false,jp:false,a:false,ap:false};
-const K2={l:false,r:false,j:false,jp:false,a:false,ap:false};        // co-op: the other player's input (the sim reads K for whoever is current, see coEach)
+const K={l:false,r:false,j:false,jp:false,a:false,ap:false,g:false,gp:false};
+const K2={l:false,r:false,j:false,jp:false,a:false,ap:false,g:false,gp:false};        // co-op: the other player's input (the sim reads K for whoever is current, see coEach)
 const G={state:'title',level:1,deaths:0,coins:0,t:0,deadT:0,cause:'',cardShown:false,winT:0,shake:0,camX:0,idleT:8,bannerT:0,bannerTxt:'',pausedFrom:null,lastVoice:'',lastLine:'',lvDeaths:0,lastLvl:0,deathAt:0,screamed:false,tok:0,winCard:null,winLen:2.4,cpX:null,dark:0,darkT:0,darkMax:2,mockCd:5,fakeHit:0,killer:null,snk:null,snkCd:0,warn:0,dj:0,custom:null,pend:[],gain:0,ts:1,ck:[]};
 let L=null, P=null, PLY=[], parts=[], themeBg=null, SIM=false;       // PLY = both players in co-op (G.co set); P is always 'the current player'
 /* adaptive quality: 3 = full 2.5D | 2 = cheaper light + DPR 1.5 | 1 = no dynamic light, no dust, DPR 1 | 0 = flat classic look */
@@ -23,7 +23,7 @@ function zoneAt(x){ if(!L.zones.length)return null; for(const z of L.zones)if(x>
 
 /* =============== PLAYER / PHYSICS =============== */
 const JUMP2=-430, BOUNCE=-400;
-function newPlayer(tx){return{x:(tx||2)*TS,y:GY-PH,vx:0,vy:0,face:1,onGround:true,coy:0,buf:0,land:0,run:0,dead:false,blink:0,lastCr:-9,air:0,dj:false,stand:0,spin:0}}
+function newPlayer(tx){return{x:(tx||2)*TS,y:GY-PH,vx:0,vy:0,face:1,onGround:true,coy:0,buf:0,land:0,run:0,dead:false,blink:0,lastCr:-9,air:0,dj:false,stand:0,spin:0,hold:-1,hb:-1,gcd:0,hbt:0,thr:0}}
 function solidTile(tx,ty){
   if(tx<0||tx>=L.w)return true; if(ty<0)return false;
   if(L.gate!=null&&tx===L.gate&&ty<GR)return true;                  // boss room: sealed gate until the boss falls
@@ -60,10 +60,11 @@ function updatePlayer(dt){
   let dir=(K.r?1:0)-(K.l?1:0); if(z&&z.type==='rev')dir=-dir;
   let acc=p.onGround?ACC:AIRACC, fr=p.onGround?FRIC:260, g=GRAV, jv=JUMP, ice=false, drift=0, mx=RUN;
   const hx=hOn()?heroPre(p,dt):(K.ap=false,null), dashing=!!(hx&&hx.dash); if(dashing)g=0;
-  if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
+  if(z){ if(z.type==='ice'){ice=true;acc=p.onGround?300:650;fr=p.onGround?60:70} else if(z.type==='oil'){ice=true;acc=p.onGround?380:650;fr=p.onGround?95:70} else if(z.type==='fast'){mx=RUN*1.3;acc*=1.3} else if(z.type==='float'){g=GRAV*.42;jv=JUMP*.82} else if(z.type==='wind')drift=z.dir*88; else if(z.type==='belt'){ if(p.onGround)drift=z.dir*96 } else if(z.type==='mud'){ if(p.onGround){mx=98;jv=JUMP*.86} } }
+  if(p.hold>=0){ mx=Math.min(mx,RUN*.72); jv*=.92 }                                  // carrying the partner (co-op): slower and a lower jump
   const wt=L.wt?waterAt(p):null; if(wt){ g=WT_G; mx=Math.min(mx,WT_MX); acc=WT_ACC; fr=WT_FR }             // swimming (co-op water puzzles, w_copuz2.js)
   if(dashing){} else if(dir){ if(!ice&&dir*p.vx<0)p.vx+=dir*acc*dt; p.vx+=dir*acc*dt; p.vx=clamp(p.vx,-mx,mx); p.face=dir; }
-  else{ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }
+  else if(!p.thr){ const f=fr*dt; p.vx=Math.abs(p.vx)<=f?0:p.vx-Math.sign(p.vx)*f; }          // (a thrown partner keeps his speed in the air)
   if(mx<RUN)p.vx=clamp(p.vx,-mx,mx);
   if(K.jp){p.buf=.12;K.jp=false}
   p.buf-=dt; p.coy-=dt; if(p.onGround){p.coy=.1;p.dj=false;p.air=0}else p.air+=dt;
@@ -71,9 +72,11 @@ function updatePlayer(dt){
     if(p.coy>0){p.vy=jv;p.onGround=false;p.stand=0;p.coy=0;p.buf=0;Snd.jump();if(!SIM){S.st.j++;dayEv('jump',1)}puff(p.x+PW/2,p.y+PH,3)}
     else if(!p.dj&&p.air>.05){p.vy=JUMP2*(z&&z.type==='float'?.85:1)*heroJump2();p.dj=true;p.buf=0;p.spin=.32;Snd.dj();if(!SIM){S.st.j++;dayEv('jump',1);if(heroJump2()>1)dayEv('ab',1)}ring(p.x+PW/2,p.y+PH)}
   }
-  if(!K.j&&p.vy<-240)p.vy=-240;
+  if(p.thr&&(p.vy>=0||p.onGround))p.thr=0;
+  if(!K.j&&p.vy<-240&&!p.thr)p.vy=-240;                                  // letting go of jump cuts the jump (not a throw: p.thr)
   p.vy=Math.min(p.vy+g*dt,wt?WT_SINK:900); if(!dashing&&hOn())heroVert(p,dt); if(L.fn)fanLift(p,dt);
-  moveX((p.vx+drift)*dt); moveY(p.vy*dt);
+  const vy0=p.vy; moveX((p.vx+drift)*dt); moveY(p.vy*dt);
+  if(z&&z.type==='bounce'&&p.onGround&&vy0>300&&p.hold<0&&p.stand>=0&&!wt){ p.vy=-Math.min(vy0*.5,430); p.onGround=false; p.coy=0; p.thr=0; puff(p.x+PW/2,p.y+PH,4) }      // bouncy floor
   if(!!wt!==!!p.wet){ p.wet=!!wt; waterSplash(p,!!wt) }
   p.land=Math.max(0,p.land-dt*5); p.spin=Math.max(0,p.spin-dt); p.run+=Math.abs(p.vx)*dt*.09; p.blink-=dt; if(p.blink<-2.5)p.blink=.12;
   // crumble trigger

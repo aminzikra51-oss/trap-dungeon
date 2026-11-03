@@ -155,6 +155,10 @@ Object.assign(FAM,{
   return w+1 },
  fire(L,r,x,n,D,room){
   const c=n>=13?4:3,per=D.v(2.7,2.1),warn=D.v(.62,.44),on=D.v(.72,.95); sgn(L,r,x,n,n<10,'حرارة لطيفة 🌤','فتحات حرارة\nبإيقاع');
+  if(D.vary){      // variety mode: three patterns (a wave left to right / all at once / a wave against you) and three sizes (a hop-over, the usual, a tall one)
+    const mode=ri(r,0,2), hs=ri(r,0,2), gap=mode===1?4:3, H=[[110,130],[150,170],[200,225]][hs];
+    for(let i=0;i<c;i++)L.ents.push(mkJet(x+2+i*gap,{per,warn,on,h:ri(r,H[0],H[1]),ph:mode===1?0:(mode===2?(c-1-i):i)*per/c+r()*.2}));
+    return 3+c*gap }
   for(let i=0;i<c;i++)L.ents.push(mkJet(x+2+i*3,{per,warn,on,h:ri(r,150,170),ph:i*per/c+r()*.2}));
   return 3+c*3 },
  storm(L,r,x,n,D,room){

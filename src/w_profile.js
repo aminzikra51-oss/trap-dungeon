@@ -133,7 +133,7 @@ function pfBak(){
 
 /* ---- backup code ---- */
 const pfB64=s=>btoa(unescape(encodeURIComponent(s)));
-function pfExport(){ const o=Object.assign({},S); delete o.adm; delete o.admh; delete o.nu; const b=pfB64(JSON.stringify(o)); return 'DDH1.'+b+'.'+fnv(b).toString(36) }
+function pfExport(){ const o=Object.assign({},S); delete o.adm; delete o.admh; delete o.nu; delete o.turn; const b=pfB64(JSON.stringify(o)); return 'DDH1.'+b+'.'+fnv(b).toString(36) }
 function pfParse(t){
   const m=/^DDH1\.([A-Za-z0-9+/=]+)\.([a-z0-9]+)$/.exec(String(t||'').replace(/\s+/g,''));
   if(!m||fnv(m[1]).toString(36)!==m[2])return null;
@@ -142,7 +142,7 @@ function pfParse(t){
 function pfImport(text){
   const o=pfParse(text); if(!o){ PF.imp=''; PF.msg='❌ الكود مش صحيح أو ناقص'; pfMsg(); return false }
   if(PF.imp!==text.trim()||Date.now()-PF.impT>8000){ PF.imp=text.trim(); PF.impT=Date.now(); PF.msg='⚠ هيدا بيبدّل تقدّمك الحالي كله بالنسخة — اضغط «استرجع» مرة ثانية للتأكيد'; pfMsg(); return false }
-  const keep={}; for(const k of ['adm','admh','nu'])if(S[k]!==undefined)keep[k]=S[k];
+  const keep={}; for(const k of ['adm','admh','nu','turn'])if(S[k]!==undefined)keep[k]=S[k];
   try{ localStorage.setItem('td_s',JSON.stringify(Object.assign({},o,keep))) }catch(e){ PF.msg='❌ ما قدرت أحفظ'; pfMsg(); return false }
   PF.msg='✅ انسترجعت النسخة — عم أعيد التحميل...'; pfMsg(); setTimeout(()=>location.reload(),300); return true;
 }

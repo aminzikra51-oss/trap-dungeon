@@ -6,7 +6,7 @@
      erupt — floor spikes pop after a glowing warning     (after the 2nd hit)
    Hit the button 3 times (4-5 times for later bosses) -> the boss falls apart -> the gate opens -> the exit door.
    Progress survives a death (G.bossProg), so dying only costs you the current attempt at one button. */
-const FLAGS={noBoss:false};
+const FLAGS={noBoss:false,vary:!(typeof navigator!=='undefined'&&navigator.webdriver)};       // vary: single player replays get a fresh pattern each time (off under test automation so the fixed levels stay fixed)
 const BOSS_NAMES=['الملك فخ','الملكة مصيدة','الكاهن مسمار','التنين الكرتوني','جدّ الفخاخ'];
 const BOSS_COL=['#8d7bc4','#c9799b','#5fae8c','#d19b52','#6f9fd1'];
 const BTN_TX=[11,4,15,8,13];           // where the red button is for hit #1, #2, ...

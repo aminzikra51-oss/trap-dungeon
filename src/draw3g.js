@@ -176,11 +176,14 @@ B.train.draw3=B.train.draw;
 
 /* ---------- floor zones painted on top of the ground: belt (conveyor) / mud (glue) ---------- */
 function drawZoneFloor(c,cam){
-  for(const z of L.zones){ if(z.type!=='belt'&&z.type!=='mud')continue; if(z.x1<cam-20||z.x0>cam+VW+20)continue;
+  for(const z of L.zones){ if(z.type!=='belt'&&z.type!=='mud'&&z.type!=='oil'&&z.type!=='bounce')continue; if(z.x1<cam-20||z.x0>cam+VW+20)continue;
     const a=Math.max(z.x0,cam-10),b=Math.min(z.x1,cam+VW+10); c.save();c.beginPath();c.rect(a,GY-12,b-a,18);c.clip();
     if(z.type==='belt'){ c.fillStyle='#26232f';c.fillRect(a,GY-8,b-a,9);c.fillStyle='rgba(255,255,255,.12)';c.fillRect(a,GY-8,b-a,2);
       c.strokeStyle='#ffd23f';c.lineWidth=2.2;const off=(G.t*z.dir*80)%24;for(let x=Math.floor(a/24)*24-24+off;x<b+24;x+=24){c.beginPath();c.moveTo(x,GY-7);c.lineTo(x+z.dir*6,GY-3.5);c.lineTo(x,GY-.5);c.stroke()}
       c.fillStyle='#3a3748';c.strokeStyle='#000';c.lineWidth=2;for(const rx of [z.x0+4,z.x1-4]){c.beginPath();c.arc(rx,GY-3.5,6,0,7);c.fill();c.stroke()} }
+    else if(z.type==='oil'){ c.fillStyle='rgba(60,30,0,.55)';c.fillRect(a,GY-3,b-a,5);c.fillStyle='rgba(255,200,70,.6)';c.fillRect(a,GY-4,b-a,2);
+      c.fillStyle='rgba(255,255,255,.6)';for(let x=Math.floor(a/52)*52;x<b;x+=52)c.fillRect(x+10+Math.sin(G.t*2+x)*3,GY-4,14,1.6) }
+    else if(z.type==='bounce'){ c.strokeStyle='#ff4fa8';c.lineWidth=3;c.lineJoin='round';c.beginPath();const x00=Math.floor(a/10)*10;for(let x=x00;x<=b+10;x+=10){const y=GY-4+(((x/10)|0)%2?-3:0);x===x00?c.moveTo(x,y):c.lineTo(x,y)}c.stroke() }
     else { c.fillStyle='#6b4423';c.beginPath();c.moveTo(a,GY+1);for(let x=Math.floor(a/9)*9;x<=b+9;x+=9)c.lineTo(x,GY-4-Math.abs(Math.sin(x*.37))*2.4);c.lineTo(b+9,GY+1);c.closePath();c.fill();
       c.fillStyle='#8a5a30';c.fillRect(a,GY-4,b-a,1.6);
       for(let i=0;i<7;i++){const x=z.x0+((i*47)%Math.max(60,z.x1-z.x0)),k=((G.t*.9+i*.31)%1);if(x<a||x>b)continue;c.strokeStyle='#4a2c14';c.lineWidth=1.4;c.fillStyle='rgba(160,110,60,'+(1-k)+')';c.beginPath();c.arc(x,GY-5-k*2,1.5+k*3.4,0,7);c.fill();c.stroke()} }

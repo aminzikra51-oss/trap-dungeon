@@ -99,6 +99,8 @@ async () => {
   T.sim(false); S.own.cat = 1; S.own.uncle = 1; S.best = 12; S.hero = 'falafel';
   ok('title has a co-op button', !!$('bCoT') && $('title').contains($('bCoT')));
   $('bCoT').click(); await wait(50);
+  ok('the lobby opens on the online tab (same-device play is gone from the UI)', T.NET.tab === true && $('cotabs') === null && document.querySelector('.cotabs').classList.contains('hide') && !$('coNet').classList.contains('hide') && $('coGo').classList.contains('hide'));
+  $('coTabL').click(); await wait(20);          // test-only: the local engine path still exists for the bots
   ok('lobby opens (state co, overlay visible, title hidden)', G.state === 'co' && !$('co').classList.contains('hide') && $('title').classList.contains('hide'));
   ok('lobby shows level 1 and both heroes', /المرحلة 1/.test($('coLv').textContent) && $('coH1n').textContent.length > 0 && $('coH2n').textContent.length > 0, $('coLv').textContent + ' | ' + $('coH1n').textContent + ' | ' + $('coH2n').textContent);
   $('coNext').click(); $('coNext').click(); ok('+ goes to level 3', /المرحلة 3/.test($('coLv').textContent), $('coLv').textContent);
@@ -142,7 +144,7 @@ async () => {
   ok('single player: D and arrows both move you (old key map)', moved1 > 10 && T.P.x > px + moved1 + 5, Math.round(moved1) + ' / ' + Math.round(T.P.x - px));
   // custom map in co-op through the lobby code box
   const c = T.cNew(); c.n = 3; c.d = 0; c.seq = [[0, 1], [1, 1], [0, 1]]; const code = T.encodeCustom(c);
-  T.coOpen(''); $('coCodeBtn').click(); $('coCode').value = 'hey ' + code + ' bye'; $('coCodeGo').click(); await wait(20);
+  T.coOpen(''); $('coTabL').click(); $('coCodeBtn').click(); $('coCode').value = 'hey ' + code + ' bye'; $('coCodeGo').click(); await wait(20);
   ok('lobby accepts a map code and shows it', /خريطة مخصّصة/.test($('coLv').textContent) && $('coPrev').disabled, $('coLv').textContent);
   $('coGo').click(); await wait(80);
   ok('co-op on a custom map: two players, custom level, no proof stored', G.state === 'play' && G.co && G.custom && T.PLY.length === 2 && !Object.keys(T.MP.cleared).length, G.state + ' ' + !!G.custom);
